@@ -80,6 +80,9 @@ class SkillController extends AbstractController {
 		$clone_kill           = $skillsListObj->hasSkill('clone kill', $player);
 		$clone_kill_turn_cost = $skillsListObj->getTurnCost('clone kill');
 		$wrath                = $skillsListObj->hasSkill('wrath', $player);
+		$blaze                = $skillsListObj->hasSkill('Blaze', $player);
+		$deflect              = $skillsListObj->hasSkill('Deflect', $player);
+		$evasion              = $skillsListObj->hasSkill('Evasion', $player);
 		$can_harmonize        = $starting_ki;
 
 		$parts = [
@@ -105,6 +108,9 @@ class SkillController extends AbstractController {
 			'clone_kill'           => $clone_kill,
 			'clone_kill_turn_cost' => $clone_kill_turn_cost,
 			'wrath'                => $wrath,
+			'blaze'                => $blaze,
+			'deflect'              => $deflect,
+			'evasion'              => $evasion,
 			'can_harmonize'        => $can_harmonize,
 		];
 

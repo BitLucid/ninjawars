@@ -152,6 +152,17 @@
     <p id='hidden-resurrect-skill' class='skill-description'><strong>Hidden Resurrect:</strong> When you are resurrected you will return already hidden and stealthed.</p>
 {/if}
 
+{if $blaze}
+    <p id='blaze-skill' class='skill-description'><strong>Blaze:</strong> Actively use when dueling to do more damage at a cost of additional turns.</p>
+{/if}
+
+{if $deflect}
+    <p id='deflect-skill' class='skill-description'><strong>Deflect:</strong> Actively use when dueling to take less damage at a cost of additional turns.</p>
+{/if}
+
+{if $evasion}
+    <p id='evasion-skill' class='skill-description'><strong>Evasion:</strong> Actively use when dueling to get a chance to escape combat before dying at a cost of additional turns.</p>
+{/if}
 
 {if $wrath}
     <p id='wrath-skill' class='skill-description'><strong>Wrath:</strong> Gain a small amount of health back per kill when dueling.</p>
