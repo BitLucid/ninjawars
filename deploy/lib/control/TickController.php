@@ -14,7 +14,7 @@ class TickController{
     private $logger;
     private $deity; 
 
-    public function __construct(GameLog $logger, $deity){
+    public function __construct(GameLog $logger, Deity $deity){
         $this->logger = $logger;
         $this->deity = $deity;
     }
@@ -42,7 +42,7 @@ class TickController{
         list($revived, $dead_count) = $this->deity->revivePlayers($params);
 
         // Only log on the short interval once in a while.
-        if (DEBUG || rand(1, self::LOG_CHANCE_DIVISOR) === 1) {
+        if ((defined(DEBUG) && DEBUG) || rand(1, self::LOG_CHANCE_DIVISOR) === 1) {
             $log = "DEITY_TINY STARTING: ".date(DATE_RFC1036)."\n
             PCs revived: ".$revived." \n
             PCs who are/were dead: ".$dead_count." \n";
