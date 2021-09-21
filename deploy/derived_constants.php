@@ -38,7 +38,7 @@ define('GRAVATAR', 1);
 define('MIN_PLAYERS_FOR_UNCONFIRM', 500);
 define('MIN_DAYS_FOR_UNCONFIRM',    60);
 define('MAX_PLAYERS_TO_UNCONFIRM',  200);
-define('POISON_DAMAGE',             50);
+define('POISON_DAMAGE',             15);
 define('ONLINE_TIMEOUT',            '70 hours'); // Max time a person is kept online without being active.
 define('TURN_REGEN_PER_TICK',       2);
 define('TURN_REGEN_THRESHOLD',      100);
