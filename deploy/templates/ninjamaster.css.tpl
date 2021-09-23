@@ -49,6 +49,9 @@ nav.admin-nav a{
 #admin-actions .half-width{
 	width:49%;vertical-align:top;
 }
+button.show-hide-next{
+	border-radius: 0.9rem;
+}
 details {
     border: 1px solid #aaa;
     border-radius: 4px;

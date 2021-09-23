@@ -105,28 +105,45 @@
 {/foreach}
 {/if}
 
-<div id='char-list'>
-	{foreach from=$stats item='stat' key='stat_name'}
-	<h2>Most {$stat_name}:</h2>
-	<div class='glassbox'>
-	{foreach from=$stat item='char'}
-		<a href='/ninjamaster/?view={$char.player_id}' class='char-name'>{$char.uname|escape}</a> :: {$char.$stat_name|escape}<br>
-	{/foreach}
+<section id='char-list'>
+	<header>
+		<h3>Char List of High Rollers</h3>
+	</header>
+	<div class='text-center'>
+		<button class='btn btn-default show-hide-next' type='button'>Show/Hide</button>
 	</div>
-	{/foreach}
-</div>
+	<div id='char-list-stats'>
+		{foreach from=$stats item='stat' key='stat_name'}
+		<h2>Most {$stat_name}:</h2>
+		<div class='glassbox'>
+		{foreach from=$stat item='char'}
+			<a href='/ninjamaster/?view={$char.player_id}' class='char-name'>{$char.uname|escape}</a> :: {$char.$stat_name|escape}<br>
+		{/foreach}
+		</div>
+		{/foreach}
+	</div>
+</section>
 
 
 {if $dupes}
-<div id='duplicate-ips' class='glassbox'>
-	<h3>Duplicate Ips</h3>
-	{foreach from=$dupes item='dupe'}
-	<a href='/ninjamaster/?view={$dupe.player_id|escape}' class='char-name'>{$dupe.uname|escape}</a> :: IP <strong class='ip'>{$dupe.last_ip|escape}</strong> :: days {$dupe.days|escape}<br>
-	{/foreach}
+<section id='duplicate-ips' class='glassbox'>
+	<header><h3>Duplicate Ips</h3></header>
+	<div class='text-center'>
+		<button class='btn btn-default show-hide-next' type='button'>Show/Hide</button>
+	</div>
+	<div>
+		{foreach from=$dupes item='dupe'}
+		<a href='/ninjamaster/?view={$dupe.player_id|escape}' class='char-name'>{$dupe.uname|escape}</a> :: IP <strong class='ip'>{$dupe.last_ip|escape}</strong> :: days {$dupe.days|escape}<br>
+		{/foreach}
+	</div>
+</section>
 {/if}
 
 <section class='special-info'>
-	<h1 id='npc-list-stats'>Npc list raw info</h1>
+	<header><h1 id='npc-list-stats'>Npc list raw info</h1></header>
+	<div class='text-center'>
+		<button class='btn btn-default show-hide-next' type='button'>Show/Hide</button>
+	</div>
 	<div class='npc-raw-info'>
 			{foreach from=$npcs item='npc'}
 		<div class='npc-box tiled'>
@@ -177,7 +194,10 @@
 </section>
 
 <section>
-	<h1 id='item-list-area'>Item Raw Data</h1>
+	<header><h1 id='item-list-area'>Item Raw Data</h1></header>
+	<div class='text-center'>
+		<button class='btn btn-default show-hide-next' type='button'>Show/Hide</button>
+	</div>
 {include file="ninjamaster.items.tpl"}
 </section>
 
