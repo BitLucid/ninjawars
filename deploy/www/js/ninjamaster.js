@@ -8,7 +8,6 @@ $(() => {
   $('.show-hide-next').parent().next().toggle();
 });
 
-
 // Hit the api to deactivate the character
 function deactivateChar(charId, callback) {
   // Deactivate a player character by id
@@ -24,7 +23,7 @@ function deactivateChar(charId, callback) {
 function afterDeactivation(data, callback) {
   return function () {
     console.log(data);
-    location.reload();
+    window.location.reload();
     return callback && callback();
   };
 }
