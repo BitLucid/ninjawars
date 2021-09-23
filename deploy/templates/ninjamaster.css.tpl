@@ -13,6 +13,41 @@
 	padding-left: 0.25rem;
 	padding-right: 0.25rem;
 }
+#char-info-scroll{
+	max-width: 100vw;
+	overflow-x: auto;
+}
+
+.carded-area{
+	display:flex;
+	justify-content: space-around;
+}
+
+.card {
+  /* Add shadows to create the "card" effect */
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  border: 1px solid #424954;
+  border-radius: 0.25rem;
+  display:inline-block;
+  max-width: 25vw;
+  height: 20rem;
+  overflow-y: auto;
+}
+
+/* On mouse-over, add a deeper shadow */
+.card:hover {
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+/* Add some padding inside the card container */
+.card .card-container {
+  padding: 2px 16px;
+}
+
+#admin-actions{
+	background: #292828;
+}
+
 #admin-actions table caption{
 	text-align:left;padding-left:10%;
 }
