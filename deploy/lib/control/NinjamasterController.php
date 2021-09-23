@@ -60,7 +60,8 @@ class NinjamasterController extends AbstractController {
 
         $items = $this->items($p_dependencies);
 
-        $char_ids  = preg_split("/[,\s]+/", $request->get('view'));
+        $initial_char_ids = $request->get('view');
+        $char_ids  = $initial_char_ids ? preg_split("/[,\s]+/", $initial_char_ids) : null;
         $char_name = trim($request->get('char_name'));
 
         if ($char_name) { // View a target non-self character
