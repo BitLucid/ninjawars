@@ -18,7 +18,7 @@ class Deity {
     const STAMINA_REGEN_INCREASE = true;
     const LEVEL_REVIVE_INCREASE = false;
     const STAMINA_REVIVE_INCREASE = true;
-    const DEFAULT_REGEN = 3;
+    const DEFAULT_REGEN = 1;
     const BASE_HEALTH = NEW_PLAYER_INITIAL_HEALTH; // e.g. a new, unmodified character, maybe 100 or 150 for dragon
 
     public $logger;
