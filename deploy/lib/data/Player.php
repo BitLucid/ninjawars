@@ -361,7 +361,7 @@ class Player implements Character {
      */
 	public function isAdmin(): bool {
 		$name = strtolower($this->name());
-		if ($name == 'tchalvak' || $name == 'beagle' || $name == 'suavisimo') {
+		if ($name == 'tchalvak' || $name == 'beagle') {
 			return true;
 		}
 
@@ -876,6 +876,7 @@ class Player implements Character {
     /**
      * Calculate a max health by a level, this is actually only the base maximum
      * since changes in stamina can change the current player's maximum
+     * NOTE: Actually already uses and calculates by stamina!
      *
      * @return integer The health points
      */

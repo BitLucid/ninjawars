@@ -81,7 +81,6 @@ class TickController{
         $this->deity->computeTime();
         $this->deity->computeTurns();
         $deity = $this->deity;  // Doesn't work without temporary variable, unfortunately
-        $this->deity->regenCharacters($deity::DEFAULT_REGEN);
         $this->deity->computeStatuses();
 
         $params = [
