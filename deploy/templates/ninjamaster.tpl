@@ -1,5 +1,6 @@
 {include file="ninjamaster.css.tpl"}
 
+<span style='float:left'><a href='/'><button type='button' class='btn btn-default'><i class='fa fa-home'></i></button></a></span>
 <div id='admin-actions'>
 
 <h1>Admin Actions</h1>
@@ -36,7 +37,7 @@
 	<a href='/ninjamaster'>Clear</a>
 </div>
 <section class='char-info-area glassbox'>
-	<h2>Viewing {$char_info.uname|escape}</h2>
+	<h2><a href='?view={$char_info.player_id|escape}'>Viewing {$char_info.uname|escape}</a></h2>
 	<div id='view-public' class='float-right'>
 		<a href='/player?player_id={$char_info.player_id|escape}'>public view</a>
 	</div>
@@ -51,6 +52,11 @@
 		{/foreach}
 		</tr>
 	</table>
+	{if $char_info.active !== 1}
+	<div class='alert alert-info'>
+		This character is inactive.
+	</div>
+	{/if}
 	{if $char_info.first}
 	<div class='char-profile'>Out-of-Character profile: {$first_message|escape}</div>
 	<div class='char-description'>Char Description: {$first_description|escape}</div>
