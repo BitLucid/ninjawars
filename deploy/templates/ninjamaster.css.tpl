@@ -20,7 +20,7 @@
 
 .carded-area{
 	display:flex;
-	justify-content: space-around;
+	justify-content: space-evenly;
 }
 
 .card {
