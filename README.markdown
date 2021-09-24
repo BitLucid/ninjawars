@@ -32,6 +32,7 @@ Local Prep to install php-cli or similar and needed php extensions:
 configure, make, make install:
 
     ./configure
+    # edit your generated CONFIG file here
     make
     make db-init-all
     make db-fixtures
