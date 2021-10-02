@@ -29,10 +29,8 @@ function afterDeactivation(data, callback) {
 // Check in the ui for an additional confirm of deactivation
 // eslint-disable-next-line no-unused-vars
 function confirmDeactivation(e, charId, callback) {
-  // eslint-disable-next-line no-var
-  var message = 'Are you sure you want to deactivate this player character?';
-  // eslint-disable-next-line no-var
-  var result = window && window.confirm(message);
+  const message = 'Are you sure you want to deactivate this player character?';
+  const result = (window && window.confirm(message)) || false;
   if (result === true) {
     e.preventDefault();
     e.stopPropagation();
