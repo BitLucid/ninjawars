@@ -1,7 +1,7 @@
 <?php
 use NinjaWars\core\data\Quest;
 
-class QuestUnitTest extends NWTest {
+class QuestTest extends NWTest {
     private $quest;
     private $data;
 
