@@ -15,7 +15,7 @@ use NinjaWars\core\data\DatabaseConnection;
  *
  * Note that it returns foreachable resultset object unless an array is specifically requested.
  */
-function query($sql, $bindings=array(), $return_resultset=true) {
+function query($sql, array $bindings=array(), bool $return_resultset=true): array | \PDOStatement {
 	DatabaseConnection::getInstance();
 	$statement = DatabaseConnection::$pdo->prepare($sql);
 
@@ -43,14 +43,14 @@ function query($sql, $bindings=array(), $return_resultset=true) {
 /**
  * Wrapper to get a multi-dimensional array.
  */
-function query_array($sql_query, $bindings=array()) {
+function query_array($sql_query, array $bindings=array()): array {
 	return query($sql_query, $bindings)->fetchAll(PDO::FETCH_ASSOC);
 }
 
 /**
  * Update query wrapper, returns the number of rows updated.
  */
-function update_query($update_query, $bindings=array()){
+function update_query($update_query, array $bindings=array()): int{
 	$updates = query($update_query, $bindings, true); // Return the resultset
 	return $updates->rowCount();
 }
@@ -58,21 +58,21 @@ function update_query($update_query, $bindings=array()){
 /**
  * Insert a row, if returning is used it will return the id
  */
-function insert_query($insert_query, $bindings=[]){
+function insert_query($insert_query, array $bindings=[]): array | \PDOStatement{
 	return query($insert_query, $bindings);
 }
 
 /**
  * Run to just get the first row, for 1 row queries.
  */
-function query_row($sql, $bindings=array()) {
+function query_row($sql, array $bindings=array()): array | bool {
     return query($sql, $bindings)->fetch(PDO::FETCH_ASSOC);
 }
 
 /**
  * Get only the first result item.
  */
-function query_item($sql, $bindings=array()) {
+function query_item($sql, array $bindings=array()): int | float | string | null {
 	$row = query_row($sql, $bindings);
 	return (is_array($row) ? reset($row) : null);
 }
