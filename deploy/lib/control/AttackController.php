@@ -281,39 +281,16 @@ class AttackController extends AbstractController {
      * @return void
      */
     private function win(Player $victor, Player $loser, int $loot, int $killpoints) {
-        $victor_msg = "You have killed {$loser->name()} in combat and taken $loot gold.";
+        $victor_msg = "You defeated {$loser->name()} in combat and took $loot gold.";
         Event::create($loser->id(), $victor->id(), $victor_msg);
         $victor->setGold($victor->gold + $loot);
         $victor->addKills($killpoints);
     }
 
     /**
-     * @return void
+     * Simply records a numeric duel log entry
      */
-    private function logDuel(Player $attacker, Player $target, $winner, int $killpoints) {
-        $duel_log_msg = "%s has dueled {$target->name()} and ";
-        $won = $attacker === $winner;
-
-        if (!$won) {
-            $duel_log_msg .= "lost at ".date("F j, Y, g:i a");
-        } elseif ($killpoints > 1 || $killpoints < 0) {
-            $duel_log_msg .= "won $killpoints killpoints.";
-        } else {
-            $duel_log_msg = '';
-        }
-
-        if ($duel_log_msg !== '') {
-            Event::create(
-                (int)"SysMsg",
-                (int)"SysMsg",
-                sprintf(
-                    $duel_log_msg,
-                    $attacker->name(),
-                    $target->name()
-                )
-            );
-
-            GameLog::sendLogOfDuel($attacker, $target, (bool) $won, $killpoints);
-        }
+    private function logDuel(Player $attacker, Player $target, $winner, int $killpoints): bool {
+        return GameLog::sendLogOfDuel($attacker, $target, (bool) ($killpoints > 0), $killpoints);
     }
 }
