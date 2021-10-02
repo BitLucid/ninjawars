@@ -3,6 +3,12 @@
 /* jshint browser: true, white: true, plusplus: true */
 /* global $ */
 
+$(function initializeNMPage() {
+  $('.show-hide-next').click(function showHideNext() {
+    $(this).parent().next().slideToggle();
+  }).text('... 👁');
+  $('.show-hide-next').parent().next().toggle();
+});
 
 // Hit the api to deactivate the character
 function deactivateChar(charId, callback) {
