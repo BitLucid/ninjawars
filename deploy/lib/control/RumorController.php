@@ -13,8 +13,12 @@ class RumorController extends AbstractController {
     const ALIVE = false;
     const PRIV  = false;
 
-    private function duels() {
-        return query_array("SELECT dueling_log.*, attackers.player_id AS attacker_id, defenders.player_id AS defender_id FROM dueling_log JOIN players AS attackers ON attackers.uname = attacker JOIN players AS defenders ON defender = defenders.uname ORDER BY id DESC LIMIT 500");
+    private function notableDuels($limit=50, $simple_limit=5): array {
+        return query_array("(SELECT dueling_log.*, attackers.player_id AS attacker_id, defenders.player_id AS defender_id FROM dueling_log JOIN players AS attackers ON attackers.uname = attacker JOIN players AS defenders ON defender = defenders.uname 
+        where (dueling_log.killpoints != 1 OR dueling_log.won is not true) LIMIT :limit)
+        UNION
+(SELECT dueling_log.*, attackers.player_id AS attacker_id, defenders.player_id AS defender_id FROM dueling_log JOIN players AS attackers ON attackers.uname = attacker JOIN players AS defenders ON defender = defenders.uname 
+        where (dueling_log.killpoints = 1 AND dueling_log.won is true) ORDER BY id DESC LIMIT :simple_limit);", [':limit'=>$limit, ':simple_limit'=>$simple_limit]);
     }
 
     public function index(Container $p_dependencies) {
@@ -22,7 +26,7 @@ class RumorController extends AbstractController {
         $parts           = [
             'stats'          => $stats,
             'vicious_killer' => $stats['vicious_killer'],
-            'duels'          => $this->duels(),
+            'duels'          => $this->notableDuels(),
         ];
 
         return new StreamedViewResponse('Bath House', 'duel.tpl', $parts, ['quickstat'=>false]);
