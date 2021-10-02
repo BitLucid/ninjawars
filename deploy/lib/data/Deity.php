@@ -247,7 +247,7 @@ class Deity {
         $s->execute();
 
         // Take damage every regen tick from POISON
-        $s = DatabaseConnection::$pdo->prepare("UPDATE players SET health = numeric_larger(0, health-:damage) WHERE health > 0 AND CAST((status&:poison) AS bool)"); // *** poisoned takes away life ***
+        $s = DatabaseConnection::$pdo->prepare("UPDATE players SET health = numeric_larger(0, health - :damage) WHERE health > 0 AND CAST((status&:poison) AS bool)"); // *** poisoned takes away life ***
         $s->bindValue(':damage', POISON_DAMAGE);
         $s->bindValue(':poison', POISON);
         $s->execute();

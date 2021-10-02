@@ -54,12 +54,14 @@ class NinjamasterController extends AbstractController {
         $first_description = null;
         $dupes            = AdminViews::dupedIps();
         $stats            = AdminViews::highRollers();
+        $usage           = AdminViews::recentUsage();
         $npcs             = NpcFactory::allNonTrivialNpcs();
         $trivial_npcs      = NpcFactory::allTrivialNpcs();
 
         $items = $this->items($p_dependencies);
 
-        $char_ids  = preg_split("/[,\s]+/", $request->get('view'));
+        $initial_char_ids = $request->get('view');
+        $char_ids  = $initial_char_ids ? preg_split("/[,\s]+/", $initial_char_ids) : null;
         $char_name = trim($request->get('char_name'));
 
         if ($char_name) { // View a target non-self character
@@ -90,6 +92,7 @@ class NinjamasterController extends AbstractController {
         $parts = [
             'error'             => $error,
             'stats'             => $stats,
+            'usage'             => $usage,
             'first_char'        => $first_char,
             'first_description' => $first_description,
             'first_message'     => $first_message,

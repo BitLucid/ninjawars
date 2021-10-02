@@ -1,8 +1,9 @@
 {include file="ninjamaster.css.tpl"}
 
+<span style='float:left'><a href='/'><button type='button' class='btn btn-default'><i class='fa fa-home'></i></button></a></span>
 <div id='admin-actions'>
 
-<h1>Admin Actions</h1>
+<h1>Admin Dashboard</h1>
 
 {if $error}
 	<div class='parent'>
@@ -33,24 +34,35 @@
 <!-- View the details of some ninja -->
 {foreach from=$char_infos item='char_info'}
 <div id='clear' class='float-right block button-mimic glassbox'>
-	<a href='/ninjamaster'>Clear</a>
+	<a href='./' title='clear'><i class='fa fa-times-circle'></i></a>
 </div>
 <section class='char-info-area glassbox'>
-	<h2>Viewing {$char_info.uname|escape}</h2>
-	<div id='view-public' class='float-right'>
-		<a href='/player?player_id={$char_info.player_id|escape}'>public view</a>
+	<h2><a href='?view={$char_info.player_id|escape}'>{$char_info.uname|escape}</a></h2>
+	<span id='view-public' class='float-right'>
+		<a href='/player?player_id={$char_info.player_id|escape}' title='View public profile'><i class='fa fa-eye'></i></a>
+	</span>
+	<div id='char-info-scroll'>
+		<table id='char-info-table'>
+			<thead>
+				{foreach from=$char_info key='name' item='stat'}<th class='char-info-header'>{$name|escape}</th>{/foreach}
+			</thead>
+			<tr>
+			{foreach from=$char_info key='name' item='stat'}
+				<td>{$stat|escape}</td>
+			{/foreach}
+			</tr>
+		</table>
 	</div>
-	<table id='char-info-table'>
-		<caption>Specific Character's info for <strong class='char-name'>{$char_info.uname|escape}</strong></caption>
-		<thead>
-			{foreach from=$char_info key='name' item='stat'}<th class='char-info-header'>{$name|escape}</th>{/foreach}
-		</thead>
-		<tr>
-		{foreach from=$char_info key='name' item='stat'}
-			<td>{$stat|escape}</td>
-		{/foreach}
-		</tr>
-	</table>
+	{if $char_info.active !== 1}
+	<div class='alert alert-info'>
+		This character is inactive.
+	</div>
+	{/if}
+	<div class='text-center'>
+		<div class='highlight-box'>
+		{$char_info.days} days
+		</div>
+	</div>
 	{if $char_info.first}
 	<div class='char-profile'>Out-of-Character profile: {$first_message|escape}</div>
 	<div class='char-description'>Char Description: {$first_description|escape}</div>
@@ -105,28 +117,75 @@
 {/foreach}
 {/if}
 
-<div id='char-list'>
-	{foreach from=$stats item='stat' key='stat_name'}
-	<h2>Most {$stat_name}:</h2>
-	<div class='glassbox'>
-	{foreach from=$stat item='char'}
-		<a href='/ninjamaster/?view={$char.player_id}' class='char-name'>{$char.uname|escape}</a> :: {$char.$stat_name|escape}<br>
-	{/foreach}
-	</div>
-	{/foreach}
-</div>
 
+<section>
+	<header>
+		<h2 id='usage-usage'>Recent Usage</h2>
+	</header>
+	<div class='carded-area'>
+		<div class='card'>
+			<div class='card-container'>
+				<h5>New Players</h5>
+				<div>Recent new players in 7 days: {$usage.new_count}</div>
+				<ul>
+					{foreach from=$usage.new item='nChar'}
+						<li><a href='?view={$nChar.player_id|escape}'>{$nChar.uname|escape}</a> <time class='timeago' datetime='{$nChar.created_date|escape}'>{$nChar.created_date|escape}</time></li>
+					{/foreach}
+				</ul>
+			</div>
+		</div>
+		<div class='card'>
+			<div class='card-container'>
+				<h5>Logins</h5>
+				<div>Recent logins in 7 days: {$usage.recent_count}</div>
+				<ul>
+					{foreach from=$usage.recent item='nChar'}
+						<li><a href='?view={$nChar.player_id|escape}'>{$nChar.uname|escape}</a> <time class='timeago' datetime='{$nChar.last_login|escape}'>{$nChar.last_login|escape}</time></li>
+					{/foreach}
+				</ul>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section id='char-list'>
+	<header>
+		<h3>Char List of High Rollers</h3>
+	</header>
+	<div class='text-center'>
+		<button class='btn btn-default show-hide-next' type='button'>Show/Hide</button>
+	</div>
+	<div id='char-list-stats'>
+		{foreach from=$stats item='stat' key='stat_name'}
+		<h2>Most {$stat_name}:</h2>
+		<div class='glassbox'>
+		{foreach from=$stat item='char'}
+			<a href='/ninjamaster/?view={$char.player_id}' class='char-name'>{$char.uname|escape}</a> :: {$char.stat|escape}<br>
+		{/foreach}
+		</div>
+		{/foreach}
+	</div>
+</section>
 
 {if $dupes}
-<div id='duplicate-ips' class='glassbox'>
-	<h3>Duplicate Ips</h3>
-	{foreach from=$dupes item='dupe'}
-	<a href='/ninjamaster/?view={$dupe.player_id|escape}' class='char-name'>{$dupe.uname|escape}</a> :: IP <strong class='ip'>{$dupe.last_ip|escape}</strong> :: days {$dupe.days|escape}<br>
-	{/foreach}
+<section id='duplicate-ips' class='glassbox'>
+	<header><h3>Duplicate Ips</h3></header>
+	<div class='text-center'>
+		<button class='btn btn-default show-hide-next' type='button'>Show/Hide</button>
+	</div>
+	<div>
+		{foreach from=$dupes item='dupe'}
+		<a href='/ninjamaster/?view={$dupe.player_id|escape}' class='char-name'>{$dupe.uname|escape}</a> :: IP <strong class='ip'>{$dupe.last_ip|escape}</strong> :: days {$dupe.days|escape}<br>
+		{/foreach}
+	</div>
+</section>
 {/if}
 
 <section class='special-info'>
-	<h1 id='npc-list-stats'>Npc list raw info</h1>
+	<header><h2 id='npc-list-stats'>Npc list raw info</h2></header>
+	<div class='text-center'>
+		<button class='btn btn-default show-hide-next' type='button'>Show/Hide</button>
+	</div>
 	<div class='npc-raw-info'>
 			{foreach from=$npcs item='npc'}
 		<div class='npc-box tiled'>
@@ -177,7 +236,10 @@
 </section>
 
 <section>
-	<h1 id='item-list-area'>Item Raw Data</h1>
+	<header><h2 id='item-list-area'>Item Raw Data</h2></header>
+	<div class='text-center'>
+		<button class='btn btn-default show-hide-next' type='button'>Show/Hide</button>
+	</div>
 {include file="ninjamaster.items.tpl"}
 </section>
 

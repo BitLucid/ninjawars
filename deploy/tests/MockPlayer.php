@@ -47,6 +47,10 @@ class MockPlayer extends Player implements Character{
         $this->gold = $amount;
     }
 
+    public function setLevel(int $level): int{
+        return $this->level = $level;
+    }
+
     public function getStrength(): int{
         return $this->strength;
     }

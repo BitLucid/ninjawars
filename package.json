@@ -38,19 +38,23 @@
     },
     "homepage": "https://github.com/BitLucid/ninjawars#readme",
     "devDependencies": {
+        "eslint": "^7.32.0",
+        "eslint-config-airbnb": "^18.2.1",
+        "eslint-plugin-import": "^2.24.2",
+        "eslint-plugin-jsx-a11y": "^6.4.1",
+        "eslint-plugin-react": "^7.26.0",
+        "eslint-plugin-react-hooks": "^4.2.0",
         "jasmine-core": "^3.2.1",
-        "karma": "^4.1.0",
-        "karma-chrome-launcher": "^2.2.0",
-        "karma-jasmine": "^1.1.2",
+        "karma": "^6.3.4",
+        "karma-chrome-launcher": "^3.1.0",
+        "karma-jasmine": "^4.0.1",
         "karma-phantomjs-launcher": "^1.0.4",
         "karma-requirejs": "^1.1.0",
         "karma-sinon": "^1.0.5",
         "phantomjs-prebuilt": "^2.1.16",
-        "prettier": "2.3.1",
+        "prettier": "2.4.1",
         "requirejs": "^2.3.6",
         "sinon": "^7.0.0"
     },
-    "dependencies": {
-        "eslint": "^5.16.0"
-    }
+    "dependencies": {}
 }
