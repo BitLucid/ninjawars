@@ -37,13 +37,12 @@
 	<a href='./' title='clear'><i class='fa fa-times-circle'></i></a>
 </div>
 <section class='char-info-area glassbox'>
-	<h2><a href='?view={$char_info.player_id|escape}'>Viewing {$char_info.uname|escape}</a></h2>
+	<h2><a href='?view={$char_info.player_id|escape}'>{$char_info.uname|escape}</a></h2>
 	<span id='view-public' class='float-right'>
 		<a href='/player?player_id={$char_info.player_id|escape}' title='View public profile'><i class='fa fa-eye'></i></a>
 	</span>
 	<div id='char-info-scroll'>
 		<table id='char-info-table'>
-			<caption>Specific Character's info for <strong class='char-name'>{$char_info.uname|escape}</strong></caption>
 			<thead>
 				{foreach from=$char_info key='name' item='stat'}<th class='char-info-header'>{$name|escape}</th>{/foreach}
 			</thead>
@@ -59,6 +58,11 @@
 		This character is inactive.
 	</div>
 	{/if}
+	<div class='text-center'>
+		<div class='highlight-box'>
+		{$char_info.days} days
+		</div>
+	</div>
 	{if $char_info.first}
 	<div class='char-profile'>Out-of-Character profile: {$first_message|escape}</div>
 	<div class='char-description'>Char Description: {$first_description|escape}</div>

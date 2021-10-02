@@ -23,6 +23,14 @@
 	justify-content: space-evenly;
 }
 
+.highlight-box{
+	color: gray;
+	border:thin solid gray;
+	display:inline-block;
+	padding: 1rem;
+	font-weight: bolder;
+}
+
 .card {
   /* Add shadows to create the "card" effect */
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
