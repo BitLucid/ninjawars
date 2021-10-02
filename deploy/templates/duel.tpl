@@ -21,8 +21,8 @@ Shedding your clothes, you ease into a large copper tub that is filled with stea
 </div>
 
 {if count($duels) gt 0}
-<p>Talk of recent duels:</p>
-<ul id='duel-log'>
+<p>Talk of recent notable duels:</p>
+<ul id='duel-log' style='overflow-y: auto;max-height:20rem;'>
 	{foreach item="duel" from=$duels}
   <li>
   {include file="player-link.tpl" username=$duel.attacker id=$duel.attacker_id} has dueled {include file="player-link.tpl" username=$duel.defender id=$duel.defender_id} and {if $duel.won}won{else}lost{/if} for {$duel.killpoints} killpoints on {$duel.date}
