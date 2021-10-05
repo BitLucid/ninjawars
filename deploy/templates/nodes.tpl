@@ -2,8 +2,10 @@
 {literal}
 
 #map .map-grid{
-    width:55rem;
-	height:55rem;
+    width:95vw;
+	min-width: 55rem;
+	height:95vw;
+	min-height: 55rem;
 	margin:auto;
 	background-color:#807F6F;
 	color:rgb(155, 155, 155);
@@ -17,7 +19,6 @@
 	text-align:center;
 	min-height:1.2rem;
 	font-size:2.1rem;
-	line-height:1.1;
 	background-color:black;
 	background-color:rgba(0,0,0,.8);
 	margin-left:17%;
@@ -69,6 +70,11 @@
     background-size:100% 100%;
 }
 
+
+#map .node.forest{
+	background-color:hsl(91.2, 15%, 32.7%);
+}
+
 #map .node.north-south-road{
     background-color:rgb(55, 55, 55);
     background-image:url(/images/nodes/darkgranite.jpg);
@@ -89,7 +95,11 @@
     background-color:#dd164f;
 }
 #map .area-name{
-    background-color:rgb(55, 10, 10);font-size:1.3em;text-align:center;text-transform:uppercase;padding:.7em;
+    background-color:rgb(55, 10, 10);
+	font-size:1.3em;
+	text-align:center;
+	text-transform:uppercase;
+	padding:.7em;
 }
 
 
