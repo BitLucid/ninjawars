@@ -33,14 +33,12 @@
 {if $char_infos}
 <!-- View the details of some ninja -->
 {foreach from=$char_infos item='char_info'}
-<div id='clear' class='float-right block button-mimic glassbox'>
-	<a href='./' title='clear'><i class='fa fa-times-circle'></i></a>
-</div>
 <section class='char-info-area glassbox'>
-	<h2><a href='?view={$char_info.player_id|escape}'>{$char_info.uname|escape}</a></h2>
-	<span id='view-public' class='float-right'>
+	<span class='char-actions float-right'>
+		<a href='./' title='clear'><i class='fa fa-times-circle'></i></a>
 		<a href='/player?player_id={$char_info.player_id|escape}' title='View public profile'><i class='fa fa-eye'></i></a>
 	</span>
+	<h2><a href='?view={$char_info.player_id|escape}'>{$char_info.uname|escape}</a></h2>
 	<div id='char-info-scroll'>
 		<table id='char-info-table'>
 			<thead>
@@ -53,11 +51,6 @@
 			</tr>
 		</table>
 	</div>
-	{if $char_info.active !== 1}
-	<div class='alert alert-info'>
-		This character is inactive.
-	</div>
-	{/if}
 	<div class='text-center'>
 		<div class='highlight-box'>
 		{$char_info.days} days
@@ -66,10 +59,21 @@
 	{if $char_info.first}
 	<div class='char-profile'>Out-of-Character profile: {$first_message|escape}</div>
 	<div class='char-description'>Char Description: {$first_description|escape}</div>
-	{* Action to deactivate a player*}
-	<section class='half-width constrained'>
-		<header><h3>Actions</h3></header>
-		<details class='constrained'>
+	{if $first_account}
+	<section class='account-info inline-block half-width centered'>
+		<div>
+		<h3>Account Info</h3>
+		<dl class='left-aligned'>
+			<dt>Account Identity</dt><dd>{$first_account->identity()|escape}</dd>
+			<dt>Active Email</dt><dd>{$first_account->getActiveEmail()|escape}</dd>
+			<dt>Karma Total</dt><dd>{$first_account->getKarmaTotal()|escape}</dd>
+			<dt>Last Login</dt><dd><time class='timeago' datetime='{$first_account->getLastLogin()|escape}'>{$first_account->getLastLogin()|escape}</time></dd>
+			<dt>Last Login Failure</dt><dd><time class='timeago' datetime='{$first_account->getLastLoginFailure()|escape}'>{$first_account->getLastLoginFailure()|escape}</time></dd>
+			<dt>Operational</dt><dd>{if $first_account->isOperational()}true{else}false{/if}</dd>
+			<dt>Confirmed</dt><dd>{if $first_account->isConfirmed()}1{else}0{/if}</dd>
+		</dl>
+		</div>
+		<details class='constrained' style='margin-bottom:1.25rem'>
 			<summary>SEE ACTIONS TO TAKE</summary>
 			<div>
 				<div id='deactivate-character'>
@@ -82,36 +86,33 @@
 				</div>
 			</div>
 		</details>
-	</section>
-	{if $first_account}
-	<section class='account-info inline-block half-width centered'>
-		<div class='inline-block left-aligned'>
-		<h3>Account Info</h3>
-		<dl>
-			<dt>Account Identity</dt><dd>{$first_account->identity()|escape}</dd>
-			<dt>Active Email</dt><dd>{$first_account->getActiveEmail()|escape}</dd>
-			<dt>Karma Total</dt><dd>{$first_account->getKarmaTotal()|escape}</dd>
-			<dt>Last Login</dt><dd><time class='timeago' datetime='{$first_account->getLastLogin()|escape}'>{$first_account->getLastLogin()|escape}</time></dd>
-			<dt>Last Login Failure</dt><dd><time class='timeago' datetime='{$first_account->getLastLoginFailure()|escape}'>{$first_account->getLastLoginFailure()|escape}</time></dd>
-			<dt>Operational</dt><dd>{if $first_account->isOperational()}true{else}false{/if}</dd>
-			<dt>Confirmed</dt><dd>{if $first_account->isConfirmed()}1{else}0{/if}</dd>
-		</dl>
+		{if $char_info.active !== 1}
+		<div class='alert alert-info'>
+			This character is inactive.
 		</div>
+		{/if}
 	</section>
 	{/if}
 	{/if}
 	<section class='char-inventory-area inline-block half-width'>
 		<h3>Inventory for <strong class='char-name'>{$char_info.uname|escape}</strong></h3>
-		<table class='char-inventory'>
-			{foreach from=$char_inventory key='name' item='item'}
-				<tr class='info'>
-				<td>&#9734;</td>
-				{foreach from=$item key='column' item='data'}
-					<td class='headed'>{$column|escape}</td><td> {$data|escape}</td>
-				{/foreach}
-				</tr>
-			{/foreach}
-		</table>
+		<details class='constrained'>
+			<summary>
+				See item counts
+			</summary>
+			<div>
+				<table class='char-inventory'>
+					{foreach from=$char_inventory key='name' item='item'}
+						<tr class='info'>
+						<td>&#9734;</td>
+						{foreach from=$item key='column' item='data'}
+							<td class='headed'>{$column|escape}</td><td> {$data|escape}</td>
+						{/foreach}
+						</tr>
+					{/foreach}
+				</table>
+			</div>
+		</details>
 	</section>
 </section>
 {/foreach}
