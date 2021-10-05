@@ -79,7 +79,9 @@ install-system:
 	apt-get -y install php8.0-fpm php8.0-xml php8.0-pgsql php8.0-curl php8.0-mbstring
 	phpenmod xml pgsql curl mbstring
 	# Note that xml is what installs the ext-dom
-	apt install nvm
+	apt install curl 
+	curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash 
+	#apt install nvm
 	nvm install $(NODE_VERSION)
 	npm install -g yarn
 	echo "Configure your webserver and postgresql yourself, we recommend nginx ^1.14.0 and postresql ^10.0"
