@@ -152,7 +152,7 @@ class TestAccountConfirmation extends NWTest {
             [':char_id' => $ninja_id]
         );
 
-        $this->assertTrue($account_operational, 'Account is not being set as operational by default when created');
+        $this->assertEquals('1', $account_operational, 'Account is not being set as operational by default when created');
     }
 
 

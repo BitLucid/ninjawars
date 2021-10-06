@@ -805,7 +805,7 @@ class Player implements Character {
      */
     public static function findActive(int $limit=5, bool $alive_only=true): array {
         $where_cond = ($alive_only ? ' AND health > 0' : '');
-        $sel = "SELECT uname, player_id FROM players WHERE active = 1 $where_cond ORDER BY last_started_attack DESC LIMIT :limit";
+        $sel = "SELECT uname, player_id FROM players WHERE active = 1 AND last_started_attack is not null $where_cond ORDER BY last_started_attack DESC LIMIT :limit";
         $active_ninjas = query_array($sel, array(':limit'=>array($limit, PDO::PARAM_INT)));
         return $active_ninjas;
     }

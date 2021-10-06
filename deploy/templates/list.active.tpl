@@ -1,5 +1,5 @@
 	  <div class='active-players'>
-	    <ul>
+	    <ul style='display:flex;justify-content:space-evenly'>
 	      <li><span>Lurking ninja: </span></li>
 {foreach from=$active_ninjas key="row" item="ninja"}
             <li class='active-ninja'>

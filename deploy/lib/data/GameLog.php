@@ -101,7 +101,7 @@ class GameLog {
     /**
      * Record the kills/xp results of a duel attack by a pc
      */
-    public static function sendLogOfDuel(Player $attacker, Player $defender, bool $won, int $killpoints) {
+    public static function sendLogOfDuel(Player $attacker, Player $defender, bool $won, int $killpoints): bool {
 
         DatabaseConnection::getInstance();
         $statement = DatabaseConnection::$pdo->prepare("INSERT INTO dueling_log
@@ -113,6 +113,7 @@ class GameLog {
         $statement->bindValue(':won', $won, \PDO::PARAM_BOOL);
         $statement->bindValue(':killpoints', $killpoints, \PDO::PARAM_INT);
         $statement->execute();
+        return true;
     }
 
     /**
