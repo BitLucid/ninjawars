@@ -103,13 +103,8 @@
     <li> Evolym Fragile/Davinel - the Flash Banner </li>
     <li> Magatsu - the Shop Graphics </li>
     <li> Some pixel art by Roy Ronalds </li>
-    <li>
-      Alegion - the original for the Koi photograph Background - <a href='http://alegion.deviantart.com/'>alegion.deviantart.com/</a>
-    </li>
-    <li>
-      The Domain's DNS services are provided thanks to:
-      <a class="external-link" href="http://dns.he.net">Hurricane Electric</a>
-    </li>
+    <li>Alegion - the original for the Koi photograph Background - <a
+href='http://alegion.deviantart.com/'>alegion.deviantart.com/</a></li>
   </ul>
 </section>
 
