@@ -25,6 +25,9 @@
 			<i class="fas fa-chevron-circle-left"></i> Ninja List
 		</a>
 	  {/if}
+	  <a href='/player?player_id={$target->id()|escape:'url'}' style='float:right'>
+	      <span class='fa fa-eye'></span> View <span class='char-name'>{$target->name()|escape}</span>
+</a>
     </nav>
 
 	<div class='padded-area'>
@@ -46,11 +49,8 @@
 		{if $target->id()}
 			{if $target->health gt 0 && $attacker->health gt 0}
 				<a href="/attack?attacked=1&amp;target={$target->id()|escape:'url'}" class='attack-again thick btn btn-primary'>Attack Again?</a>
-			{/if}
-				<a class='return-to-location' href='/player?player_id={$target->id()|escape:'url'}'>
-					<span class='fa fa-eye'></span> Look at <span class='char-name'>{$target->name()|escape}</span>
-				</a>
+{/if}
 		{/if}
-		<a href='/enemies' class='return-to-location'>Return to the Fight</a>
+<a href='/enemies' class='return-to-location'><i class='fa fa-bolt' aria-hidden="true"></i> Return to the Fight</a>
 	</nav>
 </section>
