@@ -51,13 +51,8 @@ class InventoryTest extends \NWTest {
         $inventory->add('shuriken', 10);
         $inventory->add('amanita', 40);
         $sorted_inv = Inventory::of($this->char, $sort='self');
-
-        // Foreach over the inventory to get the first item out.
-        foreach ($sorted_inv as $item) {
-            break;
-        }
-
-        $this->assertEquals($item['name'], 'Amanita Mushroom');
+        $item = reset($sorted_inv);
+        $this->assertEquals('Amanita Mushroom', $item['name']);
     }
 
     /**
@@ -75,6 +70,6 @@ class InventoryTest extends \NWTest {
         }
 
         $this->assertEquals($shurikens['count'], 10);
-        $this->assertEquals($shurikens['item_internal_name'], 'shuriken');
+        $this->assertEquals('shuriken', $shurikens['item_internal_name']);
     }
 }
