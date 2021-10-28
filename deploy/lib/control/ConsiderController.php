@@ -5,6 +5,7 @@ use Pimple\Container;
 use NinjaWars\core\control\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use NinjaWars\core\data\DatabaseConnection;
+use NinjaWars\core\data\Enemies;
 use NinjaWars\core\data\Player;
 use NinjaWars\core\data\SkillDAO;
 use NinjaWars\core\data\Inventory;
@@ -35,7 +36,7 @@ class ConsiderController extends AbstractController {
     public function search(Container $p_dependencies): StreamedViewResponse {
         $enemy_match = RequestWrapper::getPostOrGet('enemy_match');
         $current_player = $p_dependencies['current_player'];
-        $found_enemies = ($enemy_match ? $this->getEnemyMatches($current_player->id(), $enemy_match) : null);
+        $found_enemies = ($enemy_match ? Enemies::search($current_player, $enemy_match) : []);
         $parts = $this->configure();
 
         // Add some additional parts
@@ -48,7 +49,7 @@ class ConsiderController extends AbstractController {
     }
 
     /**
-     * Display just the next enemy
+     * Display just the next ninja to attack
      */
     public function nextEnemy(Container $p_dependencies): StreamedViewResponse {
         $char             = Player::find(SessionFactory::getSession()->get('player_id'));
@@ -98,12 +99,11 @@ class ConsiderController extends AbstractController {
      * Add an enemy to pc's list if valid.
      */
     public function addEnemy(Container $p_dependencies): RedirectResponse {
-        $enemy = Player::find(RequestWrapper::getPostOrGet('add_enemy'));
-
-        if ($enemy) {
-            $this->addEnemyToPlayer(Player::find(SessionFactory::getSession()->get('player_id')), $enemy);
-        }
-
+        $enemy_id = RequestWrapper::getPostOrGet('add_enemy');
+        Enemies::add($p_dependencies['current_player'], RequestWrapper::getPostOrGet('add_enemy'));
+        debug($enemy_id);
+        debug('Added enemy: ' . $enemy_id, Enemies::getAllForPlayerAndEnemy($p_dependencies['current_player'], $enemy_id));
+        die();
         return new RedirectResponse('/enemies');
     }
 
@@ -111,12 +111,7 @@ class ConsiderController extends AbstractController {
      * Take an enemy off a pc's list.
      */
     public function deleteEnemy(Container $p_dependencies): RedirectResponse {
-        $enemy = Player::find(RequestWrapper::getPostOrGet('remove_enemy'));
-
-        if ($enemy) {
-            $this->removeEnemyFromPlayer(Player::find(SessionFactory::getSession()->get('player_id')), $enemy);
-        }
-
+        Enemies::remove($p_dependencies['current_player'], RequestWrapper::getPostOrGet('remove_enemy'));
         return new RedirectResponse('/enemies');
     }
 
@@ -131,7 +126,7 @@ class ConsiderController extends AbstractController {
         $char_info        = ($char ? $char->data() : []);
         $other_npcs       = NpcFactory::npcsData();
         $npcs             = NpcFactory::customNpcs();
-        $enemy_list       = ($char ? $this->getCurrentEnemies($char->id()) : []);
+        $enemy_list       = ($char ? Enemies::getCurrentEnemies($char) : []);
         $recent_attackers = ($char ? $this->getRecentAttackers($char) : []);
         $next_enemy = $char ? $this->getNextEnemy($char, $shift) : null;
 
@@ -190,51 +185,10 @@ class ConsiderController extends AbstractController {
      * @param string $p_pattern
      * @return array
      */
-    private function getEnemyMatches(int $p_playerId, string $p_pattern): array {
-        // Doesn't really cause any problems to allow like match characters to pass through here.
-        $sel = "SELECT player_id, uname FROM players
-            WHERE uname ilike :matchString || '%' AND active = 1 AND player_id != :user
-            ORDER BY level LIMIT 11";
-
-        $enemies = query_array(
-            $sel,
-            [
-                ':matchString' => $p_pattern,
-                ':user'        => $p_playerId,
-            ]
-        );
-
-        return $enemies;
-    }
-
-    /**
-     * Retrieve enemies for the player specified
-     *
-     * @param int $p_playerId
-     * @return \PDOStatement
-     */
-    private function getCurrentEnemies(int $p_playerId): \PDOStatement {
-        $query = 'SELECT player_id, active, level, uname, health FROM players JOIN enemies ON _enemy_id = player_id AND _player_id = :pid
-            WHERE active = 1 ORDER BY health DESC, level DESC';
-        return query($query, [':pid'=>$p_playerId]);
-    }
-
-    /**
-     * Add a certain enemy to the enemy list.
-     *
-     * @param Player $p_player
-     * @param Player $p_enemy
-     * @return void
-     */
-    private function addEnemyToPlayer(Player $p_player, Player $p_enemy): void {
-        $this->removeEnemyFromPlayer($p_player, $p_enemy);
-
-        DatabaseConnection::getInstance();
-        $query = 'INSERT INTO enemies (_player_id, _enemy_id) VALUES (:pid, :eid)';
-        $statement = DatabaseConnection::$pdo->prepare($query);
-        $statement->bindValue(':pid', $p_player->id());
-        $statement->bindValue(':eid', $p_enemy->id());
-        $statement->execute();
+    private function getEnemyMatches(int $p_playerId, string $p_pattern): array | bool
+    {
+        $char = Player::find($p_playerId);
+        return $char && Enemies::search($char, $p_pattern) || [];
     }
 
     /**
@@ -327,21 +281,5 @@ class ConsiderController extends AbstractController {
         $statement->execute();
 
         return $statement;
-    }
-
-    /**
-     * Drop a certain enemy from the list.
-     *
-     * @param Player $p_player
-     * @param Player $p_enemy
-     * @return void
-     */
-    private function removeEnemyFromPlayer(Player $p_player, Player $p_enemy): void {
-        DatabaseConnection::getInstance();
-        $query = 'DELETE FROM enemies WHERE _player_id = :pid AND _enemy_id = :eid';
-        $statement = DatabaseConnection::$pdo->prepare($query);
-        $statement->bindValue(':pid', $p_player->id());
-        $statement->bindValue(':eid', $p_enemy->id());
-        $statement->execute();
     }
 }
