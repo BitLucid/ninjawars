@@ -43,7 +43,8 @@
 {foreachelse}
 <div class='enemies-lefthalf'>
   <div class='glassbox'>
-    You haven't decided who your enemies are yet{if $logged_in}, search for some by name below.{else}, become a ninja to get some enemies.{/if}
+    You haven't decided who your enemies are yet{if $logged_in}, attack other ninja to make enemies.
+    {else}, become a ninja to get some enemies.{/if}
   </div>
 </div>
 {/foreach}
