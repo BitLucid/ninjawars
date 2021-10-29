@@ -99,11 +99,8 @@ class ConsiderController extends AbstractController {
      * Add an enemy to pc's list if valid.
      */
     public function addEnemy(Container $p_dependencies): RedirectResponse {
-        $enemy_id = RequestWrapper::getPostOrGet('add_enemy');
-        Enemies::add($p_dependencies['current_player'], RequestWrapper::getPostOrGet('add_enemy'));
-        debug($enemy_id);
-        debug('Added enemy: ' . $enemy_id, Enemies::getAllForPlayerAndEnemy($p_dependencies['current_player'], $enemy_id));
-        die();
+        $enemy_id = (int) RequestWrapper::getPostOrGet('add_enemy');
+        Enemies::add($p_dependencies['current_player'], $enemy_id);
         return new RedirectResponse('/enemies');
     }
 
@@ -126,7 +123,7 @@ class ConsiderController extends AbstractController {
         $char_info        = ($char ? $char->data() : []);
         $other_npcs       = NpcFactory::npcsData();
         $npcs             = NpcFactory::customNpcs();
-        $enemy_list       = ($char ? Enemies::getCurrentEnemies($char) : []);
+        $enemy_list       = ($char ? Enemies::getCurrent($char) : []);
         $recent_attackers = ($char ? $this->getRecentAttackers($char) : []);
         $next_enemy = $char ? $this->getNextEnemy($char, $shift) : null;
 
