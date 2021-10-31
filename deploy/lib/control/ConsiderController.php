@@ -13,6 +13,8 @@ use NinjaWars\core\data\NpcFactory;
 use NinjaWars\core\extensions\SessionFactory;
 use NinjaWars\core\extensions\StreamedViewResponse;
 use NinjaWars\core\environment\RequestWrapper;
+use NinjaWars\core\extensions\NWLogger;
+use NWError;
 use \PDO;
 
 /**
@@ -100,7 +102,11 @@ class ConsiderController extends AbstractController {
      */
     public function addEnemy(Container $p_dependencies): RedirectResponse {
         $enemy_id = (int) RequestWrapper::getPostOrGet('add_enemy');
-        Enemies::add($p_dependencies['current_player'], $enemy_id);
+        if ($enemy_id) {
+            Enemies::add($p_dependencies['current_player'], $enemy_id);
+        } else {
+            NWLogger::log('Request 3n3m4 for invalid enemy id: ' . $enemy_id);
+        }
         return new RedirectResponse('/enemies');
     }
 
