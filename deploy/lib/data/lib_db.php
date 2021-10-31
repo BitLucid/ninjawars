@@ -58,8 +58,9 @@ function update_query($update_query, array $bindings=array()): int{
 /**
  * Insert a row, if returning is used it will return the id
  */
-function insert_query($insert_query, array $bindings=[]): array | \PDOStatement{
-	return query($insert_query, $bindings);
+function insert_query($insert_query, array $bindings = [], bool $return_resultset = true): array | \PDOStatement
+{
+	return query($insert_query, $bindings, $return_resultset);
 }
 
 /**

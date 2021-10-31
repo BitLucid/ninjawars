@@ -19,7 +19,11 @@ nav.npcs{
 </nav>
 {if $turns lte 0}
 {* These should be real error conditions, not part of the template *}
-You have no turns left today. Buy a amanita mushroom or wait for your turns to replenish.
+<div class='glassbox'>
+    <span class='ninja-error'>
+        You have no turns left today. <br /> Buy an amanita mushroom or wait for your turns to replenish.
+    </span>
+</div>
 {elseif $attacked == 1}
 	{include file=$npc_template}
 {/if}

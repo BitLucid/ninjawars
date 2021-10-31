@@ -5,6 +5,7 @@ use Pimple\Container;
 use NinjaWars\core\control\AttackLegal;
 use NinjaWars\core\control\AbstractController;
 use NinjaWars\core\control\Combat;
+use NinjaWars\core\data\Enemies;
 use NinjaWars\core\data\GameLog;
 use NinjaWars\core\data\Skill;
 use NinjaWars\core\data\Player;
@@ -161,7 +162,7 @@ class AttackController extends AbstractController {
             $attack_label = ($options['duel'] ? 'dueled %s' : 'attacked %s');
         }
 
-        if ($target->health > 0 && $attacker->health > 0) {
+        if ($target->health > 0 && $attacker->health > 0) { // *** Neither player died ***
             $combat_msg = "%s $attack_label for %s damage, but they got away before you could kill them!";
 
             Event::create(
@@ -180,13 +181,13 @@ class AttackController extends AbstractController {
             }
 
             $attacker->subtractStatus(STEALTH);
-        } elseif ($target->health < 1 && $attacker->health < 1) {
+        } elseif ($target->health < 1 && $attacker->health < 1) { // *** Both dead ***
             $loot = 0;
             $this->win($attacker, $target, $loot, $killpoints);
             $this->win($target, $attacker, $loot, 1);
             $this->lose($attacker, $target, $loot);
             $this->lose($target, $attacker, $loot);
-        } elseif ($target->health < 1) {
+        } elseif ($target->health < 1) { // *** Current char killed target ***
             $victor        = $attacker;
             $loser         = $target;
             $bounty_result = Combat::runBountyExchange($victor, $loser);
@@ -205,7 +206,7 @@ class AttackController extends AbstractController {
 
             $reporting_victor = $victor;
 
-            // @todo This mis-use of attacking needs to be refactored.
+            // @todo This mis-use of attacking to show a generic user message needs to be refactored.
             if ($victor->hasStatus(STEALTH)) {
                 $reporting_victor = new Player();
                 $reporting_victor->uname     = 'a stealthed ninja';
@@ -213,13 +214,19 @@ class AttackController extends AbstractController {
 
             $this->lose($loser, $reporting_victor, $loot);
             $this->win($victor, $loser, $loot, $killpoints);
-        } else {
+            if ($victor && $victor->id()) { // They will consider you an enem henceforth
+                Enemies::add($loser, $victor->id());
+            }
+        } else { // *** Current char was killed by their target ***
             $victor = $target;
             $loser  = $attacker;
             $loot   = (int) floor($gold_mod * $loser->gold);
 
             $this->lose($loser, $victor, $loot);
             $this->win($victor, $loser, $loot, $killpoints);
+            if ($victor && $victor->id()) { // Make a new enemy
+                Enemies::add($loser, $victor->id());
+            }
         }
 
         if ($options['duel']) {

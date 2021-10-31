@@ -2,12 +2,11 @@
 
 return array(
             array( // Row
-                array('name'=>'Shrine', 'type'=>'shrine building', 'url'=>'shrine', 'icon_raw'=>'⛩', 'tile_image'=>'concentric_shrine.png', 'xcoord'=>0, 'ycoord'=>0, 'id'=>1)
-                , array('name'=>'', 'type'=>'rice-field', 'url'=>'', 'tile_image'=>null, 'xcoord'=>0, 'ycoord'=>2, 'id'=>12)
-                , array('name'=>'', 'type'=>'north-south-road', 'url'=>'', 'tile_image'=>'north-south-road.png', 'xcoord'=>2, 'ycoord'=>0, 'id'=>3)
-                , array('name'=>'', 'type'=>'rice-field', 'url'=>'', 'tile_image'=>null, 'xcoord'=>0, 'ycoord'=>2, 'id'=>12)
+                array('name' => 'Shrine', 'type' => 'shrine building', 'url' => 'shrine', 'icon_raw' => '⛩', 'tile_image' => 'concentric_shrine.png', 'xcoord' => 0, 'ycoord' => 0, 'id' => 1)
+                , array('name' => '', 'type' => 'dirt', 'url' => '', 'tile_image' => null, 'xcoord' => 0, 'ycoord' => 2, 'id' => 12)
+                , array('name' => '', 'type' => 'north-south-road', 'url' => '', 'tile_image' => 'north-south-road.png', 'xcoord' => 2, 'ycoord' => 0, 'id' => 3)
+                , array('name' => '', 'type' => 'dirt', 'url' => '', 'tile_image' => null, 'xcoord' => 0, 'ycoord' => 2, 'id' => 12)
                 , array('name'=>'Doshin', 'type'=>'doshin building', 'url'=>'doshin', 'icon'=>'fa fa-bullseye', 'tile_image'=>'doshin_building.png', 'xcoord'=>1, 'ycoord'=>0, 'id'=>2)
-
             ),
 
             array( // Row
@@ -15,7 +14,7 @@ return array(
                 , array('name'=>'Dojo', 'type'=>'dojo building', 'icon'=>'fas fa-warehouse', 'url'=>'dojo', 'tile_image'=>'concentric_leaf.png', 'xcoord'=>1, 'ycoord'=>1, 'id'=>7)
                 , array('name'=>'', 'type'=>'north-south-road', 'url'=>'', 'tile_image'=>'north-south-road.png', 'xcoord'=>2, 'ycoord'=>0, 'id'=>3)
                 , array('name'=>'Shop', 'type'=>'weapons-shop building', 'icon_raw'=>'石', 'url'=>'shop', 'tile_image'=>'concentric_star.png', 'xcoord'=>0, 'ycoord'=>1, 'id'=>6)
-                , array('name'=>'', 'type'=>'rice-field', 'url'=>'', 'tile_image'=>null, 'xcoord'=>0, 'ycoord'=>2, 'id'=>12)
+                , array('name'=>'', 'type'=>'dirt', 'url'=>'', 'tile_image'=>null, 'xcoord'=>0, 'ycoord'=>2, 'id'=>12)
 
             ),
 
