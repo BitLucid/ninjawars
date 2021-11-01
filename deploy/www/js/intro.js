@@ -1,21 +1,38 @@
-/* Accent certain areas of the intro page in animated ways*/
-/*jshint browser: true, white: true, plusplus: true*/
-/*global $, NW, document, console*/
-$(function () {
-    'use strict';
+/* Accent certain areas of the intro page in animated ways */
+/* jshint browser: true, white: true, plusplus: true */
+/* global $, NW */
+
+
+function fadeIntro($) {
+    // Fade the colors for the links in gradually to slowly introduce the concepts.
+    $('#later-progression a').each(function slowFade(secs, element) {
+        setTimeout(function fade() {
+            $(element).removeClass('dull-link');
+        }, 1000 * (secs + 1) * 1);
+    });
+    // Finally, accentuate the join link after a while.
+    $('#join-link').each(function nearFinalFade(index, element) {
+        setTimeout(function finalFade() {
+            $(element).removeClass('dull-link');
+        }, 1000 * 15);
+    });
+
+}
+
+
+(function introManipulations($) {
+    // Page css hides the faq section to avoid FOUC
+    var showFaqs = false; // Set faqs hidden by default.
+    var showfaqsLink = $('#show-faqs');
+    var faqsArea = $('#faqs');
+
+    fadeIntro($);
+
     if (NW && NW.loggedIn) {
         // Depended on this script being called after NW.loggedIn gets set
         $('.not-user').hide();
     }
-    var show_faqs = false; // Set faqs hidden by default.
-    console.info('Hiding FAQ.');
-    var faqsNode = document.getElementById('faqs');
-    if (faqsNode) {
-        faqsNode.style.display = 'none'; // Hide fast to avoid layout flash
-    }
-    var showfaqsLink = $('#show-faqs');
-    var faqsArea = $(faqsNode);
-    if (!show_faqs) {
+    if (!showFaqs) {
         showfaqsLink.show();
     } else {
         showfaqsLink.hide();
@@ -26,17 +43,4 @@ $(function () {
         $(event.target).toggle();
         return false;
     });
-
-    // Fade the colors for the links in gradually to slowly introduce the concepts.
-    $('#later-progression a').each(function (secs, element) {
-        setTimeout(function () {
-            $(element).removeClass('dull-link');
-        }, 1000 * (secs + 1) * 1);
-    });
-    // Finally, accentuate the join link after a while.
-    $('#join-link').each(function (index, element) {
-        setTimeout(function () {
-            $(element).removeClass('dull-link');
-        }, 1000 * 15);
-    });
-});
+}($)); // End of IIFE

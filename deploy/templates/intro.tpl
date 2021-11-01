@@ -4,6 +4,9 @@
   padding: .2em;
   width: 90%;
 }
+#faqs{
+display:none; /* Hidden by default to avoid FOUC */
+}
 #faqs p{
   border: 1px solid #7BA9AD;
   border-bottom-left-radius: 10px 10px;
