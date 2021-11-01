@@ -58,6 +58,23 @@ class InventoryTest extends \NWTest {
     /**
      * @group Inventory
      */
+    public function testInventoryCanObtainDimMak()
+    {
+        $inventory = new Inventory($this->char);
+        $inventory->add('dimmak', 1);
+        $sorted_inv = Inventory::of($this->char, $sort = 'self');
+        $count = 0;
+        foreach ($sorted_inv as $item) {
+            if (strtolower($item['name']) == 'dim mak') {
+                $count++;
+            }
+        }
+        $this->assertEquals(1, $count);
+    }
+
+    /**
+     * @group Inventory
+     */
     public function testShouldObtainInventory() {
         $inventory = new Inventory($this->char);
         $inventory->add('shuriken', 10);
