@@ -130,11 +130,25 @@ class ItemTest extends \NWTest {
 		$shuriken = Item::findByIdentity('shuriken');
 		$this->assertGreaterThan(-1, $shuriken->getRandomDamage());
 		$this->assertTrue((bool)is_int($shuriken->getRandomDamage()));
-	}	
+	}
+
 
 	public function testAmanitaHasSomeTurnChange(){
 		$amanita = Item::findByIdentity('amanita');
 		$this->assertGreaterThan(0, $amanita->getMaxTurnChange());
+	}
+
+	public function testDimMakHasSomeIntegerDamage()
+	{
+		$item = Item::findByIdentity('dimmak');
+		$this->assertGreaterThan(-1, $item->getRandomDamage());
+		$this->assertTrue((bool)is_int($item->getRandomDamage()));
+	}
+
+	public function testDimMakHasAnIdentity()
+	{
+		$item = Item::findByIdentity('dimmak');
+		$this->assertEquals('dimmak', $item->identity());
 	}
 
 	public function testItemPluralNameExists(){

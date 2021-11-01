@@ -316,6 +316,10 @@ COPY public.inventory (item_id, amount, owner, item_type) FROM stdin;
 -- Data for Name: item; Type: TABLE DATA; Schema: public; Owner: developers
 --
 
+--
+-- Data for Name: item; Type: TABLE DATA; Schema: public; Owner: developers
+--
+
 COPY public.item (item_id, item_internal_name, item_display_name, item_cost, image, for_sale, usage, ignore_stealth, covert, turn_cost, target_damage, turn_change, self_use, plural, other_usable, traits) FROM stdin;
 14	lantern	Hooded Lantern	50	\N	f	A lantern for light and flame	t	t	1	20	\N	t	\N	t	
 5	shuriken	Shuriken	50	mini_star.png	t	Reduces health	f	f	1	\N	\N	f	\N	t	
@@ -323,9 +327,7 @@ COPY public.item (item_id, item_internal_name, item_display_name, item_cost, ima
 2	caltrops	Caltrops	125	caltrops.png	t	Reduces Turns	f	f	1	\N	-6	f	\N	t	
 6	dimmak	Dim Mak	1000	scroll.png	f	\N	t	t	1	\N	\N	f	\N	t	
 9	charcoal	Charcoal	10	\N	f	Purges Poisons, Burns Merrily	t	t	1	20	\N	f	\N	f	
-12	shell	Shell Fragment	700	\N	f	Insulates against Flame	t	t	1	0	\N	f	\N	f	
 13	prayerwheel	Prayer Wheel	150	\N	f	Lifts Curses	t	t	1	0	\N	f	\N	f	
-15	sushi	Sushi	50	\N	f	For immediate consumption	t	t	1	20	\N	f	\N	f	
 16	fugu	Fugu Blowfish	50	\N	f	Delicious, or Deadly	t	t	1	20	\N	f	\N	f	
 17	oyoroi	O-yoroi Great Armor	3000	\N	f	Woven Armor with a Metal Breastplate against piercing and slashing	t	t	1	3000	\N	f	s	f	
 18	kozando	Kozan-do Scale Armor	1600	\N	f	Scale Plated Armor against slashing	t	t	1	0	\N	f	s	f	
@@ -357,6 +359,9 @@ COPY public.item (item_id, item_internal_name, item_display_name, item_cost, ima
 29	kunai	Kunai	50	kunai.png	t	For Digging and Planting	t	t	1	50	\N	f	\N	t	
 1	phosphor	Phosphor Powder	175	phosphor_powder.png	t	Burns fiercely	f	f	1	\N	\N	f	s	t	
 40	tessen	Tessen Fan	150	tessen.png	t	For Cooling Air	f	t	1	40	\N	f	s	t	
+41	stick	Stick	1		f	A piece of wood	f	f	1	\N	\N	f	s	f	wooden
+12	shell	Shell Fragment	700	\N	f	Insulates against Flame	t	t	1	0	\N	f	\N	f	
+15	sushi	Sushi	50	\N	f	For immediate consumption	t	t	1	20	\N	f	\N	f	
 \.
 
 

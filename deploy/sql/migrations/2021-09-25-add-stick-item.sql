@@ -1,14 +1,23 @@
-insert into item (
-    item_internal_name, item_display_name, item_cost, image, for_sale,
-    usage, ignore_stealth, covert, turn_cost, target_damage,
-    turn_change, self_use, plural, other_usable, traits
-)
- values 
-(
-    'stick', 'Stick', 1, '', default,
-    'A piece of wood', default, default, default, default,
-    default, default, 's', default, 'wooden'
-);
+-- These run before fixtures, so have to be managed appropriately.
+-- -- insert into item (
+-- -- item_internal_name,
+-- -- item_display_name,
+-- -- item_cost,
+-- -- image,
+-- -- for_sale,
+-- --     usage, ignore_stealth, covert, turn_cost, target_damage,
+-- --     turn_change, self_use, plural, other_usable, traits
+-- -- )
+-- -- values 
+-- -- (
+-- -- 'stick',
+-- -- 'Stick',
+-- -- 1,
+-- -- '',
+-- -- default,
+-- --     'A piece of wood', default, default, default, default,
+-- --     default, default, 's', default, 'wooden'
+-- -- );
 
 update item set for_sale = false where item_internal_name = 'shell' or item_internal_name = 'sushi';
 
