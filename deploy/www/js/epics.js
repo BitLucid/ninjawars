@@ -1,6 +1,7 @@
 /* eslint-disable semi */
+
 /* global jQuery */
-((function epicsRender(jQuery) {
+$(function epicsRender() {
     const $ = jQuery
     $('#stories section').hide()
     $('#sections-control a').click(function showHide(e) {
@@ -8,4 +9,4 @@
         const href = $(this).attr('href')
         $(href).toggle();
     })
-})(jQuery))
+})

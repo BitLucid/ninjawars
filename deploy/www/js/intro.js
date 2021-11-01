@@ -20,7 +20,7 @@ function fadeIntro($) {
 }
 
 
-(function introManipulations($) {
+$(function introManipulations() {
     // Page css hides the faq section to avoid FOUC
     var showFaqs = false; // Set faqs hidden by default.
     var showfaqsLink = $('#show-faqs');
@@ -43,4 +43,4 @@ function fadeIntro($) {
         $(event.target).toggle();
         return false;
     });
-}($)); // End of IIFE
+}); // On ready
