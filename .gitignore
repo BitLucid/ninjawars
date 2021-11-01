@@ -85,3 +85,4 @@ node_modules/
 .venv/
 deploy/.env
 .vscode/
+karma.conf.js

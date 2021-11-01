@@ -1,7 +1,11 @@
+const puppeteer = require('puppeteer');
+
+process.env.CHROME_BIN = puppeteer.executablePath();
+/* eslint-disable max-len */
 // Karma configuration
 // Generated on Sun Mar 20 2016 07:47:48 GMT-0400 (EDT)
 
-module.exports = function (config) {
+module.exports = function karmaConfig(config) {
     config.set({
         // base path that will be used to resolve all patterns (eg. files, exclude)
         basePath: '../..',
@@ -16,6 +20,8 @@ module.exports = function (config) {
             'deploy/www/js/jquery.min.js',
             'deploy/www/js/jquery.timeago.js',
             'deploy/www/js/nw.js',
+            { pattern: 'deploy/www/js/utils.js', type: 'module', included: true },
+            { pattern: 'deploy/www/js/stats.js', type: 'module', included: true },
             { pattern: 'deploy/www/js/*.js', included: true },
             { pattern: 'deploy/tests/js/*Spec.js', included: false },
         ],
@@ -53,7 +59,7 @@ module.exports = function (config) {
 
         // start these browsers
         // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-        browsers: ['Chrome', 'PhantomJS'],
+        browsers: ['ChromeHeadless'],
 
         // Continuous Integration mode
         // if true, Karma captures browsers, runs the tests and exits
@@ -63,5 +69,4 @@ module.exports = function (config) {
         // how many browser should be started simultaneous
         concurrency: Infinity,
     });
-    //console.log(config);
 };
