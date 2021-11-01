@@ -111,7 +111,7 @@ class Inventory implements IteratorAggregate {
      * Pull the counts of all items a player has.
      */
     public function counts(): array {
-        $sql = "SELECT amount AS count, item_display_name AS name, item_internal_name, item_type, item.item_id, other_usable
+        $sql = "SELECT item_display_name AS name, amount AS count, item_internal_name, item_type, item.item_id, other_usable
             FROM inventory join item on item_type = item.item_id
             WHERE owner = :owner ORDER BY item_internal_name = 'shuriken' DESC, item_display_name";
         return query_array($sql, [':owner'=>[$this->char->id(), PDO::PARAM_INT]]);

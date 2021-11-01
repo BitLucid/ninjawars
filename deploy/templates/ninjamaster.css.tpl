@@ -1,9 +1,17 @@
 <style>
 .float-right{
-	float:right;clear:both;
+	float:right;clear:right;
 }
 .headed{
-	border-top:1px brown solid;border-left:1px brown solid;
+	border-top:1px brown solid;
+}
+.char-actions{
+	display:flex;
+	justify-content: space-evenly;
+	font-size: larger;
+}
+.char-actions > a{
+	padding: 0.3rem 1rem;
 }
 .char-inventory{
 	height:1.3em;
@@ -93,7 +101,18 @@ nav.admin-nav a{
 	width:49%;vertical-align:top;
 }
 button.show-hide-next{
-	border-radius: 0.9rem;
+	border-radius: 3rem;
+	padding: 0.2rem 0.2rem 0.2rem 2rem;
+	background: black;
+}
+button.show-hide-next .dot{
+	display:inline-block;
+	border-radius:50%;
+	padding:0.5rem;
+	background: white;
+	height:2rem;
+	width:2rem;
+	vertical-align:bottom;
 }
 details {
     border: 1px solid #aaa;

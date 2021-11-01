@@ -80,7 +80,7 @@
 <section class='details'>
     <legend>Details</legend>
     <div class='ninja-description'>
-      {$char->uname|escape} {if !$char->description}is.{else}{$char->description|escape}{/if}
+      {$char->uname|escape} <span id='ninja-description-append'>{if !$char->description}is.{else}{$char->description|escape}{/if}</span>
     </div>
 
     {if $char->goals}
@@ -136,26 +136,27 @@
 <!-- Google Code for View self/ninja stats page. Conversion Page -->
 <script type="text/javascript">
 /* <![CDATA[ */
-var google_conversion_id = 1068723773;
-var google_conversion_language = "en";
-var google_conversion_format = "1";
-var google_conversion_color = "333333";
-var google_conversion_label = "AMq2CMHd_AEQvdzN_QM";
-var google_conversion_value = 0;
-if (0) {
-  google_conversion_value = 0;
-}
+  var google_conversion_id = 1068723773;
+  var google_conversion_language = "en";
+  var google_conversion_format = "1";
+  var google_conversion_color = "333333";
+  var google_conversion_label = "AMq2CMHd_AEQvdzN_QM";
+  var google_conversion_value = 0;
+  if (0) {
+    google_conversion_value = 0;
+  }
 /* ]]> */
 </script>
-<script type="text/javascript" src="https://www.googleadservices.com/pagead/conversion.js">
-</script>
+<script type="text/javascript" src="https://www.googleadservices.com/pagead/conversion.js"></script>
 <noscript>
-<div style="display:inline;">
-<img height="1" width="1" style="border-style:none;" alt="" src="https://www.googleadservices.com/pagead/conversion/1068723773/?value=0&amp;label=AMq2CMHd_AEQvdzN_QM&amp;guid=ON&amp;script=0"/>
-</div>
+  <div style="display:inline;">
+  <img height="1" width="1" style="border-style:none;" alt="" src="https://www.googleadservices.com/pagead/conversion/1068723773/?value=0&amp;label=AMq2CMHd_AEQvdzN_QM&amp;guid=ON&amp;script=0"/>
+  </div>
 </noscript>
 {/literal}
 
 </div><!-- End of content div -->
 
 <script type='text/javascript' src='{cachebust file="/js/textAreaLimits.js"}'></script>
+<script type='module' src='{cachebust file="/js/stats.js"}'></script>z
+

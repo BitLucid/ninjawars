@@ -6,7 +6,7 @@
 $(function initializeNMPage() {
   $('.show-hide-next').click(function showHideNext() {
     $(this).parent().next().slideToggle();
-  }).text('... 👁');
+  }).html("<span class='slider'><span class='dot'></span></span>");
   $('.show-hide-next').parent().next().toggle();
 });
 
