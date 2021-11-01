@@ -51,13 +51,25 @@ class InventoryTest extends \NWTest {
         $inventory->add('shuriken', 10);
         $inventory->add('amanita', 40);
         $sorted_inv = Inventory::of($this->char, $sort='self');
+        $item = reset($sorted_inv);
+        $this->assertEquals('Amanita Mushroom', $item['name']);
+    }
 
-        // Foreach over the inventory to get the first item out.
+    /**
+     * @group Inventory
+     */
+    public function testInventoryCanObtainDimMak()
+    {
+        $inventory = new Inventory($this->char);
+        $inventory->add('dimmak', 1);
+        $sorted_inv = Inventory::of($this->char, $sort = 'self');
+        $count = 0;
         foreach ($sorted_inv as $item) {
-            break;
+            if (strtolower($item['name']) == 'dim mak') {
+                $count++;
+            }
         }
-
-        $this->assertEquals($item['name'], 'Amanita Mushroom');
+        $this->assertEquals(1, $count);
     }
 
     /**
@@ -75,6 +87,6 @@ class InventoryTest extends \NWTest {
         }
 
         $this->assertEquals($shurikens['count'], 10);
-        $this->assertEquals($shurikens['item_internal_name'], 'shuriken');
+        $this->assertEquals('shuriken', $shurikens['item_internal_name']);
     }
 }
