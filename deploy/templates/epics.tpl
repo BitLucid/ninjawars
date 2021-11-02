@@ -28,6 +28,7 @@
 <a class='btn btn-info' href='#list-section'>List</a>
 <a class='btn btn-info' href='#clan-section'>Clan</a>
 <a class='btn btn-info' href='#healthbar-section'>Healthbar</a>
+<a class='btn btn-info' href='#typography-section'>Typography</a>
             </div>
 </nav>
 
@@ -63,6 +64,35 @@
 		    {include file="health_bar.tpl"}
 		</section>
 
+		<section id='typography-section'>
+		    <h2>Typography</h2>
+		    <h1>Heading 1</h1>
+		    <h2>Heading 2</h2>
+		    <h3>Heading 3</h3>
+		    <h4>Heading 4</h4>
+		    <h5>Heading 5</h5>
+		    <h6>Heading 6</h6>
+		    <div class='title'>Title</div>
+		    <div class='subtitle'>Subtitle. Lorem ipsum dolor sit amet, consectetur adipisicing elit.</div>
+
+		    <p>Paragraph text. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos blanditiis tenetur unde
+		        suscipit, quam beatae rerum inventore consectetur, neque doloribus, cupiditate numquam dignissimos laborum
+		        fugiat deleniti? Eum quasi quidem quibusdam.</p>
+		    <div><button>Button text</button></div>
+		    <div>Raw div body text. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos blanditiis tenetur unde
+		        suscipit, quam beatae rerum inventore consectetur, neque doloribus, cupiditate numquam dignissimos laborum
+		        fugiat deleniti? Eum quasi quidem quibusdam.</div>
+		    <div>
+		        <figure>Some figure<figcaption>Some figure caption</figcaption>
+		        </figure>
+		    </div>
+		    <p class='speech'>Speech text. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos blanditiis tenetur
+		        unde suscipit, quam beatae rerum inventore consectetur, neque doloribus, cupiditate numquam dignissimos
+		        laborum fugiat deleniti? Eum quasi quidem quibusdam.</p>
+		    <div class='description'>Description.Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos blanditiis
+		        tenetur unde suscipit, quam beatae rerum inventore consectetur, neque doloribus, cupiditate numquam
+		        dignissimos laborum fugiat deleniti? Eum quasi quidem quibusdam.</div>
+</section>
 {* list is complicated, so putting that to the end *}
 		<section id='list-section'>
 <h2>List</h2>

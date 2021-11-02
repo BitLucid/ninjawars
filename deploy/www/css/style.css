@@ -576,6 +576,7 @@ h6,
     margin-bottom: 1rem;
     background-color: #131212;
     border-bottom: medium solid #5b5e65;
+    border-bottom: medium solid hsla(222,5.2%,37.6%, 0.3);
     color: #cccccc;
 }
 h1,
@@ -1844,6 +1845,7 @@ time {
     right: 0;
     top: 0;
     padding-top: 0.7em;
+    background: #000000;
 }
 
 #skip-to-bottom {
