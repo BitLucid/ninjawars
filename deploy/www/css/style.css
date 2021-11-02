@@ -4754,6 +4754,6 @@ input[type='button'].btn-block {
         border-radius: 0.1rem;
     }
     .list-all-players-search .input-group {
-        max-width: 60%;
+        max-width: 50%;
     }
 }
