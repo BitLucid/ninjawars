@@ -20,6 +20,8 @@
 <a class='btn btn-info' href='#intro-section'>Intro</a>
 <a class='btn btn-info' href='#aside-section'>Aside</a>
 <a class='btn btn-info' href='#chat-section'>Chat</a>
+<a class='btn btn-info' href='#list-section'>List</a>
+<a class='btn btn-info' href='#clan-section'>Clan</a>
             </div>
 </nav>
 
@@ -40,6 +42,15 @@
             {include file="mini-chat.section.tpl"}
         </section>
 
+		<section id='clan-section'>
+		    <h2>Clan</h2>
+		    {include file="clan.tpl"}
+		</section>
+
+		<section id='list-section'>
+		    <h2>Clan</h2>
+		    {include file="list.tpl"}
+</section>
 </div>
 {* js script at the top to prevent breaking from templates *}
 
