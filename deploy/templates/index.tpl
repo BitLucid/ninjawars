@@ -62,6 +62,25 @@
           </ul>
         </div><!-- end of dropdown -->
         {/if}
+<style>
+{literal} 
+#main-column.full{
+  width:100%;
+}
+{/literal}
+</style>
+<script>
+$(function(){
+ $('#chat-toggle').click(function(){
+   $('aside').toggle();
+   $('#main-column').toggleClass('full')
+ })
+})
+</script>
+
+        <div style='display:inline-block;'>
+          <button id='chat-toggle' type='button' class='btn' style='background:transparent;border:none;'><i style='font-size:3rem' class='fa fa-comments'></i></button>
+        </div>
 
       </div><!--/.nav-collapse -->
 
