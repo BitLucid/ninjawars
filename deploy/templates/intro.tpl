@@ -84,13 +84,13 @@ a.dull-link#join-link{
   </div>
 
 <div id='later-progression'>
-	<p>Explore the <a class='dull-link' target='main' href='/map'>map</a> and <a class='dull-link' target='main' href='/enemies#npcs'>attack monsters</a>, gather loot</p>
+	<p>Explore the <a class='dull-link' target='main' href='/map'><i class="fa fa-map" aria-hidden="true"></i> map</a> and <a class='dull-link' target='main' href='/enemies#npcs'><i class="fa fa-bolt" aria-hidden="true"></i> attack monsters</a>, gather loot</p>
 	<img class='down-arrow' src='{cachebust file="/images/Down_Arrow_Icon.png"}' alt='then'>
-	<p>Kill other <a class='dull-link' target='main' href='/list'>Ninja</a>, get stronger at the <a class='dull-link' target='main' href='/dojo'>Dojo</a></p>
+	<p>Kill other <a class='dull-link' target='main' href='/list'><i class="fa fa-star" aria-hidden="true"></i> Ninja</a>, get stronger at the <a class='dull-link' target='main' href='/dojo'><i class="fas fa-warehouse"></i> Dojo</a></p>
 	<img class='down-arrow' src='{cachebust file="/images/Down_Arrow_Icon.png"}' alt='then'>
-	<p>Join a <a class='dull-link' target='main' href='/clan'>Clan</a>, wage war on other ninja clans</p>
+	<p>Join a <a class='dull-link' target='main' href='/clan'><i class="fa fa-users" aria-hidden="true"></i> Clan</a>, wage war on other ninja clans</p>
 	<img class='down-arrow' src='{cachebust file="/images/Down_Arrow_Icon.png"}' alt='then'>
-	<p>Live by the Sword, and <a class='dull-link' target='main' href='/shrine'>avoid death</a> if you can!</p>
+	<p>Live by the Shuriken, and <a class='dull-link' target='main' href='/shrine'>avoid death ⛩</a> if you can!</p>
 	</div>
 </div>
 

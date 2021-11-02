@@ -1071,7 +1071,7 @@ table.playerTable .svg-shuriken svg {
 
 /* Profile and Player list */
 .list-all-players-search .input-group {
-    max-width: 30%;
+    max-width: 98%;
     margin: auto;
 }
 
@@ -4752,5 +4752,8 @@ input[type='button'].btn-block {
     .login-page .shade-box {
         padding: 1rem 3rem;
         border-radius: 0.1rem;
+    }
+    .list-all-players-search .input-group {
+        max-width: 50%;
     }
 }
