@@ -6,12 +6,19 @@ daysUntilClose: 730
 exemptLabels:
   - pinned
   - security
+  - Security
   - good first issue
   - Critical
   - Major
   - combat
   - Impact-Visible-To-Admins
   - Impact-Visible-To-Players
+  - code-complete
+  - Important
+  - High Risk
+  - Infrastructure
+  - Release-blocker
+  - Performance
 # Label to use when marking an issue as stale
 staleLabel: wontfix
 # Comment to post when marking an issue as stale. Set to `false` to disable
