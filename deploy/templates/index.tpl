@@ -1,12 +1,7 @@
     <!-- Version {$version|escape} -->
 
     <!-- Fixed navbar -->
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-      <!-- <div id="logo-appended">
-        <a href="/">
-          <img id='ninjawars-title-image' src='{cachebust file="/images/halfShuriken.png"}' title='Home' alt='Ninja Wars' width='100' height='100'>
-        </a>
-      </div> -->
+<nav class="navbar navbar-inverse navbar-fixed-top">
       <a class="navbar-brand" data-toggle="collapse" data-target=".navbar-collapse"><img id='ninjawars-title-image' src='{cachebust file="/images/halfShuriken.png"}' title='Home' alt='Ninja Wars' width='30' height='30'></a>
       <div id="navbar" class="collapse navbar-collapse">
 
@@ -80,8 +75,9 @@ $(function(){
  $('#chat-toggle').click(function(){
    chatToggle('slow');
  })
- chatToggle('fast');
-})
+ $('aside').hide();
+$('#main-column').addClass('full');
+});
 {/literal}
 </script>
 
