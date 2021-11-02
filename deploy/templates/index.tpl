@@ -20,8 +20,8 @@
           <li class='hidden-sm'><a href="/shrine" target="main">⛩ Shrine</a></li>
           <li class='hidden-sm'><a href="/shop" target="main">石 Shop</a></li>
           <li class='hidden-sm hidden-md'><a href="/work" target="main"><i class="fab fa-pagelines"></i> Work</a></li>
-          <li class='hidden-sm hidden-md'><a href="/doshin" target="main"><i class='fa fa-bullseye' aria-hidden='true'></i> Hunt</a></li>
-          <li><a href="/events" target="main"><i class="far fa-clock" aria-hidden="true"></i> Events</a></li>
+          <li class='hidden-sm hidden-md'><a href="/doshin" target="main"><i class='fa fa-bullseye' aria-hidden='true'></i> <span class='hidden-md hidden-sm'>Hunt</span></a></li>
+          <li><a href="/events" target="main"><i class="far fa-clock" aria-hidden="true"></i> <span class='hidden-md hidden-sm'>Events</span></a></li>
           <li><a href="/messages" target="main"><i class='fa fa-envelope'></i> <span class='badge'>{$unread_message_count}</span></a></li>
         </ul>
 
@@ -70,12 +70,19 @@
 {/literal}
 </style>
 <script>
+{literal}
 $(function(){
+  var chatToggle = function(speed='slow'){
+   $('aside').toggle(speed, function(){
+    $('#main-column').toggleClass('full', speed);
+   });
+  }
  $('#chat-toggle').click(function(){
-   $('aside').toggle();
-   $('#main-column').toggleClass('full')
+   chatToggle('slow');
  })
+ chatToggle('fast');
 })
+{/literal}
 </script>
 
         <div style='display:inline-block;'>
