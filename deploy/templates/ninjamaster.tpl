@@ -20,6 +20,7 @@
 		<a class='btn btn-info' href='/ninjamaster/tools'>Validation Tools</a>
 		<a class='btn btn-info' href='/ninjamaster/player_tags'>Character Tag List</a>
 		<a class='btn btn-info' href='/ninjamaster/#item-list-area'>Item List</a>
+<a class='btn btn-info' href='/epics'>UI Epics</a>
 	</div>
 </nav>
 

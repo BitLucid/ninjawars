@@ -576,6 +576,7 @@ h6,
     margin-bottom: 1rem;
     background-color: #131212;
     border-bottom: medium solid #5b5e65;
+    border-bottom: medium solid hsla(222,5.2%,37.6%, 0.3);
     color: #cccccc;
 }
 h1,
@@ -1844,6 +1845,7 @@ time {
     right: 0;
     top: 0;
     padding-top: 0.7em;
+    background: #000000;
 }
 
 #skip-to-bottom {
@@ -2188,12 +2190,13 @@ span.ninja-success {
 }
 .char-health-border {
     width: 100%;
-    border: 1px solid #ee2520;
+    border: 1px solid #da1e6c;
+    border-radius: 0.4rem;
     display: inline-block;
     text-align: left;
 }
 .character-health-bar {
-    background-color: #ee2520;
+    background-color: #da1e6c;
     display: inline-block;
 }
 .char-health-number {
