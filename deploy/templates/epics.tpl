@@ -23,6 +23,7 @@
         <nav class='nav parent' id='sections-control'>
             <div class='child'>
 <a class='btn btn-info' href='#intro-section'>Intro</a>
+<a class='btn btn-info' href='#intro-small-section'>Intro - Small</a>
 <a class='btn btn-info' href='#aside-section'>Aside</a>
 <a class='btn btn-info' href='#chat-section'>Chat</a>
 <a class='btn btn-info' href='#clan-section'>Clan</a>
@@ -45,6 +46,12 @@
         <section id='intro-section'>
             <h2>Intro</h2>
             {include file="intro.tpl"}
+</section>
+<section id='intro-small-section'>
+    <h2>Intro Width Constrained</h2>
+    <div style='width:300px;margin:auto;'>
+        {include file="intro.tpl"}
+    </div>
 </section>
         <section id='aside-section'>
             <h2>Aside</h2>
