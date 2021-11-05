@@ -130,7 +130,6 @@ class ConsiderController extends AbstractController {
         $other_npcs       = NpcFactory::npcsData();
         $npcs             = NpcFactory::customNpcs();
         $enemy_list       = ($char ? Enemies::getCurrent($char) : []);
-        $recent_attackers = ($char ? $this->getRecentAttackers($char) : []);
         $next_enemy = $char ? $this->getNextEnemy($char, $shift) : null;
 
         $inventory = $char ? new Inventory($char) : null;
@@ -162,7 +161,6 @@ class ConsiderController extends AbstractController {
             'other_npcs'       => $other_npcs,
             'char_info'        => $char_info,
             'active_ninjas'    => $active_ninjas,
-            'recent_attackers' => $recent_attackers,
             'enemy_list'       => $enemy_list,
             'next_enemy'       => $next_enemy,
             'shift'           => $shift,
