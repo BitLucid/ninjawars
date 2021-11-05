@@ -208,8 +208,8 @@ class Router {
             throw new RouteNotFoundException();
         }
 
-        if ($error = $controller->validate($p_dependencies)) {
-            return $controller->renderDefaultError($error);
+        if ($error_type = $controller->validate($p_dependencies)) {
+            return $controller->renderDefaultError($error_type);
         } else {
             return $controller->$action($p_dependencies);
         }

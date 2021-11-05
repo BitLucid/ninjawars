@@ -21,25 +21,27 @@ abstract class AbstractController {
      * @return string
      * @TODO this whole thing should be factored out.
      */
-    public function validate(Container $p_dependencies) {
-        $error  = null;
+    public function validate(Container $p_dependencies): string | null
+    {
+        $error_type  = null;
         $player = $p_dependencies['current_player'];
 
         if (static::PRIV && (!$p_dependencies['session']->get('authenticated', false) || !$player)) {
-            $error = 'log_in';
+            $error_type = 'log_in';
         } elseif (static::ALIVE && $player) { // The page requires the player to be alive to view it
             if ($player->health <= 0) {
-                $error = 'dead';
+                $error_type = 'dead';
             } elseif ($player->hasStatus(FROZEN)) {
-                $error = 'frozen';
+                $error_type = 'frozen';
             }
         }
 
-        return $error;
+        return $error_type;
     }
 
-    public function renderDefaultError($error = "default") {
-        return new StreamedViewResponse('There is an obstacle to your progress...', 'error.tpl', ['error' => $error], []);
+    public function renderDefaultError($error_type = "default"): StreamedViewResponse
+    {
+        return new StreamedViewResponse('There is an obstacle to your progress...', 'error.tpl', ['error_type' => $error_type], []);
     }
 
     /**
