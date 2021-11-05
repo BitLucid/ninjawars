@@ -7,16 +7,18 @@
         "doc": "docs"
     },
     "scripts": {
-        "test": "karma start deploy/tests/karma.conf.js --single-run",
         "lint": "eslint --ext .jsx,.js deploy/www/js",
         "prepare-unit-test-ci": "echo 'no-op for now'",
-        "unit-test": "test",
         "start": "make build",
         "watch": "livereload ./deploy/* ./deploy/www/* ./deploy/templates/* ./deploy/lib/control/* --debug",
         "security-check": "yarn audit",
         "prettier": "npx prettier --write .",
         "browse": "xdg-open https://localhost:8765",
-        "github": "xdg-open https://github.com/BitLucid/ninjawars/"
+        "browse:epics": "xdg-open https://localhost:8765/epics",
+        "github": "xdg-open https://github.com/BitLucid/ninjawars/",
+        "repo": "yarn github",
+        "unit-test": "test",
+        "test": "karma start deploy/tests/karma.conf.js --single-run"
     },
     "repository": {
         "type": "git",

@@ -15,7 +15,12 @@
   <div class='row'>
     <div class='col-xs-12 col-sm-4 col-md-4 col-lg-4 contact-panel'>
       <div class='contact-panel-wrapper'>
-        For private issues or account problems, email us:   <a class='btn btn-primary btn-md thick' href='mailto:"{$smarty.const.SUPPORT_EMAIL_NAME|escape:"url"|escape}"&lt;{$smarty.const.SUPPORT_EMAIL|escape:'url'|escape}&gt;?subject=NinjaWars%20question:%20' rel='nofollow'>{$smarty.const.SUPPORT_EMAIL_NAME|escape}<br> &lt;{$smarty.const.SUPPORT_EMAIL|escape}&gt;
+        For private issues or account problems, email
+        <em>{$smarty.const.SUPPORT_EMAIL|escape}</em> :
+        <a class='btn btn-primary btn-md thick'
+            href='mailto:"{$smarty.const.SUPPORT_EMAIL_NAME|escape:"url"|escape}"&lt;{$smarty.const.SUPPORT_EMAIL|escape:'url'|escape}&gt;?subject=NinjaWars%20question:%20'
+            rel='nofollow'>
+Email Ninjawars Staff
         </a>
       </div>
     </div>
@@ -44,7 +49,7 @@
       </div>
       <div class="row animate-in" data-anim-type="fade-in-up">
 
-        <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
+<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
           <div class="team-wrapper">
             <div class="team-inner" style="background-image: url('{cachebust file="/images/tchalvak-smaller.jpg"}')" >
               <a href="https://github.com/tchalvak" target="_blank" > <i class="fab fa-github" ></i></a>
@@ -62,7 +67,7 @@
             </div>
           </div>
         </div>
-        <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
+<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
           <div class="team-wrapper">
             <div class="team-inner" style="background-image: url('assets/img/team/2.jpg')" >
               <a href="https://github.com/beagle" target="_blank" > <i class='fab fa-github'></i></a>
@@ -124,7 +129,7 @@ href='http://alegion.deviantart.com/'>alegion.deviantart.com/</a></li>
     <div class='col-xs-12 col-sm-3 col-md-3 col-lg-3'>
       make suggestions on <a href='https://www.facebook.com/ninjawars.net/'>the facebook page</a>!
     </div>
-    <div class='stamp thick col-xs-12 col-sm-8 col-md-8 col-lg-8' id='latest-commit-section'>
+    <div class='stamp thick col-xs-12 col-sm-8 col-md-8 col-lg-8' style='margin-top:3rem' id='latest-commit-section'>
       <p id='latest-commit-title' style='display:none'>The latest commit to the main ninjawars code was:</p>
       <span id='latest-commit' style='display:none'>
       </span>
@@ -132,18 +137,22 @@ href='http://alegion.deviantart.com/'>alegion.deviantart.com/</a></li>
   </div>
 </section>
 
-<section class='license'>
-  <h3 class='subtitle'>License</h3>
-  <hr class='accent'>
-  <p>
-    <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/us/"><img alt="Creative Commons License" src="http://i.creativecommons.org/l/by-sa/3.0/us/88x31.png"></a><br>
-    <span>Ninjawars</span>
-    by <a href="/" rel="cc:attributionURL">Ninjawars.net</a>
-    is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/us/">
-    Creative Commons Attribution-Share Alike 3.0 United States License</a>.<br>
-    Permissions beyond the scope of this license may be available from the contact information at:
-    <a href="/staff" rel="cc:morePermissions">{$smarty.const.WEB_ROOT}staff</a>.
-  </p>
+<section class='license container'>
+  <div class='row'>
+    <div class='col-xs-12 col-sm-12 col-md-12 col-lg-12'>
+      <h3 class='subtitle'>License</h3>
+      <hr class='accent'>
+      <p>
+        <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/us/"><img alt="Creative Commons License" src="http://i.creativecommons.org/l/by-sa/3.0/us/88x31.png"></a><br>
+        <span>Ninjawars</span>
+        by <a href="/" rel="cc:attributionURL">Ninjawars.net</a>
+        is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/us/">
+        Creative Commons Attribution-Share Alike 3.0 United States License</a>.<br>
+        Permissions beyond the scope of this license may be available from the contact information at:
+        <a href="/staff" rel="cc:morePermissions">{$smarty.const.WEB_ROOT}staff</a>.
+      </p>
+    </div>
+  </div>
 </section>
 
 </div><!-- end of contact-us -->

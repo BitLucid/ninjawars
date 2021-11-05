@@ -41,8 +41,10 @@ class EpicsController extends AbstractController
         }
 
         $error            = null;
+        $static_nodes = include(ROOT . 'lib/data/raw/nodes.php');
 
         $parts = [
+            'nodes' => $static_nodes,
             'error'             => $error,
         ];
 
