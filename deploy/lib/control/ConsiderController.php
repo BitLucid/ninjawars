@@ -273,13 +273,15 @@ class ConsiderController extends AbstractController {
      * @param Player $p_player
      * @return \PDOStatement
      */
-    private function getRecentAttackers(Player $p_player): \PDOStatement {
+    private function getRecentAttackers(Player $p_player, int $limit = 7): \PDOStatement
+    {
         DatabaseConnection::getInstance();
         $statement = DatabaseConnection::$pdo->prepare(
-            'SELECT DISTINCT player_id, send_from, uname, level, health FROM events JOIN players ON send_from = player_id WHERE send_to = :user AND active = 1 AND player_id != :id LIMIT 20'
+            'SELECT DISTINCT player_id, send_from, uname, level, health FROM events JOIN players ON send_from = player_id WHERE send_to = :user AND active = 1 AND player_id != :id LIMIT :limit'
         );
         $statement->bindValue(':user', $p_player->id(), PDO::PARAM_INT);
         $statement->bindValue(':id', $p_player->id(), PDO::PARAM_INT);
+        $statement->bindValue(':limit', $limit, PDO::PARAM_INT);
 
         $statement->execute();
 
