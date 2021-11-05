@@ -90,7 +90,7 @@ a.dull-link#join-link{
 	<img class='down-arrow' src='{cachebust file="/images/Down_Arrow_Icon.png"}' alt='then'>
 	<p>Join a <a class='dull-link' target='main' href='/clan'><i class="fa fa-users" aria-hidden="true"></i> Clan</a>, wage war on other ninja clans</p>
 	<img class='down-arrow' src='{cachebust file="/images/Down_Arrow_Icon.png"}' alt='then'>
-	<p>Live by the Shuriken, and <a class='dull-link' target='main' href='/shrine'>avoid death ⛩</a> if you can!</p>
+	<p>Live by the Shuriken, and <a class='dull-link' target='main' href='/shrine'>avoid death <i class="fas fa-torii-gate" aria-hidden="true"></i></a> if you can!</p>
 	</div>
 </div>
 
