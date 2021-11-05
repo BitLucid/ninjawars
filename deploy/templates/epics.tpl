@@ -1,13 +1,13 @@
 <link src='/css/epics.css' rel='stylesheet' type='text/css' />
 <script src='/js/epics.js'></script>
 <main id='epics'>
-    <span style='float:left'>
+<nav style='float:left'><span>
         <a href='/'><button type='button' class='btn btn-default'><i class='fa fa-home'></i></button></a>
-    </span>
-    <span style='float:left'>
+</span><span>
         <a href='/ninjamaster'><button type='button' class='btn btn-default'><i
                     class='fa fa-arrow-left'></i></button></a>
 </span>
+</nav>
 
 <header>
 <h1>UI Story Epics</h1>
@@ -35,24 +35,28 @@
 <a class='btn btn-info' href='#errors-section'>Errors</a>
 <a class='btn btn-info' href='#events-section'>Events</a>
 <a class='btn btn-info' href='#dojo-section'>Dojo</a>
-<a class='btn btn-info' href='#field-section'>Field</a>
+<a class='btn btn-info' href='#map-section'>Map</a>
+<a class='btn btn-info' href='#nodes-section'>Nodes</a>
 <a class='btn btn-info' href='#list-section'>List</a>
+<a class='btn btn-info' href='#field-section'>Field</a>
             </div>
 </nav>
-
-    </header>
+</header>
 
 <section id='stories' style='min-height:30vh'>
+
         <section id='intro-section'>
             <h2>Intro</h2>
             {include file="intro.tpl"}
 </section>
+
 <section id='intro-small-section'>
     <h2>Intro Width Constrained</h2>
     <div style='width:300px;margin:auto;'>
         {include file="intro.tpl"}
     </div>
 </section>
+
         <section id='aside-section'>
             <h2>Aside</h2>
             {include file="aside.tpl"}
@@ -70,10 +74,28 @@
 
 		<section id='healthbar-section'>
 		    <h2>Healthbar</h2>
+		    {assign var="health" value="0"}
+		    {assign var="level" value="30"}
+		    {include file="health_bar.tpl"}
+		    {assign var="health" value="1"}
+		    {assign var="level" value="30"}
+		    {include file="health_bar.tpl"}
+		    {assign var="health" value="5"}
+		    {assign var="level" value="30"}
+{include file="health_bar.tpl"}
 		    {assign var="health" value="55"}
 		    {assign var="level" value="30"}
 		    {include file="health_bar.tpl"}
-		    {assign var="health" value="0"}
+		    {assign var="health" value="100"}
+		    {assign var="level" value="30"}
+		    {include file="health_bar.tpl"}
+		    {assign var="health" value="300"}
+		    {assign var="level" value="30"}
+		    {include file="health_bar.tpl"}
+		    {assign var="health" value="390"}
+		    {assign var="level" value="30"}
+		    {include file="health_bar.tpl"}
+{assign var="health" value="999"}
 		    {assign var="level" value="30"}
 		    {include file="health_bar.tpl"}
 		</section>
@@ -103,13 +125,12 @@
 
 <section id='error-section'>
     <h2>Errors</h2>
-    {assign var="error" value="Some example error"}
-    {*
-    {include file="error.dead.tpl"}
-    {include file="error.default.tpl"}
-	*}
-    {include file="error.frozen.tpl"}
-    {include file="error.log_in.tpl"}
+{assign var="error_type" value="frozen"}
+{include file="error.dead.tpl"}
+{include file="error.default.tpl"}
+{include file="error.frozen.tpl"}
+{include file="error.log_in.tpl"}
+{include file="error.tpl"}
 </section>
 
 <section id='events-section'>
@@ -123,8 +144,27 @@
     {include file="dojo.tpl"}
 </section>
 
+<section id='map-section'>
+    <h2>Map</h2>
+    {* Nodes assigned in controller *}
+    {assign var="show_ad" value="1"}
+    {include file="map.tpl"}
+</section>
+
+<section id='nodes-section'>
+    <h2>Nodes</h2>
+    {* Nodes assigned in controller *}
+    {include file="nodes.tpl"}
+</section>
+
+{* list is complicated, so putting that to the end *}
+<section id='list-section'>
+    <h2>List</h2>
+    {*  include file="list.tpl" *}
+</section>
 <section id='field-section'>
     <h2>Field</h2>
+{assign var="work_multiplier" value="10"}
     {assign var="not_enough_energy" value="1"}
     {assign var="earned_gold" value="55"}
     {assign var="worked" value="5"}
@@ -133,13 +173,9 @@
 {include file="work.tpl"}
 </section>
 
-{* list is complicated, so putting that to the end *}
-		<section id='list-section'>
-<h2>List</h2>
-commented out for now
-{*  include file="list.tpl" *}
-</section>
+<footer style='border-top:thick dashed white;margin-top:3rem;'>
 <h6>The end</h6>
+</footer>
 </section>
 {* js script at the top to prevent breaking from templates *}
 
