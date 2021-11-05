@@ -1,5 +1,21 @@
     <!-- Version {$version|escape} -->
 
+<style>
+{literal}
+.chat-show-hide-container {
+    display: inline-block;
+}
+.content-button {
+  background:transparent;
+  border:none;
+}
+.navbar-fixed-top .chat-show-hide-container button{
+  color: #9d9d9d;
+  font-size: 3rem;
+}
+{/literal}
+</style>
+
     <!-- Fixed navbar -->
 <nav class="navbar navbar-inverse navbar-fixed-top">
       <a class="navbar-brand" data-toggle="collapse" data-target=".navbar-collapse"><img id='ninjawars-title-image' src='{cachebust file="/images/halfShuriken.png"}' title='Home' alt='Ninja Wars' width='30' height='30'></a>
@@ -11,14 +27,18 @@
           <li><a href="/map" target="main"><i class='fa fa-map' aria-hidden='true'></i> Map</a></li>
           <li><a href="/inventory" target="main">Inventory</a></li>
           <li><a href="/skill" target="main">Skills</a></li>
-          <li><a href="/clan" target="main"><i class='fa fa-users' aria-hidden='true'></i> Clans</a></li>
+          <li><a href="/clan" target="main"><i class='fa fa-users' aria-hidden='true'></i><span class='hidden-sm hidden-md'> Clans</span></a></li>
           <li class='hidden-sm'><a href="/shrine" target="main">⛩ Shrine</a></li>
           <li class='hidden-sm'><a href="/shop" target="main">石 Shop</a></li>
           <li class='hidden-sm hidden-md'><a href="/work" target="main"><i class="fab fa-pagelines"></i> Work</a></li>
           <li class='hidden-sm hidden-md'><a href="/doshin" target="main"><i class='fa fa-bullseye' aria-hidden='true'></i> <span class='hidden-md hidden-sm'>Hunt</span></a></li>
-          <li><a href="/events" target="main"><i class="far fa-clock" aria-hidden="true"></i> <span class='hidden-md hidden-sm'>Events</span></a></li>
+          <li><a href="/events" title='Events' target="main"><i class="far fa-clock" aria-hidden="true"></i> <span class='hidden-sm hidden-md'>Events</span></a></li>
           <li><a href="/messages" target="main"><i class='fa fa-envelope'></i> <span class='badge'>{$unread_message_count}</span></a></li>
         </ul>
+
+        <div class='chat-show-hide-container'>
+          <button id='chat-toggle' type='button' class='btn content-button'><i class='fa fa-comments'></i></button>
+        </div>
 
         {if $ninja->id()}
         <div class="dropdown btn-group">
@@ -57,33 +77,6 @@
           </ul>
         </div><!-- end of dropdown -->
         {/if}
-<style>
-{literal} 
-#main-column.full{
-  width:100%;
-}
-{/literal}
-</style>
-<script>
-{literal}
-$(function(){
-  var chatToggle = function(speed='slow'){
-   $('aside').toggle(speed, function(){
-    $('#main-column').toggleClass('full', speed);
-   });
-  }
- $('#chat-toggle').click(function(){
-   chatToggle('slow');
- })
- $('aside').hide();
-$('#main-column').addClass('full');
-});
-{/literal}
-</script>
-
-        <div style='display:inline-block;'>
-          <button id='chat-toggle' type='button' class='btn' style='background:transparent;border:none;'><i style='font-size:3rem' class='fa fa-comments'></i></button>
-        </div>
 
       </div><!--/.nav-collapse -->
 
@@ -112,4 +105,5 @@ $('#main-column').addClass('full');
       <!-- End of sidebar-column -->
       </section><!-- end of core-->
 
+<script src='/js/homepage.js'></script>
 <!-- Version: {$version|escape} -->

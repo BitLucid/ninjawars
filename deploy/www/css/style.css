@@ -1780,13 +1780,16 @@ time {
 }
 
 #main-column {
-    width: 63%;
+    width: 100%;
     height: 100%;
     min-height: 42rem;
     left: 0;
     top: 0;
-    padding-left: 3%;
     margin-top: 6rem; /** Because the top bar covers headers otherwise **/
+}
+#main-column.partial {
+    width: 63%;
+    padding-left: 3%;
 }
 
 .main-iframe {
@@ -4719,6 +4722,11 @@ input[type='button'].btn-block {
 
 /* Medium and Large screen modifications */
 @media screen and (min-width: 800px) {
+    div.description,
+    p.description {
+        padding-left: 3rem;
+        padding-right: 3rem;
+    }
     .enemies-lefthalf {
         width: 55% !important;
         float: left !important;
