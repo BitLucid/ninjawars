@@ -22,6 +22,7 @@
 
         <nav class='nav parent' id='sections-control'>
             <div class='child'>
+                <a class='btn btn-info' href='#staging-section'>Staging</a>
                 <a class='btn btn-info' href='#intro-section'>Intro</a>
                 <a class='btn btn-info' href='#intro-small-section'>Intro - Small</a>
                 <a class='btn btn-info' href='#aside-section'>Aside</a>
@@ -44,6 +45,11 @@
     </header>
 
     <section id='stories' style='min-height:30vh'>
+
+        <section id='staging-section'>
+            <h2>Staging</h2>
+            {include file="staging.tpl"}
+        </section>
 
         <section id='intro-section'>
             <h2>Intro</h2>
