@@ -176,7 +176,7 @@ class ConsiderController extends AbstractController {
      * Render the parts, since the template is always currently the same.
      */
     private function render(array $parts): StreamedViewResponse {
-        return new StreamedViewResponse('Fight', 'enemies.tpl', $parts, ['quickstat'=>false]);
+        return new StreamedViewResponse('Fight', 'fight.tpl', $parts, ['quickstat' => false]);
     }
 
     /**
