@@ -1,4 +1,8 @@
 <?php
+
+/**
+ * Password resets initialization and communication
+ */
 namespace NinjaWars\core\control;
 
 use Pimple\Container;
@@ -21,7 +25,8 @@ class PasswordController extends AbstractController {
      *
      * @return bool
      */
-    private function sendEmail($token, $account) {
+    private function sendEmail(string $token, Account $account): bool
+    {
         $email = $account->getActiveEmail();
 
         if (!$email) {
@@ -44,7 +49,8 @@ class PasswordController extends AbstractController {
      * @return Response
      * @TODO: Generate a csrf
      */
-    public function index(Container $p_dependencies) {
+    public function index(Container $p_dependencies): StreamedViewResponse
+    {
         $request    = RequestWrapper::$request;
         $error      = $request->get('error');
         $message    = $request->get('message');
@@ -67,7 +73,8 @@ class PasswordController extends AbstractController {
      * @return Response
      * @TODO: Authenticate the csrf, which must match, from the session.
      */
-    public function postEmail(Container $p_dependencies) {
+    public function postEmail(Container $p_dependencies): RedirectResponse
+    {
         $request    = RequestWrapper::$request;
         $error      = null;
         $message    = null;
@@ -112,7 +119,8 @@ class PasswordController extends AbstractController {
      * @return Response
      * @todo Need a way to set the max age on the response that the form will display
      */
-    public function getReset(Container $p_dependencies) {
+    public function getReset(Container $p_dependencies): StreamedViewResponse
+    {
         $token = RequestWrapper::get('token');
         $req   = ($token ? PasswordResetRequest::match($token) : null);
         $error = null;
@@ -138,7 +146,8 @@ class PasswordController extends AbstractController {
      *
      * @return Response
      */
-    public function postReset(Container $p_dependencies) {
+    public function postReset(Container $p_dependencies): RedirectResponse
+    {
         $request              = RequestWrapper::$request;
         $token                = $request->get('token');
         $newPassword          = $request->get('new_password');
@@ -170,7 +179,8 @@ class PasswordController extends AbstractController {
     /**
      * @return RedirectResponse
      */
-    private function renderError($p_error, $p_token) {
+    private function renderError(string $p_error, string $p_token): RedirectResponse
+    {
         return new RedirectResponse('/password/?token='.rawurlencode($p_token).'&error='.rawurlencode($p_error));
     }
 }
