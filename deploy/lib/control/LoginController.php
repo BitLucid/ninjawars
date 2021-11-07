@@ -53,7 +53,7 @@ class LoginController extends AbstractController {
      * Display standard login page.
      * @return StreamedViewResponse
      */
-    public function index(Container $p_dependencies): StreamedViewResponse
+    public function index(Container $p_dependencies): StreamedViewResponse | RedirectResponse
     {
         $login_error_message = RequestWrapper::getPostOrGet('error'); // Error to display after unsuccessful login and redirection.
 
