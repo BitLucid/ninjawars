@@ -119,7 +119,7 @@ class PasswordController extends AbstractController {
      * @return Response
      * @todo Need a way to set the max age on the response that the form will display
      */
-    public function getReset(Container $p_dependencies): StreamedViewResponse
+    public function getReset(Container $p_dependencies): StreamedViewResponse | RedirectResponse
     {
         $token = RequestWrapper::get('token');
         $req   = ($token ? PasswordResetRequest::match($token) : null);

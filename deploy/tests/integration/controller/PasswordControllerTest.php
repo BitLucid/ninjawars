@@ -265,6 +265,7 @@ class PasswordControllerTest extends NWTest {
     }
 
     public function testPostResetWithNoTokenYeildsAnError() {
+        $this->expectException(TypeError::class);
         $token = null;
 
         // Generate a password reset req to be matched!
@@ -291,7 +292,7 @@ class PasswordControllerTest extends NWTest {
 
         $this->assertTrue(stripos($response->getTargetUrl(), rawurlencode('No Valid')) !== false, 'Url was ['.$response->getTargetUrl().'] instead of expected not long enough password error url.');
 
-        // Password should be changed.
+        // Password should not be changed.
         $this->assertFalse($this->checkTestPasswordMatches($password), 'Password should not have been changed on a rejection!');
     }
 
