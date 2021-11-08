@@ -45,8 +45,22 @@
     justify-content: center;
     align-items: center;
 }
+#add-enemy a{
+    color:white;
+    text-decoration: none;
+}
 {/literal}
 </style>
+<script>
+{literal}
+    $(()=>{
+        $('#add-enemy, #add-enemy a').click((e)=>{
+            e.preventDefault();
+            e.stopPropagation();
+            $('#ninja-enemy').removeClass('hidden');
+    })
+{/literal}
+</script>
 <section class='target-container'>
 <div class='previous'>
     &lt;
@@ -71,7 +85,7 @@
 <div>Enemy</div>    <div>Enemy</div>
 <div>Enemy</div>    <div>Enemy</div>
 <div>Enemy</div>    <div>Enemy</div>
-<div><i class='fa fa-plus'></i></div>
+<div id='add-enemy'><a href='#ninja-enemy'><i class='fa fa-plus'></i></a></div>
 <div>Enemy</div>    <div>Enemy</div>
 <div>Enemy</div>    <div>Enemy</div>
 <div>Enemy</div>    <div>Enemy</div>
@@ -79,6 +93,26 @@
 <div>Enemy</div>    <div>Enemy</div>
 <div>Enemy</div>
 </div>
+
+<div id="ninja-enemy" class='solo-box hidden'>
+  <form id="enemy-add" action="/enemies/search" method="get" name="enemy_add">
+    <div class='input-group'>
+      <input id='enemy-match' required=required type="text" maxlength="50" name="enemy_match" class="form-control textField" placeholder='Search by ninja name' value='{if isset($enemy_match)}{$enemy_match}{/if}'>
+      <span class='input-group-btn'>
+        <input type="submit" value="Find Enemies" class="btn btn-default formButton">
+      </span>
+    </div>
+  </form>
+</div>
+
+{if !empty($found_enemies) && count($found_enemies) gt 0}
+	{include file="enemy-matches.tpl" enemies=$found_enemies}
+{elseif isset($enemy_match) && $enemy_match}
+	<div class='hidden'>
+Your search returned no ninja. Maybe you should make an enemy of someone who recently attacked you.
+		{include file="enemy-matches.tpl" enemies=$recent_attackers}
+	</div>
+{/if}
 
 <nav>
   <a href="/map" class="return-to-location block">Return to the Map</a>
