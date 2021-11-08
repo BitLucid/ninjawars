@@ -1,5 +1,8 @@
 {literal}
 <style type="text/css">
+  dl.rules, .outro{
+    margin: 2rem 0.3rem;
+  }
 	dl.rules dt {
 		color: red;
 		font-weight: bold;
@@ -24,6 +27,11 @@
 		margin-bottom: 0px;
 		font-style: italic;
 	}
+  @media screen and (min-width: 800px) {
+    dl.rules, .outro{
+      margin: 1.5rem 5%;
+    }
+  }
 </style>
 {/literal}
 
@@ -59,4 +67,4 @@
     </dl>
   </dd>
 </dl>
-<p>Other than that, kill each-other and have fun.</p>
+<p class='outro'>Other than that, kill each-other and have fun.</p>
