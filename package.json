@@ -15,7 +15,7 @@
         "prettier": "npx prettier --write .",
         "browse": "xdg-open https://localhost:8765",
         "browse:epics": "xdg-open https://localhost:8765/epics",
-        "github": "xdg-open https://github.com/BitLucid/ninjawars/",
+        "browse:repo": "xdg-open https://github.com/BitLucid/ninjawars/",
         "repo": "yarn github",
         "unit-test": "test",
         "test": "karma start deploy/tests/karma.conf.js --single-run"
