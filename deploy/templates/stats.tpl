@@ -40,8 +40,7 @@
 </div>
 
 <div class='stats-avatar'>
-  Avatar: (change your avatar for your account email at <a rel="noopener noreferrer" target="_blank" href='//gravatar.com'>gravatar.com</a>) →
-  {include file="gravatar.tpl" gurl=$char->avatarUrl()}
+  {include file="gravatar.tpl" gurl=$char->avatarUrl()} &larr; (change your avatar for your account email at <a rel="noopener noreferrer" target="_blank" href='//gravatar.com'>gravatar.com</a>)
 </div>
 <section class='two-column'>
   <div class='primary'>

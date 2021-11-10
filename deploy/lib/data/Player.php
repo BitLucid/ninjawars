@@ -432,6 +432,8 @@ class Player implements Character {
             $this->data['hash']          = md5(implode($this->data));
             $this->data['class_name']    = ucfirst($this->data['identity']); // A misnomer, identity is actually the class label
             $this->data['clan_id']       = ($clan ? $clan->id : null);
+            $this->data['avatar_url']   = $this->avatarUrl();
+            $this->data['difficulty']   = $this->difficulty();
 
             unset($this->data['pname']);
         }

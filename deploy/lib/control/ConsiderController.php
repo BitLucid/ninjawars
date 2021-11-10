@@ -57,7 +57,7 @@ class ConsiderController extends AbstractController {
         $char             = Player::find(SessionFactory::getSession()->get('player_id'));
         $shift = max(0, min(300, (int) RequestWrapper::get('shift')));
         $char_info        = ($char ? $char->data() : []);
-        $next_enemy = $char ? $this->getNextEnemy($char, $shift) : null;
+        $next_enemy = $char ? Enemies::nextTarget($char, $shift) : null;
 
         $inventory = $char ? new Inventory($char) : null;
         $items     = $inventory ? $inventory->counts() : null;

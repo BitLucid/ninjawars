@@ -51,7 +51,7 @@ Email Ninjawars Staff
 
 <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
           <div class="team-wrapper">
-            <div class="team-inner" style="background-image: url('{cachebust file="/images/tchalvak-smaller.jpg"}')" >
+            <div class="team-inner" style="background-image: url('{cachebust file="/images/team/tchalvak-smaller.jpg"}')" >
               <a href="https://github.com/tchalvak" target="_blank" > <i class="fab fa-github" ></i></a>
             </div>
             <div class="bio">
@@ -69,7 +69,7 @@ Email Ninjawars Staff
         </div>
 <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
           <div class="team-wrapper">
-            <div class="team-inner" style="background-image: url('assets/img/team/2.jpg')" >
+            <div class="team-inner" style="background-image: none" >
               <a href="https://github.com/beagle" target="_blank" > <i class='fab fa-github'></i></a>
             </div>
             <div class="bio">
@@ -143,7 +143,7 @@ href='http://alegion.deviantart.com/'>alegion.deviantart.com/</a></li>
       <h3 class='subtitle'>License</h3>
       <hr class='accent'>
       <p>
-        <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/us/"><img alt="Creative Commons License" src="http://i.creativecommons.org/l/by-sa/3.0/us/88x31.png"></a><br>
+        <a rel="license" href="https://creativecommons.org/licenses/by-sa/3.0/us/"><img alt="Creative Commons License" src="https://i.creativecommons.org/l/by-sa/3.0/us/88x31.png"></a><br>
         <span>Ninjawars</span>
         by <a href="/" rel="cc:attributionURL">Ninjawars.net</a>
         is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/us/">

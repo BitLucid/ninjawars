@@ -3,6 +3,8 @@
 /* jshint browser: true, white: true, plusplus: true */
 /* global $ */
 
+import { api } from './api';
+
 $(function initializeNMPage() {
   $('.show-hide-next').click(function showHideNext() {
     $(this).parent().next().slideToggle();
@@ -12,14 +14,7 @@ $(function initializeNMPage() {
 
 // Hit the api to deactivate the character
 function deactivateChar(charId, callback) {
-  // Deactivate a player character by id
-  return $.getJSON(
-    // eslint-disable-next-line prefer-template
-    '/api?type=deactivate_char&data='
-    + charId
-    + '&jsoncallback=?',
-    callback
-  );
+  api.deactivateChar(charId, callback);
 }
 
 // Reload the page afterwards

@@ -1,3 +1,4 @@
+<link rel="stylesheet" type="text/css" href="{cachebust file="/css/enemies.css"}" media="Screen" />
 <h1>Staging</h1>
 
 <style>
@@ -19,11 +20,19 @@
 .target-container .next{
     background-color: #f0f0f0;
 }
-.target-container .preview{
+.target-container .target-preview{
     flex: 8;
     background-color: #b0a89d;
+}
+.target-container .char-profile{
     display:flex;
-    justify-content: center;
+    justify-content:space-evenly;
+    align-items:stretch;
+}
+.target-container .space-evenly{
+    display:flex;
+    justify-content:space-evenly;
+    align-items:stretch;
 }
 .action-area{
     display:flex;
@@ -51,23 +60,41 @@
 }
 {/literal}
 </style>
-<script>
-{literal}
-    $(()=>{
-        $('#add-enemy, #add-enemy a').click((e)=>{
-            e.preventDefault();
-            e.stopPropagation();
-            $('#ninja-enemy').removeClass('hidden');
-    })
-{/literal}
-</script>
 <section class='target-container'>
 <div class='previous'>
     &lt;
 </div>
-<div class='preview'>
-    Some ninja
-</div>
+<section class='target-preview'>
+    <div>
+        <actions><i class="fas fa-bars" aria-hidden="true"></i></actions>
+        <h2>Tchalvak</h2>
+    </div>
+    <div class='char-profile'>
+        <figure>gravatar</figure>
+        <div>
+            <div class='subtitle'>Stats</div>
+            <charstats>Level - Class - Difficulty - Status</charstats>
+            <div>
+            <span class='health-bar-container'>
+                <!-- This is for generating a health status bar on various pages -->
+                <span class='char-health-indicator'>
+                    <span class='char-health-border'>
+                        <span class='character-health-bar' style="width:100%;">&nbsp;</span>
+                    </span>
+                    <span class='char-health-number'>
+                        <span class='dead' style='display:none'>
+                            <i class="far fa-heart" aria-hidden="true"></i> <span class='dead-notice'>Dead</span>
+                        </span>
+                        <span class='alive'>
+                            <i class="fas fa-heart" aria-hidden="true"></i> <span class='health-number'>100</span>
+                        </span>
+                    </span>
+                </span>
+            </span>
+            </div>
+        </div>
+    </div>
+</section>
 <div class='next'>
     &gt;
 </div>
@@ -113,6 +140,8 @@ Your search returned no ninja. Maybe you should make an enemy of someone who rec
 		{include file="enemy-matches.tpl" enemies=$recent_attackers}
 	</div>
 {/if}
+
+<script type='module' src='/js/fight.js'></script>
 
 <nav>
   <a href="/map" class="return-to-location block">Return to the Map</a>
