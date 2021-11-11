@@ -121,7 +121,8 @@
                                 <i class="far fa-heart" aria-hidden="true"></i> <span class='dead-notice'>Dead</span>
                             </span>
                             <span class='alive'>
-                                <i class="fas fa-heart" aria-hidden="true"></i> <span class='char-health-number health-number'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                <i class="fas fa-heart" aria-hidden="true"></i> 
+                                <span class='char-numeric-health health-number'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                             </span>
                         </span>
                     </span>

@@ -49,3 +49,8 @@ export const logger = () => ({
   // eslint-disable-next-line no-console
   dir: canDebug() ? console.dir : noop,
 });
+
+export const urlParam = (key) => {
+  const urlParams = new URLSearchParams(window && window.location.search);
+  return urlParams.get(key);
+};

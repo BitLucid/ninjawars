@@ -103,12 +103,12 @@ class Enemies
      */
     public static function nextTarget(Player $char, int $shift = 0): ?Player
     {
-        $sel = '
+        $sel =
+            '
             SELECT rank_id, uname, level, player_id, health FROM players JOIN player_rank ON _player_id = player_id 
-            WHERE score < (SELECT score FROM player_rank WHERE _player_id = :char_id) 
-                AND active = 1 AND level <= (5 + :char_level) AND health > 0 
+            WHERE active = 1 AND level <= (5 + :char_level) AND health > 0 
                 AND player_id != :char_id2
-            ORDER BY score DESC LIMIT 1 OFFSET greatest(0, :off)';
+            ORDER BY score < (SELECT score FROM player_rank WHERE _player_id = :char_id) desc, score DESC LIMIT 1 OFFSET greatest(0, :off)';
         $enemies = query_array(
             $sel,
             [
@@ -118,22 +118,6 @@ class Enemies
                 ':off'      => [$shift, PDO::PARAM_INT],
             ]
         );
-        if (!count($enemies)) {
-            // Get bottom 10 players if not yet ranked.
-            $enemies = query_array(
-                '
-                SELECT rank_id, uname, level, player_id, health FROM players JOIN player_rank ON _player_id = player_id
-            WHERE 
-                active = 1 AND health > 0 AND level <= (5 + :char_level)
-                AND player_id != :char_id2
-            ORDER BY rank_id ASC limit 1 OFFSET greatest(0, :off)',
-                [
-                    ':char_id2'  => [$char->id(), PDO::PARAM_INT],
-                    ':char_level' => [$char->level, PDO::PARAM_INT],
-                    ':off'      => [$shift, PDO::PARAM_INT],
-                ]
-            );
-        }
         return !empty($enemies) ? Player::find(reset($enemies)['player_id']) : null;
     }
 
@@ -146,7 +130,7 @@ class Enemies
     public static function nextTargetById(int $char_id, int $shift = 0): ?Player
     {
         $char = Player::find($char_id);
-        $shift = max(0, min(300, $shift));
+        $shift = max(-300, min(300, $shift));
         return Enemies::nextTarget($char, $shift);
     }
 }
