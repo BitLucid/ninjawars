@@ -18,9 +18,8 @@ const completeLoading = () => {
 
 const placeTarget = (target) => {
     const classList = ['Crane', 'Dragon', 'Viper', 'Tiger'];
-    // 'Phoenix', 'Snake', 'Tiger', 'Unicorn'];
-    // eslint-disable-next-line camelcase
     const {
+        // eslint-disable-next-line camelcase
         id, uname: name, health, max_health, level, class_name, avatar_url, difficulty, status_list,
     } = target;
     // eslint-disable-next-line camelcase
@@ -61,7 +60,7 @@ $(() => {
         logger().log('Getting next target', offset);
         return api.nextTarget(offset).then((res) => res.json()).then((data) => {
             placeTarget(data);
-            logger().log('Target health: ', data.health);
+            logger().log('Target health: ', data.health, data);
             completeLoading();
             return data;
         });

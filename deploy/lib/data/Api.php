@@ -3,12 +3,10 @@
 namespace NinjaWars\core\data;
 
 use NinjaWars\core\extensions\SessionFactory;
-use NinjaWars\core\environment\RequestWrapper;
 use NinjaWars\core\data\DatabaseConnection;
 use NinjaWars\core\data\Enemies;
 use NinjaWars\core\data\Player;
 use NinjaWars\core\data\Message;
-use Symfony\Component\HttpFoundation\Response;
 use \PDO;
 
 /**
@@ -16,12 +14,6 @@ use \PDO;
  */
 class Api
 {
-
-    public function test()
-    {
-        return 'test';
-    }
-
     /**
      * Find the next enemy target for the player.
      */
@@ -46,12 +38,28 @@ class Api
         } else {
             $res = query(
                 "update players set active = 0 where player_id = :char_id and active != 0",
-                [
-                    ':char_id'  => $char_id,
-                ]
+                [':char_id'  => [$char_id, PDO::PARAM_INT]]
             );
-
             return ['chars_deactivated' => $res->rowCount()];
+        }
+    }
+
+    /**
+     * Reactivate a player character with a matching id
+     * @note Admin only
+     */
+    public function reactivateChar($data)
+    {
+        $char_id = $data;
+        $user = Player::find(SessionFactory::getSession()->get('player_id'));
+        if (!$user || !$user->isAdmin()) {
+            return ['error' => 'Unable to proceed further.'];
+        } else {
+            $res = query(
+                "update players set active = 1 where player_id = :char_id",
+                [':char_id'  => [$char_id, PDO::PARAM_INT]]
+            );
+            return ['chars_reactivated' => $res->rowCount()];
         }
     }
 
@@ -63,7 +71,6 @@ class Api
         if (!is_numeric($limit)) {
             $limit = 10;
         }
-
         // Should be fine for this to allow regex characters here if it happens.
         $res = query(
             "select player_id, uname from players where uname ilike :term || '%' and active=1 order by level desc limit :limit",
@@ -72,10 +79,12 @@ class Api
                 ':limit' => [$limit, PDO::PARAM_INT]
             ]
         );
-
         return ['char_matches' => $res->fetchAll(PDO::FETCH_ASSOC)];
     }
 
+    /**
+     * Last message sent to current player
+     */
     public function latestMessage()
     {
         DatabaseConnection::getInstance();
