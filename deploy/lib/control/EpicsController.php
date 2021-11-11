@@ -4,6 +4,7 @@ namespace NinjaWars\core\control;
 
 use Pimple\Container;
 use NinjaWars\core\control\AbstractController;
+use NinjaWars\core\data\NpcFactory;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use NinjaWars\core\extensions\StreamedViewResponse;
@@ -40,11 +41,16 @@ class EpicsController extends AbstractController
             return $authed;
         }
 
+        $other_npcs       = NpcFactory::npcsData();
+        $npcs             = NpcFactory::customNpcs();
+
         $error            = null;
         $static_nodes = include(ROOT . 'lib/data/raw/nodes.php');
 
         $parts = [
             'nodes' => $static_nodes,
+            'npcs' => $npcs,
+            'other_npcs' => $other_npcs,
             'error'             => $error,
         ];
 

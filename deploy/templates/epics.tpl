@@ -25,6 +25,7 @@
                 <a class='btn btn-info' href='#staging-section'>Staging</a>
                 <a class='btn btn-info' href='#intro-section'>Intro</a>
                 <a class='btn btn-info' href='#intro-small-section'>Intro - Small</a>
+                <a class='btn btn-info' href='#npcs-section'>Npcs</a>
                 <a class='btn btn-info' href='#aside-section'>Aside</a>
                 <a class='btn btn-info' href='#chat-section'>Chat</a>
                 <a class='btn btn-info' href='#clan-section'>Clan</a>
@@ -51,6 +52,10 @@
             {include file="staging.tpl"}
         </section>
 
+<section id='npcs-section'>
+    <h2>Npcs</h2>
+    {include file="npc.list.tpl"}
+</section>
         <section id='intro-section'>
             <h2>Intro</h2>
             {include file="intro.tpl"}
