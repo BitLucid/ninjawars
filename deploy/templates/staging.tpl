@@ -7,27 +7,52 @@
     display:flex;
     justify-content: space-around;
     align-items: stretch;
+    min-height: 20vh;
 }
 .target-container > *{
     height: 100%;
-    min-height: 30vh;
     flex:1;
 }
 .target-container .previous{
-    background-color: #f0f0f0;
-
 }
 .target-container .next{
-    background-color: #f0f0f0;
 }
 .target-container .target-preview{
     flex: 8;
-    background-color: #b0a89d;
+}
+.target-container .target-preview h2{
+    width: 100%;
+}
+.target-container .actions{
+    float:right;
+    font-size:3rem;
+    margin-right: 1rem;
 }
 .target-container .char-profile{
     display:flex;
     justify-content:space-evenly;
     align-items:stretch;
+}
+.target-container .char-profile > *{
+    flex:1;
+}
+.target-container .char-profile .char-information {
+    flex:4;
+}
+.target-container .char-profile .char-information charstats{
+    display: flex;
+    justify-content: space-evenly;
+    text-align: left;
+}
+.target-container .spin-enemy {
+    font-size: 13rem;
+    padding: 0;
+}
+.target-container .spin-enemy a:hover{
+    text-decoration: none;
+}
+.target-container .spin-enemy.up {
+    text-align: right;
 }
 .target-container .space-evenly{
     display:flex;
@@ -40,7 +65,8 @@
     align-items: center;
     flex: 1;
     background-color: #3d1818;
-    min-height: 20vh;
+    min-height: 15vh;
+    margin-bottom:5vh;
 }
 .enemies{
     display:grid;
@@ -62,41 +88,55 @@
 </style>
 <section class='target-container'>
 <div class='previous'>
-    &lt;
+    <div class='spin-enemy down'>
+        ❮
+    </div>
 </div>
 <section class='target-preview'>
     <div>
-        <actions><i class="fas fa-bars" aria-hidden="true"></i></actions>
-        <h2>Tchalvak</h2>
+        <actions class='actions'>
+            <button type='button' class='btn btn-primary'>
+                <i class='fas fa-bars'></i>
+            </button>
+        </actions>
+        <h2 class='char-target-name'>&nbsp;</h2>
     </div>
     <div class='char-profile'>
-        <figure>gravatar</figure>
-        <div>
-            <div class='subtitle'>Stats</div>
-            <charstats>Level - Class - Difficulty - Status</charstats>
+        <figure><img class='char-avatar' alt=''/></figure>
+        <div class='char-information'>
+            <charstats class='skeleton'>
+                <span class='char-level'>Level</span>
+                <span class='char-class'>Class</span>
+                <span class='char-difficulty'>Difficulty</span>
+            </charstats>
             <div>
-            <span class='health-bar-container'>
-                <!-- This is for generating a health status bar on various pages -->
-                <span class='char-health-indicator'>
-                    <span class='char-health-border'>
-                        <span class='character-health-bar' style="width:100%;">&nbsp;</span>
-                    </span>
-                    <span class='char-health-number'>
-                        <span class='dead' style='display:none'>
-                            <i class="far fa-heart" aria-hidden="true"></i> <span class='dead-notice'>Dead</span>
+                <span class='health-bar-container'>
+                    <!-- This is for generating a health status bar on various pages -->
+                    <span class='char-health-indicator'>
+                        <span class='char-health-border'>
+                            <span class='character-health-bar'></span>
                         </span>
-                        <span class='alive'>
-                            <i class="fas fa-heart" aria-hidden="true"></i> <span class='health-number'>100</span>
+                        <span class='char-health-number'>
+                            <span class='dead' style='display:none'>
+                                <i class="far fa-heart" aria-hidden="true"></i> <span class='dead-notice'>Dead</span>
+                            </span>
+                            <span class='alive'>
+                                <i class="fas fa-heart" aria-hidden="true"></i> <span class='char-health-number health-number'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                            </span>
                         </span>
                     </span>
                 </span>
-            </span>
+                <div>
+                    <span class='char-status status-b badge skeleton'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                </div>
             </div>
         </div>
     </div>
 </section>
 <div class='next'>
-    &gt;
+    <div class='spin-enemy up'>
+        ❯
+    </div>
 </div>
 
 </section>

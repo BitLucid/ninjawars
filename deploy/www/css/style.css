@@ -4583,8 +4583,42 @@ input[type='button'].btn-block {
 }
 
 /**
- * Non-semantic helper classes: please define your styles before this section.
+ * Utilities / Utils / Non-semantic helper classes: please define your styles before this section.
  */
+
+ .skeleton{
+    color: transparent !important;
+    background-image: linear-gradient(90deg, rgba(211, 211, 211, 0) 0, rgba(211, 211, 211,0.8) 50%, rgba(211, 211, 211, 0) 100%);
+    background-size: 100% 100%;
+    background-position: 0 0;
+    background-repeat: no-repeat;
+    animation: skeletoning 3s ease-in-out 0.5s infinite;
+    max-width: fit-content;
+    height:auto;
+    overflow:hidden;
+    border-radius:0.5rem;
+}
+
+.skeleton.off{
+  animation: none;
+  background-image:none;
+  color:inherit;
+}
+
+ @keyframes skeletoning {
+   from {
+       background-position: right center;
+       background-color:transparent;
+    }
+    50% {
+        background-position: left center;
+        background-color:gray;
+    }
+    to {
+       background-position: left top;
+       background-color:transparent;
+    }
+}
 
 /* For image replacement */
 .ir {
