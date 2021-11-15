@@ -35,6 +35,8 @@ class ApiControllerTest extends NWTest {
         return json_decode($matches[1]);
     }
 
+
+
     public function testIllegalCallbackFails() {
         $request = new Request([
             'type'         => 'player',
@@ -43,7 +45,7 @@ class ApiControllerTest extends NWTest {
 
         RequestWrapper::inject($request);
         $result = $this->controller->nw_json();
-        $this->assertEquals(json_encode(false), $result->getContent());
+        $this->assertEquals(json_encode('Invalid callback.'), $result->getContent());
     }
 
     public function testIllegalType() {
@@ -54,7 +56,7 @@ class ApiControllerTest extends NWTest {
 
         RequestWrapper::inject($request);
         $result = $this->controller->nw_json();
-        $this->assertEquals('', $result->getContent());
+        $this->assertEquals('null', $result->getContent());
     }
 
     public function testSearch() {
@@ -161,7 +163,7 @@ class ApiControllerTest extends NWTest {
 
     public function testDeactivateChar() {
         $request = new Request([
-            'type'         => 'deactivate_char',
+            'type'         => 'deactivateChar',
             'data'         => '-666',
             'jsoncallback' => self::CALLBACK,
         ], []);
@@ -171,6 +173,21 @@ class ApiControllerTest extends NWTest {
         $payload = $this->extractPayload($result);
 
         // There should be no such character to deactivate
+        $this->assertObjectHasAttribute('error', $payload);
+    }
+
+    public function testReactivateChar()
+    {
+        $request = new Request(['type'         => 'reactivateChar',
+            'data'         => '-666',
+            'jsoncallback' => self::CALLBACK,
+        ], []);
+
+        RequestWrapper::inject($request);
+        $result = $this->controller->nw_json();
+        $payload = $this->extractPayload($result);
+
+        // There should be no such character to reactivate
         $this->assertObjectHasAttribute('error', $payload);
     }
 }
