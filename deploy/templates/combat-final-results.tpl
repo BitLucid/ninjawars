@@ -38,13 +38,13 @@
     <div class='damage'>{$target->name()|escape} took <span class='damage-area'>{$starting_target->health - $target->health|escape} damage</span></div>
   </div>
   <div class='comparison'>
-    <div class='outcome'>
+    <div class='outcome {if $low_health}fade-in-flash{/if}'>
       <span class='combat-health self-health {if $low_health}low-health{/if}'>
           {include file="health_bar.tpl" health=$attacker->health level=$attacker->level}
       </span>
     </div>
     <div class='joiner'></div>
-    <div class='outcome'>
+    <div class='outcome fade-in'>
       <span class='combat-health'>
         {include file="health_bar.tpl" health=$target->health level=$target->level}
       </span>
