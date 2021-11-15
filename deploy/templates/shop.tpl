@@ -12,7 +12,7 @@
 </div>
 
 <p class='glassbox'>
-  Your current gold: <span class='gold-count'>石{$gold|number_format|escape}</span>
+  Your current gold: <span class='gold-count fade-in-slow'>石{$gold|number_format|escape}</span>
 </p>
 
 <form id="shop_form" action="/shop/purchase" method="post" name="shop_form">

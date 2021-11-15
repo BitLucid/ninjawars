@@ -4620,6 +4620,38 @@ input[type='button'].btn-block {
     }
 }
 
+.slide-in-from-left {
+    animation: 3s ease-out 0s 1 slideInFromLeft;
+}
+
+@keyframes slideInFromLeft {
+    0% {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.fade-in {
+    animation: 3s ease-out 0s 1 fadeIn;
+}
+
+.fade-in-slow {
+    animation: 3s ease-out 0s 1 fadeIn;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
 /* For image replacement */
 .ir {
     display: block;
