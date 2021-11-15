@@ -36,7 +36,7 @@
 	{/if}
 
 	{if $success}
-	<div class='ninja-notice'>You have offered {$amount|escape} gold towards bringing {$target|escape} to justice.</div>
+	<div class='ninja-notice slide-in-from-left'>You have offered <span class='gold'>{$amount|escape} gold</span> towards bringing {$target|escape} to justice.</div>
 	{/if}
 {/if}
 
@@ -80,13 +80,16 @@
 .doshin .bounty-related {
   margin-top: 4rem;
 }
+.doshin .active-bounty {
+  color:crimson;
+}
 </style>
 
 <section class='bounty-related'>
 
 {if $myBounty gt 0}
   <div class='parent thick'>
-    <div class='ninja-info'>You have a 石{$myBounty|number_format:0|escape} bounty on your head.</div>
+    <div class='ninja-info'>You have a <span class='active-bounty flash-3'>石{$myBounty|number_format:0|escape} bounty</span> on your head.</div>
   </div>
 
 <form id="bribe_form" action="/doshin/bribe" method="post" name="bribe_form" class='half-column'>
@@ -158,8 +161,8 @@
 {/if}
 
 {if $display_gold}
-<div class='gold thick'>
-  You have 石{$display_gold}.
+<div class='thick'>
+  You have <span class='gold'>石{$display_gold}</span>.
 </div>
 {/if}
 

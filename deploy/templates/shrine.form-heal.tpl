@@ -6,7 +6,7 @@
 
 <form id="max_heal_form" action="/shrine/heal" method="post" name="max_heal_form" class='thick centered'>
   <div>
-    <div><em class='speech'>How much healing do you need?</em></div>
+    <div><em class='speech slide-in-from-left'>How much healing do you need?</em></div>
     <input type="hidden" value="max" name="heal_points">
     <input type="submit" value="Full Heal" class="btn btn-primary">
   </div>

@@ -4671,6 +4671,38 @@ input[type='button'].btn-block {
     }
 }
 
+
+.flash-3 {
+    animation: 4s ease-out 1s 1 flashAFewTimes;
+}
+
+@keyframes flashAFewTimes {
+    0% {
+        opacity: 1;
+    }
+    25% {
+        opacity: 0;
+    }
+    40% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0;
+    }
+    60% {
+        opacity: 1;
+    }
+    70% {
+        opacity: 0;
+    }
+    75% {
+        opacity: 0.5;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
 /* For image replacement */
 .ir {
     display: block;
