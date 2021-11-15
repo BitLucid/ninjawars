@@ -5,7 +5,7 @@
 	<nav class="navigation" rel="nav">
 	<ul class="menu">
 		<li><a href="/clan/list">Clan List</a></li>
-	{if $myClan}
+	{if isset($myClan)}
 		<li><a href="/clan/view?clan_id={$myClan->id|escape}">My Clan</a></li>
 	{/if}
 	</ul>
@@ -13,7 +13,7 @@
 
 	{include file="flash-message.tpl"}
 
-	{foreach from=$pageParts item="part"}
+	{foreach from=$pageSections item="part"}
 		{include file="clan.$part.tpl"}
 	{/foreach}
 

@@ -42,7 +42,7 @@ class ClanController extends AbstractController {
 			$parts = [
 				'title'     => $clan->getName().' Clan',
 				'clan'      => $clan,
-				'pageParts' => [
+				'pageSections' => [
 					'info',
 					'member-list',
 				],
@@ -52,7 +52,7 @@ class ClanController extends AbstractController {
 				'title'     => 'Clan Not Found',
 				'clans'     => Clan::rankings(),
 				'error'     => 'The clan you requested does not exist. Pick one from the list below',
-				'pageParts' => [
+				'pageSections' => [
 					'list',
 				],
 			];
@@ -64,18 +64,18 @@ class ClanController extends AbstractController {
 			if ($myClan) {
 				if ($clan) {
 					if ($this->playerIsLeader($player, $clan)) {
-						array_unshift($parts['pageParts'], 'manage');
+						array_unshift($parts['pageSections'], 'manage');
 					} elseif ($myClan->id === $clan->id) {
-						array_unshift($parts['pageParts'], 'non-leader-panel');
+						array_unshift($parts['pageSections'], 'non-leader-panel');
 					} else {
-						array_unshift($parts['pageParts'], 'reminder-member');
+						array_unshift($parts['pageSections'], 'reminder-member');
 					}
 				} else {
-					array_unshift($parts['pageParts'], 'reminder-member');
+					array_unshift($parts['pageSections'], 'reminder-member');
 				}
 			} else {
-				array_unshift($parts['pageParts'], 'join');
-				array_unshift($parts['pageParts'], 'reminder-no-clan');
+				array_unshift($parts['pageSections'], 'join');
+				array_unshift($parts['pageSections'], 'reminder-no-clan');
 			}
 		}
 
@@ -102,7 +102,7 @@ class ClanController extends AbstractController {
 		$parts = [
 			'clan'      => $clan,
 			'title'     => 'Invite players to your clan',
-			'pageParts' => [
+			'pageSections' => [
 				'edit',
 				'info',
 				'member-list',
@@ -145,7 +145,7 @@ class ClanController extends AbstractController {
 			'action_message' => 'You have left your clan.',
 			'title'          => 'You have left your clan.',
 			'clans'          => Clan::rankings(),
-			'pageParts'      => [
+			'pageSections'      => [
 				'reminder-no-clan',
 				'list',
 			]
@@ -178,7 +178,7 @@ class ClanController extends AbstractController {
 				'action_message' => 'Your clan was created with the default name: '.$clan->getName().'. Change it below.',
 				'title'          => 'Clan '.$clan->getName(),
 				'clan'           => $clan,
-				'pageParts'      => [
+				'pageSections'      => [
 					'edit',
 				],
 			];
@@ -187,7 +187,7 @@ class ClanController extends AbstractController {
 				'error'     => 'You do not have enough renown to create a clan. You must be at least level '.self::CLAN_CREATOR_MIN_LEVEL.'.',
 				'title'     => 'You cannot create a clan yet',
 				'clans'     => Clan::rankings(),
-				'pageParts' => [
+				'pageSections' => [
 					'list',
 				],
 			];
@@ -217,7 +217,7 @@ class ClanController extends AbstractController {
 			'action_message' => $message,
 			'title'          => 'Viewing a clan',
 			'clan'           => $clan,
-			'pageParts'      => [
+			'pageSections'      => [
 				'reminder-no-clan',
 				'info',
 				'member-list',
@@ -248,7 +248,7 @@ class ClanController extends AbstractController {
 				'action_message' => 'Your clan has been disbanded.',
 				'title'          => 'Clan disbanded',
 				'clans'          => Clan::rankings(),
-				'pageParts'      => [
+				'pageSections'      => [
 					'reminder-no-clan',
 					'list',
 				],
@@ -256,7 +256,7 @@ class ClanController extends AbstractController {
 		} else {
 			$parts = [
 				'title'     => 'Confirm disbanding of your clan',
-				'pageParts' => [
+				'pageSections' => [
 					'confirm-disband',
 				],
 			];
@@ -287,7 +287,7 @@ class ClanController extends AbstractController {
 			'action_message' => "You have removed ".$kicked->name()." from your clan",
 			'title'          => 'Manage your clan',
 			'clan'           => $clan,
-			'pageParts'      => [
+			'pageSections'      => [
 				'manage',
 				'info',
 				'member-list',
@@ -357,7 +357,7 @@ class ClanController extends AbstractController {
 			'title'          => 'Edit your clan',
 			'clan'           => $clan,
 			'error'          => $error,
-			'pageParts'      => [
+			'pageSections'      => [
 				'edit',
 				'info',
 				'member-list',
@@ -379,7 +379,7 @@ class ClanController extends AbstractController {
 		return $this->render([
 			'clan'      => $clan,
 			'title'     => 'Edit your clan',
-			'pageParts' => [
+			'pageSections' => [
 				'edit',
 				'info',
 			],
@@ -408,16 +408,16 @@ class ClanController extends AbstractController {
 					'clan'           => $myClan,
 					'title'          => 'Your clan',
 					'action_message' => 'Message sent to your clan.',
-					'pageParts'      => [
+					'pageSections'      => [
 						'info',
 						'member-list',
 					],
 				];
 
 				if ($this->playerIsLeader($player, $myClan)) {
-					array_unshift($parts['pageParts'], 'manage');
+					array_unshift($parts['pageSections'], 'manage');
 				} else {
-					array_unshift($parts['pageParts'], 'non-leader-panel');
+					array_unshift($parts['pageSections'], 'non-leader-panel');
 				}
 
 				return $this->render($parts);
@@ -439,7 +439,7 @@ class ClanController extends AbstractController {
 		$parts = [
 			'title'     => 'Clan List',
 			'clans'     => Clan::rankings(),
-			'pageParts' => ['list'],
+			'pageSections' => ['list'],
 		];
 
 		$player = $p_dependencies['current_player'];
@@ -448,9 +448,9 @@ class ClanController extends AbstractController {
 			$clan = Clan::findByMember($player);
 
 			if ($clan) {
-				array_unshift($parts['pageParts'], 'reminder-member');
+				array_unshift($parts['pageSections'], 'reminder-member');
 			} else {
-				array_unshift($parts['pageParts'], 'reminder-no-clan');
+				array_unshift($parts['pageSections'], 'reminder-no-clan');
 			}
 		}
 
@@ -477,7 +477,7 @@ class ClanController extends AbstractController {
 
 		if ($clan && $this->playerIsLeader($ninja, $clan)) {
 			if ($joiner) {
-				$parts['pageParts'] = [
+				$parts['pageSections'] = [
 					'reminder-join-request',
 					'form-confirm-join',
 				];
@@ -517,7 +517,7 @@ class ClanController extends AbstractController {
 
 		if ($clan && $this->playerIsLeader($ninja, $clan)) {
 			if ($joiner) {
-				$parts['pageParts'] = [
+				$parts['pageSections'] = [
 					'reminder-join-request',
 				];
 
@@ -528,7 +528,7 @@ class ClanController extends AbstractController {
 					$result = $clan->addMember($joiner, $ninja);
 
 					if ($result === true) {
-						$parts['pageParts'][] = 'result-join';
+						$parts['pageSections'][] = 'result-join';
 					} else {
 						$parts['error'] = (is_string($result) ? $result : 'Unable to add member, please try again later.');
 					}
@@ -553,8 +553,8 @@ class ClanController extends AbstractController {
 	 * @return Response
 	 */
 	private function render(array $p_parts): StreamedViewResponse {
-		if (!isset($p_parts['pageParts'])) {
-			$p_parts['pageParts'] = [];
+		if (!isset($p_parts['pageSections'])) {
+			$p_parts['pageSections'] = [];
 		}
 
 		if (!isset($p_parts['error'])) {
