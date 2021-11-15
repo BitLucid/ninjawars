@@ -4635,6 +4635,15 @@ input[type='button'].btn-block {
     }
 }
 
+.fade-in-flash {
+    /* Will actually be visible for the ease-in period before flashing */
+    animation: 0.5s ease-out 1s 1 fadeIn;
+}
+
+.fade-in-fast {
+    animation: 1s ease-out 0s 1 fadeIn;
+}
+
 .fade-in {
     animation: 3s ease-out 0s 1 fadeIn;
 }
@@ -4642,6 +4651,16 @@ input[type='button'].btn-block {
 .fade-in-slow {
     animation: 3s ease-out 0s 1 fadeIn;
 }
+
+.fade-in-slower {
+    animation: 5s ease-out 0s 1 fadeIn;
+}
+
+.fade-in-slowest {
+    animation: 7.5s ease-out 0s 1 fadeIn;
+}
+
+
 
 @keyframes fadeIn {
     0% {
