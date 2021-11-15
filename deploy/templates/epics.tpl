@@ -1,4 +1,4 @@
-<link src='/css/epics.css' rel='stylesheet' type='text/css' />
+<link href='/css/epics.css' rel='stylesheet' type='text/css' />
 <script src='/js/epics.js'></script>
 <main id='epics'>
     <nav style='float:left'><span>
@@ -25,6 +25,7 @@
                 <a class='btn btn-info' href='#staging-section'>Staging</a>
                 <a class='btn btn-info' href='#intro-section'>Intro</a>
                 <a class='btn btn-info' href='#intro-small-section'>Intro - Small</a>
+                <a class='btn btn-info' href='#profile-section'>Profile</a>
                 <a class='btn btn-info' href='#npcs-section'>Npcs</a>
                 <a class='btn btn-info' href='#aside-section'>Aside</a>
                 <a class='btn btn-info' href='#chat-section'>Chat</a>
@@ -49,13 +50,26 @@
 
         <section id='staging-section'>
             <h2>Staging</h2>
+            {assign var="example" value="1"}
             {include file="staging.tpl"}
         </section>
 
-<section id='npcs-section'>
-    <h2>Npcs</h2>
-    {include file="npc.list.tpl"}
-</section>
+        <section id='profile-section'>
+            <h2>Profile Pieces</h2>
+            {* ninja and clan are assigned in the controller *}
+            <div style='display:flex;justify-content:center;' class='pop'>
+                <div style='width:50%;'>
+                    {include file="selfmenu.partial.tpl"}
+                </div>
+            </div>
+        </section>
+
+
+        <section id='npcs-section'>
+            <h2>Npcs</h2>
+            {include file="npc.list.tpl"}
+        </section>
+
         <section id='intro-section'>
             <h2>Intro</h2>
             {include file="intro.tpl"}
@@ -80,6 +94,7 @@
 
         <section id='clan-section'>
             <h2>Clan</h2>
+            {assign var="pageSections" value=['info', 'member-list', 'list']}
             {include file="clan.tpl"}
         </section>
 

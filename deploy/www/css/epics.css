@@ -1,4 +1,8 @@
-main#epics section {
+main#epics #stories section {
     max-height: 50vh;
-    overflow-y: auto
+    overflow-y: auto;
+}
+
+main#epics #stories > section {
+    display: none;
 }
