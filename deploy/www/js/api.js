@@ -14,10 +14,15 @@ const apiMethods = {
     self: (data) => fetch(`/api?type=player&json=1&data=${encodeURIComponent(JSON.stringify(data))}`),
     player: (data) => fetch(`/api?type=player&json=1&data=${encodeURIComponent(JSON.stringify(data))}`),
     chats: (data) => fetch(`/api?type=chats&json=1&data=${encodeURIComponent(JSON.stringify(data))}`),
-    newChats: (data) => fetch(`/api?type=new_chats&json=1&data=${encodeURIComponent(JSON.stringify(data))}`),
+    newChats: (data) => fetch(`/api?type=newChats&json=1&since=${encodeURIComponent(JSON.stringify(data))}`),
+    sendChat: (message) => fetch(`/api?type=send_chat&json=1&msg=${encodeURIComponent(JSON.stringify(message))}`),
     inventory: () => fetch('/api?type=inventory&json=1'),
     playerCount: () => fetch('/api?type=playerCount&json=1'),
     homepage: () => fetch('/api?type=index&json=1'),
+    latestMessage: () => fetch('/api?type=latestMessage&json=1'),
+    latestChatId: () => fetch('/api?type=latestChatId&json=1'),
+    latestEvent: () => fetch('/api?type=latestEvent&json=1'),
+    charSearch: (term, limit) => fetch(`/api?type=char_search&json=1&term=${encodeURIComponent(JSON.stringify(term))}&limit=${encodeURIComponent(JSON.stringify(limit))}`),
 };
 
 /*
