@@ -161,7 +161,8 @@ class ApiControllerTest extends NWTest {
         $this->assertObjectHasAttribute('message', $payload);
     }
 
-    public function testDeactivateChar() {
+    public function testDeactivateCharError()
+    {
         $request = new Request([
             'type'         => 'deactivateChar',
             'data'         => '-666',
@@ -176,8 +177,9 @@ class ApiControllerTest extends NWTest {
         $this->assertObjectHasAttribute('error', $payload);
     }
 
-    public function testReactivateChar()
+    public function testReactivateCharError()
     {
+        // Can't test much more than this because only admins can reactivate
         $request = new Request(['type'         => 'reactivateChar',
             'data'         => '-666',
             'jsoncallback' => self::CALLBACK,
@@ -190,4 +192,6 @@ class ApiControllerTest extends NWTest {
         // There should be no such character to reactivate
         $this->assertObjectHasAttribute('error', $payload);
     }
+
+
 }
