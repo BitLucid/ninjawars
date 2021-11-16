@@ -3,10 +3,10 @@
 	grid-template-columns: repeat(5, 1fr);
 	grid-template-rows: repeat(5, 1fr);
 	grid-gap: 0;
-	width: 95vw;
-	min-width: 55rem;
-	height: 95vw;
-	min-height: 55rem;
+	width: 85vh;
+	min-width: 60rem;
+	height: 85vh;
+	min-height: 60rem;
 	margin: auto;
 	background-color: #807F6F;
 	color: rgb(155, 155, 155);
