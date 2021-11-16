@@ -8,8 +8,9 @@ $(() => {
     $('#stories > section').hide()
     $('#sections-control a').click(function showHide(e) {
         e.preventDefault();
+        $('#stories > section').hide()
         const href = $(this).attr('href')
-        $(href).toggle();
+        $(href).show();
         window.location.hash = href;
     })
     if (hash) {

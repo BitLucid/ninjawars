@@ -1,8 +1,7 @@
-main#epics #stories section {
-    max-height: 50vh;
-    overflow-y: auto;
-}
-
 main#epics #stories > section {
     display: none;
+}
+
+main#epics .pop{
+    
 }

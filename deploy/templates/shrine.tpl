@@ -5,7 +5,9 @@
 {include file="flash-message.tpl"}
 
 <section class='action-area'>
-{foreach from=$pageParts item="part"}
+{foreach from=$shrineSections item="part"}
+	<div>
 	{include file="shrine.$part.tpl"}
+	</div>
 {/foreach}
 </section>

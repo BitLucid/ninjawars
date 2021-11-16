@@ -32,6 +32,9 @@
                     tabindex="-1"><i class='fa fa-users'></i> My Clan</a></li>
         {/if}
         <li class="divider"></li>
+        {if $ninja->isAdmin()}
+            <li><a href='/ninjamaster'><button class='btn btn-default' type='button'>Ninjamaster</button></a></li>    
+        {/if}
         <li><a href="/account" target="main" title='Your player account info, email, password, etc.' tabindex="-1"><i
                     class="fa fa-cog"></i> Account Info</a></li>
         <li class="divider"></li>

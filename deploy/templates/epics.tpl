@@ -38,6 +38,7 @@
                 <a class='btn btn-info' href='#errors-section'>Errors</a>
                 <a class='btn btn-info' href='#events-section'>Events</a>
                 <a class='btn btn-info' href='#dojo-section'>Dojo</a>
+                <a class='btn btn-info' href='#shrine-section'>Shrine</a>
                 <a class='btn btn-info' href='#map-section'>Map</a>
                 <a class='btn btn-info' href='#nodes-section'>Nodes</a>
                 <a class='btn btn-info' href='#list-section'>List</a>
@@ -64,6 +65,14 @@
             </div>
         </section>
 
+        <section id='shrine-section'>
+            <h2>Shrine</h2>
+            {assign var="player" value=$char}
+            {assign var="freeResurrection" value=true}
+            {assign var="has_chi" value=true}
+            {assign var="shrineSections" value=['entrance', 'result-resurrect', 'result-heal', 'form-heal','reminder-full-hp','form-cure','form-resurrect','reminder-resurrect-cost']}
+            {include file="shrine.tpl"}
+        </section>
 
         <section id='npcs-section'>
             <h2>Npcs</h2>

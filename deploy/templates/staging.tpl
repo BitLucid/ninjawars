@@ -59,7 +59,7 @@
     justify-content:space-evenly;
     align-items:stretch;
 }
-.action-area{
+.fight-action-area{
     display:flex;
     justify-content: space-around;
     align-items: center;
@@ -68,11 +68,11 @@
     min-height: 15vh;
     margin-bottom:5vh;
 }
-.enemies{
+.enemy-selection{
     display:grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
 }
-.enemies > *{
+.enemy-selection > *{
     min-height:10vh;
     background:teal;
     border:thin solid black;
@@ -142,24 +142,24 @@
 
 </section>
 
-<div class='action-area'>
+<div class='fight-action-area'>
     <button class='btn btn-primary'>ATTACK</button>
 </div>
 
-<div class='enemies'>
-<div>Enemy</div>
-<div>Enemy</div>    <div>Enemy</div>
-<div>Enemy</div>    <div>Enemy</div>
-<div>Enemy</div>    <div>Enemy</div>
-<div>Enemy</div>    <div>Enemy</div>
-<div>Enemy</div>    <div>Enemy</div>
-<div id='add-enemy'><a href='#ninja-enemy'><i class='fa fa-plus'></i></a></div>
-<div>Enemy</div>    <div>Enemy</div>
-<div>Enemy</div>    <div>Enemy</div>
-<div>Enemy</div>    <div>Enemy</div>
-<div>Enemy</div>    <div>Enemy</div>
-<div>Enemy</div>    <div>Enemy</div>
-<div>Enemy</div>
+<div class='enemy-selection'>
+    <div>Enemy</div>
+    <div>Enemy</div>    <div>Enemy</div>
+    <div>Enemy</div>    <div>Enemy</div>
+    <div>Enemy</div>    <div>Enemy</div>
+    <div>Enemy</div>    <div>Enemy</div>
+    <div>Enemy</div>    <div>Enemy</div>
+    <div id='add-enemy'><a href='#ninja-enemy'><i class='fa fa-plus'></i></a></div>
+    <div>Enemy</div>    <div>Enemy</div>
+    <div>Enemy</div>    <div>Enemy</div>
+    <div>Enemy</div>    <div>Enemy</div>
+    <div>Enemy</div>    <div>Enemy</div>
+    <div>Enemy</div>    <div>Enemy</div>
+    <div>Enemy</div>
 </div>
 
 <div id="ninja-enemy" class='solo-box hidden'>
