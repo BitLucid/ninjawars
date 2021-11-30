@@ -52,7 +52,7 @@ js-deps:
 	echo "corepack enable DONE. Totally sidesteps having to install a yarn version"
 	yarn -v
 	corepack enable
-	yarn install --frozen-lockfile
+	yarn install --immutable
 
 install: build start-chat writable
 	@echo "Don't forget to update webserver configs as necessary."
