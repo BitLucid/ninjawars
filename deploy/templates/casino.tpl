@@ -24,9 +24,6 @@
 #casino-betting{
 	margin: .5em auto;text-align:center;
 }
-.casino-area .description{
-	border-bottom:1px solid gold;
-}
 .casino-area .description p + p {
 	margin: 1rem 0;
 }
@@ -45,18 +42,20 @@
 
 	{include file="flash-message.tpl"}
 
-	<div class="description" style='border-bottom:1px solid gold'>
-		<p>You walk down the alley towards a shadowed door on a low, squat building with golden gilt peeling off of the entranceway. As you enter the small casino, <a href='/npc/attack/guard'>a guard</a> eyes you with caution.</p>
-		<p>No-one else is in the casino.  You walk towards the only table with a wizened old man, missing most of his teeth, behind it. He shows you a shiny coin.</p>
-		<p> The old man says <span class='speech'>Welcome to the Casino, {if $player && $player->name()}{$player->name()|escape}{else}Stranger{/if}!</span>
+	<div class='glassbox' style='border-bottom:1px solid gold'>
+		<div class="description">
+			<p>You walk down the alley towards a shadowed door on a low, squat building with golden gilt peeling off of the entranceway. As you enter the small casino, <a href='/npc/attack/guard'>a guard</a> eyes you with caution.</p>
+			<p>No-one else is in the casino.  You walk towards the only table with a wizened old man, missing most of his teeth, behind it. He shows you a shiny coin.</p>
+			<p> The old man says <span class='speech'>Welcome to the Casino, {if $player && $player->name()}{$player->name()|escape}{else}Stranger{/if}!</span>
 
-		<p class='speech'>Place your bet, call the coin in the air, and let's see who's lucky today!</p>
+			<p class='speech'>Place your bet, call the coin in the air, and let's see who's lucky today!</p>
+		</div>
 	</div>
 
 	<div id='casino-betting'>
-	{foreach from=$pageParts item="part"}
+		{foreach from=$pageParts item="part"}
 		{include file="casino.$part.tpl"}
-	{/foreach}
+		{/foreach}
 
 		<form id="coin_flip" class='js-hooked' action="/casino/bet" method="post" name="coin_flip">
 			<div>

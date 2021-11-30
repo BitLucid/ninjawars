@@ -4656,8 +4656,12 @@ input[type='button'].btn-block {
     animation: 5s ease-out 0s 1 fadeIn;
 }
 
-.fade-in-slowest {
+.fade-in-even-slower {
     animation: 7.5s ease-out 0s 1 fadeIn;
+}
+
+.fade-in-extremely-slow {
+  animation: 10s ease-out 0s 1 fadeIn;
 }
 
 
