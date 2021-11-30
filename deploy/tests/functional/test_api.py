@@ -55,8 +55,8 @@ class TestApi:
         #endpoints = ['player', 'latest_event', 'chats', 'latest_message',
                 #'index', 'latest_chat_id', 'inventory', 'new_chats', 
                 #'send_chat', 'char_search']
-        endpoints = ['player', 'latest_event', 'chats', 'latest_message',
-                'index', 'latest_chat_id', 'new_chats']
+        endpoints = ['player', 'latestEvent', 'chats', 'latestMessage',
+                'index', 'latestChatId', 'newChats']
         player_data = self.pull_json(root+'/api', 'player') 
         assert (player_data is not None)
         for endpoint in endpoints:

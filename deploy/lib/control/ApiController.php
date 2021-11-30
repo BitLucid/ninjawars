@@ -33,6 +33,9 @@ class ApiController extends AbstractController {
 
         // Reject if non alphanumeric and _ chars
         $jsoncallback = (!preg_match('/[^a-z_0-9]/i', $dirty_jsoncallback) ? $dirty_jsoncallback : null);
+        if($jsoncallback !== $dirty_jsoncallback) {
+            return new Response(json_encode(['error'=>'Invalid callback']), 401, ['Content-type'=> 'text/javascript; charset=utf8']);
+        }
 
         $headers = [
             'Access-Control-Allow-Origin'  => '*',
