@@ -80,9 +80,20 @@ Icon
 .TemporaryItems
 .Trashes
 .VolumeIcon.icns
+
+# Yarn 2 files
+.yarn/*
+!.yarn/cache
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+
 node_modules/
 
 .venv/
 deploy/.env
 .vscode/
 karma.conf.js
+.phpunit.result.cache
