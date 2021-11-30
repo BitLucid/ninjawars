@@ -85,7 +85,7 @@ install-system:
 	apt install curl 
 	curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash 
 	#apt install nvm
-	nvm install $(NODE_VERSION)
+	nvm install
 	corepack enable
 	echo "Configure your webserver and postgresql yourself, we recommend nginx ^1.14.0 and postresql ^10.0"
 	echo "If you want ssl with the nginx site, use: https://www.digitalocean.com/community/tutorials/how-to-create-a-self-signed-ssl-certificate-for-nginx-in-ubuntu-16-04"
