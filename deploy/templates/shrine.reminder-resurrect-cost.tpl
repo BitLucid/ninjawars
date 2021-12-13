@@ -1,1 +1,1 @@
-<p class='ninja-notice'>You will lose a kill point for every resurrection. &nbsp;</p>
+<p class='text-centered'><small>(It will cost a kill point to resurrect.) &nbsp;</small></p>

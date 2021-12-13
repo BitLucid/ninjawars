@@ -4583,8 +4583,129 @@ input[type='button'].btn-block {
 }
 
 /**
- * Non-semantic helper classes: please define your styles before this section.
+ * Utilities / Utils / Non-semantic helper classes: please define your styles before this section.
  */
+
+ .skeleton{
+    color: transparent !important;
+    background-image: linear-gradient(90deg, rgba(211, 211, 211, 0) 0, rgba(211, 211, 211,0.8) 50%, rgba(211, 211, 211, 0) 100%);
+    background-size: 100% 100%;
+    background-position: 0 0;
+    background-repeat: no-repeat;
+    animation: skeletoning 3s ease-in-out 0.5s infinite;
+    max-width: fit-content;
+    height:auto;
+    overflow:hidden;
+    border-radius:0.5rem;
+}
+
+.skeleton.off{
+  animation: none;
+  background-image:none;
+  color:inherit;
+}
+
+ @keyframes skeletoning {
+   from {
+       background-position: right center;
+       background-color:transparent;
+    }
+    50% {
+        background-position: left center;
+        background-color:gray;
+    }
+    to {
+       background-position: left top;
+       background-color:transparent;
+    }
+}
+
+.slide-in-from-left {
+    animation: 3s ease-out 0s 1 slideInFromLeft;
+}
+
+@keyframes slideInFromLeft {
+    0% {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.fade-in-flash {
+    /* Will actually be visible for the ease-in period before flashing */
+    animation: 0.5s ease-out 1s 1 fadeIn;
+}
+
+.fade-in-fast {
+    animation: 1s ease-out 0s 1 fadeIn;
+}
+
+.fade-in {
+    animation: 3s ease-out 0s 1 fadeIn;
+}
+
+.fade-in-slow {
+    animation: 3s ease-out 0s 1 fadeIn;
+}
+
+.fade-in-slower {
+    animation: 5s ease-out 0s 1 fadeIn;
+}
+
+.fade-in-even-slower {
+    animation: 7.5s ease-out 0s 1 fadeIn;
+}
+
+.fade-in-extremely-slow {
+  animation: 10s ease-out 0s 1 fadeIn;
+}
+
+
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+
+.flash-3 {
+    animation: 4s ease-out 1s 1 flashAFewTimes;
+}
+
+@keyframes flashAFewTimes {
+    0% {
+        opacity: 1;
+    }
+    25% {
+        opacity: 0;
+    }
+    40% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0;
+    }
+    60% {
+        opacity: 1;
+    }
+    70% {
+        opacity: 0;
+    }
+    75% {
+        opacity: 0.5;
+    }
+    100% {
+        opacity: 1;
+    }
+}
 
 /* For image replacement */
 .ir {

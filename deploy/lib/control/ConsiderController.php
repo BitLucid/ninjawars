@@ -57,7 +57,7 @@ class ConsiderController extends AbstractController {
         $char             = Player::find(SessionFactory::getSession()->get('player_id'));
         $shift = max(0, min(300, (int) RequestWrapper::get('shift')));
         $char_info        = ($char ? $char->data() : []);
-        $next_enemy = $char ? $this->getNextEnemy($char, $shift) : null;
+        $next_enemy = $char ? Enemies::nextTarget($char, $shift) : null;
 
         $inventory = $char ? new Inventory($char) : null;
         $items     = $inventory ? $inventory->counts() : null;
@@ -130,7 +130,6 @@ class ConsiderController extends AbstractController {
         $other_npcs       = NpcFactory::npcsData();
         $npcs             = NpcFactory::customNpcs();
         $enemy_list       = ($char ? Enemies::getCurrent($char) : []);
-        $recent_attackers = ($char ? $this->getRecentAttackers($char) : []);
         $next_enemy = $char ? $this->getNextEnemy($char, $shift) : null;
 
         $inventory = $char ? new Inventory($char) : null;
@@ -162,7 +161,6 @@ class ConsiderController extends AbstractController {
             'other_npcs'       => $other_npcs,
             'char_info'        => $char_info,
             'active_ninjas'    => $active_ninjas,
-            'recent_attackers' => $recent_attackers,
             'enemy_list'       => $enemy_list,
             'next_enemy'       => $next_enemy,
             'shift'           => $shift,
@@ -178,7 +176,7 @@ class ConsiderController extends AbstractController {
      * Render the parts, since the template is always currently the same.
      */
     private function render(array $parts): StreamedViewResponse {
-        return new StreamedViewResponse('Fight', 'enemies.tpl', $parts, ['quickstat'=>false]);
+        return new StreamedViewResponse('Fight', 'fight.tpl', $parts, ['quickstat' => false]);
     }
 
     /**
@@ -273,13 +271,15 @@ class ConsiderController extends AbstractController {
      * @param Player $p_player
      * @return \PDOStatement
      */
-    private function getRecentAttackers(Player $p_player): \PDOStatement {
+    private function getRecentAttackers(Player $p_player, int $limit = 7): \PDOStatement
+    {
         DatabaseConnection::getInstance();
         $statement = DatabaseConnection::$pdo->prepare(
-            'SELECT DISTINCT player_id, send_from, uname, level, health FROM events JOIN players ON send_from = player_id WHERE send_to = :user AND active = 1 AND player_id != :id LIMIT 20'
+            'SELECT DISTINCT player_id, send_from, uname, level, health FROM events JOIN players ON send_from = player_id WHERE send_to = :user AND active = 1 AND player_id != :id LIMIT :limit'
         );
         $statement->bindValue(':user', $p_player->id(), PDO::PARAM_INT);
         $statement->bindValue(':id', $p_player->id(), PDO::PARAM_INT);
+        $statement->bindValue(':limit', $limit, PDO::PARAM_INT);
 
         $statement->execute();
 

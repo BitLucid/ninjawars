@@ -63,9 +63,6 @@ display:none; /* Hidden by default to avoid FOUC */
   display:inherit;
 }
 /** Text to accent as links later **/
-a.dull-link{
-  color:ghostwhite;
-}
 a.dull-link#join-link{
   font-size:3.5rem;
 }
@@ -79,26 +76,26 @@ a.dull-link#join-link{
 
 <div id='progression'>
   <div class='not-user js-target'>
-  	<p><a class='dull-link' target='main' href='/signup' id='join-link'>Become a Ninja!&shy;</a></p>
+  	<p><a class='fade-in' target='main' href='/signup' id='join-link'>Become a Ninja!&shy;</a></p>
   	<img class='down-arrow' src='{cachebust file="/images/Down_Arrow_Icon.png"}' alt='then'>
   </div>
 
 <div id='later-progression'>
-	<p>Explore the <a class='dull-link' target='main' href='/map'><i class="fa fa-map" aria-hidden="true"></i> map</a> and <a class='dull-link' target='main' href='/enemies#npcs'><i class="fa fa-bolt" aria-hidden="true"></i> attack monsters</a>, gather loot</p>
+	<p>Explore the <a class='fade-in' target='main' href='/map'><i class="fa fa-map" aria-hidden="true"></i> map</a> and <a class='fade-in' target='main' href='/enemies#npcs'><i class="fa fa-bolt" aria-hidden="true"></i> attack monsters</a>, gather loot</p>
 	<img class='down-arrow' src='{cachebust file="/images/Down_Arrow_Icon.png"}' alt='then'>
-	<p>Kill other <a class='dull-link' target='main' href='/list'><i class="fa fa-star" aria-hidden="true"></i> Ninja</a>, get stronger at the <a class='dull-link' target='main' href='/dojo'><i class="fas fa-warehouse"></i> Dojo</a></p>
+	<p>Kill other <a class='fade-in-slow' target='main' href='/list'><i class="fa fa-star" aria-hidden="true"></i> Ninja</a>, get stronger at the <a class='fade-in-slower' target='main' href='/dojo'><i class="fas fa-warehouse"></i> Dojo</a></p>
 	<img class='down-arrow' src='{cachebust file="/images/Down_Arrow_Icon.png"}' alt='then'>
-	<p>Join a <a class='dull-link' target='main' href='/clan'><i class="fa fa-users" aria-hidden="true"></i> Clan</a>, wage war on other ninja clans</p>
+	<p>Join a <a class='fade-in-even-slower' target='main' href='/clan'><i class="fa fa-users" aria-hidden="true"></i> Clan</a>, wage war on other ninja clans</p>
 	<img class='down-arrow' src='{cachebust file="/images/Down_Arrow_Icon.png"}' alt='then'>
-	<p>Live by the Shuriken, and <a class='dull-link' target='main' href='/shrine'>avoid death ⛩</a> if you can!</p>
+	<p>Live by the Shuriken, and <a class='fade-in-extremely-slow' target='main' href='/shrine'>avoid death</a> if you can!</p>
 	</div>
 </div>
 
 
 
 
-<div class='centered'>
-  <div id='show-faqs' class='accent-sandwiched'>
+<div class='centered glassbox'>
+  <div id='show-faqs' class='accent-sandwiched glassbox'>
     <a target='main' href="/intro?show_faqs=1" id='show-faqs-link'>Show More Info</a>
   </div>
 </div>

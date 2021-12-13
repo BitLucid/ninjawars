@@ -12,17 +12,19 @@
 </div>
 
 <p class='glassbox'>
-  Your current gold: <span class='gold-count'>石{$gold|number_format|escape}</span>
+  Your current gold: <span class='gold-count fade-in-slow'>石{$gold|number_format|escape}</span>
 </p>
 
 <form id="shop_form" action="/shop/purchase" method="post" name="shop_form">
-  <p class='text-centered slightly-padded'>
+  <div class='text-centered slightly-padded'>
   {if $authenticated}
     <em class='speech'>How many of these items would you like?</em> <input id="quantity" type="number" min='1' max='99' name="quantity" class="textField">
   {else}
-    To purchase the items below you must <a href="/signup?referrer=">become a ninja</a>.
+    <div class='slide-in-from-left'>
+      To purchase the items below you must <a href="/signup?referrer=ninjawars.net">become a ninja</a>.
+    </div>
   {/if}
-  </p>
+  </div>
   <div class='shop-list'>
 		{foreach from=$item_costs item="item_info" key="item_internal_name"}
     <div class='item-purchase-area'>

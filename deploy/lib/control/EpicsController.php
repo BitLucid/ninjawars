@@ -5,6 +5,9 @@ namespace NinjaWars\core\control;
 use Pimple\Container;
 use NinjaWars\core\control\AbstractController;
 use NinjaWars\core\data\NpcFactory;
+use NinjaWars\core\extensions\SessionFactory;
+use NinjaWars\core\data\Player;
+use NinjaWars\core\data\Clan;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use NinjaWars\core\extensions\StreamedViewResponse;
@@ -41,6 +44,8 @@ class EpicsController extends AbstractController
             return $authed;
         }
 
+        $char             = Player::find(SessionFactory::getSession()->get('player_id'));
+        $clan             = $char->getClan();
         $other_npcs       = NpcFactory::npcsData();
         $npcs             = NpcFactory::customNpcs();
 
@@ -48,10 +53,15 @@ class EpicsController extends AbstractController
         $static_nodes = include(ROOT . 'lib/data/raw/nodes.php');
 
         $parts = [
-            'nodes' => $static_nodes,
-            'npcs' => $npcs,
-            'other_npcs' => $other_npcs,
+            'nodes'             => $static_nodes,
+            'npcs'              => $npcs,
+            'other_npcs'        => $other_npcs,
             'error'             => $error,
+            'char'              => $char,
+            'ninja'             => $char,
+            'clan'              => $clan,
+            'myClan'            => $clan,
+            'clans'     => Clan::rankings(),
         ];
 
         return new StreamedViewResponse('UI Epics', 'epics.tpl', $parts);

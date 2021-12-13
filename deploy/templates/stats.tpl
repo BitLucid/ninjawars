@@ -40,8 +40,7 @@
 </div>
 
 <div class='stats-avatar'>
-  Avatar: (change your avatar for your account email at <a rel="noopener noreferrer" target="_blank" href='//gravatar.com'>gravatar.com</a>) →
-  {include file="gravatar.tpl" gurl=$char->avatarUrl()}
+  {include file="gravatar.tpl" gurl=$char->avatarUrl()} &larr; (change your avatar for your account email at <a rel="noopener noreferrer" target="_blank" href='//gravatar.com'>gravatar.com</a>)
 </div>
 <section class='two-column'>
   <div class='primary'>
@@ -77,34 +76,34 @@
         {/if}
     </ul>
 
-<section class='details'>
-    <legend>Details</legend>
-    <div class='ninja-description'>
-      {$char->uname|escape} <span id='ninja-description-append'>{if !$char->description}is.{else}{$char->description|escape}{/if}</span>
-    </div>
+    <section class='details'>
+        <legend>Details</legend>
+        <div class='ninja-description'>
+          {$char->uname|escape} <span id='ninja-description-append'>{if !$char->description}is.{else}{$char->description|escape}{/if}</span>
+        </div>
 
-    {if $char->goals}
-    <div class='ninja-goals'>
-      Goals: {$char->goals|escape}
-    </div>
-    {/if}
-    {if $char->instincts}
-    <div class='ninja-instincts'>
-      Instinctually: {$char->instincts|escape}
-    </div>
-    {/if}
-    {if $char->beliefs}
-    <div class='ninja-beliefs'>
-      Believes that: {$char->beliefs|escape}
-    </div>
-    {/if}
-    {if $char->traits}
-    <div class='ninja-traits'>
-      Traits: {$char->traits|escape}
-    </div>
-    {/if}
+        {if $char->goals}
+        <div class='ninja-goals'>
+          <strong>Goals:</strong> {$char->goals|escape}
+        </div>
+        {/if}
+        {if $char->instincts}
+        <div class='ninja-instincts'>
+          <strong>Instinctually:</strong> {$char->instincts|escape}
+        </div>
+        {/if}
+        {if $char->beliefs}
+        <div class='ninja-beliefs'>
+          <strong>Believes that:</strong> {$char->beliefs|escape}
+        </div>
+        {/if}
+        {if $char->traits}
+        <div class='ninja-traits'>
+          <strong>Traits:</strong> {$char->traits|escape}
+        </div>
+        {/if}
 
-</section>
+    </section>
 
   </div><!-- End of primary -->
 

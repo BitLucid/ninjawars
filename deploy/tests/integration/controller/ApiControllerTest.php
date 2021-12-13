@@ -35,6 +35,8 @@ class ApiControllerTest extends NWTest {
         return json_decode($matches[1]);
     }
 
+
+
     public function testIllegalCallbackFails() {
         $request = new Request([
             'type'         => 'player',
@@ -43,7 +45,7 @@ class ApiControllerTest extends NWTest {
 
         RequestWrapper::inject($request);
         $result = $this->controller->nw_json();
-        $this->assertEquals(json_encode(false), $result->getContent());
+        $this->assertEquals('{"error":"Invalid callback"}', $result->getContent());
     }
 
     public function testIllegalType() {
@@ -54,7 +56,7 @@ class ApiControllerTest extends NWTest {
 
         RequestWrapper::inject($request);
         $result = $this->controller->nw_json();
-        $this->assertEquals('', $result->getContent());
+        $this->assertEquals('callback(null)', $result->getContent());
     }
 
     public function testSearch() {
@@ -90,14 +92,14 @@ class ApiControllerTest extends NWTest {
 
     public function testLatestChat() {
         $request = new Request([
-            'type'         => 'latest_chat_id',
+            'type'         => 'latestChatId',
             'jsoncallback' => self::CALLBACK,
         ], []);
 
         RequestWrapper::inject($request);
         $result = $this->controller->nw_json();
         $payload = $this->extractPayload($result);
-
+        $this->assertInstanceOf('stdClass', $payload);
         $this->assertObjectHasAttribute('latest_chat_id', $payload);
     }
 
@@ -135,33 +137,34 @@ class ApiControllerTest extends NWTest {
 
     public function testLatestEvent() {
         $request = new Request([
-            'type'         => 'latest_event',
+            'type'         => 'latestEvent',
             'jsoncallback' => self::CALLBACK,
         ], []);
 
         RequestWrapper::inject($request);
         $result = $this->controller->nw_json();
         $payload = $this->extractPayload($result);
-
+        $this->assertInstanceOf('stdClass', $payload);
         $this->assertObjectHasAttribute('event', $payload);
     }
 
     public function testLatestMessage() {
         $request = new Request([
-            'type'         => 'latest_message',
+            'type'         => 'latestMessage',
             'jsoncallback' => self::CALLBACK,
         ], []);
 
         RequestWrapper::inject($request);
         $result = $this->controller->nw_json();
         $payload = $this->extractPayload($result);
-
+        $this->assertInstanceOf('stdClass', $payload);
         $this->assertObjectHasAttribute('message', $payload);
     }
 
-    public function testDeactivateChar() {
+    public function testDeactivateCharError()
+    {
         $request = new Request([
-            'type'         => 'deactivate_char',
+            'type'         => 'deactivateChar',
             'data'         => '-666',
             'jsoncallback' => self::CALLBACK,
         ], []);
@@ -173,4 +176,22 @@ class ApiControllerTest extends NWTest {
         // There should be no such character to deactivate
         $this->assertObjectHasAttribute('error', $payload);
     }
+
+    public function testReactivateCharError()
+    {
+        // Can't test much more than this because only admins can reactivate
+        $request = new Request(['type'         => 'reactivateChar',
+            'data'         => '-666',
+            'jsoncallback' => self::CALLBACK,
+        ], []);
+
+        RequestWrapper::inject($request);
+        $result = $this->controller->nw_json();
+        $payload = $this->extractPayload($result);
+
+        // There should be no such character to reactivate
+        $this->assertObjectHasAttribute('error', $payload);
+    }
+
+
 }

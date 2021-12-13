@@ -1,17 +1,22 @@
 <?php
-// Debug a value for html, if debugging is turned on.
+
+/**
+ *  Debug a value for html, if debugging is turned on.
+ */
 function debug($val) {
     if (DEBUG) {
     	$vals = func_get_args();
-    	foreach($vals as $val){
+		foreach ($vals as $fval) {
 		    echo "<pre class='debug' style='font-size:12pt;background-color:white;color:black;position:relative;z-index:10'>";
-		    var_dump($val);
+			var_dump($fval);
 		    echo "</pre>";
         }
     }
 }
 
-// Allow debugging by a setting in the cookie.
+/*
+ * Allow debugging by a setting in the cookie.
+ */
 function nw_debug() {
 	$result = false;
 

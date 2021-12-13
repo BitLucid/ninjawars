@@ -63,27 +63,36 @@
 	{if $first_account}
 	<section class='account-info inline-block half-width centered'>
 		<div>
-		<h3>Account Info</h3>
-		<dl class='left-aligned'>
-			<dt>Account Identity</dt><dd>{$first_account->identity()|escape}</dd>
-			<dt>Active Email</dt><dd>{$first_account->getActiveEmail()|escape}</dd>
-			<dt>Karma Total</dt><dd>{$first_account->getKarmaTotal()|escape}</dd>
-			<dt>Last Login</dt><dd><time class='timeago' datetime='{$first_account->getLastLogin()|escape}'>{$first_account->getLastLogin()|escape}</time></dd>
-			<dt>Last Login Failure</dt><dd><time class='timeago' datetime='{$first_account->getLastLoginFailure()|escape}'>{$first_account->getLastLoginFailure()|escape}</time></dd>
-			<dt>Operational</dt><dd>{if $first_account->isOperational()}true{else}false{/if}</dd>
-			<dt>Confirmed</dt><dd>{if $first_account->isConfirmed()}1{else}0{/if}</dd>
-		</dl>
+			<h3>Account Info</h3>
+			<dl class='left-aligned'>
+				<dt>Account Identity</dt><dd>{$first_account->identity()|escape}</dd>
+				<dt>Active Email</dt><dd>{$first_account->getActiveEmail()|escape}</dd>
+				<dt>Karma Total</dt><dd>{$first_account->getKarmaTotal()|escape}</dd>
+				<dt>Last Login</dt><dd><time class='timeago' datetime='{$first_account->getLastLogin()|escape}'>{$first_account->getLastLogin()|escape}</time></dd>
+				<dt>Last Login Failure</dt><dd><time class='timeago' datetime='{$first_account->getLastLoginFailure()|escape}'>{$first_account->getLastLoginFailure()|escape}</time></dd>
+				<dt>Operational</dt><dd>{if $first_account->isOperational()}true{else}false{/if}</dd>
+				<dt>Confirmed</dt><dd>{if $first_account->isConfirmed()}1{else}0{/if}</dd>
+			</dl>
 		</div>
 		<details class='constrained' style='margin-bottom:1.25rem'>
 			<summary>SEE ACTIONS TO TAKE</summary>
 			<div>
-				<div id='deactivate-character'>
-					<form method='post' action='' onSubmit='return confirmDeactivation(event, {$char_info.player_id}, afterDeactivation)'>
-					<input type='hidden' name='deactivate' value='1'>
-					<button title='Will make this character non-active' type='submit' class='btn btn-warning' name='submit'>
-						Make {$char_info.uname|escape} Non-Operational
+				<div>
+				{if $char_info.active === 1}
+					<button class='btn btn-warning' id='start-deactivate'>
+						Begin to Deactivate {$char_info.uname|escape}
 					</button>
-					</form>
+					<button type='button' class='btn btn-danger' style='display:none' id='deactivate-character' data-char-id="{$char_info.player_id}">
+						Are you sure you want to deactivate {$char_info.uname|escape}
+					</button>
+					{/if}
+				</div>
+				<div>
+					{if $char_info.active !== 1}
+					<button type='button' class='btn btn-default' id='reactivate-character' data-char-id="{$char_info.player_id}">
+						Reactivate {$char_info.uname|escape}
+					</button>
+					{/if}
 				</div>
 			</div>
 		</details>
@@ -245,6 +254,6 @@
 {include file="ninjamaster.items.tpl"}
 </section>
 
-<script src='/js/ninjamaster.js'></script>
+<script type='module' src='/js/ninjamaster.js'></script>
 
 </div><!-- End of #admin-actions -->

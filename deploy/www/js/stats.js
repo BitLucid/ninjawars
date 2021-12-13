@@ -10,7 +10,6 @@ import { debounce, logger } from './utils.js';
  * Update the Description area text on the fly
  */
 (() => {
-  logger().log('Logger run.');
   $('#description').on('input',
     debounce((e) => {
       logger().log('Field change registered.');

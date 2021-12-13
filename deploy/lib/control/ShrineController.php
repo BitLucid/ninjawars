@@ -41,12 +41,12 @@ class ShrineController extends AbstractController {
 	public function index(Container $p_dependencies) {
 		$player = $p_dependencies['current_player'];
 
-		$pageParts = $this->servicesNeeded($player);
+		$shrineSections = $this->servicesNeeded($player);
 
-		array_unshift($pageParts, 'entrance');
+		array_unshift($shrineSections, 'entrance');
 
 		return $this->render([
-			'pageParts'        => $pageParts,
+			'shrineSections'        => $shrineSections,
 			'player'           => $player,
 			'freeResurrection' => $this->isResurrectFree($player),
 		]);
@@ -66,33 +66,33 @@ class ShrineController extends AbstractController {
         $player = $p_dependencies['current_player'];
 
 		try {
-			$pageParts = [];
+			$shrineSections = [];
 
 			if ($player->health <= 0) {
 				$costType = $this->_resurrect($player);
 
-				$pageParts[] ='result-resurrect';
-				$pageParts[] = self::$resurrectResultViews[$costType];
+				$shrineSections[] = 'result-resurrect';
+				$shrineSections[] = self::$resurrectResultViews[$costType];
 			}
 
 			$healAmount = $this->calculateMaxHeal($player);
 
 			if ($healAmount > 0 && $player->is_hurt_by() > 0) {
 				$this->_heal($player, $healAmount);
-				$pageParts[] = 'result-heal';
+				$shrineSections[] = 'result-heal';
 			}
 
-			if (empty($pageParts)) {
-				$pageParts[] = 'entrance';
+			if (empty($shrineSections)) {
+				$shrineSections[] = 'entrance';
 			}
 
-			$pageParts = array_merge($pageParts, $this->servicesNeeded($player));
+			$shrineSections = array_merge($shrineSections, $this->servicesNeeded($player));
 
             $player->save();
 
 			return $this->render([
 				'player'         => $player,
-				'pageParts'      => $pageParts,
+				'shrineSections'      => $shrineSections,
 				'killCost'       => self::RES_COST_KILLS,
 				'turnCost'       => self::RES_COST_TURNS,
 				'has_chi'        => $skillController->hasSkill('Chi', $player->name()),
@@ -117,7 +117,7 @@ class ShrineController extends AbstractController {
 		try {
 			$costType = $this->_resurrect($player);
 
-			$pageParts = array_merge(
+			$shrineSections = array_merge(
 				[
 					'result-resurrect',
 					self::$resurrectResultViews[$costType],
@@ -128,7 +128,7 @@ class ShrineController extends AbstractController {
             $player->save();
 
 			return $this->render([
-				'pageParts' => $pageParts,
+				'shrineSections' => $shrineSections,
 				'player'    => $player,
 				'killCost'  => self::RES_COST_KILLS,
 				'turnCost'  => self::RES_COST_TURNS,
@@ -160,13 +160,13 @@ class ShrineController extends AbstractController {
 		try {
 			$this->_heal($player, (int)$healAmount);
 
-			$pageParts = $this->servicesNeeded($player);
-			array_unshift($pageParts, 'result-heal');
+			$shrineSections = $this->servicesNeeded($player);
+			array_unshift($shrineSections, 'result-heal');
 
             $player->save();
 
 			return $this->render([
-				'pageParts'      => $pageParts,
+				'shrineSections'      => $shrineSections,
 				'player'         => $player,
 				'has_chi'        => $skillController->hasSkill('Chi', $player->name()),
 			]);
@@ -200,13 +200,13 @@ class ShrineController extends AbstractController {
 			$player->setGold($player->gold - self::CURE_COST_GOLD);
             $player->save();
 
-			$pageParts = [
+			$shrineSections = [
 				'chant',
 				'result-cure',
 			];
 
 			return $this->render([
-				'pageParts' => array_merge($pageParts, $this->servicesNeeded($player)),
+				'shrineSections' => array_merge($shrineSections, $this->servicesNeeded($player)),
 			]);
 		}
 	}
@@ -487,11 +487,11 @@ class ShrineController extends AbstractController {
 	 * @return StreamedViewResponse
 	 */
 	private function renderError($p_message, Player $p_player) {
-		$pageParts = $this->servicesNeeded($p_player);
-		array_unshift($pageParts, 'entrance');
+		$shrineSections = $this->servicesNeeded($p_player);
+		array_unshift($shrineSections, 'entrance');
 
-        return $this->render([
-            'pageParts' => $pageParts,
+		return $this->render([
+			'shrineSections' => $shrineSections,
             'player'    => $p_player,
             'error'     => $p_message,
         ]);

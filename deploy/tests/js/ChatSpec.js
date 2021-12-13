@@ -38,10 +38,10 @@ describe('chat', function () {
                     Chat.domain('https://invaliddomainnamehere.com')
                 ).toEqual('chatapi.ninjawars.net');
                 expect(Chat.domain('https://localhost:2345/wark/zig')).toEqual(
-                    'localhost'
+                    'localhost', 'Chat domain test did not allow localhost'
                 );
                 expect(Chat.domain('https://localhost:8765/#!/list')).toEqual(
-                    'localhost'
+                    'localhost', 'Chat domain test did not allow custom localhost'
                 );
             });
         });

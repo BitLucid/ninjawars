@@ -48,8 +48,11 @@ check: pre-test
 
 js-deps:
 	node -v
+	corepack enable
+	echo "corepack enable DONE. Totally sidesteps having to install a yarn version"
 	yarn -v
-	yarn install --frozen-lockfile
+	corepack enable
+	yarn install --immutable
 
 install: build start-chat writable
 	@echo "Don't forget to update webserver configs as necessary."
@@ -82,8 +85,8 @@ install-system:
 	apt install curl 
 	curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash 
 	#apt install nvm
-	nvm install $(NODE_VERSION)
-	npm install -g yarn
+	nvm install
+	corepack enable
 	echo "Configure your webserver and postgresql yourself, we recommend nginx ^1.14.0 and postresql ^10.0"
 	echo "If you want ssl with the nginx site, use: https://www.digitalocean.com/community/tutorials/how-to-create-a-self-signed-ssl-certificate-for-nginx-in-ubuntu-16-04"
 

@@ -58,7 +58,7 @@
        <a class='peer-name' title='View {$loop_peer.uname|escape} to attack them' href='/player?player_id={$loop_peer.player_id}' target='main'>{$loop_peer.uname|escape}</a>
 		{if $char_info.health}
        <span class='stats-block'>
-         {include file="health_bar.tpl" health=$loop_peer.health level=$loop_peer.level}
+        {include file="health_bar.tpl" health=$loop_peer.health level=$loop_peer.level}
        </span>
 <!-- (level {$loop_peer.level}) -->
 		{/if}
@@ -102,23 +102,10 @@
 	{include file="enemy-matches.tpl" enemies=$found_enemies}
 {elseif isset($enemy_match) && $enemy_match}
 	<div class='hidden'>
-	  Your search returned no ninja. maybe you should make an enemy of someone who recently attacked you.
+Your search returned no ninja. Maybe you should make an enemy of someone who recently attacked you.
 		{include file="enemy-matches.tpl" enemies=$recent_attackers}
 	</div>
 {/if}
 </section>
 
-
-{if !empty($recent_attackers)}
-	{include file="enemies-recent-attackers.tpl" recent_attackers=$recent_attackers}
-{/if}
-
   {include file='npc.list.tpl'}
-
-
-<!-- Display recently active ninja -->
-{* {include file="list.active.tpl" active_ninja=$active_ninjas} *}
-
-<!--  Deactivating this functionality for now.
-<script src='{cachebust file="/js/enemies.js"}'></script>
--->

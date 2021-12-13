@@ -94,4 +94,43 @@ class Enemies
         );
         return $enemies;
     }
+
+    /**
+     * Select nearest character down in rank
+     *
+     * @param Player $char
+     * @return Player
+     */
+    public static function nextTarget(Player $char, int $shift = 0): ?Player
+    {
+        $sel =
+            '
+            SELECT rank_id, uname, level, player_id, health FROM players JOIN player_rank ON _player_id = player_id 
+            WHERE active = 1 AND level <= (5 + :char_level) AND health > 0 
+                AND player_id != :char_id2
+            ORDER BY score < (SELECT score FROM player_rank WHERE _player_id = :char_id) desc, score DESC LIMIT 1 OFFSET greatest(0, :off)';
+        $enemies = query_array(
+            $sel,
+            [
+                ':char_id'  => [$char->id(), PDO::PARAM_INT],
+                ':char_id2'  => [$char->id(), PDO::PARAM_INT],
+                ':char_level' => [$char->level, PDO::PARAM_INT],
+                ':off'      => [$shift, PDO::PARAM_INT],
+            ]
+        );
+        return !empty($enemies) ? Player::find(reset($enemies)['player_id']) : null;
+    }
+
+    /**
+     * Wrap nextTarget by getting the player from the characterId
+     *
+     * @param int $char_id
+     * @return Player
+     */
+    public static function nextTargetById(int $char_id, int $shift = 0): ?Player
+    {
+        $char = Player::find($char_id);
+        $shift = max(-300, min(300, $shift));
+        return Enemies::nextTarget($char, $shift);
+    }
 }

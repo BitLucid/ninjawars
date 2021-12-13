@@ -6,6 +6,6 @@
 {foreach from=$events item="loop_event"}
 	{include file="event.single.tpl" event=$loop_event}
 {foreachelse}
-  You have not been attacked recently.
+  <div class='ninja-info'>Nothing has happened to you recently.</div>
 {/foreach}
 </dl>
