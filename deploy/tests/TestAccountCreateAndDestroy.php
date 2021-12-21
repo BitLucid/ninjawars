@@ -31,6 +31,7 @@ class TestAccountCreateAndDestroy {
      */
     public static function purge_test_accounts($test_ninja_nm=null) {
         $test_ninja_name = $test_ninja_nm? $test_ninja_nm : self::$test_ninja_name;
+        $alt_test_ninja_name = self::$alt_test_ninja_name;
         $active_email = self::$test_email;
         $alt_active_email = self::$alt_test_email;
 
@@ -39,12 +40,13 @@ class TestAccountCreateAndDestroy {
             'left join account_players on _player_id = player_id '.
             'left join accounts on _account_id = account_id '.
             'where active_email = :active_email or account_identity= :ae2 '.
-            'or players.uname = :uname or active_email = :alt_active_email '.
+                'or players.uname = :uname or players.uname = :uname2 or active_email = :alt_active_email ' .
             'or account_identity = :alt_active_email2)',
             [
                 ':active_email'      => $active_email,
                 ':ae2'               => $active_email,
                 ':uname'             => $test_ninja_name,
+                ':uname2'             => $alt_test_ninja_name,
                 ':alt_active_email'  => $alt_active_email,
                 ':alt_active_email2' => $alt_active_email,
             ]
@@ -104,7 +106,7 @@ class TestAccountCreateAndDestroy {
         $found = Player::findByName($ninja_name);
 
         if ($found) {
-            throw new Exception("Test user found [$found] with name [$ninja_name] already exists");
+            throw new Exception("Test user found [$found] with id [" . $found->id() . "] already exists");
         }
 
         $ip = (isset($_SERVER['REMOTE_ADDR']) && $_SERVER['REMOTE_ADDR'] ? $_SERVER['REMOTE_ADDR'] : '127.0.0.1');
