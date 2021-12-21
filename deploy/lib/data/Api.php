@@ -19,7 +19,7 @@ class Api
      */
     public function nextTarget($data)
     {
-        ['offset' => $offset] = ['offset' => $data];
+        $offset = $data;
         $char = Player::find(SessionFactory::getSession()->get('player_id'));
         $target = $char ? Enemies::nextTarget($char, (int) $offset) : null;
         return $char && $target ? $target->publicData() : [];

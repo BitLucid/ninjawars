@@ -201,6 +201,7 @@ class ApiControllerTest extends NWTest {
         $request = new Request([
             'type'         => 'nextTarget',
             'jsoncallback' => self::CALLBACK,
+            'data'         => 0,
         ], []);
 
         RequestWrapper::inject($request);
@@ -212,11 +213,10 @@ class ApiControllerTest extends NWTest {
 
     public function testNextTargetShifted()
     {
-        $this->markTestIncomplete();
         $request = new Request([
             'type'         => 'nextTarget',
             'jsoncallback' => self::CALLBACK,
-            'offset'        => 0,
+            'data'        => 0,
         ], []);
 
         RequestWrapper::inject($request);
@@ -225,7 +225,7 @@ class ApiControllerTest extends NWTest {
         $request2 = new Request([
             'type'         => 'nextTarget',
             'jsoncallback' => self::CALLBACK,
-            'offset'        => 3,
+            'data'        => 3,
         ], []);
 
         RequestWrapper::inject($request2);
