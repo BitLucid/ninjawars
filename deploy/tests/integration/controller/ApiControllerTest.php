@@ -212,6 +212,7 @@ class ApiControllerTest extends NWTest {
 
     public function testNextTargetShifted()
     {
+        $this->markTestIncomplete();
         $request = new Request([
             'type'         => 'nextTarget',
             'jsoncallback' => self::CALLBACK,
