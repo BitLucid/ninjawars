@@ -2,6 +2,15 @@
 /* Manipulate chats to and from the api, run websockets server by sudo make run-chat */
 /* jshint browser: true, white: true, plusplus: true */
 /* global $, NW, Chat, jQuery, window.conn, window.parent, window.WebSocket, window.Chat */
+
+// eslint-disable-next-line no-var
+var logger = window.logger || {
+  log: console ? console.log : () => { },
+};
+
+// eslint-disable-next-line no-var
+var Chat = undefined !== window.Chat ? window.Chat : {};
+
 (function ($) {
   // Add shake plugin to jQuery
   $.fn.shake = function (options) {
@@ -64,23 +73,21 @@
  Note that the Chat var may pre-exist
 */
 
-const Chat = undefined !== window.Chat ? window.Chat : {};
-
 // Get all the initial chat messages and render them.
 Chat.getExistingChatMessages = function () {
-  console.log('Existing chat messages requested');
+  logger.log('Existing chat messages requested');
   const since = '1424019122';
 
   $.getJSON(
     `/api?type=new_chats&since=${encodeURIComponent(since)
     }&jsoncallback=?`,
     (data) => {
-      console.log('Existing chats data found:');
-      console.log(data);
+      logger.log('Existing chats data found:');
+      logger.log(data);
       window.storeChats = data;
 
       if (data && data.new_chats && data.new_chats.chats) {
-        console.log('Rendering pre-existing chat messages.');
+        logger.log('Rendering pre-existing chat messages.');
 
         $.each(data.new_chats.chats, (key, val) => {
           Chat.renderChatMessage(val);
@@ -106,14 +113,13 @@ Chat.displayMessages = function () {
  */
 Chat.renderChatMessage = function (p_data) {
   if (!p_data.message) {
-    console.log(
+    logger.log(
       'Error: Bad data sent in to renderChatMessage to be rendered',
     );
-    console.log(p_data);
+    logger.log(p_data);
     return false;
   }
 
-  let area = null;
   const fullLink = `player.php?player_id=${p_data.sender_id}`;
   const list = $('#mini-chat-display'); // The outer container.
 
@@ -123,16 +129,11 @@ Chat.renderChatMessage = function (p_data) {
   const messageArea = list.find('.chat-message.template').clone();
   list.end();
 
-  if (!list.length) {
-    area = 'list';
-  } else if (!authorArea.length) {
-    area = 'authorArea';
-  } else if (!messageArea.length) {
-    area = 'messageArea';
-  }
+  const missingArea = (!list.length && 'list') || (!authorArea.length && 'authorArea') || (!messageArea.length && 'messageArea');
 
-  if (area) {
-    console.log(`Chat ${area} not found to place chats in!`);
+  if (missingArea) {
+    logger.log(`Chat ${missingArea} not found to place chats in!`);
+    return false;
   }
 
   // put the new content into the author and message areas
@@ -193,10 +194,10 @@ Chat.send = function (messageData) {
   let passfail = true;
   try {
     window.conn.send(JSON.stringify(messageData)); // Turn the data into a json object to pass.
-    console.log('Chat message sent.');
+    logger.log('Chat message sent.');
   } catch (ex) {
     // Maybe the connection send didn't work out.
-    console.log(ex.message);
+    logger.log(ex.message);
     passfail = false;
   }
 
@@ -217,10 +218,10 @@ Chat.chatReady = function () {
     $submitter.show();
   } else {
     $submitter.hide();
-    console.log('Warning: Not logged in to be able to send messages.');
+    logger.log('Warning: Not logged in to be able to send messages.');
   }
 
-  console.log('Chat connected and ready');
+  logger.log('Chat connected and ready');
   return true;
 };
 
@@ -236,7 +237,7 @@ Chat.domain = function (url) {
   const link = document.createElement('a');
   link.setAttribute('href', url);
   const host = link.hostname;
-  console.log(host);
+  logger.log(host);
 
   if (host.indexOf('.local') > -1) {
     return `chatapi.${host}`;
@@ -266,12 +267,12 @@ $(() => {
   if (window.WebSocket !== undefined) {
     // Browser is compatible.
     const connectionString = `${Chat.config.protocol}://${Chat.config.server}:${Chat.config.port}`;
-    console.log(`Connecting to ${connectionString}`);
+    logger.log(`Connecting to ${connectionString}`);
 
     window.conn = new WebSocket(connectionString);
     /* eslint no-unused-vars: 0 */
     window.conn.onopen = function (e) {
-      console.log('Websocket Connection established!');
+      logger.log('Websocket Connection established!');
       Chat.chatReady();
     };
 
@@ -282,7 +283,7 @@ $(() => {
       }
     };
   } else {
-    console.log('Browser not compatible with websockets');
+    logger.log('Browser not compatible with websockets');
   }
 
   $('#chat-loading').show(); // Show the chat loading area.
