@@ -29,8 +29,8 @@
         "oomphinc/composer-installers-extender": "^2.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "^9.0",
-        "spatie/phpunit-watcher": "^1"
+        "phpunit/phpunit": "9.5.8",
+        "spatie/phpunit-watcher": "1.23.2"
     },
     "extra": {
         "installer-types": [
