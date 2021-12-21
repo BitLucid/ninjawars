@@ -12,6 +12,7 @@ class ApiControllerTest extends NWTest {
 
     public function setUp():void {
         parent::setUp();
+        parent::login();
         // Mock the post request.
         $this->controller = new ApiController();
         $this->PAYLOAD_RE = '/^'.(self::CALLBACK).'\((.*)\)$/';
@@ -23,6 +24,7 @@ class ApiControllerTest extends NWTest {
     public function tearDown():void {
         RequestWrapper::inject(new Request([]));
         TestAccountCreateAndDestroy::purge_test_accounts();
+        parent::loginTearDown();
         $session = SessionFactory::getSession();
         $session->invalidate();
         parent::tearDown();
@@ -46,6 +48,7 @@ class ApiControllerTest extends NWTest {
         RequestWrapper::inject($request);
         $result = $this->controller->nw_json();
         $this->assertEquals('{"error":"Invalid callback"}', $result->getContent());
+        TestAccountCreateAndDestroy::purge_test_accounts();
     }
 
     public function testIllegalType() {
@@ -191,6 +194,42 @@ class ApiControllerTest extends NWTest {
 
         // There should be no such character to reactivate
         $this->assertObjectHasAttribute('error', $payload);
+    }
+
+    public function testNextTarget()
+    {
+        $request = new Request([
+            'type'         => 'nextTarget',
+            'jsoncallback' => self::CALLBACK,
+        ], []);
+
+        RequestWrapper::inject($request);
+        $result = $this->controller->nw_json();
+        $payload = $this->extractPayload($result);
+        $this->assertInstanceOf('stdClass', $payload);
+        $this->assertObjectHasAttribute('uname', $payload);
+    }
+
+    public function testNextTargetShifted()
+    {
+        $request = new Request([
+            'type'         => 'nextTarget',
+            'jsoncallback' => self::CALLBACK,
+            'offset'        => 0,
+        ], []);
+
+        RequestWrapper::inject($request);
+        $payload = $this->extractPayload($this->controller->nw_json());
+        $first_target = $payload->uname;
+        $request2 = new Request([
+            'type'         => 'nextTarget',
+            'jsoncallback' => self::CALLBACK,
+            'offset'        => 3,
+        ], []);
+
+        RequestWrapper::inject($request2);
+        $payload = $this->extractPayload($this->controller->nw_json());
+        $this->assertNotEquals($first_target, $payload->uname);
     }
 
 
