@@ -207,7 +207,6 @@ class ApiControllerTest extends NWTest {
         RequestWrapper::inject($request);
         $result = $this->controller->nw_json();
         $payload = $this->extractPayload($result);
-        $this->assertInstanceOf('stdClass', $payload);
         $this->assertObjectHasAttribute('uname', $payload);
     }
 
