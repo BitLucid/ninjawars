@@ -56,7 +56,7 @@
 
 
 {else}
-<p>
+<p class='slide-in-from-left'>
 To earn pay for your work you must first <a href="/signup">become a citizen of this village.</a>
 </p>
 {/if}
