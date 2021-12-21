@@ -110,7 +110,7 @@ browse:
 all: build test-unit db python-build test
 
 test-one:
-	$(TEST_RUNNER) $(CC_FLAG) $(TESTFILE)
+	./vendor/bin/phpunit-watcher watch $(TESTFILE)
 
 watch:
 	./vendor/bin/phpunit-watcher watch
