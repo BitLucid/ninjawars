@@ -36,6 +36,7 @@ class ApiTest extends NWTest
     {
         $api = new Api();
         $data = $api->nextTarget($offset = 0);
-        $this->assertNotEmpty($data['uname']);
+        $this->assertNotEmpty($data, 'Api::nextTarget() returned empty data');
+        $this->assertNotEmpty($data['uname'], 'Api::nextTarget() returned empty uname');
     }
 }

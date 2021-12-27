@@ -220,6 +220,8 @@ class ApiControllerTest extends NWTest {
 
         RequestWrapper::inject($request);
         $payload = $this->extractPayload($this->controller->nw_json());
+        $this->assertNotEmpty($payload, 'No payload returned');
+        $this->assertObjectHasAttribute('uname', $payload, 'No uname returned');
         $first_target = $payload->uname;
         $request2 = new Request([
             'type'         => 'nextTarget',
