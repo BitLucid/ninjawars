@@ -48,19 +48,23 @@
 	background-color: #807F6F;
 }
 
+#map .node.building {
+	background-color: #753700;
+}
+
 #map .node.doshin {
 	background-repeat: no-repeat;
-	background-color: #009497;
+	background-color: #6e4623;
 }
 
 #map .node.dojo {
 	background-repeat: no-repeat;
-	background-color: teal;
+	background-color: rgb(58, 26, 4);
 }
 
 #map .node.shrine {
 	background-repeat: no-repeat;
-	background-color: #800040;
+	background-color: #085e5e;
 }
 
 #map .node.grass {

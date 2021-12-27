@@ -74,6 +74,6 @@ table .char-title td{
 </div>
 {/if}
 
-{foreach from=$pageParts item="part"}
-	{include file="dojo.$part.tpl"}
+{foreach from=$dojoSections item="section"}
+    {include file="dojo.$section.tpl"}
 {/foreach}
