@@ -366,6 +366,7 @@ class NpcController extends AbstractController {
         // Uses a sub-template inside for specific npcs.
         $parts = [
             'victim'       => $victim, // merge may override in theory
+            'ninja'        => $player,
             'npc_template' => $npc_template,
             'attacked'     => 1,
             'turns'        => $player? $player->turns : null,
