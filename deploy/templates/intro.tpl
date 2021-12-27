@@ -76,7 +76,7 @@ a.dull-link#join-link{
 
 <div id='progression'>
   <div class='not-user js-target'>
-  	<p><a class='fade-in' target='main' href='/signup' id='join-link'>Become a Ninja!&shy;</a></p>
+  	<p><a class='' target='main' href='/signup' id='join-link'>Become a Ninja!&shy;</a></p>
   	<img class='down-arrow' src='{cachebust file="/images/Down_Arrow_Icon.png"}' alt='then'>
   </div>
 

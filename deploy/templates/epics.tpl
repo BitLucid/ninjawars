@@ -43,6 +43,7 @@
                 <a class='btn btn-info' href='#nodes-section'>Nodes</a>
                 <a class='btn btn-info' href='#list-section'>List</a>
                 <a class='btn btn-info' href='#field-section'>Field</a>
+<a class='btn btn-info' href='#ninjamaster-section'>Ninjamaster</a>
             </div>
         </nav>
     </header>
@@ -176,6 +177,7 @@
 
         <section id='dojo-section'>
             <h2>Dojo</h2>
+{assign var="dojoSections" value=['access-denied', 'form-class-change', 'form-dim-mak', 'reminder-class-change', 'reminder-class', 'reminder-dim-mak', 'reminder-level', 'reminder-next-level', 'scroll', 'success-class-change', 'success-dim-mak']}
             {include file="dojo.tpl"}
         </section>
 
@@ -207,7 +209,10 @@
             {assign var="recommended_to_work" value="6"}
             {include file="work.tpl"}
         </section>
-
+        <section id='ninjamaster-section'>
+            <h2>Ninjamaster</h2>
+            {* {include file="ninjamaster.tpl"} *}
+</section>
         <footer style='border-top:thick dashed white;margin-top:3rem;'>
             <h6>The end</h6>
         </footer>
