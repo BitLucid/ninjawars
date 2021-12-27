@@ -57,3 +57,4 @@ node_modules
 .venv
 
 #possibly, I might want to ignore whole classes of files like *.html
+deploy/tests/karma.conf.js
