@@ -3,6 +3,10 @@ composer.lock
 package-lock.json
 yarn.lock
 
+# Ignore .yarn directory
+# Yarn 2 files
+.yarn/*
+
 # Ignore artifacts
 build
 coverage
