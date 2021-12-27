@@ -17,7 +17,14 @@ nav.npcs{
 	<a href="/enemies" class='return-to-location block'>Fight something else</a>
 {/if}
 </nav>
-{if $turns lte 0}
+{if !$ninja}
+    <div class='centered'>
+        <p class='ninja-error'>
+            You are not a ninja. You may not fight. </br>
+            <a href='/signup' class='large'>Become a ninja!</a>
+        </p>
+    </div>
+{elseif $turns lte 0}
 {* These should be real error conditions, not part of the template *}
 <div class='glassbox'>
     <span class='ninja-error'>
