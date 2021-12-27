@@ -151,7 +151,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/eslint@npm:^8.2.0":
+"@types/eslint@npm:8.2.0":
   version: 8.2.0
   resolution: "@types/eslint@npm:8.2.0"
   dependencies:
@@ -1120,7 +1120,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-config-airbnb@npm:^18.2.1":
+"eslint-config-airbnb@npm:18.2.1":
   version: 18.2.1
   resolution: "eslint-config-airbnb@npm:18.2.1"
   dependencies:
@@ -1158,7 +1158,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-import@npm:^2.24.2":
+"eslint-plugin-import@npm:2.25.2":
   version: 2.25.2
   resolution: "eslint-plugin-import@npm:2.25.2"
   dependencies:
@@ -1181,7 +1181,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-jsx-a11y@npm:^6.4.1":
+"eslint-plugin-jsx-a11y@npm:6.4.1":
   version: 6.4.1
   resolution: "eslint-plugin-jsx-a11y@npm:6.4.1"
   dependencies:
@@ -1211,7 +1211,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-react@npm:^7.26.0":
+"eslint-plugin-react@npm:7.26.1":
   version: 7.26.1
   resolution: "eslint-plugin-react@npm:7.26.1"
   dependencies:
@@ -1270,7 +1270,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint@npm:^8.1.0":
+"eslint@npm:8.1.0":
   version: 8.1.0
   resolution: "eslint@npm:8.1.0"
   dependencies:
@@ -2096,7 +2096,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jasmine-core@npm:^3.2.1":
+"jasmine-core@npm:3.10.1":
   version: 3.10.1
   resolution: "jasmine-core@npm:3.10.1"
   checksum: 77ee26aaf29576e982a2ebe6586218ff4d7cc4305ad18c400954bbdeb3c7987e9a4a8ac6d6548b65838852f325395fc901d69bf8c24bdccfbd67b263fbf5d4fd
@@ -2194,7 +2194,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"karma-chrome-launcher@npm:^3.1.0":
+"karma-chrome-launcher@npm:3.1.0":
   version: 3.1.0
   resolution: "karma-chrome-launcher@npm:3.1.0"
   dependencies:
@@ -2203,7 +2203,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"karma-jasmine@npm:^4.0.1":
+"karma-jasmine@npm:4.0.1":
   version: 4.0.1
   resolution: "karma-jasmine@npm:4.0.1"
   dependencies:
@@ -2214,7 +2214,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"karma-requirejs@npm:^1.1.0":
+"karma-requirejs@npm:1.1.0":
   version: 1.1.0
   resolution: "karma-requirejs@npm:1.1.0"
   peerDependencies:
@@ -2224,7 +2224,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"karma-sinon@npm:^1.0.5":
+"karma-sinon@npm:1.0.5":
   version: 1.0.5
   resolution: "karma-sinon@npm:1.0.5"
   peerDependencies:
@@ -2576,23 +2576,23 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "ninjawars@workspace:."
   dependencies:
-    "@types/eslint": ^8.2.0
-    eslint: ^8.1.0
-    eslint-config-airbnb: ^18.2.1
-    eslint-plugin-import: ^2.24.2
-    eslint-plugin-jsx-a11y: ^6.4.1
-    eslint-plugin-react: ^7.26.0
+    "@types/eslint": 8.2.0
+    eslint: 8.1.0
+    eslint-config-airbnb: 18.2.1
+    eslint-plugin-import: 2.25.2
+    eslint-plugin-jsx-a11y: 6.4.1
+    eslint-plugin-react: 7.26.1
     eslint-plugin-react-hooks: 4.3.0
-    jasmine-core: ^3.2.1
+    jasmine-core: 3.10.1
     karma: 6.3.9
-    karma-chrome-launcher: ^3.1.0
-    karma-jasmine: ^4.0.1
-    karma-requirejs: ^1.1.0
-    karma-sinon: ^1.0.5
+    karma-chrome-launcher: 3.1.0
+    karma-jasmine: 4.0.1
+    karma-requirejs: 1.1.0
+    karma-sinon: 1.0.5
     prettier: 2.5.1
-    puppeteer: ^10.4.0
-    requirejs: ^2.3.6
-    sinon: ^7.0.0
+    puppeteer: 10.4.0
+    requirejs: 2.3.6
+    sinon: 7.5.0
   languageName: unknown
   linkType: soft
 
@@ -3008,7 +3008,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"puppeteer@npm:^10.4.0":
+"puppeteer@npm:10.4.0":
   version: 10.4.0
   resolution: "puppeteer@npm:10.4.0"
   dependencies:
@@ -3119,7 +3119,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"requirejs@npm:^2.3.6":
+"requirejs@npm:2.3.6":
   version: 2.3.6
   resolution: "requirejs@npm:2.3.6"
   bin:
@@ -3290,7 +3290,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sinon@npm:^7.0.0":
+"sinon@npm:7.5.0":
   version: 7.5.0
   resolution: "sinon@npm:7.5.0"
   dependencies:
