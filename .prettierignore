@@ -4,8 +4,15 @@ package-lock.json
 yarn.lock
 
 # Ignore .yarn directory
-# Yarn 2 files
 .yarn/*
+.yarnrc.yml
+
+# Don't reformat github markdown
+.github
+
+# js files to not mess with
+deploy/www/js/api.js
+nw.js
 
 # Ignore artifacts
 build
