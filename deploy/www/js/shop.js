@@ -1,21 +1,18 @@
 /* Store the shop settings */
-/*jshint browser: true, white: true, plusplus: true*/
-/*global $, NW, loggedIn */
-$(function () {
-    'use strict';
+/* jshint browser: true, white: true, plusplus: true */
+/* global $, NW, loggedIn */
+$(() => {
+  const auth = typeof loggedIn !== 'undefined' ? loggedIn : false;
 
-    var auth = typeof loggedIn !== 'undefined' ? loggedIn : false;
+  const quantity = NW.storage.appState.get('quantity', 1);
 
-    var quantity = NW.storage.appState.get('quantity', 1);
+  $('#quantity').val(quantity);
 
-    $('#quantity').val(quantity);
-
-    $('#shop_form').submit(function () {
-        if (!auth) {
-            return false;
-        } else {
-            NW.storage.appState.set('quantity', $('#quantity').val());
-            return true;
-        }
-    });
+  $('#shop_form').submit(() => {
+    if (!auth) {
+      return false;
+    }
+    NW.storage.appState.set('quantity', $('#quantity').val());
+    return true;
+  });
 });
