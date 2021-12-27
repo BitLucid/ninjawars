@@ -29,14 +29,19 @@ class ApiTest extends NWTest
         parent::tearDown();
     }
 
-
-
-
     public function testNextTargetOfApiReturnsSomething()
     {
         $api = new Api();
         $data = $api->nextTarget($offset = 0);
         $this->assertNotEmpty($data, 'Api::nextTarget() returned empty data');
         $this->assertNotEmpty($data['uname'], 'Api::nextTarget() returned empty uname');
+    }
+
+    public function testCharSearchCanRun()
+    {
+        $api = new Api();
+        $data = $api->charSearch('phpunit', $limit = 1);
+        $this->assertNotEmpty($data, 'Api::charSearch() returned empty data');
+        $this->assertNotEmpty(reset($data)[0]['uname'], 'Api::charSearch() returned empty uname');
     }
 }
