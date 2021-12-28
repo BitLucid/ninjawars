@@ -1,7 +1,8 @@
 /* Display last repo commit. */
 /* jshint browser: true, white: true, plusplus: true */
-/* global $, console */
+/* global $ */
 function loadLastCommitMessage() {
+  const logger = console || { log: () => { /* noop */ } };
   const owner = 'BitLucid';
   const repo = 'ninjawars';
   const oauthToken = ''; // TODO: Figure out how to store this info here.
@@ -15,8 +16,8 @@ function loadLastCommitMessage() {
   }callback=?`;
   const placeCommit = function (data) {
     if (!data.data || !data.data.commit) {
-      console.log('No github commit api data');
-      console.log(data);
+      logger.log('No github commit api data');
+      logger.log(data);
       return;
     }
     // Load latest commit message.
