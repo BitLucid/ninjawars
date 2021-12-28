@@ -108,7 +108,7 @@ article#fight nav{
 	{/if}
 	{if $survive_fight}
 		{if $is_weaker}<p>The {if $is_villager}villager{/if}{if !$is_villager}{$race|escape}{/if} is no match for you!</p>{/if}
-		{if $kill_npc}<p class='ninja-notice'>You kill the {$display_name|escape}!</p>
+		{if $kill_npc}<p class='ninja-notice fade-in'>You kill the {$display_name|escape}!</p>
 			{if $added_bounty}
 			<div class='bounty-notice'>{if $is_villager}<p>You have slain a member of the village!</p>{/if} <em class='money'>{$added_bounty}</div>
 			{/if}
@@ -133,7 +133,7 @@ article#fight nav{
 
 
 	{else}
-		<div class='ninja-error'>The {$display_name|escape} has killed you!</div>
+		<div class='ninja-error fade-in-flash'>The {$display_name|escape} has killed you!</div>
 	{/if}
 
 	</section><!-- end of .npc-fight -->

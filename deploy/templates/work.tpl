@@ -21,40 +21,40 @@
 <div class="description">
     <p>
         On your way back from the fields, you pass by a few young children
-        chasing grasshoppers in the tall grass.</p>
+        chasing grasshoppers.</p>
     <p>You see a <a href='/npc/attack/viper' class='npc'>Viper</a> in the tall grass.</p>
 
     <p>The samurai foreman hands you a small pouch of gold as he says
     <em class='speech'>Care to put a little more work in? I'll pay the same rate.</em></p>
 
-    <p class='ninja-notice'>You have worked for {$worked} {if $worked eq 1}turn{else}turns{/if} and earned 石{$earned_gold}.</p>
+    <p class='ninja-notice slide-in-from-left' style='font-size:larger'>You have worked for {$worked} {if $worked eq 1}turn{else}turns{/if} and
+earned 石{$earned_gold}.</p>
 </div>
 {/if}
 
 <section class='glassbox'>
 
-<p>You can earn money by working in the village fields. Field work will exchange turns for gold. <span style='color:turquoise;'>1 Turn</span> = <span class='gold'>石{$work_multiplier}</span>.</p>
-
 {if $authenticated}
-<form id="work" action="/work/request_work" method="post" name="work">
-  <div style="width:40%;margin:3rem auto;">
-    <span class="input-group">
-        <span class='input-group-addon'>Work for</span>
-        <input id="worked" type="number" size="3" maxlength="3" min=1 max=999 name="worked" class="textField form-control">
-        <span class='input-group-btn'>
-            <input id="workButton" class="formButton btn btn-primary" type="submit" value="Turns" name="workButton">
+    <div style="width:40%;margin:3rem auto;">
+    <form id="work" action="/work/request_work" method="post" name="work">
+        <span class="input-group">
+            <span class='input-group-addon'>Work for</span>
+            <input id="worked" type="number" size="3" maxlength="3" min=1 max=999 name="worked" class="textField form-control">
+            <span class='input-group-btn'>
+                <input id="workButton" class="formButton btn btn-primary" type="submit" value="Turns" name="workButton">
+            </span>
         </span>
-    </span>
-  </div>
-</form>
+    </form>
+
+    <small>Work the fields for the daimyo to earn your keep. <span
+            style='color:turquoise;'>1 Turn</span> = <span class='gold'>石{$work_multiplier}</span>.</small>
+</div>
 <p class='gold-count'>
   Current gold: 石{$gold_display|escape}
 <p>
 <p>
     Current turns: <span class='turns-count'>{($char)? $char->turns : ''}</span>
 </p>
-
-
 {else}
 <p>
 To earn pay for your work you must first <a href="/signup">become a citizen of this village.</a>
