@@ -5,6 +5,8 @@
 -
 -
 
+## _Attached Screenshot of my change:_
+
 ## _Things that make review take longer:_
 
 _(remove lines that do not apply to this PR)_
@@ -23,8 +25,6 @@ _(check box with an x where it applies)_
 -   [ ] I added tests
 -   [ ] This feature is requested specifically by a player
 -   [ ] This will fix a bug
-
-## _Attached Screenshot of my change:_
 
 ## _Preview results in my branch at the url:_
 
