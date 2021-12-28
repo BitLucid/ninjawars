@@ -1,9 +1,7 @@
 // Strict checking.
 /* global describe, beforeEach, afterEach, it, expect, performTalk */
 
-// @ts-ignore
 describe('talk', () => {
-  // @ts-ignore
   describe('Introductory talk script testing context', () => {
     beforeEach(() => { });
 
@@ -16,7 +14,7 @@ describe('talk', () => {
 
     it('should be able to run performTalk', () => {
       const output = performTalk();
-      expect(output).toBeTruthy();
+      expect(output).toBeTrue();
     });
   });
 });

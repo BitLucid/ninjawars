@@ -2,6 +2,10 @@
 /* jshint browser: true, white: true, plusplus: true */
 /* global $, NW, window, refocus */
 
+// eslint-disable-next-line no-var
+// var presence = window.presence || {};
+// presence.talk = true;
+
 function performTalk() {
   console.log('performTalk() run');
   // Cache the last messaged character after send
