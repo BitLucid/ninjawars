@@ -1,6 +1,10 @@
 /* eslint-disable indent */
 /* eslint-disable semi */
 
+// eslint-disable-next-line no-var
+var presence = window.presence || {};
+presence.epics = true;
+
 /* global jQuery $ */
 $(() => {
     const hash = window && window.location && window.location.hash
