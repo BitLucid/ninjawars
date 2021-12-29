@@ -4,6 +4,10 @@
 /* jshint browser: true, white: true, plusplus: true */
 /* global $, NW */
 
+// eslint-disable-next-line no-var
+var presence = window.presence || {};
+presence.intro = true;
+
 $(function introManipulations() {
   // Page css hides the faq section to avoid FOUC
   const showFaqs = false; // Set faqs hidden by default.
