@@ -1,6 +1,11 @@
 /* Store the shop settings */
 /* jshint browser: true, white: true, plusplus: true */
 /* global $, NW, loggedIn */
+
+// eslint-disable-next-line no-var
+var presence = window.presence || {};
+presence.shop = true;
+
 $(() => {
   const auth = typeof loggedIn !== 'undefined' ? loggedIn : false;
 

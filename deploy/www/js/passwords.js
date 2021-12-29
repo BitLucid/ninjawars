@@ -1,6 +1,11 @@
 /* Simply check that submitted passwords match. */
 /* jshint browser: true, white: true, plusplus: true */
 /* global $ */
+
+// eslint-disable-next-line no-var
+var presence = window.presence || {};
+presence.passwords = true;
+
 $(() => {
   $('form[name=new_password_form]').submit(() => {
     const newPassword = $('input[name=new_password]').val();
@@ -11,5 +16,6 @@ $(() => {
       );
       return false;
     }
+    return true;
   });
 });
