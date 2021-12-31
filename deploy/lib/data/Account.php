@@ -341,7 +341,8 @@ class Account {
     /**
      * @return string|null
      */
-    public function getLastIp() {
+    public function getLastIp(): ?string
+    {
         return $this->info['last_ip'];
     }
 
@@ -390,6 +391,7 @@ class Account {
     /**
      * Numeric Id for a oauth login provider
      * facebook, google+, etc etc
+     * @param $id int|string|null Ids can be strings because of their length against the integer overflow limit
      */
     public function setOauthId($id, $provider = 'facebook'): bool
     {
@@ -401,9 +403,10 @@ class Account {
     }
 
     /**
-     * @return int|null
+     * @return int|string|null
+     * Getting ids per provider not implemented yet.
      */
-    public function getOauthId($provider = 'facebook'): ?int
+    public function getOauthId($provider = 'facebook'): int|string|null
     {
         return $this->oauth_id;
     }
