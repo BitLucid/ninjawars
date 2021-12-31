@@ -77,19 +77,18 @@ var Chat = undefined !== window.Chat ? window.Chat : {};
 
 // Get all the initial chat messages and render them.
 Chat.getExistingChatMessages = function fnCh() {
-  logger.log('Existing chat messages requested');
+  logger.info('Existing chat messages requested');
   const since = '1424019122';
 
   $.getJSON(
     `/api?type=new_chats&since=${encodeURIComponent(since)
     }&jsoncallback=?`,
     (data) => {
-      logger.log('Existing chats data found:');
-      logger.log(data);
+      logger.info('Existing chats data found:', data);
       window.storeChats = data;
 
       if (data && data.new_chats && data.new_chats.chats) {
-        logger.log('Rendering pre-existing chat messages.');
+        logger.info('Rendering pre-existing chat messages.');
 
         $.each(data.new_chats.chats, (key, val) => {
           Chat.renderChatMessage(val);
@@ -115,10 +114,10 @@ Chat.displayMessages = function () {
  */
 Chat.renderChatMessage = function (p_data) {
   if (!p_data.message) {
-    logger.log(
+    logger.error(
       'Error: Bad data sent in to renderChatMessage to be rendered',
+      p_data,
     );
-    logger.log(p_data);
     return false;
   }
 
@@ -141,7 +140,7 @@ Chat.renderChatMessage = function (p_data) {
   }
 
   if (area) {
-    logger.log(`Chat ${area} not found to place chats in!`);
+    logger.error(`Chat ${area} not found to place chats in!`);
   }
 
   // put the new content into the author and message areas
@@ -202,10 +201,10 @@ Chat.send = function fnS77(messageData) {
   let passfail = true;
   try {
     window.conn.send(JSON.stringify(messageData)); // Turn the data into a json object to pass.
-    logger.log('Chat message sent.');
+    logger.info('Chat message sent.');
   } catch (ex) {
     // Maybe the connection send didn't work out.
-    logger.log(ex.message);
+    logger.error('Error with chat connection:', ex && ex.message);
     passfail = false;
   }
 
@@ -226,10 +225,10 @@ Chat.chatReady = function () {
     $submitter.show();
   } else {
     $submitter.hide();
-    logger.log('Warning: Not logged in to be able to send messages.');
+    logger.info('Warning: Not logged in to be able to send messages.');
   }
 
-  logger.log('Chat connected and ready');
+  logger.info('Chat connected and ready');
   return true;
 };
 
@@ -245,7 +244,7 @@ Chat.domain = function fnChDomain(url) {
   const link = document.createElement('a');
   link.setAttribute('href', url);
   const host = link.hostname;
-  logger.log(`Connecting to chat api host: ${host}`);
+  logger.info(`Connecting to chat api host: ${host}`);
 
   if (host.indexOf('.local') > -1) {
     return `chatapi.${host}`;
@@ -275,12 +274,12 @@ $(() => {
   if (window.WebSocket !== undefined) {
     // Browser is compatible.
     const connectionString = `${Chat.config.protocol}://${Chat.config.server}:${Chat.config.port}`;
-    logger.log(`Connecting to ${connectionString}`);
+    logger.info(`Connecting to ${connectionString}`);
 
     window.conn = new WebSocket(connectionString);
     /* eslint no-unused-vars: 0 */
     window.conn.onopen = function fnWebsocketConn(e) {
-      logger.log('Websocket Connection established!');
+      logger.info('Websocket Connection established!');
       Chat.chatReady();
     };
 
@@ -291,7 +290,7 @@ $(() => {
       }
     };
   } else {
-    logger.log('Browser not compatible with websockets');
+    logger.error('Browser not compatible with websockets');
   }
 
   $('#chat-loading').show(); // Show the chat loading area.
