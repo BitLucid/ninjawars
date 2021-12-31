@@ -26,6 +26,11 @@ class ClanUnitTest extends NWTest {
         $this->assertInstanceOf('NinjaWars\core\data\Clan', $this->clan);
     }
 
+    public function testClanGetId()
+    {
+        $this->assertGreaterThan(0, $this->clan->id);
+    }
+
     public function testGetFounder() {
         $this->assertEquals($this->clan->getFounder(), $this->data['clan_founder']);
     }
