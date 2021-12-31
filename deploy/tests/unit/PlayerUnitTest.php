@@ -44,6 +44,11 @@ class PlayerUnitTest extends NWTest {
         $this->assertEquals($this->player->id(), $this->data->player_id);
     }
 
+    public function testNullIdIsAllowedForPlayers()
+    {
+        $this->assertEquals(null, (new Player())->id());
+    }
+
     public function testAccessor_level() {
         $this->assertEquals($this->player->level, $this->data->level);
     }
