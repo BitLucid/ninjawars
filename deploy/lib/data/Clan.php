@@ -152,7 +152,7 @@ class Clan {
     /**
      * @return boolean|String
      */
-    public function addMember(Player $ninja, Player $adder): bool
+    public function addMember(Player $ninja, Player $adder): bool|string
     {
         if ($this->hasMember($ninja->id())) {
             return 'That ninja is already a member of the clan.';
