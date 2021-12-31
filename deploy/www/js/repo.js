@@ -14,7 +14,7 @@ function loadLastCommitMessage() {
   }/commits/HEAD?${
     access
   }callback=?`;
-  const placeCommit = function (data) {
+  const placeCommit = function fnPlaceCommit(data) {
     if (!data.data || !data.data.commit) {
       logger.log('No github commit api data');
       logger.log(data);
