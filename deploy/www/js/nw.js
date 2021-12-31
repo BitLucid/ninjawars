@@ -38,12 +38,12 @@ if (
   && window.parent.window !== window
   && parent.NW
 ) {
-  console.log('Reusing existing parent NW object in new page');
+  console.info('Reusing existing parent NW object in new page');
   // If the interior page of an iframe, use the already-defined globals from the index.
   // $ = parent.$;
   NW = parent.NW;
 } else {
-  console.log('Creating new NW object');
+  console.info('Creating new NW object');
   // If the page is standalone, define the objects as needed.
   // $ = jQuery;
   NW = {};
@@ -174,6 +174,7 @@ $(selector).keyup(function () {
   NW.debug = function (arg) {
     if (this.debugging || !g_isLive) {
       if (console) {
+        // eslint-disable-next-line no-console
         console.log(arg);
       }
       return true;
