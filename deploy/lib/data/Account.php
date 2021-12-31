@@ -253,9 +253,9 @@ class Account {
     }
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->account_id;
     }
@@ -263,9 +263,9 @@ class Account {
     /**
      * Alias for getId()
      *
-     * @return int
+     * @return int|null
      */
-    public function id(): int
+    public function id(): ?int
     {
         return $this->getId();
     }
@@ -501,10 +501,10 @@ class Account {
     /**
      * Update the time of last failed login.
      */
-    public static function updateLastLoginFailure(Account $account): array
+    public static function updateLastLoginFailure(Account $account): int
     {
         $update = "UPDATE accounts SET last_login_failure = now() WHERE account_id = :account_id";
-        return query($update, [':account_id' => [$account->id(), PDO::PARAM_INT]]);
+        return update_query($update, [':account_id' => [$account->id(), PDO::PARAM_INT]]);
     }
 
     /**
