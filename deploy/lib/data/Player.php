@@ -360,7 +360,7 @@ class Player implements Character {
      * @note To be replaced by an in-database account toggle eventually
      */
 	public function isAdmin(): bool {
-		$name = strtolower($this->name());
+        $name = strtolower($this->name() ?? '');
 		if ($name == 'tchalvak' || $name == 'beagle') {
 			return true;
 		}
@@ -394,13 +394,6 @@ class Player implements Character {
         }
 
         return $this->vo->turns = $turns;
-    }
-
-    /**
-     * @deprecated
-     */
-    public function changeTurns($amount): int {
-        return $this->setTurns($this->turns + (int) $amount);
     }
 
     /**

@@ -55,7 +55,7 @@ class DojoController extends AbstractController {
                 $error = $this->dimMakReqs($player, self::DIM_MAK_COST);
 
                 if (!$error) {
-                    $player->changeTurns((-1)*self::DIM_MAK_COST);
+                    $player->setTurns($player->turns - min(self::DIM_MAK_COST, $player->turns));
                     $inventory = new Inventory($player);
                     $inventory->add('dimmak', 1);
                     $parts['dojoSections'] = ['success-dim-mak'];
@@ -164,7 +164,7 @@ class DojoController extends AbstractController {
         $error = $p_player->setClass($p_class);
 
         if (!$error) {
-            $p_player->changeTurns((-1)*$cost);
+            $p_player->setTurns($p_player->turns - min($cost, $p_player->turns));
             $p_player->save();
         }
 
