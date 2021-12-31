@@ -1,11 +1,14 @@
-/* Simple defaults for the casino page, attacking_possible (boolean) and combatSkillsList (json array) are rendered by the server and passed in */
+/* Simple defaults for the casino page, attacking_possible (boolean)
+ * and combatSkillsList (json array) are rendered by the server and passed in */
 /* jshint browser: true, white: true, plusplus: true */
-/* global $, NW, console, attacking_possible, combatSkillsList */
+/* global $, NW, attacking_possible, combatSkillsList */
 $(() => {
   //  Pull var as defined in external template
+  // eslint-disable-next-line camelcase
   const attackable = typeof attacking_possible !== 'undefined' ? attacking_possible : false;
-  console.log(attackable ? 'Attacking enabled.' : 'No attacking this target');
-  $('#kick_form').submit(() => window.confirm('Are you sure you want to kick this player?'));
+  console.info(attackable ? 'Attacking enabled.' : 'No attacking this target');
+  // eslint-disable-next-line no-alert
+  $('#kick_form').submit(() => window && window.confirm('Are you sure you want to kick this player?'));
 
   /*
        because some browsers store all values as strings, we need to store
@@ -17,15 +20,15 @@ $(() => {
       undefined === combatSkillsList
             || !Array.isArray(combatSkillsList)
     ) {
-      console.log(
+      console.warn(
         'Combat_skills settings were not in proper array format',
       );
     }
-    console.log('combat skills', combatSkillsList);
+    console.info('combat skills', combatSkillsList);
     // Duel is a special case, non-skill combat choice
     $('#duel').prop(
       'checked',
-      parseInt(NW.storage.appState.get('duel_checked', false)),
+      parseInt(NW.storage.appState.get('duel_checked', false), 10),
     );
     $.each(combatSkillsList, (i, skill) => {
       const checkedOrNot = parseInt(
@@ -33,6 +36,7 @@ $(() => {
           `${skill.skill_internal_name}_checked`,
           false,
         ),
+        10,
       );
       $(`#${skill.skill_internal_name}`).prop('checked', checkedOrNot);
     });
