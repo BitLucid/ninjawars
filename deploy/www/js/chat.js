@@ -13,12 +13,12 @@ var logger = window.logger || console || {
 };
 
 // eslint-disable-next-line no-var
-var Chat = undefined !== window.Chat ? window.Chat : {};
+var Chat = window && typeof window.Chat !== 'undefined' ? window.Chat : {};
 
 (function jQueryShakePluginAttach($) {
   // Add shake plugin to jQuery
   // eslint-disable-next-line no-param-reassign
-  $.fn.shake = function (options) {
+  $.fn.shake = function fn7(options) {
     // defaults
     const settings = {
       shakes: 2,
@@ -34,7 +34,7 @@ var Chat = undefined !== window.Chat ? window.Chat : {};
     // make it so
     let pos;
 
-    return this.each(function () {
+    return this.each(function fn8() {
       const $this = $(this);
 
       // position if necessary
