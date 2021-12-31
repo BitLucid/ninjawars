@@ -70,10 +70,13 @@ var Chat = window && typeof window.Chat !== 'undefined' ? window.Chat : {};
  * Run the chat server via: php bin/chat-server.php
 
  Create chat object.
- Initialize maximum mini-chat listings...  it should be a pretty damn high starting amount.
- store the chat data locally, don't even have to cache this, it should pretty much be a js var
- allow sending of the chat from the input
- Set up a min/max refreshing cycle, theoretically with a typewatch kind of approach.
+ Initialize maximum mini-chat listings...
+ it should be a pretty damn high starting amount.
+ store the chat data locally, don't even have to cache this,
+ it should pretty much be a js var
+ allow pushing over the wire of the chat from the input
+ Set up a min/max refreshing cycle, theoretically with a
+ typewatch kind of approach.
  Update the datastore with the latest chat info.
  Pass a chained callback using setTimeout
  Note that the Chat var may pre-exist
@@ -181,6 +184,7 @@ Chat.sendChatContents = function fnChSendCont(p_form) {
         return success;
       },
     ).fail(() => {
+      logger.error('Error: Failed to send chat message.');
       Chat.rejected();
       return false;
     });
@@ -197,6 +201,7 @@ Chat.rejected = function () {
 // Send a messageData object to the websockets chat
 Chat.send = function fnS77(messageData) {
   if (!Chat.canSend()) {
+    logger.warn('Warn: Cannot send chat message.');
     return false;
   }
   let passfail = true;
@@ -221,6 +226,9 @@ Chat.submissionArea = function () {
 Chat.chatReady = function () {
   Chat.displayMessages(); // Will display the whole messages area.
   const $submitter = Chat.submissionArea();
+  if (!$submitter.length) {
+    logger.error('Error: Chat submission area not found.');
+  }
 
   if (Chat.canSend()) {
     $submitter.show();
