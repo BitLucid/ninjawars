@@ -191,7 +191,7 @@ class Account {
      * @param int $account_id
      * @return Array
      */
-    public static function accountInfo($account_id): array
+    public static function accountInfo($account_id): array | bool
     {
         return query_row(
             "SELECT *, date_part('epoch', now() - coalesce(last_login_failure, '1999-01-01')) AS login_failure_interval FROM accounts WHERE account_id = :account_id",
