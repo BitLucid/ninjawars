@@ -282,7 +282,7 @@ class ShrineController extends AbstractController {
 			if ($costType === self::RES_COST_TYPE_KILL) {
 				$p_player->kills = $p_player->subtractKills(self::RES_COST_KILLS);
 			} elseif ($costType === self::RES_COST_TYPE_TURN) {
-				$p_player->changeTurns(-1*min(self::RES_COST_TURNS, $p_player->turns));
+				$p_player->setTurns($p_player->turns - min(self::RES_COST_TURNS, $p_player->turns));
 			}
 
 			return $costType;
