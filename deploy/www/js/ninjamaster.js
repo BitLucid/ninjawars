@@ -7,6 +7,10 @@
 // eslint-disable-next-line import/extensions
 import api from './api.js';
 
+// eslint-disable-next-line no-var
+var presence = window.presence || {};
+presence.ninjamaster = true;
+
 $(function initializeNMPage() {
   // Handle the show/hide sections
   $('.show-hide-next').click(function showHideNext() {

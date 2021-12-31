@@ -1202,12 +1202,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-react-hooks@npm:^4.2.0":
-  version: 4.2.0
-  resolution: "eslint-plugin-react-hooks@npm:4.2.0"
+"eslint-plugin-react-hooks@npm:4.3.0":
+  version: 4.3.0
+  resolution: "eslint-plugin-react-hooks@npm:4.3.0"
   peerDependencies:
-    eslint: ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0
-  checksum: ead5c5be3ded82a0cf295b064376adb1998a43e2262b605eecc0efc88283dec4e159ca39307fafb3d8e661dd08e5a4c8cdfed97eea78f923954f72bad6e20397
+    eslint: ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0-0
+  checksum: 0ba1566ba0780bbc75a5921f49188edf232db2085ab32c8d3889592f0db9d6fadc97fcf639775e0101dec6b5409ca3c803ec44213b90c8bacaf0bdf921871c2e
   languageName: node
   linkType: hard
 
@@ -2234,9 +2234,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"karma@npm:^6.3.4":
-  version: 6.3.6
-  resolution: "karma@npm:6.3.6"
+"karma@npm:6.3.9":
+  version: 6.3.9
+  resolution: "karma@npm:6.3.9"
   dependencies:
     body-parser: ^1.19.0
     braces: ^3.0.2
@@ -2263,7 +2263,7 @@ __metadata:
     yargs: ^16.1.1
   bin:
     karma: bin/karma
-  checksum: 136d0742697b743b62a65b81b1554cf8176842a09b2256c0bd562aba45292fd87dbd7370d547c31181cb280c675f80a947c926ed0ca0a1a78f4b1e3ace145bc7
+  checksum: 2e652c8f4d520593bedf96d21a9ab92b02e93bdb2598c7abee79ccdbd793099c634555e247559801b1226bae3a5544be61a3570f8ed560e96064447fb19206c9
   languageName: node
   linkType: hard
 
@@ -2582,14 +2582,14 @@ __metadata:
     eslint-plugin-import: ^2.24.2
     eslint-plugin-jsx-a11y: ^6.4.1
     eslint-plugin-react: ^7.26.0
-    eslint-plugin-react-hooks: ^4.2.0
+    eslint-plugin-react-hooks: 4.3.0
     jasmine-core: ^3.2.1
-    karma: ^6.3.4
+    karma: 6.3.9
     karma-chrome-launcher: ^3.1.0
     karma-jasmine: ^4.0.1
     karma-requirejs: ^1.1.0
     karma-sinon: ^1.0.5
-    prettier: 2.4.1
+    prettier: 2.5.1
     puppeteer: ^10.4.0
     requirejs: ^2.3.6
     sinon: ^7.0.0
@@ -2933,12 +2933,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier@npm:2.4.1":
-  version: 2.4.1
-  resolution: "prettier@npm:2.4.1"
+"prettier@npm:2.5.1":
+  version: 2.5.1
+  resolution: "prettier@npm:2.5.1"
   bin:
     prettier: bin-prettier.js
-  checksum: cc6830588b401b0d742862fe9c46bc9118204fb307c3abe0e49e95b35ed23629573807ffdf9cdd65289c252a0bb51fc0171437f6626ee36378dea80f0ee80b91
+  checksum: 21b9408476ea1c544b0e45d51ceb94a84789ff92095abb710942d780c862d0daebdb29972d47f6b4d0f7ebbfb0ffbf56cc2cfa3e3e9d1cca54864af185b15b66
   languageName: node
   linkType: hard
 

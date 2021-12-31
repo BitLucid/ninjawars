@@ -55,17 +55,17 @@ class DojoController extends AbstractController {
                 $error = $this->dimMakReqs($player, self::DIM_MAK_COST);
 
                 if (!$error) {
-                    $player->changeTurns((-1)*self::DIM_MAK_COST);
+                    $player->setTurns($player->turns - min(self::DIM_MAK_COST, $player->turns));
                     $inventory = new Inventory($player);
                     $inventory->add('dimmak', 1);
-                    $parts['pageParts'] = ['success-dim-mak'];
+                    $parts['dojoSections'] = ['success-dim-mak'];
                     $showMonks = true;
                     $player->save();
                 } else {
                     $parts['error'] = $error;
                 }
             } else {
-                $parts['pageParts'] = ['form-dim-mak'];
+                $parts['dojoSections'] = ['form-dim-mak'];
                 $parts['dim_mak_cost'] = self::DIM_MAK_COST;
             }
 
@@ -121,13 +121,13 @@ class DojoController extends AbstractController {
                 }
                 $currentClass = $player->identity;
                 if (!$error) {
-                    $parts['pageParts'] = ['success-class-change'];
+                    $parts['dojoSections'] = ['success-class-change'];
                     $showMonks = true;
                 } else {
                     $parts['error'] = $error;
                 }
             } else {
-                $parts['pageParts'] = ['form-class-change'];
+                $parts['dojoSections'] = ['form-class-change'];
             }
             unset($classes[$currentClass]);
             $parts['classOptions'] = $classes;
@@ -164,7 +164,7 @@ class DojoController extends AbstractController {
         $error = $p_player->setClass($p_class);
 
         if (!$error) {
-            $p_player->changeTurns((-1)*$cost);
+            $p_player->setTurns($p_player->turns - min($cost, $p_player->turns));
             $p_player->save();
         }
 
@@ -212,33 +212,33 @@ class DojoController extends AbstractController {
         $p_parts['class_change_cost'] = self::CLASS_CHANGE_COST;
         $p_parts['player']            = $p_player;
 
-        if (!isset($p_parts['pageParts'])) {
-            $p_parts['pageParts'] = [];
+        if (!isset($p_parts['dojoSections'])) {
+            $p_parts['dojoSections'] = [];
         }
 
         if (!$p_player) {
-            array_unshift($p_parts['pageParts'], 'access-denied');
+            array_unshift($p_parts['dojoSections'], 'access-denied');
         } else {
             if ($p_renderMonks) {
                 if (empty($this->dimMakReqs($p_player, self::DIM_MAK_COST))) {
-                    $p_parts['pageParts'][] = 'reminder-dim-mak';
+                    $p_parts['dojoSections'][] = 'reminder-dim-mak';
                 }
 
                 if (empty($this->classChangeReqs($p_player, self::CLASS_CHANGE_COST))) {
-                    $p_parts['pageParts'][] = 'reminder-class-change';
+                    $p_parts['dojoSections'][] = 'reminder-class-change';
                 }
             }
 
-            $p_parts['pageParts'][] = 'reminder-class';
-            $p_parts['pageParts'][] = 'reminder-level';
+            $p_parts['dojoSections'][] = 'reminder-class';
+            $p_parts['dojoSections'][] = 'reminder-level';
 
             if ($p_player->level < MAX_PLAYER_LEVEL) {
                 $p_parts['required_kills'] = $p_player->killsRequiredForNextLevel();
-                $p_parts['pageParts'][] = 'reminder-next-level';
+                $p_parts['dojoSections'][] = 'reminder-next-level';
             }
         }
 
-        $p_parts['pageParts'][] = 'scroll';
+        $p_parts['dojoSections'][] = 'scroll';
 
         if (!isset($p_parts['error'])) {
             $p_parts['error'] = null;

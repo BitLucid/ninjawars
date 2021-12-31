@@ -91,7 +91,7 @@ class InventoryController extends AbstractController {
 
             $this->transferOwnership($player, $target, $item, self::GIVE_QUANTITY);
 
-            $player->changeTurns(-1*self::GIVE_COST);
+            $player->setTurns($player->turns - min(self::GIVE_COST, $player->turns));
             $player->save();
 
             Event::create($player->id(), $target->id(), $mail_message);
@@ -167,7 +167,7 @@ class InventoryController extends AbstractController {
         }
 
         if ($turns_to_take > 0 && ($player->turns - $turns_to_take >= 0)) {
-            $player->changeTurns(-1*$turns_to_take);
+            $player->setTurns($player->turns - min($turns_to_take, $player->turns));
         }
 
         $player->save();
@@ -267,7 +267,7 @@ class InventoryController extends AbstractController {
                 $extra_message   = $result['extra_message'];
             }
 
-            $player->changeTurns(-1*$turns_to_take);
+            $player->setTurns($player->turns - min($turns_to_take, $player->turns));
 
             $target->save();
             $player->save();
@@ -378,7 +378,7 @@ class InventoryController extends AbstractController {
             }
 
             $notice = " lose ".abs($turns_change)." turns.";
-            $target->changeTurns(-1*$turns_change);
+            $target->setTurns($target->turns - min($turns_change, $target->turns));
         } elseif ($item->hasEffect('speed')) {
             $item->setTurnChange($item->getMaxTurnChange());
             $turns_change = $item->getTurnChange();
@@ -396,7 +396,7 @@ class InventoryController extends AbstractController {
             }
 
             $notice = " gain $turns_change turns.";
-            $target->changeTurns($turns_change);
+            $target->setTurns($target->turns - min($target->turns, $turns_change));
         }
 
         if ($item->getTargetDamage() > 0) { // HP Altering

@@ -9,12 +9,12 @@ footer.password-reset{
 
 {if $error}
 	<div class='parent'>
-		<div class='child error'>{$error|escape}</div>
+		<div class='child error glassbox thick'>{$error|escape}</div>
 	</div>
 {/if}
 {if $message}
 	<div class='parent'>
-		<div class='child bg-success'>{$message|escape}</div>
+		<div class='child bg-success glassbox thick'>{$message|escape}</div>
 	</div>
 {/if}
 <div class='glassbox'>

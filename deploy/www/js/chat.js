@@ -4,15 +4,20 @@
 /* global $, NW, Chat, jQuery, window.conn, window.parent, window.WebSocket, window.Chat */
 
 // eslint-disable-next-line no-var
-var logger = window.logger || {
-  log: console ? console.log : () => { },
+var logger = window.logger || console || {
+  log: () => { /* noop */ },
+  error: () => { /* noop */ },
+  info: () => { /* noop */ },
+  warn: () => { /* noop */ },
+  dir: () => { /* noop */ },
 };
 
 // eslint-disable-next-line no-var
 var Chat = undefined !== window.Chat ? window.Chat : {};
 
-(function ($) {
+(function jQueryShakePluginAttach($) {
   // Add shake plugin to jQuery
+  // eslint-disable-next-line no-param-reassign
   $.fn.shake = function (options) {
     // defaults
     const settings = {
@@ -40,6 +45,7 @@ var Chat = undefined !== window.Chat ? window.Chat : {};
       }
 
       // shake it
+      // eslint-disable-next-line no-plusplus
       for (let x = 1; x <= settings.shakes; x++) {
         $this
           .animate(
@@ -73,8 +79,10 @@ var Chat = undefined !== window.Chat ? window.Chat : {};
  Note that the Chat var may pre-exist
 */
 
+// Chat object gets defined at the top
+
 // Get all the initial chat messages and render them.
-Chat.getExistingChatMessages = function () {
+Chat.getExistingChatMessages = function fnCh() {
   logger.log('Existing chat messages requested');
   const since = '1424019122';
 
@@ -113,7 +121,7 @@ Chat.displayMessages = function () {
  */
 Chat.renderChatMessage = function (p_data) {
   if (!p_data.message) {
-    logger.log(
+    logger.error(
       'Error: Bad data sent in to renderChatMessage to be rendered',
     );
     logger.log(p_data);
@@ -132,7 +140,7 @@ Chat.renderChatMessage = function (p_data) {
   const missingArea = (!list.length && 'list') || (!authorArea.length && 'authorArea') || (!messageArea.length && 'messageArea');
 
   if (missingArea) {
-    logger.log(`Chat ${missingArea} not found to place chats in!`);
+    logger.error(`Chat ${missingArea} not found to place chats in!`);
     return false;
   }
 
@@ -152,7 +160,7 @@ Chat.renderChatMessage = function (p_data) {
 
 // Send the contents of the chat form input box.
 // Sample url: https://nw.local/api?type=send_chat&msg=test&jsoncallback=alert
-Chat.sendChatContents = function (p_form) {
+Chat.sendChatContents = function fnChSendCont(p_form) {
   if (p_form.message && p_form.message.value.length > 0) {
     const message = p_form.message.value;
     // Send a new chat.  // ASYNC
@@ -181,23 +189,23 @@ Chat.sendChatContents = function (p_form) {
 
 // Notify the user when a chat send was rejected.
 Chat.rejected = function () {
-  console.error('Error: Failed to send the chat to server.');
+  logger.error('Error: Failed to send the chat to server.');
   Chat.submissionArea().shake(); // Shake the submission area to show a failed send of a chat.
   return false;
 };
 
 // Send a messageData object to the websockets chat
-Chat.send = function (messageData) {
+Chat.send = function fnS77(messageData) {
   if (!Chat.canSend()) {
     return false;
   }
   let passfail = true;
   try {
     window.conn.send(JSON.stringify(messageData)); // Turn the data into a json object to pass.
-    logger.log('Chat message sent.');
+    logger.info('Chat message sent.');
   } catch (ex) {
     // Maybe the connection send didn't work out.
-    logger.log(ex.message);
+    logger.warn(`Chat connection failed with: ${ex.message}`);
     passfail = false;
   }
 
@@ -218,10 +226,10 @@ Chat.chatReady = function () {
     $submitter.show();
   } else {
     $submitter.hide();
-    logger.log('Warning: Not logged in to be able to send messages.');
+    logger.warn('Warning: Not logged in to be able to send messages.');
   }
 
-  logger.log('Chat connected and ready');
+  logger.info('Chat connected and ready');
   return true;
 };
 
@@ -232,12 +240,12 @@ Chat.canSend = function () {
 };
 
 // Get the dev domain if on .local, fallback to live chat
-Chat.domain = function (url) {
+Chat.domain = function fnChDomain(url) {
   // Use document element link processing to get url parts
   const link = document.createElement('a');
   link.setAttribute('href', url);
   const host = link.hostname;
-  logger.log(host);
+  logger.log(`Connecting to chat api host: ${host}`);
 
   if (host.indexOf('.local') > -1) {
     return `chatapi.${host}`;
@@ -248,9 +256,9 @@ Chat.domain = function (url) {
 };
 
 // Add a typewatch IIFE
-Chat.typewatch = (function () {
+Chat.typewatch = (function fnChTypewatch() {
   let timer = 0;
-  return function (callback, ms) {
+  return function fnTypewatchAnon(callback, ms) {
     clearTimeout(timer);
     timer = setTimeout(callback, ms);
   };
@@ -271,13 +279,13 @@ $(() => {
 
     window.conn = new WebSocket(connectionString);
     /* eslint no-unused-vars: 0 */
-    window.conn.onopen = function (e) {
+    window.conn.onopen = function fnWebsocketConn(e) {
       logger.log('Websocket Connection established!');
       Chat.chatReady();
     };
 
     // Output information comes out here.
-    window.conn.onmessage = function (e) {
+    window.conn.onmessage = function fnWebsocketMess(e) {
       if (e && typeof e.data !== 'undefined') {
         Chat.renderChatMessage(JSON.parse(e.data)); // Add msg to UI when available!
       }
@@ -290,7 +298,7 @@ $(() => {
 
   // Submit a chat message when the input box is used.
   const $submitArea = Chat.submissionArea();
-  $submitArea.hide().submit(function (e) {
+  $submitArea.hide().submit(function fnSubmitChat(e) {
     e.preventDefault();
     const success = Chat.sendChatContents(this);
     if (!success) {
@@ -304,8 +312,8 @@ $(() => {
 // Set up refreshing of the village chat board page (will pause refreshing while someone is writing
 function refreshpagechat() {
   const messageInput = $('#message');
+  // Refresh only if text not being written.
   if (!messageInput.length || messageInput.val() === false || messageInput.val() === '') {
-    // Refresh only if text not being written.
     if (
       window.parent
       && window.parent.main

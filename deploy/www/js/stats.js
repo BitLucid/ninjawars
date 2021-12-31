@@ -6,6 +6,10 @@
 // eslint-disable-next-line import/extensions
 import { debounce, logger } from './utils.js';
 
+// eslint-disable-next-line no-var
+var presence = window.presence || {};
+presence.stats = true;
+
 /**
  * Update the Description area text on the fly
  */

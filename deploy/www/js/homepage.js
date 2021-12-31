@@ -1,6 +1,11 @@
 /* eslint-disable func-names */
 /* eslint-disable prefer-arrow-callback */
 /* global $ */
+
+// eslint-disable-next-line no-var
+var presence = window.presence || {};
+presence.homepage = true;
+
 $(function indexBehaviors() {
   const horizontalClass = 'partial';
   $('#chat-toggle').click(function () {

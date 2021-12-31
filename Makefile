@@ -158,6 +158,8 @@ test-functional:
 	python3 -m pytest deploy/tests/functional/
 
 test-js:
+	@echo "See an example spec file in ./deploy/tests/js/ChatSpec.js"
+	@echo "Most of the files being tested are in ./deploy/www/js/ e.g. ./deploy/www/js/chat.js"
 	yarn test
 
 test-ratchets:

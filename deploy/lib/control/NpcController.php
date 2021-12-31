@@ -61,7 +61,7 @@ class NpcController extends AbstractController {
         $oni_killed       = false;
         $item             = null;
 
-        $player->changeTurns(-1*self::ONI_TURN_LOSS);
+        $player->setTurns($player->turns - min(self::ONI_TURN_LOSS, $player->turns));
         $player->harm($oni_health_loss);
         $player->subtractKills(self::ONI_KILL_LOSS);
 
@@ -358,7 +358,7 @@ class NpcController extends AbstractController {
 
             // Subtract the turn cost for attacking an npc
             // almost always 1 apart from perhaps oni or group-of-thieves
-            $player->changeTurns(-1*$turn_cost);
+            $player->setTurns($player->turns - min($turn_cost, $player->turns));
 
             $player->save();
         }
@@ -366,6 +366,7 @@ class NpcController extends AbstractController {
         // Uses a sub-template inside for specific npcs.
         $parts = [
             'victim'       => $victim, // merge may override in theory
+            'ninja'        => $player,
             'npc_template' => $npc_template,
             'attacked'     => 1,
             'turns'        => $player? $player->turns : null,

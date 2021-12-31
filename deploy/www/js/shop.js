@@ -1,21 +1,23 @@
 /* Store the shop settings */
-/*jshint browser: true, white: true, plusplus: true*/
-/*global $, NW, loggedIn */
-$(function () {
-    'use strict';
+/* jshint browser: true, white: true, plusplus: true */
+/* global $, NW, loggedIn */
 
-    var auth = typeof loggedIn !== 'undefined' ? loggedIn : false;
+// eslint-disable-next-line no-var
+var presence = window.presence || {};
+presence.shop = true;
 
-    var quantity = NW.storage.appState.get('quantity', 1);
+$(() => {
+  const auth = typeof loggedIn !== 'undefined' ? loggedIn : false;
 
-    $('#quantity').val(quantity);
+  const quantity = NW.storage.appState.get('quantity', 1);
 
-    $('#shop_form').submit(function () {
-        if (!auth) {
-            return false;
-        } else {
-            NW.storage.appState.set('quantity', $('#quantity').val());
-            return true;
-        }
-    });
+  $('#quantity').val(quantity);
+
+  $('#shop_form').submit(() => {
+    if (!auth) {
+      return false;
+    }
+    NW.storage.appState.set('quantity', $('#quantity').val());
+    return true;
+  });
 });

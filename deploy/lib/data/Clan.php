@@ -17,6 +17,10 @@ class Clan {
     private $description;
     private $founder;
 
+    /**
+     * Create/gather a clan
+     * @param int $p_id of the clan or null to create a new one
+     */
     public function __construct(int $p_id=null, string $p_name=null, $data=null) {
         if(null !== $p_id){
             $this->setID($p_id);
@@ -47,11 +51,13 @@ class Clan {
         return $this->name;
     }
 
-    public function setID(int $p_id) {
+    public function setID(int $p_id): void
+    {
         $this->id = (int)$p_id;
     }
 
-    public function setName(string $p_name) {
+    public function setName(string $p_name): void
+    {
         $this->name = trim($p_name);
     }
 
@@ -84,7 +90,8 @@ class Clan {
     /**
      * @return string
      */
-    public function getDescription() {
+    public function getDescription(): string
+    {
         return $this->description;
     }
 
@@ -95,17 +102,20 @@ class Clan {
     /**
      * @return string
      */
-    public function getAvatarUrl() {
+    public function getAvatarUrl(): string
+    {
         return $this->avatarUrl;
     }
 
-    public function setAvatarUrl(string $url) {
+    public function setAvatarUrl(string $url): void
+    {
         $this->avatarUrl = $url;
     }
 
     // End of getters and setters.
 
-    private function nameFromId(int $id) {
+    private function nameFromId(int $id): string
+    {
         return query_item(
             'SELECT clan_name FROM clan WHERE clan_id = :id',
             [ ':id' => [$id, PDO::PARAM_INT]]
@@ -422,7 +432,7 @@ class Clan {
 
         $clan_id = DatabaseConnection::$pdo->lastInsertId();
         if(!(int)$clan_id){
-            throw new RuntimeException('Unable to obtain id of clan just created.');
+            throw new \RuntimeException('Unable to obtain id of clan just created.');
         }
 
         $statement = DatabaseConnection::$pdo->prepare('INSERT INTO clan_player (_player_id, _clan_id, member_level) VALUES (:leader, :clanID, 2)');

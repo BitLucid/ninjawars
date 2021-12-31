@@ -28,7 +28,6 @@ Local Prep to install php-cli or similar and needed php extensions:
 
     sudo make install-system
 
-
 configure, make, make install:
 
     ./configure

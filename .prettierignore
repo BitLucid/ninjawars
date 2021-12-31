@@ -3,6 +3,17 @@ composer.lock
 package-lock.json
 yarn.lock
 
+# Ignore .yarn directory
+.yarn/*
+.yarnrc.yml
+
+# Don't reformat github markdown
+.github
+
+# js files to not mess with
+deploy/www/js/api.js
+nw.js
+
 # Ignore artifacts
 build
 coverage
@@ -46,3 +57,4 @@ node_modules
 .venv
 
 #possibly, I might want to ignore whole classes of files like *.html
+deploy/tests/karma.conf.js
