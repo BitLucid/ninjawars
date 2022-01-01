@@ -2096,17 +2096,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jasmine-core@npm:^3.2.1":
-  version: 3.10.1
-  resolution: "jasmine-core@npm:3.10.1"
-  checksum: 77ee26aaf29576e982a2ebe6586218ff4d7cc4305ad18c400954bbdeb3c7987e9a4a8ac6d6548b65838852f325395fc901d69bf8c24bdccfbd67b263fbf5d4fd
-  languageName: node
-  linkType: hard
-
 "jasmine-core@npm:^3.6.0":
   version: 3.9.0
   resolution: "jasmine-core@npm:3.9.0"
   checksum: af08d9aee93f956f4cb0eae7dcb4b669213fddab80e5e6b16c52e33a0f2f5c969e54de009a65dfde0111cb03cabe577a2aaa8803614c685111e85ebd51323649
+  languageName: node
+  linkType: hard
+
+"jasmine-core@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "jasmine-core@npm:4.0.0"
+  checksum: ebb5906c3e91f6d403e9122b8c2955c3272072c4b0fecc1cf1d356e8e4399b0c85b8d6dd0b5abbaa3b9afbdcd279c13394a4a71c0683d4e68fb18213abb68065
   languageName: node
   linkType: hard
 
@@ -2583,7 +2583,7 @@ __metadata:
     eslint-plugin-jsx-a11y: ^6.4.1
     eslint-plugin-react: ^7.26.0
     eslint-plugin-react-hooks: 4.3.0
-    jasmine-core: ^3.2.1
+    jasmine-core: ^4.0.0
     karma: 6.3.9
     karma-chrome-launcher: ^3.1.0
     karma-jasmine: ^4.0.1
