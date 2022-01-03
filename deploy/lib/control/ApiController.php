@@ -1,14 +1,11 @@
 <?php
+
 namespace NinjaWars\core\control;
 
 use NinjaWars\core\control\AbstractController;
 use NinjaWars\core\extensions\SessionFactory;
 use NinjaWars\core\environment\RequestWrapper;
-use NinjaWars\core\data\DatabaseConnection;
 use NinjaWars\core\data\Api;
-use NinjaWars\core\data\Enemies;
-use NinjaWars\core\data\Player;
-use NinjaWars\core\data\Message;
 use Symfony\Component\HttpFoundation\Response;
 use \PDO;
 
@@ -16,7 +13,8 @@ use \PDO;
  * This is a class that provides a jsonP get api via passing in a callback
  * It is not a REST api
  */
-class ApiController extends AbstractController {
+class ApiController extends AbstractController
+{
     const ALIVE = false;
     const PRIV  = false;
 
@@ -25,7 +23,8 @@ class ApiController extends AbstractController {
      *
      * @return Response
      */
-    public function nw_json() {
+    public function nw_json()
+    {
         $request = RequestWrapper::$request;
         $type = $request->get('type');
         $dirty_jsoncallback = $request->get('jsoncallback'); // No callback just gives json
@@ -33,8 +32,8 @@ class ApiController extends AbstractController {
 
         // Reject if non alphanumeric and _ chars
         $jsoncallback = (!preg_match('/[^a-z_0-9]/i', $dirty_jsoncallback) ? $dirty_jsoncallback : null);
-        if($jsoncallback !== $dirty_jsoncallback) {
-            return new Response(json_encode(['error'=>'Invalid callback']), 401, ['Content-type'=> 'text/javascript; charset=utf8']);
+        if ($jsoncallback !== $dirty_jsoncallback) {
+            return new Response(json_encode(['error' => 'Invalid callback']), 400, ['Content-type' => 'text/javascript; charset=utf8']);
         }
 
         $headers = [
@@ -47,10 +46,25 @@ class ApiController extends AbstractController {
 
         $res = null;
         $api = new Api();
+        $allowed = [
+            'send_chat',
+            'new_chats',
+            'chats',
+            'char_search',
+            'latest_chat_id',
+            'latest_event',
+            'latest_message',
+        ];
 
-        if (isset($type)) {
+        if (isset($type) && (in_array($type, $allowed) || method_exists($api, $type))) {
             // Customized parameters like ?term=&limit=
-            if ($type == 'send_chat') {
+            if ($type == 'latest_message') {
+                $result = $api->latestMessage();
+            } elseif ($type == 'latest_event') {
+                $result = $api->latestEvent();
+            } elseif ($type == 'latest_chat_id') {
+                $result = $api->latestChatId();
+            } elseif ($type == 'send_chat') {
                 $result = $api->sendChat($request->get('msg'));
             } elseif ($type == 'new_chats') {
                 $chat_since = $request->get('since', null);
@@ -65,11 +79,14 @@ class ApiController extends AbstractController {
             }
 
             $res = (!$jsoncallback) ? json_encode($result) : "$jsoncallback(" . json_encode($result) . ")";
+        } else {
+            $res = json_encode(null);
+            $headers['Content-Type'] = 'text/javascript; charset=utf8';
+            return new Response($res, 400, $headers);
         }
 
         $headers['Content-Type'] = 'text/javascript; charset=utf8';
 
         return new Response($res, 200, $headers);
     }
-
 }
