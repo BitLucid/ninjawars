@@ -16,9 +16,9 @@ class SmartyPluginUnitTest extends \PHPUnit\Framework\TestCase {
     const URL = 'https://localhost.com/go/?query=string';
 
     public function testCachebustPositive() {
-        $result = smarty_function_cachebust(['file'=>self::EXISTING_FILE]);
-        $this->assertNotEquals(self::EXISTING_FILE, $result);
+        $result = smarty_function_cachebust(['file' => self::EXISTING_FILE]);
         $this->assertGreaterThan(strlen(self::EXISTING_FILE), strlen($result));
+        $this->assertContains(self::EXISTING_FILE, $result);
     }
 
     public function testCachebustNegative() {
