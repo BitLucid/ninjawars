@@ -37,5 +37,12 @@ jobs:
                   # Stop eslint from failing the build
                   rm .eslintrc.json
                   yarn build
-            - name: Run Lighthouse audit
-              run: npx @lhci/cli@0.4.0 autorun
+            - name: Audit URLs using Lighthouse
+              uses: treosh/lighthouse-ci-action@v8
+              with:
+                urls: |
+                  http://localhost:7474/
+                  http://localhost:7474/intro
+                budgetPath: ./.budget.json # test performance budgets
+                uploadArtifacts: true # save results as an action artifacts
+                temporaryPublicStorage: true # upload lighthouse report to the temporary storage
