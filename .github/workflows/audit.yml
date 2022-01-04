@@ -30,8 +30,7 @@ jobs:
                   # Install the project, then...
                   # yarn workspaces run init-project
                   yarn init-project
-                  yarn install --immutable
-                  #yarn bootstrap
+                  #yarn install --immutable
             - name: Build
               run: |
                   # Stop eslint from failing the build
