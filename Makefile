@@ -112,6 +112,9 @@ all: build test-unit db python-build test
 test-one:
 	./vendor/bin/phpunit-watcher watch $(TESTFILE)
 
+test-one-no-watch:
+	php ./vendor/bin/phpunit $(TESTFILE)
+
 watch:
 	./vendor/bin/phpunit-watcher watch
 

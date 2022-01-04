@@ -47,7 +47,8 @@ class Clan {
         }
     }
 
-    public function getName(): string {
+    public function getName(): ?string
+    {
         return $this->name;
     }
 
@@ -64,7 +65,8 @@ class Clan {
     /**
      * @return int
      */
-    public function getLeaderID(): int {
+    public function getLeaderID(): ?int
+    {
         $leaderInfo = $this->getLeaderInfo();
         return $leaderInfo['player_id'];
     }
@@ -72,7 +74,8 @@ class Clan {
     /**
      * @return string
      */
-    public function getFounder(): string {
+    public function getFounder(): ?string
+    {
         if (!$this->founder) {
             $this->founder = query_item('select clan_founder from clan where clan_id = :id', [':id'=>$this->id]);
         }
@@ -90,7 +93,7 @@ class Clan {
     /**
      * @return string
      */
-    public function getDescription(): string
+    public function getDescription(): ?string
     {
         return $this->description;
     }
@@ -102,7 +105,7 @@ class Clan {
     /**
      * @return string
      */
-    public function getAvatarUrl(): string
+    public function getAvatarUrl(): ?string
     {
         return $this->avatarUrl;
     }
@@ -114,7 +117,7 @@ class Clan {
 
     // End of getters and setters.
 
-    private function nameFromId(int $id): string
+    private function nameFromId(int $id): ?string
     {
         return query_item(
             'SELECT clan_name FROM clan WHERE clan_id = :id',
@@ -149,7 +152,8 @@ class Clan {
     /**
      * @return boolean|String
      */
-    public function addMember(Player $ninja, Player $adder) {
+    public function addMember(Player $ninja, Player $adder): bool|string
+    {
         if ($this->hasMember($ninja->id())) {
             return 'That ninja is already a member of the clan.';
         }
@@ -173,7 +177,8 @@ class Clan {
      *
      * @return string|null
      */
-    public function invite(Player $p_target, Player $p_inviter) {
+    public function invite(Player $p_target, Player $p_inviter): ?string
+    {
         if (empty($p_target) || null === $p_target->id()) {
             return 'No such ninja.';
         }
