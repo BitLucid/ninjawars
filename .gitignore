@@ -97,3 +97,5 @@ deploy/.env
 .vscode/
 karma.conf.js
 .phpunit.result.cache
+deploy/www/index.html
+deploy/www/intro.html

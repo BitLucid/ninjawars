@@ -12,6 +12,7 @@
         "prepare-unit-test-ci": "echo 'no-op for now'",
         "start": "make build",
         "build": "make build",
+        "serve": "yarn dlx serve deploy/www/ -p 7474",
         "watch": "livereload ./deploy/* ./deploy/www/* ./deploy/templates/* ./deploy/lib/control/* --debug",
         "security-check": "yarn audit",
         "prettier": "npx prettier --write .",
