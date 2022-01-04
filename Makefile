@@ -25,8 +25,20 @@ ifndef TESTFILE
 	TESTFILE=
 endif
 
-build: dep
+create-directories:
+	@echo "Do this with sudo due to permissions"
 	mkdir -p $(JS)
+	mkdir -p ./deploy/templates/compiled ./deploy/templates/cache ./deploy/resources/logs/
+	touch ./deploy/resources/logs/deity.log
+	touch ./deploy/resources/logs/emails.log
+
+build: dep
+	@echo "Don't forget to update nginx configs as necessary."
+	@echo "Including updating the php to retain login sessions longer."
+	cp -u -p ./deploy/resources.build.php ./deploy/resources.php
+	echo "Note that this does not overwrite existing resources.php"
+	php ./deploy/check.php
+	echo "Check that the webserver user has permissions to the script!"
 	@ln -sf "$(RELATIVE_COMPONENTS)jquery/jquery.min.js" "$(JS)"
 	@ln -sf "$(RELATIVE_COMPONENTS)jquery/jquery.min.map" "$(JS)"
 	@ln -sf "$(RELATIVE_COMPONENTS)jquery-timeago/jquery.timeago.js" "$(JS)"
@@ -36,11 +48,6 @@ build: dep
 	php deploy/www/intro-controller.php > deploy/www/intro.html
 	php deploy/www/front-controller.php > deploy/www/index.html
 	@echo "Built front controller to static deploy/www/index.html file and deploy/www/intro.html file"
-	rm -rf ./deploy/templates/compiled/* ./deploy/templates/cache/*
-	mkdir -p ./deploy/templates/compiled ./deploy/templates/cache ./deploy/resources/logs/
-	chmod -R ugo+rwX ./deploy/templates/compiled ./deploy/templates/cache
-	touch ./deploy/resources/logs/deity.log
-	touch ./deploy/resources/logs/emails.log
 
 dep:
 	@$(COMPOSER) install
@@ -54,11 +61,10 @@ js-deps:
 	corepack enable
 	echo "corepack enable DONE. Totally sidesteps having to install a yarn version"
 	yarn -v
-	corepack enable
 	yarn install --immutable
 
-install: build start-chat writable
-	@echo "Don't forget to update webserver configs as necessary."
+install: create-directories writable start-chat writable
+	@echo "Don't forget to update nginx configs as necessary."
 	@echo "Including updating the php to retain login sessions longer."
 	cp -u -p ./deploy/resources.build.php ./deploy/resources.php
 	echo "Note that this does not overwrite existing resources.php"
@@ -66,6 +72,7 @@ install: build start-chat writable
 	echo "Check that the webserver user has permissions to the script!"
 
 writable:
+	chmod -R ugo+rwX ./deploy/templates/compiled ./deploy/templates/cache ./deploy/resources/logs/
 	chown ${WEBUSER} ./deploy/resources/logs/*
 	mkdir -p ./deploy/templates/compiled ./deploy/templates/cache ./deploy/resources/logs/
 	chown ${WEBUSER} ./deploy/resources/logs/*
@@ -98,12 +105,16 @@ install-python: python-install
 install-webserver:
 	apt install nginx
 
+restart-webserver:
+	service nginx restart
+
 install-database-client:
 	apt install postgresql-client
 
 start-chat:
 	touch ./deploy/resources/logs/ninjawars.chat-server.log
 	chown ${WEBUSER} ./deploy/resources/logs/ninjawars.chat-server.log
+	chmod ugo+w ./deploy/resources/logs/ninjawars.chat-server.log
 	nohup php bin/chat-server.php > ./deploy/resources/logs/ninjawars.chat-server.log 2>&1 &
 
 browse:
