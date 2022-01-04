@@ -39,8 +39,8 @@ server {
 		try_files $uri =404;
 	}
 
-	location /intro{
-		try_files $uri.html @notfound;
+	location = /intro{
+		try_files $uri.html =500;
 	}
 
 	location / {
