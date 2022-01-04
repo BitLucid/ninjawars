@@ -7,9 +7,11 @@
         "doc": "docs"
     },
     "scripts": {
+        "init-project": "echo 'no-op for now'",
         "lint": "eslint --ext .jsx,.js deploy/www/js",
         "prepare-unit-test-ci": "echo 'no-op for now'",
         "start": "make build",
+        "build": "make build",
         "watch": "livereload ./deploy/* ./deploy/www/* ./deploy/templates/* ./deploy/lib/control/* --debug",
         "security-check": "yarn audit",
         "prettier": "npx prettier --write .",
@@ -36,7 +38,7 @@
         "url": "https://github.com/BitLucid/ninjawars/issues"
     },
     "engines": {
-        "node": ">=16.0.0"
+        "node": ">=16.13.0"
     },
     "homepage": "https://github.com/BitLucid/ninjawars#readme",
     "devDependencies": {

@@ -1,0 +1,41 @@
+name: Audit
+
+on: [pull_request]
+
+env:
+    WEBAPP_NAME: ninjawars # set this to your application's name
+    WEBAPP_PACKAGE_PATH: "." # set this to the path to your web app project, defaults to the repository root
+    NODE_VERSION: "16.13.1" # set this to the node version to use
+    GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    NPM_TOKEN: ${{ secrets.NPM_READ_TOKEN }}
+    CI: false
+jobs:
+    lighthouseci:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+            - uses: actions/setup-node@v1
+              with:
+                  node-version: ${{ env.NODE_VERSION }}
+                  #always-auth: true
+                  #registry-url: "https://npm.pkg.github.com"
+            - name: Yarn packages audit
+              run: yarn npm audit
+              continue-on-error: true
+            - name: Install, configure, install the lighthouse auditor
+              run: |
+                  # Check the node version
+                  node --version
+                  corepack enable
+                  # Install the project, then...
+                  # yarn workspaces run init-project
+                  yarn init-project
+                  yarn install --immutable
+                  #yarn bootstrap
+            - name: Build
+              run: |
+                  # Stop eslint from failing the build
+                  rm .eslintrc.json
+                  yarn build
+            - name: Run Lighthouse audit
+              run: npx @lhci/cli@0.4.0 autorun
