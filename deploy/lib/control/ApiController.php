@@ -78,8 +78,9 @@ class ApiController extends AbstractController
                 $result = method_exists($api, $type) ? $api->$type($data) : null;
             }
 
+            // Default case to create a jsonp response with the callback if there is a callback
             $res = (!$jsoncallback) ? json_encode($result) : "$jsoncallback(" . json_encode($result) . ")";
-        } else {
+        } else { // Not whitelisted, so reject request
             $res = json_encode(null);
             $headers['Content-Type'] = 'text/javascript; charset=utf8';
             return new Response($res, 400, $headers);
