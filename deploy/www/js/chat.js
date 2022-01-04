@@ -240,16 +240,12 @@ Chat.canSend = function () {
 
 // Get the dev domain if on .local, fallback to live chat
 Chat.domain = function fnChDomain(url) {
-  // Use document element link processing to get url parts
-  const link = document.createElement('a');
-  link.setAttribute('href', url);
-  const host = link.hostname;
-  logger.info(`Connecting to chat api host: ${host}`);
+  logger.info(`Finding chat api for url: ${url}`);
 
-  if (host.indexOf('.local') > -1) {
-    return `chatapi.${host}`;
-  } if (host.indexOf('localhost') > -1) {
-    return host;
+  if (url && url.indexOf('.local') > -1) {
+    return `chatapi.${url}`;
+  } if (url && url.indexOf('localurl') > -1) {
+    return url;
   }
   return 'chatapi.ninjawars.net';
 };
@@ -267,14 +263,14 @@ Chat.typewatch = (function fnChTypewatch() {
 $(() => {
   // Set up initial config.
   Chat.config = {
-    server: Chat.domain(window.location.host),
+    server: Chat.domain(window && window.location.href),
     port: '8080',
     protocol: window.location.protocol === 'https:' ? 'wss' : 'ws',
   };
   if (window.WebSocket !== undefined) {
     // Browser is compatible.
     const connectionString = `${Chat.config.protocol}://${Chat.config.server}:${Chat.config.port}`;
-    logger.info(`Connecting to ${connectionString}`);
+    logger.info(`... Connecting to ${connectionString} ...`);
 
     window.conn = new WebSocket(connectionString);
     /* eslint no-unused-vars: 0 */
@@ -284,7 +280,7 @@ $(() => {
     };
 
     // Output information comes out here.
-    window.conn.onmessage = function fnWebsocketMess(e) {
+    window.conn.onmessage = function fnWebsocketMessage(e) {
       if (e && typeof e.data !== 'undefined') {
         Chat.renderChatMessage(JSON.parse(e.data)); // Add msg to UI when available!
       }
@@ -297,11 +293,15 @@ $(() => {
 
   // Submit a chat message when the input box is used.
   const $submitArea = Chat.submissionArea();
-  $submitArea.hide().submit(function fnSubmitChat(e) {
+  $submitArea.submit(function fnSubmitChat(e) {
+    $submitArea.find(':input[type="submit"]').prop('disabled', true);
     e.preventDefault();
     const success = Chat.sendChatContents(this);
     if (!success) {
-      /// TODO handle failure
+      logger.error('Error: Failed to send chat.');
+      $submitArea.find(':input[type="submit"]').prop('disabled', false);
+    } else {
+      $submitArea.find(':input[type="submit"]').prop('disabled', false);
     }
   });
 
