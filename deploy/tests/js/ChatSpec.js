@@ -1,18 +1,8 @@
 // Strict checking.
-/* global jest, $controller, describe, beforeEach, afterEach, it, expect, Chat, refreshpagechat */
-
-// eslint-disable-next-line no-var
-var window = window || {
-  location: 'https://www.example.com',
-  hostname: 'www.example.com',
-  protocol: 'https:',
-  host: 'www.example.com',
-  origin: 'https://www.example.com',
-};
-
-const previousConfig = Chat.config;
+/* global describe, beforeEach, afterEach, it, expect, Chat, refreshpagechat */
 
 describe('chat', () => {
+  const previousConfig = Chat.config;
   describe('Introductory page testing context', () => {
     beforeEach(() => {
       const exampleUrl = 'https://www.example.com';
