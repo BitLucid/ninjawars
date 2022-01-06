@@ -233,7 +233,7 @@ Chat.chatReady = function () {
 };
 
 // Check whether logged in for chat sending
-Chat.canSend = function () {
+Chat.canSend = function fnCS() {
   const $area = Chat.submissionArea();
   return Boolean($area.data('logged-in'));
 };
@@ -242,10 +242,13 @@ Chat.canSend = function () {
 Chat.domain = function fnChDomain(url) {
   logger.info(`Finding chat api for url: ${url}`);
 
-  if (url && url.indexOf('.local') > -1) {
-    return `chatapi.${url}`;
-  } if (url && url.indexOf('localurl') > -1) {
-    return url;
+  if (url && (url.includes('.localurl') || url.includes('localhost'))) {
+    const { hostname } = url ? new URL(url) : {};
+    return hostname;
+  }
+  if (url && url.includes('.local')) {
+    const { hostname } = new URL(url);
+    return `chatapi.${hostname}`;
   }
   return 'chatapi.ninjawars.net';
 };
@@ -259,14 +262,22 @@ Chat.typewatch = (function fnChTypewatch() {
   };
 }());
 
+/**
+ * Wrapper around the config to make it repeatable
+ * @param {*} initialUrl
+ * @param {*} port
+ * @returns
+ */
+Chat.setConfig = (initialUrl, port) => ({
+  server: Chat.domain(initialUrl),
+  port,
+  protocol: initialUrl.includes('http://') ? 'ws' : 'wss',
+});
+
 // Try to connect to active websocket server, see README
 $(() => {
   // Set up initial config.
-  Chat.config = {
-    server: Chat.domain(window && window.location.href),
-    port: '8080',
-    protocol: window.location.protocol === 'https:' ? 'wss' : 'ws',
-  };
+  Chat.config = Chat.setConfig(window && window.location.href, '8080');
   if (window.WebSocket !== undefined) {
     // Browser is compatible.
     const connectionString = `${Chat.config.protocol}://${Chat.config.server}:${Chat.config.port}`;

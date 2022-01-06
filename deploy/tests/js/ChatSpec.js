@@ -1,18 +1,32 @@
 // Strict checking.
-/* global describe, beforeEach, afterEach, it, expect, Chat, refreshpagechat */
+/* global jest, $controller, describe, beforeEach, afterEach, it, expect, Chat, refreshpagechat */
 
-// @ts-ignore
+// eslint-disable-next-line no-var
+var window = window || {
+  location: 'https://www.example.com',
+  hostname: 'www.example.com',
+  protocol: 'https:',
+  host: 'www.example.com',
+  origin: 'https://www.example.com',
+};
+
+const previousConfig = Chat.config;
+
 describe('chat', () => {
-  // @ts-ignore
   describe('Introductory page testing context', () => {
-    beforeEach(() => { });
+    beforeEach(() => {
+      const exampleUrl = 'https://www.example.com';
+      Chat.config = Chat.setConfig(exampleUrl, '9999');
+    });
 
-    afterEach(() => { });
+    afterEach(() => {
+      Chat.config = previousConfig;
+    });
 
     it('should have initialized the Chat', () => {
       // Running the file should work without error
       expect(Chat).toBeDefined();
-      expect(Chat.config).toBeDefined();
+      expect(Chat.config).toBeDefined('Chat.config was found to be undefined in tests');
     });
     it('should have helper functions', () => {
       // @ts-ignore
