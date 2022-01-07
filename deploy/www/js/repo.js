@@ -2,7 +2,7 @@
 /* jshint browser: true, white: true, plusplus: true */
 /* global $ */
 function loadLastCommitMessage() {
-  const logger = console || { log: () => { /* noop */ } };
+  const logger = console || { warn: () => { /* noop */ } };
   const owner = 'BitLucid';
   const repo = 'ninjawars';
   const oauthToken = ''; // TODO: Figure out how to store this info here.
@@ -14,10 +14,9 @@ function loadLastCommitMessage() {
   }/commits/HEAD?${
     access
   }callback=?`;
-  const placeCommit = function (data) {
+  const placeCommit = function fnPlaceCommit(data) {
     if (!data.data || !data.data.commit) {
-      logger.log('No github commit api data');
-      logger.log(data);
+      logger.warn('No github commit api data:', data);
       return;
     }
     // Load latest commit message.

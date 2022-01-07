@@ -1,18 +1,22 @@
 // Strict checking.
 /* global describe, beforeEach, afterEach, it, expect, Chat, refreshpagechat */
 
-// @ts-ignore
 describe('chat', () => {
-  // @ts-ignore
+  const previousConfig = Chat.config;
   describe('Introductory page testing context', () => {
-    beforeEach(() => { });
+    beforeEach(() => {
+      const exampleUrl = 'https://www.example.com';
+      Chat.config = Chat.setConfig(exampleUrl, '9999');
+    });
 
-    afterEach(() => { });
+    afterEach(() => {
+      Chat.config = previousConfig;
+    });
 
     it('should have initialized the Chat', () => {
       // Running the file should work without error
       expect(Chat).toBeDefined();
-      expect(Chat.config).toBeDefined();
+      expect(Chat.config).toBeDefined('Chat.config was found to be undefined in tests');
     });
     it('should have helper functions', () => {
       // @ts-ignore
