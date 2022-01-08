@@ -2234,9 +2234,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"karma@npm:6.3.9":
-  version: 6.3.9
-  resolution: "karma@npm:6.3.9"
+"karma@npm:6.3.10":
+  version: 6.3.10
+  resolution: "karma@npm:6.3.10"
   dependencies:
     body-parser: ^1.19.0
     braces: ^3.0.2
@@ -2263,7 +2263,7 @@ __metadata:
     yargs: ^16.1.1
   bin:
     karma: bin/karma
-  checksum: 2e652c8f4d520593bedf96d21a9ab92b02e93bdb2598c7abee79ccdbd793099c634555e247559801b1226bae3a5544be61a3570f8ed560e96064447fb19206c9
+  checksum: 793813b312efbd5896ab06690ca48db3ed618fe33047d11b57c5d5ce275b63fb78c7ca14e025f7f98b21be5c7cbe1268e5cea655cdf310e69bd551c08a6a6805
   languageName: node
   linkType: hard
 
@@ -2584,7 +2584,7 @@ __metadata:
     eslint-plugin-react: ^7.26.0
     eslint-plugin-react-hooks: 4.3.0
     jasmine-core: ^3.2.1
-    karma: 6.3.9
+    karma: 6.3.10
     karma-chrome-launcher: ^3.1.0
     karma-jasmine: ^4.0.1
     karma-requirejs: ^1.1.0
