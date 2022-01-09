@@ -37,7 +37,10 @@
 
 	{if $submit_successful}
 		{if $confirmed}
-		  <p>Account with the login email "{$signupRequest->enteredEmail|escape}" is now confirmed! <strong>You can now <a href='/login'>login!</a></strong></p>
+		  <p>Account with the login email "{$signupRequest->enteredEmail|escape}" is now confirmed!</p>
+		  <div>
+		  	<strong>You can <a class='btn btn-primary btn-lg' href='/login'>LOGIN NOW!</a></strong>
+		  </div>
 		{else}
 		  Phase 5: When you receive an email from ninjawars ({$smarty.const.SYSTEM_EMAIL}), click the confirmation link to activate your account.
 		  <br><br>
@@ -51,7 +54,7 @@
 
 	{if !$error}
 		<!-- Success! -->
-  		<small>Only one account per person is allowed.</small>
+  		<small class='de-em'><em>Only one account per person is allowed.</em></small>
 		{include file='signup.success.tpl'}
 		<!-- Signup.success generally just displays the google analytics conversion tracking for successful signup -->
 	{/if}
