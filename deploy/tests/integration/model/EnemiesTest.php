@@ -2,6 +2,7 @@
 
 use NinjaWars\core\data\Enemies;
 use NinjaWars\core\data\Player;
+use NinjaWars\core\extensions\SessionFactory;
 
 class EnemiesTest extends NWTest
 {
@@ -77,5 +78,17 @@ class EnemiesTest extends NWTest
     public function testSearchEnemiesCanFindActive()
     {
         $this->assertEquals(1, count(Enemies::search($this->char, Player::find($this->char_id_2)->name())));
+    }
+
+    public function testNextTarget()
+    {
+        $target = Enemies::nextTarget($this->char, 0);
+        $this->assertGreaterThan(0, $target->id());
+    }
+
+    public function testNextTargetById()
+    {
+        $target = Enemies::nextTargetById($this->char->id(), 0);
+        $this->assertGreaterThan(0, $target->id());
     }
 }

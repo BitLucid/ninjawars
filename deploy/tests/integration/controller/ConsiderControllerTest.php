@@ -25,15 +25,15 @@ class ConsiderControllerTest extends NWTest {
         parent::tearDown();
     }
 
-    public function testIndex() {
-        $this->markTestSkipped('Failing in CI but not locally, for some reason.');
+    public function testIndex()
+    {
         $response = $this->controller->index($this->m_dependencies);
 
         $this->assertInstanceOf(StreamedViewResponse::class, $response);
     }
 
-    public function testNextEnemy() {
-        $this->markTestSkipped('Failing in CI but not locally, for some reason.');
+    public function testNextEnemy()
+    {
         $response = $this->controller->nextEnemy($this->m_dependencies);
 
         $this->assertInstanceOf(StreamedViewResponse::class, $response);

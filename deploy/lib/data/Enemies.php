@@ -96,7 +96,7 @@ class Enemies
     }
 
     /**
-     * Select nearest character down in rank
+     * Select nearest character down in rank, within 5 levels above self
      *
      * @param Player $char
      * @return Player

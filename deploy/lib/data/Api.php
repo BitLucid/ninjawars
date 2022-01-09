@@ -22,44 +22,50 @@ class Api
         $offset = $data;
         $char = Player::find(SessionFactory::getSession()->get('player_id'));
         $target = $char ? Enemies::nextTarget($char, (int) $offset) : null;
-        return $char && $target ? $target->publicData() : [];
+        return $char && $target ? $target->publicData() : false;
     }
 
     /**
-     * Deactivate a player character with a matching id
+     * Deactivate a player character and account with a matching id
      * @note Admin only
      */
-    public function deactivateChar($data)
+    public function deactivateChar($data, $auth_override = false)
     {
+        $accounts_deactivated = 0;
+        $chars_deactivated = 0;
         $char_id = $data;
         $user = Player::find(SessionFactory::getSession()->get('player_id'));
         if (!$user || !$user->isAdmin()) {
             return ['error' => 'Unable to proceed further.'];
         } else {
-            $res = query(
-                "update players set active = 0 where player_id = :char_id and active != 0",
-                [':char_id'  => [$char_id, PDO::PARAM_INT]]
-            );
-            return ['chars_deactivated' => $res->rowCount()];
+            $char = Player::find($char_id);
+            if ($char) {
+                $chars_deactivated = Account::deactivateSingleCharacter($char);
+                $accounts_deactivated = Account::deactivateByCharacter($char);
+            }
+            return ['chars_deactivated' => $chars_deactivated, 'accounts_deactivated' => $accounts_deactivated];
         }
     }
 
     /**
-     * Reactivate a player character with a matching id
+     * Reactivate a player character and account with a matching id
      * @note Admin only
      */
     public function reactivateChar($data)
     {
+        $chars_reactivated = 0;
+        $accounts_reactivated = 0;
         $char_id = $data;
         $user = Player::find(SessionFactory::getSession()->get('player_id'));
         if (!$user || !$user->isAdmin()) {
             return ['error' => 'Unable to proceed further.'];
         } else {
-            $res = query(
-                "update players set active = 1 where player_id = :char_id",
-                [':char_id'  => [$char_id, PDO::PARAM_INT]]
-            );
-            return ['chars_reactivated' => $res->rowCount()];
+            $char = Player::find($char_id);
+            if ($char) {
+                $chars_reactivated = Account::reactivateByCharacter(Player::find($char_id));
+                $accounts_reactivated = Account::reactivateByCharacter($char);
+            }
+            return ['chars_reactivated' => $chars_reactivated, 'accounts_reactivated' => $accounts_reactivated];
         }
     }
 

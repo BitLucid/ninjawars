@@ -614,4 +614,72 @@ class Account {
         }
         return $ninjas;
     }
+
+    /**
+     * Deactivate an account by id
+     */
+    public static function deactivate(Account $account): int
+    {
+        $deactivated = update_query(
+            'UPDATE accounts SET operational = 0 WHERE account_id = :account_id',
+            [':account_id' => [$account->id(), PDO::PARAM_INT]]
+        );
+        return $deactivated;
+    }
+
+    /** 
+     * Deactivate an account by it's player
+     */
+    public static function deactivateByCharacter(Player $char): int
+    {
+        $deactivated = update_query(
+            'UPDATE accounts a JOIN account_players ap ON a.account_id = ap._account_id
+            JOIN players p ON p.player_id = ap._player_id
+            SET a.operational = 0 WHERE p.player_id = :player_id',
+            [':player_id' => [$char->id(), PDO::PARAM_INT]]
+        );
+        return $deactivated;
+    }
+
+    /** 
+     * Reactivate an account by it's player
+     */
+    public static function reactivateByCharacter(Player $char): int
+    {
+        $deactivated = update_query(
+            'UPDATE accounts a JOIN account_players ap ON a.account_id = ap._account_id
+            JOIN players p ON p.player_id = ap._player_id
+            SET a.operational = 1 WHERE p.player_id = :player_id',
+            [':player_id' => [$char->id(), PDO::PARAM_INT]]
+        );
+        return $deactivated;
+    }
+
+    /**
+     * Deactivate a single player character
+     */
+    public static function deactivateSingleCharacter(Player $char): int
+    {
+        return query_item(
+            'UPDATE players SET active = :status WHERE player_id = :id',
+            [
+                ':status' => 0,
+                ':id' => $char->id()
+            ]
+        );
+    }
+
+    /**
+     * Activate a single player character
+     */
+    public static function reactivateSingleCharacter(Player $char): int
+    {
+        return query_item(
+            'UPDATE players SET active = :status WHERE player_id = :id',
+            [
+                ':status' => 1,
+                ':id' => $char->id()
+            ]
+        );
+    }
 }

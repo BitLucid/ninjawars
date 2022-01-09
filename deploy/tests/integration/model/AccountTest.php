@@ -133,4 +133,27 @@ class AccountTest extends NWTest {
         $this->assertInstanceOf(Player::class, reset($pcs));
     }
 
+    public function testAccountPlayerCanBeDeactivated()
+    {
+        $account = Account::findByNinjaName($this->test_ninja_name);
+        $pcs = $account->getCharacters();
+        $pc = reset($pcs);
+        Account::deactivateSingleCharacter($pc);
+        $updated_pc = Player::find($pc->id());
+        $this->assertFalse($updated_pc->isActive());
+    }
+
+    public function testAccountPlayerCanBeReactivated()
+    {
+        $account = Account::findByNinjaName($this->test_ninja_name);
+        $pcs = $account->getCharacters();
+        $pc = reset($pcs);
+        Account::deactivateSingleCharacter($pc);
+        $updated_pc = Player::find($pc->id());
+        $this->assertFalse($updated_pc->isActive());
+        Account::reactivateSingleCharacter($pc);
+        $updated_pc = Player::find($pc->id());
+        $this->assertTrue($updated_pc->isActive());
+    }
+
 }

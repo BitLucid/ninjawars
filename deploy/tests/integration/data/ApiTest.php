@@ -16,6 +16,7 @@ class ApiTest extends NWTest
         parent::login();
         $session = SessionFactory::init(new MockArraySessionStorage());
         $this->char = TestAccountCreateAndDestroy::char();
+        $this->char2 = TestAccountCreateAndDestroy::char_2();
         $session->set('player_id', $this->char->id());
     }
 
@@ -43,5 +44,21 @@ class ApiTest extends NWTest
         $data = $api->charSearch('phpunit', $limit = 1);
         $this->assertNotEmpty($data, 'Api::charSearch() returned empty data');
         $this->assertNotEmpty(reset($data)[0]['uname'], 'Api::charSearch() returned empty uname');
+    }
+
+    public function testCharDeactivateRunsAtAll()
+    {
+        $api = new Api();
+        $data = $api->deactivateChar($this->char2->id());
+        $this->assertNotEmpty($data, 'Api::deactivateChar() returned empty data');
+        // Will actually error because not admin, but that's fine
+    }
+
+    public function testCharActivateRunsAtAll()
+    {
+        $api = new Api();
+        $data = $api->reactivateChar($this->char2->id());
+        $this->assertNotEmpty($data, 'Api::deactivateChar() returned empty data');
+        // Will actually error because not admin, but that's fine
     }
 }
