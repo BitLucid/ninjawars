@@ -31,7 +31,11 @@ class ApiControllerTest extends NWTest {
     }
 
     // Want to get the json response out for each controller
-    private function extractPayload($p_response) {
+    private function extractPayload($p_response, $raw = false)
+    {
+        if ($raw) {
+            return json_decode($p_response->getContent(), true);
+        }
         $matches = [];
         preg_match($this->PAYLOAD_RE, $p_response->getContent(), $matches);
         return json_decode($matches[1]);
@@ -47,11 +51,13 @@ class ApiControllerTest extends NWTest {
 
         RequestWrapper::inject($request);
         $result = $this->controller->nw_json();
+        $this->assertEquals(400, $result->getStatusCode());
         $this->assertEquals('{"error":"Invalid callback"}', $result->getContent());
         TestAccountCreateAndDestroy::purge_test_accounts();
     }
 
-    public function testIllegalType() {
+    public function testIllegalTypeShouldGiveNullAnd400StatusCode()
+    {
         $request = new Request([
             'type'         => 'illegal',
             'jsoncallback' => self::CALLBACK,
@@ -59,7 +65,9 @@ class ApiControllerTest extends NWTest {
 
         RequestWrapper::inject($request);
         $result = $this->controller->nw_json();
-        $this->assertEquals('callback(null)', $result->getContent());
+        $payload = $this->extractPayload($result, true); // Raw json decoded payload
+        $this->assertEquals(400, $result->getStatusCode());
+        $this->assertNotEmpty($payload['error']);
     }
 
     public function testSearch() {
