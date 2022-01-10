@@ -7,7 +7,7 @@
     "doc": "docs"
   },
   "scripts": {
-    "init-project": "echo 'no-op for now'",
+    "init-project": "echo 'no-op for config'",
     "lint": "eslint --ext .jsx,.js deploy/www/js",
     "prepare-unit-test-ci": "echo 'no-op for now'",
     "start": "yarn time && make build && yarn time",
