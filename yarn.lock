@@ -650,7 +650,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"colors@npm:^1.4.0":
+"colors@npm:1.4.0":
   version: 1.4.0
   resolution: "colors@npm:1.4.0"
   checksum: 98aa2c2418ad87dedf25d781be69dc5fc5908e279d9d30c34d8b702e586a0474605b3a189511482b9d5ed0d20c867515d22749537f7bc546256c6014f3ebdcec
@@ -2155,14 +2155,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"karma@npm:6.3.9":
-  version: 6.3.9
-  resolution: "karma@npm:6.3.9"
+"karma@npm:6.3.11":
+  version: 6.3.11
+  resolution: "karma@npm:6.3.11"
   dependencies:
     body-parser: ^1.19.0
     braces: ^3.0.2
     chokidar: ^3.5.1
-    colors: ^1.4.0
+    colors: 1.4.0
     connect: ^3.7.0
     di: ^0.0.1
     dom-serialize: ^2.2.1
@@ -2184,7 +2184,7 @@ __metadata:
     yargs: ^16.1.1
   bin:
     karma: bin/karma
-  checksum: 2e652c8f4d520593bedf96d21a9ab92b02e93bdb2598c7abee79ccdbd793099c634555e247559801b1226bae3a5544be61a3570f8ed560e96064447fb19206c9
+  checksum: 0387df773a6a5547b97285169b16cddcb0c49a6286b9e1b9e994b3fa1b3283abe4e6064172f236acf6be2668032769a90f5175f58a1e0846497c0c88c4a9b919
   languageName: node
   linkType: hard
 
@@ -2505,7 +2505,7 @@ __metadata:
     eslint-plugin-react: ^7.26.0
     eslint-plugin-react-hooks: 4.3.0
     jasmine-core: ^3.2.1
-    karma: 6.3.9
+    karma: 6.3.11
     karma-chrome-launcher: ^3.1.0
     karma-jasmine: ^4.0.1
     karma-requirejs: ^1.1.0
