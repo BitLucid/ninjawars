@@ -8,7 +8,11 @@
 <!-- google_ad_section_start -->
 
 <div class='description' id='shop-description'>
-  {include file="shop.$view_part.tpl"}
+  {foreach from=$shopSections item=$shopSection}
+    <div class='shop-section'>
+      {include file="shop.$shopSection.tpl"}
+    </div>
+  {/foreach}
 </div>
 
 <p class='glassbox'>

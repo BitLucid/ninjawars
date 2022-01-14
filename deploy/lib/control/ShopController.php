@@ -30,7 +30,7 @@ class ShopController extends AbstractController {
 		$player = $p_dependencies['current_player'];
 		$authenticated = $p_dependencies['session']? $p_dependencies['session']->get('authenticated') : false;
 		$parts = array(
-			'view_part' => 'index',
+			'shopSections' => ['index'],
 			'gold'      => ($player ? $player->gold : 0),
 			'item_costs'        => self::itemForSaleCosts(),
 			'authenticated'     => $authenticated,
@@ -105,7 +105,7 @@ class ShopController extends AbstractController {
 			'no_funny_business' => $no_funny_business,
             'no_such_item'      => $no_such_item,
             'valid'             => $valid,
-			'view_part'         => 'buy',
+			'shopSections'      => ['buy'],
 			'gold'              => $gold,
 			'item_costs'        => self::itemForSaleCosts(),
 			'authenticated'     => $authenticated,
