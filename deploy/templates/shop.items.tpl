@@ -8,7 +8,7 @@
 .item-purchase-list .item-purchase-area {
     min-height: 5vh;
     background:#1c1a13;
-    border: thin solid black;
+    border: medium solid black;
 }
 {/literal}
 </style>

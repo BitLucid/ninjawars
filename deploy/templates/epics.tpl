@@ -223,11 +223,11 @@
             {include file="shop.buy.tpl"}
         </section>
 
-    <section id='shop-items-section'>
-        <h2>Shop.Items</h2>
-        {* item_costs is set in the controller *}
-        {include file="shop.items.tpl"}
-    </section>
+        <section id='shop-items-section'>
+            <h2>Shop.Items</h2>
+            {* item_costs is set in the controller *}
+            {include file="shop.items.tpl"}
+        </section>
 
         <section id='shop-section'>
             <h2>Shop</h2>
@@ -235,7 +235,6 @@
             {assign var="quantity" value=8888888}
             {assign var="item_text" value='Some example item'}
             {assign var="gold" value=999999}
-            {assign var="item_costs" value=[]}
             {assign var="shopSections" value=['index', 'buy']}
             {include file="shop.tpl"}
         </section>
