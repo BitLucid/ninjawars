@@ -62,6 +62,7 @@ class EpicsController extends AbstractController
             'clan'              => $clan,
             'myClan'            => $clan,
             'item_costs'        => Shop::itemForSaleCosts(),
+            'full_item_costs'   => Shop::fullItems(true),
             'clans'     => Clan::rankings(),
         ];
 

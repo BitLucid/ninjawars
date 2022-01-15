@@ -225,13 +225,6 @@
             {include file="shop.buy.tpl"}
         </section>
 
-        <section id='shop-items-section'>
-            <h2>Shop.Items</h2>
-            {* item_costs is set in the controller *}
-            {assign var="gold" value=88888888}
-            {include file="shop.items.tpl"}
-        </section>
-
         <section id='shop-section'>
             <h2>Shop</h2>
             {assign var="valid" value=true}
@@ -240,6 +233,14 @@
             {assign var="gold" value=999999}
             {assign var="shopSections" value=['index', 'buy']}
             {include file="shop.tpl"}
+        </section>
+
+        <section id='shop-items-section'>
+            <h2>Shop.Items</h2>
+            {* item_costs is set in the controller *}
+            {assign var="gold" value=88888888}
+            {assign var="item_costs" value=$full_item_costs}
+            {include file="shop.items.tpl"}
         </section>
 
 
