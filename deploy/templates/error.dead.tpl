@@ -9,8 +9,8 @@
           <img class='death-error-ghost' src='/images/characters/disappearing_ghost180.png' alt=''>
         </figure>
         <p class='ninja-notice death glassbox'>
-          You cannot do much as a ghost<br/>
-          Go to the <a class='btn btn-default' href='/shrine' style='font-size:2em'>⛩ shrine</a>, or just <a class='btn btn-primary btn-lg' href='/shrine/heal_and_resurrect' style='font-size:2em'>resurrect &amp; heal fully</a>.
+          You can&apos;t do much as a ghost<br/>
+          Go to the <a class='btn btn-default' href='/shrine' style='font-size:2em'>⛩ shrine</a> or just <a class='btn btn-primary btn-lg' href='/shrine/heal_and_resurrect' style='font-size:2em'>resurrect &amp; heal fully</a>.
         </p>
       </div>
     </div>
