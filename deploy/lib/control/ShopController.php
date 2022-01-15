@@ -4,6 +4,7 @@ namespace NinjaWars\core\control;
 use NinjaWars\core\control\AbstractController;
 use NinjaWars\core\Filter;
 use NinjaWars\core\data\Item;
+use NinjaWars\core\data\Shop;
 use NinjaWars\core\data\PurchaseOrder;
 use NinjaWars\core\data\Player;
 use NinjaWars\core\data\Inventory;
@@ -26,25 +27,19 @@ class ShopController extends AbstractController {
 	 *
 	 * @return Array
 	 */
-	public function index(Container $p_dependencies) {
+	public function index(Container $p_dependencies): StreamedViewResponse
+	{
 		$player = $p_dependencies['current_player'];
 		$authenticated = $p_dependencies['session']? $p_dependencies['session']->get('authenticated') : false;
 		$parts = array(
 			'shopSections' => ['index'],
 			'gold'      => ($player ? $player->gold : 0),
-			'item_costs'        => self::itemForSaleCosts(),
+			'item_costs'        => Shop::itemForSaleCosts(),
 			'authenticated'     => $authenticated,
 		);
 
 		return $this->render($parts);
 	}
-
-    /**
-     * Calculate price of items with markup.
-     */
-    private function calculatePrice(PurchaseOrder $purchase_order){
-        return (int) ceil($purchase_order->item->item_cost * $purchase_order->quantity);
-    }
 
 	/**
 	 * Command for current user to purchase a quantity of a specific item
@@ -53,7 +48,8 @@ class ShopController extends AbstractController {
 	 * @param item string The identity of the item to purchase
 	 * @return Array
 	 */
-	public function buy(Container $p_dependencies) {
+	public function buy(Container $p_dependencies): StreamedViewResponse
+	{
         $request           = RequestWrapper::$request;
 		$in_quantity       = $request->get('quantity');
 		$in_item           = $request->get('item');
@@ -77,7 +73,7 @@ class ShopController extends AbstractController {
 			// Determine the quantity from input or as a fallback, default of 1.
 			$purchase_order->quantity = $quantity;
 			$purchase_order->item     = $item;
-            $current_item_cost = $this->calculatePrice($purchase_order);
+			$current_item_cost = Shop::calculatePrice($purchase_order);
 
             if(!$player){
                 $no_funny_business = true;
@@ -107,7 +103,7 @@ class ShopController extends AbstractController {
             'valid'             => $valid,
 			'shopSections'      => ['buy'],
 			'gold'              => $gold,
-			'item_costs'        => self::itemForSaleCosts(),
+			'item_costs'        => Shop::itemForSaleCosts(),
 			'authenticated'     => $authenticated,
 		);
 
@@ -123,26 +119,4 @@ class ShopController extends AbstractController {
 	private function render($p_parts) {
 		return new StreamedViewResponse('Shop', 'shop.tpl', $p_parts, [ 'quickstat' => 'viewinv' ]);
 	}
-
-    /**
-     * Pulls the shop items costs and all, used outside of this class as well
-     * @todo Refactor this to a shops model or something
-     */
-    public static function itemForSaleCosts($administrative=false) {
-        $sel = 'select item_display_name, item_internal_name, item_cost, image, usage from item where for_sale = TRUE order by image is not null desc, item_cost asc';
-
-        if ((defined('DEBUG') && DEBUG) || $administrative) {
-            $sel = 'select item_display_name, item_internal_name, item_cost, image, usage from item order by for_sale DESC, image is not null desc, item_cost asc';
-        }
-
-        $items_data = query($sel);
-        // Rearrange the array to use the internal identity as indexes.
-        $item_costs = array();
-
-        foreach ($items_data as $item_data) {
-            $item_costs[$item_data['item_internal_name']] = $item_data;
-        }
-
-        return $item_costs;
-    }
 }
