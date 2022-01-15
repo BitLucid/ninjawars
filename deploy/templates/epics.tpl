@@ -20,11 +20,17 @@
             </div>
         {/if}
 
+        <div class='expose-area-error error glassbox' style='display:none'>
+            Area not found to display!
+        </div>
+
         <nav class='nav parent' id='sections-control'>
             <div class='child'>
                 <a class='btn btn-info' href='#staging-section'>Staging</a>
                 <a class='btn btn-info' href='#intro-section'>Intro</a>
                 <a class='btn btn-info' href='#intro-small-section'>Intro - Small</a>
+                <a class='btn btn-info' href='#login-section'>Login</a>
+                <a class='btn btn-info' href='#signup-section'>Signup</a>
                 <a class='btn btn-info' href='#profile-section'>Profile</a>
                 <a class='btn btn-info' href='#npcs-section'>Npcs</a>
                 <a class='btn btn-info' href='#aside-section'>Aside</a>
@@ -37,13 +43,18 @@
                 <a class='btn btn-info' href='#signup-section'>Signup</a>
                 <a class='btn btn-info' href='#errors-section'>Errors</a>
                 <a class='btn btn-info' href='#events-section'>Events</a>
+                <a class='btn btn-info' href='#single-event-section'>Single Event</a>
                 <a class='btn btn-info' href='#dojo-section'>Dojo</a>
+                <a class='btn btn-info' href='#shop-section'>Shop</a>
+                <a class='btn btn-info' href='#shop-items-section'>Shop.Items</a>
+                <a class='btn btn-info' href='#shop-buy-section'>Shop.Buy</a>
                 <a class='btn btn-info' href='#shrine-section'>Shrine</a>
                 <a class='btn btn-info' href='#map-section'>Map</a>
                 <a class='btn btn-info' href='#nodes-section'>Nodes</a>
                 <a class='btn btn-info' href='#list-section'>List</a>
                 <a class='btn btn-info' href='#field-section'>Field</a>
-<a class='btn btn-info' href='#ninjamaster-section'>Ninjamaster</a>
+                <a class='btn btn-info' href='#wip-fight-section'>WIP Fight</a>
+                <a class='btn btn-info' href='#ninjamaster-section'>Ninjamaster</a>
             </div>
         </nav>
     </header>
@@ -56,9 +67,30 @@
             {include file="staging.tpl"}
         </section>
 
+        <section id='wip-fight-section'>
+            <h2>WIP Fight</h2>
+            {include file="staging.fight.tpl"}
+        </section>
+
+        <section id='signup-section'>
+            <h2>Signup</h2>
+            {assign var="classes" value=[]}
+            {assign var="submit_successful" value="0"}
+            {assign var="error" value="Some error string for signup"}
+            {assign var="submitted" value=false}
+            {include file="signup.tpl"}
+        </section>
+
+        <section id='login-section'>
+            <h2>Login</h2>
+            <div class='login-page'>
+                {include file="login.tpl"}
+            </div>
+        </section>
+
         <section id='profile-section'>
             <h2>Profile Pieces</h2>
-            {* ninja and clan are assigned in the controller *}
+            {* ninja and cln are assigned in the controller *}
             <div style='display:flex;justify-content:center;' class='pop'>
                 <div style='width:50%;'>
                     {include file="selfmenu.partial.tpl"}
@@ -68,6 +100,7 @@
 
         <section id='shrine-section'>
             <h2>Shrine</h2>
+            {assign var="error" value=''}
             {assign var="player" value=$char}
             {assign var="freeResurrection" value=true}
             {assign var="has_chi" value=true}
@@ -104,6 +137,7 @@
 
         <section id='clan-section'>
             <h2>Clan</h2>
+            {assign var="error" value='Some clan error'}
             {assign var="pageSections" value=['info', 'member-list', 'list']}
             {include file="clan.tpl"}
         </section>
@@ -146,20 +180,7 @@
             {include file="staff.tpl"}
         </section>
 
-        <section id='about-section'>
-            <h2>About</h2>
-            {include file="about.tpl"}
-        </section>
-
-
-        <section id='signup-section'>
-            <h2>Signup</h2>
-            {assign var="submit_successful" value="1"}
-            {assign var="submitted" value="0"}
-            {include file="signup.tpl"}
-        </section>
-
-        <section id='error-section'>
+        <section id='errors-section'>
             <h2>Errors</h2>
             {assign var="error_type" value="frozen"}
             {include file="error.dead.tpl"}
@@ -169,15 +190,61 @@
             {include file="error.tpl"}
         </section>
 
+        <section id='about-section'>
+            <h2>About</h2>
+            {include file="about.tpl"}
+        </section>
+
+        {*
+        404 bleeds it's page body, so can't have that currently
+        <section id='404-section'>
+            <h2>404</h2>
+            {include file="404.tpl"}
+        </section>
+        *}
+
         <section id='events-section'>
             <h2>Events</h2>
+            {assign var="events" value=[]}
             {include file="events.tpl"}
+        </section>
+
+        <section id='single-event-section'>
+            <h2>Single Event</h2>
+            {assign var="event" value=['send_from'=>'Example Sender', 'unread'=>true, 'message'=>'Example Message', 'date'=>'']}
+            {include file="event.single.tpl"}
+        </section>
+
+        <section id='shop-buy-section'>
+            <h2>Shop.Buy</h2>
+            {assign var="valid" value=true}
+            {assign var="quantity" value=8888888}
+            {assign var="item_text" value='Some example item'}
+            {include file="shop.buy.tpl"}
+        </section>
+
+    <section id='shop-items-section'>
+        <h2>Shop.Items</h2>
+        {* item_costs is set in the controller *}
+        {include file="shop.items.tpl"}
+    </section>
+
+        <section id='shop-section'>
+            <h2>Shop</h2>
+            {assign var="valid" value=true}
+            {assign var="quantity" value=8888888}
+            {assign var="item_text" value='Some example item'}
+            {assign var="gold" value=999999}
+            {assign var="item_costs" value=[]}
+            {assign var="shopSections" value=['index', 'buy']}
+            {include file="shop.tpl"}
         </section>
 
 
         <section id='dojo-section'>
             <h2>Dojo</h2>
-{assign var="dojoSections" value=['access-denied', 'form-class-change', 'form-dim-mak', 'reminder-class-change', 'reminder-class', 'reminder-dim-mak', 'reminder-level', 'reminder-next-level', 'scroll', 'success-class-change', 'success-dim-mak']}
+            {assign var="error" value="Some error string for dojo"}
+            {assign var="dojoSections" value=['access-denied', 'form-class-change', 'form-dim-mak', 'reminder-class-change', 'reminder-class', 'reminder-dim-mak', 'reminder-level', 'reminder-next-level', 'scroll', 'success-class-change', 'success-dim-mak']}
             {include file="dojo.tpl"}
         </section>
 
@@ -212,7 +279,8 @@
         <section id='ninjamaster-section'>
             <h2>Ninjamaster</h2>
             {* {include file="ninjamaster.tpl"} *}
-</section>
+        </section>
+
         <footer style='border-top:thick dashed white;margin-top:3rem;'>
             <h6>The end</h6>
         </footer>
@@ -220,3 +288,4 @@
     {* js script at the top to prevent breaking from templates *}
 
 </main>
+

@@ -10,13 +10,13 @@
 <div class='description' id='shop-description'>
   {foreach from=$shopSections item=$shopSection}
     <div class='shop-section'>
-      {include file="shop.$shopSection.tpl"}
+      {include file="shop.$shopSection.tpl"} {* buy | index *}
     </div>
   {/foreach}
 </div>
 
 <p class='glassbox'>
-  Your current gold: <span class='gold-count fade-in-slow'>石{$gold|number_format|escape}</span>
+  Your gold: <span class='gold-count fade-in-slow'>石{$gold|number_format|escape}</span>
 </p>
 
 <form id="shop_form" action="/shop/purchase" method="post" name="shop_form">
@@ -24,23 +24,13 @@
   {if $authenticated}
     <em class='speech'>How many of these items would you like?</em> <input id="quantity" type="number" min='1' max='99' name="quantity" class="textField">
   {else}
-    <div class='slide-in-from-left'>
+    <div class='fade-in-flash'>
       To purchase the items below you must <a href="/signup?referrer=ninjawars.net">become a ninja</a>.
     </div>
   {/if}
   </div>
   <div class='shop-list'>
-		{foreach from=$item_costs item="item_info" key="item_internal_name"}
-    <div class='item-purchase-area'>
-			<button name="item" id='item-{$item_internal_name}' type="submit" value="{$item_info.item_internal_name|escape}" class="btn btn-default btn-lg" {if $gold < $item_info.item_cost}disabled{/if}>{if $item_info.image}<img class='item-icon' src="/images/items/{$item_info.image}" alt="{$item_info.item_display_name}">{/if} {$item_info.item_display_name|escape}</button>
-      <div class='gold'>
-        <label for='item-{$item_internal_name}'>石{$item_info.item_cost}</label>
-      </div>
-      <p class='usage-text'>
-        <small class='item-desc'>{$item_info.usage}</small>
-      </p>
-    </div>
-		{/foreach}
+    {include file='shop.items.tpl'}
   </div>
 </form>
 

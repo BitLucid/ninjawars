@@ -2245,9 +2245,9 @@ span.ninja-success {
 
 .error {
     text-align: center;
-    color: rgb(125, 27, 126);
-    background-color: #f683ff;
-    border: #7a89d9 0.2rem solid;
+    background-color: rgb(125, 27, 126);
+    color: #f683ff;
+    border: rgb(181, 8, 183) 0.2rem solid;
     font-family: 'Lucida Console', Monaco, monospace;
     font-weight: bold;
     font-size: larger;
