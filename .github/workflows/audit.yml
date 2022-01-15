@@ -27,13 +27,12 @@ jobs:
                   # Check the node version
                   node --version
                   corepack enable
-                  yarn install --immutable
-                  # I guess this is still required?
                   # corepack enable should have made this unnecessary
                   # Install the project, then...
                   # yarn workspaces run init-project
                   yarn init-project
                   yarn install --immutable
+                  # I guess even with corepack the yarn install is still required?
                   #yarn bootstrap
             - name: Build
               run: |
