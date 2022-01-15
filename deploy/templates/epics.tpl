@@ -211,12 +211,14 @@
 
         <section id='single-event-section'>
             <h2>Single Event</h2>
-            {assign var="event" value=['send_from'=>'Example Sender', 'unread'=>true, 'message'=>'Example Message', 'date'=>'']}
+            {assign var="event" value=['send_from'=>'55555', 'from'=>'Example sender', 'unread'=>true, 'message'=>'Example Message', 'date'=>'']}
             {include file="event.single.tpl"}
         </section>
 
         <section id='shop-buy-section'>
             <h2>Shop.Buy</h2>
+            {assign var="authenticated" value=true}
+            {assign var="gold" value=88888888}
             {assign var="valid" value=true}
             {assign var="quantity" value=8888888}
             {assign var="item_text" value='Some example item'}
@@ -226,6 +228,7 @@
         <section id='shop-items-section'>
             <h2>Shop.Items</h2>
             {* item_costs is set in the controller *}
+            {assign var="gold" value=88888888}
             {include file="shop.items.tpl"}
         </section>
 
@@ -242,6 +245,7 @@
 
         <section id='dojo-section'>
             <h2>Dojo</h2>
+            {assign var="player" value=$char}
             {assign var="error" value="Some error string for dojo"}
             {assign var="dojoSections" value=['access-denied', 'form-class-change', 'form-dim-mak', 'reminder-class-change', 'reminder-class', 'reminder-dim-mak', 'reminder-level', 'reminder-next-level', 'scroll', 'success-class-change', 'success-dim-mak']}
             {include file="dojo.tpl"}

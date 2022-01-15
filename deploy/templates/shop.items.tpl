@@ -9,6 +9,12 @@
     min-height: 5vh;
     background:#1c1a13;
     border: medium solid black;
+    text-align:center;
+}
+
+.shop-list .item-icon, .item-purchase-list .item-icon {
+    max-height: 25px;
+    max-width: 50px;
 }
 {/literal}
 </style>

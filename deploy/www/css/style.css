@@ -2939,10 +2939,6 @@ ul#clan-options {
     color: #808177;
 }
 
-.shop-list .item-icon {
-    max-height: 25px;
-    max-width: 50px;
-}
 .item-purchase-area {
     display: inline-block;
     padding: 3rem 0.3rem 0.5rem;
