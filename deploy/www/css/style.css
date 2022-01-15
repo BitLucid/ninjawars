@@ -2918,8 +2918,7 @@ ul#clan-options {
 
 .shop-list {
     background-color: rgba(30, 30, 30, 0.3);
-    width: 90%;
-    margin: 0.5em 5%;
+    margin: 0.5em 3%;
     text-align: center;
     font-size: larger;
 }
@@ -2940,17 +2939,13 @@ ul#clan-options {
     color: #808177;
 }
 
-.shop-list .usage-text {
-    max-width: 10rem;
-}
-
 .shop-list .item-icon {
     max-height: 25px;
     max-width: 50px;
 }
 .item-purchase-area {
     display: inline-block;
-    padding: 1em;
+    padding: 3rem 0.3rem 0.5rem;
     margin: 0;
     min-width: 100px;
     min-height: 100px;
