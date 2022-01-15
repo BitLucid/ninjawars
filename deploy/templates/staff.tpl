@@ -4,7 +4,7 @@
 <h1>Ninjawars Staff</h1>
 
 <section id='contact-methods' class='container'>
-  <div class='row'>
+  <div class='staff row'>
     <header>
       <a id='contact-us-image-container' href='mailto:"{$smarty.const.SUPPORT_EMAIL_NAME|escape:"url"|escape}"&lt;{$smarty.const.SUPPORT_EMAIL|escape:'url'|escape}&gt;?subject=NinjaWars%20question:%20' rel='nofollow'>
       <img id='contact-us-image' src='{cachebust file="/images/text/pixel_contact_us.gif"}' alt='Contact Us'>
@@ -12,7 +12,7 @@
       <hr class='accent'>
     </header>
   </div>
-  <div class='row'>
+  <div class='staff row'>
     <div class='col-xs-12 col-sm-4 col-md-4 col-lg-4 contact-panel'>
       <div class='contact-panel-wrapper'>
         For private issues or account problems, email
@@ -114,12 +114,12 @@ href='http://alegion.deviantart.com/'>alegion.deviantart.com/</a></li>
 </section>
 
 <section id='open-source-repository' class='container'>
-  <div class='row'>
+  <div class='staff row'>
     <h3 class='subtitle'>Contributing to Ninjawars</h3>
     <hr class='accent'>
   </div>
 
-  <div class='row'>
+  <div class='staff row'>
     <div class='col-xs-12 col-sm-3 col-md-3 col-lg-3'>
       <p>Want to get involved?  Ninjawars is open source!<p>
     </div>
@@ -138,7 +138,7 @@ href='http://alegion.deviantart.com/'>alegion.deviantart.com/</a></li>
 </section>
 
 <section class='license container'>
-  <div class='row'>
+  <div class='staff row'>
     <div class='col-xs-12 col-sm-12 col-md-12 col-lg-12'>
       <h3 class='subtitle'>License</h3>
       <hr class='accent'>
