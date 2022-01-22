@@ -3,6 +3,7 @@
 package.json @tchalvak
 composer.json @tchalvak
 yarn.lock @tchalvak
+deploy/resources.template.php @tchalvak
 amplify.yml @tchalvak
 amplify/ @tchalvak
 # We need to be careful with these files as they may break the build in a hard-to-get-back-from way.
