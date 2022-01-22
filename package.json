@@ -17,6 +17,7 @@
         "browse": "xdg-open https://localhost:8765",
         "browse:epics": "xdg-open https://localhost:8765/epics",
         "browse:repo": "xdg-open https://github.com/BitLucid/ninjawars/",
+        "browse:deploybot": "xdg-open https://ninjawars.deploybot.com/",
         "repo": "yarn github",
         "unit-test": "test",
         "test": "karma start deploy/tests/karma.conf.js --single-run"
