@@ -8,6 +8,7 @@ use NinjaWars\core\data\NpcFactory;
 use NinjaWars\core\extensions\SessionFactory;
 use NinjaWars\core\data\Player;
 use NinjaWars\core\data\Clan;
+use NinjaWars\core\data\Shop;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use NinjaWars\core\extensions\StreamedViewResponse;
@@ -38,7 +39,6 @@ class EpicsController extends AbstractController
      */
     public function index(Container $p_dependencies): Response
     {
-        $request = RequestWrapper::$request;
         $authed = $this->checkAuth($p_dependencies);
         if ($authed instanceof RedirectResponse) {
             return $authed;
@@ -61,6 +61,8 @@ class EpicsController extends AbstractController
             'ninja'             => $char,
             'clan'              => $clan,
             'myClan'            => $clan,
+            'item_costs'        => Shop::itemForSaleCosts(),
+            'full_item_costs'   => Shop::fullItems(true),
             'clans'     => Clan::rankings(),
         ];
 

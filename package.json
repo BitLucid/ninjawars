@@ -1,6 +1,6 @@
 {
     "name": "ninjawars",
-    "version": "1.14.0",
+    "version": "1.15.0",
     "description": "The Ninja Game at ninjawars.net",
     "main": "deploy/www/js/nw.js",
     "directories": {
@@ -9,9 +9,10 @@
     "scripts": {
         "lint": "eslint --ext .jsx,.js deploy/www/js",
         "prepare-unit-test-ci": "echo 'no-op for now'",
-        "start": "make build",
+        "start": "yarn time && make build && yarn time",
         "watch": "livereload ./deploy/* ./deploy/www/* ./deploy/templates/* ./deploy/lib/control/* --debug",
         "security-check": "yarn audit",
+        "time": "node -e \"console.log( new Date().toISOString() );\"",
         "prettier": "npx prettier --write .",
         "browse": "xdg-open https://localhost:8765",
         "browse:epics": "xdg-open https://localhost:8765/epics",
@@ -49,7 +50,7 @@
         "eslint-plugin-react-hooks": "4.3.0",
         "husky": "^7.0.4",
         "jasmine-core": "^3.2.1",
-        "karma": "6.3.9",
+        "karma": "6.3.11",
         "karma-chrome-launcher": "^3.1.0",
         "karma-jasmine": "^4.0.1",
         "karma-requirejs": "^1.1.0",

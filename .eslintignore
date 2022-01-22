@@ -4,3 +4,7 @@ deploy/www/js/jquery.linkify.js
 deploy/www/js/jquery.min.js
 deploy/www/js/bootstrap.min.js
 deploy/www/js/imgur.min.js
+# folders
+node_modules
+storybook-static
+.yarn
