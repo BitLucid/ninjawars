@@ -35,7 +35,7 @@ create-directories:
 build: dep
 	@echo "Don't forget to update nginx configs as necessary."
 	@echo "Including updating the php to retain login sessions longer."
-	cp -u -p ./deploy/resources.build.php ./deploy/resources.php
+	cp -upn ./deploy/resources.build.php ./deploy/resources.php
 	echo "Note that this does not overwrite existing resources.php"
 	php ./deploy/check.php
 	echo "Check that the webserver user has permissions to the script!"
