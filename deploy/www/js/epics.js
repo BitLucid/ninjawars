@@ -14,7 +14,11 @@ $(() => {
         e.preventDefault();
         $('#stories > section').hide()
         const href = $(this).attr('href')
+      if (href && $(href).length) {
         $(href).show();
+      } else {
+        $('.expose-area-error').show()
+      }
         window.location.hash = href;
     })
     if (hash) {

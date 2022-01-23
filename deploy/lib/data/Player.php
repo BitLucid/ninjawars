@@ -382,7 +382,7 @@ class Player implements Character {
 	}
 
     /**
-     * Changes the turns propety of the player object
+     * Changes the turns property of the player object
      *
      * @param int $turns
      * @return int The number of turns the player object now has
@@ -395,6 +395,38 @@ class Player implements Character {
 
         return $this->vo->turns = $turns;
     }
+
+    /**
+     * Decreases the turns property of the player object
+     *
+     * @param int $turns
+     * @return int The number of turns the player object now has
+     * @throws InvalidArgumentException $turns cannot be negative
+     */
+    public function subtractTurns($turns): int
+    {
+        if ($turns < 0) {
+            throw new \InvalidArgumentException('Cannot subtract negative turns.');
+        }
+
+        return $this->vo->turns -= $turns;
+    }
+
+    /**
+     * Increases the turns property of the player object
+     *
+     * @param int $turns
+     * @return int The number of turns the player object now has
+     * @throws InvalidArgumentException $turns cannot be negative
+     */
+    public function addTurns($turns): int
+    {
+        if ($turns < 0) {
+            throw new \InvalidArgumentException('Cannot add negative turns.');
+        }
+
+        return $this->vo->turns += $turns;
+    }   
 
     /**
      * @return integer
