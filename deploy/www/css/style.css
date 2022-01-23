@@ -4841,6 +4841,10 @@ input[type='button'].btn-block {
         font-size: larger;
         line-height: 2em;
     }
+    #ninjawars-title-image {
+        width:60px;
+        height:60px;
+    }
 }
 
 /* Medium and Large screen modifications */
