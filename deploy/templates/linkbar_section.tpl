@@ -20,7 +20,7 @@
         	<span id='html5-integration'>
 
 				<div id='latest-commit-section'>
-					<p id='latest-commit-title' style='display:none'>Most recent upcoming change to ninjawars:</p>
+					<p id='latest-commit-title' style='display:none'>Upcoming changes:</p>
 					<span id='latest-commit' style='display:none'>
 					</span>
 				</div>

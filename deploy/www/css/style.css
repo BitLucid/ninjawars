@@ -680,9 +680,9 @@ h6 {
 }
 
 #latest-commit {
-    border-bottom: thin green dashed;
+    border-bottom: thin rgb(7, 48, 7) dashed;
     padding-left: 0.5em;
-    color: greenYellow;
+    color: rgb(92, 99, 83);
 }
 
 #product-languages,
