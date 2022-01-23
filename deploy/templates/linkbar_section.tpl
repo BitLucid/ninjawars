@@ -1,8 +1,8 @@
 			<div id='footer-middle-bar'>
-		    <h3 id='created-by'>
-		    	<a href='//bitlucid.com' target='_blank'>CREATED BY BitLucid, Inc.</a>
-		    </h3>
-		    <ul id='footer-authors'>
+		    <div id='created-by' style='margin-top:1rem'>
+		    	<a href='//bitlucid.com' target='_blank'>brought to you by BitLucid, Inc.</a>
+		    </div>
+		    <ul id='footer-authors' style='padding-top:2rem'>
 		    	<li class='author'>
 		    		<img class='avatar' alt='' src="https://www.gravatar.com/avatar/68dd1255208cbf50f2c42615bbbd8f46?d=monsterid&amp;80&amp;r=x">
 					<a href='//royronalds.com' class='extLink'>Roy Ronalds</a>

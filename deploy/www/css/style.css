@@ -1524,15 +1524,6 @@ body.solo-page h1 {
     text-align: right;
 }
 
-.created-by {
-    display: none;
-    margin-top: 10px;
-    margin-bottom: 30px;
-    text-align: center;
-    color: darkGray;
-    font-family: Tahoma, Arial, Helvetica, sans-serif;
-    font-size: 10px;
-}
 .boxes {
     padding: 3px 0 3px 5px;
 }
@@ -1931,7 +1922,6 @@ a#skip-to-bottom {
     background: none;
     border: none;
     color: #d8d8d8;
-    font-size: 3.2rem;
 }
 #authors {
     display: inline-block;
