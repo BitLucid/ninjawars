@@ -19,14 +19,14 @@ function loadLastCommitMessage() {
       logger.warn('No github commit api data:', data);
       return;
     }
+    const { message, author } = data.data.commit;
+    const mess = message && message.replace(/Merge pull request #....{1,2} from BitLucid\//g, '');
     // Load latest commit message.
     $('#latest-commit-section')
       .find('#latest-commit')
-      .html(data.data.commit.message)
+      .html(mess)
       .append(
-        `<div id='commit-author'>--${
-          data.data.commit.author.name
-        }</div>`,
+        `<div id='commit-author'>--${author.name}</div>`,
       )
       .show()
       .end()
