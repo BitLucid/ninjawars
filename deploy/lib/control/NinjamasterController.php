@@ -9,6 +9,7 @@ use NinjaWars\core\data\NpcFactory;
 use NinjaWars\core\data\AdminViews;
 use NinjaWars\core\data\Player;
 use NinjaWars\core\data\Account;
+use NinjaWars\core\data\Shop;
 use NinjaWars\core\extensions\SessionFactory;
 use NinjaWars\core\extensions\StreamedViewResponse;
 use NinjaWars\core\environment\RequestWrapper;
@@ -118,7 +119,7 @@ class NinjamasterController extends AbstractController {
             return $authed;
         }
 
-        $item_costs = ShopController::itemForSaleCosts(true); // Show administrative entries.
+        $item_costs = Shop::fullItems(true); // Show administrative entries.
         return $item_costs;
     }
 

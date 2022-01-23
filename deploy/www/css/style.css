@@ -680,9 +680,9 @@ h6 {
 }
 
 #latest-commit {
-    border-bottom: thin green dashed;
+    border-bottom: thin rgb(7, 48, 7) dashed;
     padding-left: 0.5em;
-    color: greenYellow;
+    color: rgb(92, 99, 83);
 }
 
 #product-languages,
@@ -1524,15 +1524,6 @@ body.solo-page h1 {
     text-align: right;
 }
 
-.created-by {
-    display: none;
-    margin-top: 10px;
-    margin-bottom: 30px;
-    text-align: center;
-    color: darkGray;
-    font-family: Tahoma, Arial, Helvetica, sans-serif;
-    font-size: 10px;
-}
 .boxes {
     padding: 3px 0 3px 5px;
 }
@@ -1931,7 +1922,6 @@ a#skip-to-bottom {
     background: none;
     border: none;
     color: #d8d8d8;
-    font-size: 3.2rem;
 }
 #authors {
     display: inline-block;
@@ -2245,9 +2235,9 @@ span.ninja-success {
 
 .error {
     text-align: center;
-    color: rgb(125, 27, 126);
-    background-color: #f683ff;
-    border: #7a89d9 0.2rem solid;
+    background-color: rgb(125, 27, 126);
+    color: #f683ff;
+    border: rgb(181, 8, 183) 0.2rem solid;
     font-family: 'Lucida Console', Monaco, monospace;
     font-weight: bold;
     font-size: larger;
@@ -2918,8 +2908,7 @@ ul#clan-options {
 
 .shop-list {
     background-color: rgba(30, 30, 30, 0.3);
-    width: 90%;
-    margin: 0.5em 5%;
+    margin: 0.5em 3%;
     text-align: center;
     font-size: larger;
 }
@@ -2940,17 +2929,9 @@ ul#clan-options {
     color: #808177;
 }
 
-.shop-list .usage-text {
-    max-width: 10rem;
-}
-
-.shop-list .item-icon {
-    max-height: 25px;
-    max-width: 50px;
-}
 .item-purchase-area {
     display: inline-block;
-    padding: 1em;
+    padding: 3rem 0.3rem 0.5rem;
     margin: 0;
     min-width: 100px;
     min-height: 100px;
@@ -4840,6 +4821,10 @@ input[type='button'].btn-block {
         padding: 0.5em 1em;
         font-size: larger;
         line-height: 2em;
+    }
+    #ninjawars-title-image {
+        width:60px;
+        height:60px;
     }
 }
 

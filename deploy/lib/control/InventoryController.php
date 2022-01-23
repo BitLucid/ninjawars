@@ -167,7 +167,7 @@ class InventoryController extends AbstractController {
         }
 
         if ($turns_to_take > 0 && ($player->turns - $turns_to_take >= 0)) {
-            $player->setTurns($player->turns - min($turns_to_take, $player->turns));
+            $player->subtractTurns($turns_to_take);
         }
 
         $player->save();
