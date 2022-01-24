@@ -105,7 +105,7 @@
 <form action="/doshin/offerBounty" class='half-column'>
   Offer <input type="number" name="amount" value="{$amount|default:''|escape}" size="4" class="textField" required="required"> bounty on:
   <div class='input-group'>
-    <input type="text" name="target" value="{$target|default:''|escape}" class="textField" placeholder='a ninja'>
+    <input type="text" name="target" value="{$target|default:''|escape}" class="textField" placeholder='a ninja' required="required">
     <input id="submit-bounty" type="submit" value="Offer Bounty" class="formButton" required="required">
   </div>
 </form>

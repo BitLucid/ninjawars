@@ -2,7 +2,7 @@
 		    <div id='created-by' style='margin-top:1rem'>
 		    	<a href='//bitlucid.com' target='_blank'>brought to you by BitLucid, Inc.</a>
 		    </div>
-		    <ul id='footer-authors' style='padding-top:2rem'>
+		    <ul id='footer-authors'>
 		    	<li class='author'>
 		    		<img class='avatar' alt='' src="https://www.gravatar.com/avatar/68dd1255208cbf50f2c42615bbbd8f46?d=monsterid&amp;80&amp;r=x">
 					<a href='//royronalds.com' class='extLink'>Roy Ronalds</a>
@@ -18,11 +18,14 @@
         </div>
         <div id='footer-bottom-bar'>
         	<span id='html5-integration'>
-
 				<div id='latest-commit-section'>
-					<p id='latest-commit-title' style='display:none'>Upcoming changes:</p>
-					<span id='latest-commit' style='display:none'>
-					</span>
+					<div>
+						<p id='latest-commit-title' style='display:none;font-size:smaller'>
+							UPCOMING CHANGES
+						</p>
+						<span id='latest-commit' style='display:none'>
+						</span>
+					</div>
 				</div>
 
         	<!-- Will load commit info to the page -->

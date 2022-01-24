@@ -1872,7 +1872,7 @@ a#skip-to-bottom {
     min-height: 3%;
     width: 100%;
     opacity: 0.96;
-    border-top: 1px solid #666;
+    border-top: 1px solid #444343;
     font-family: 'Open Sans', sans-serif;
 }
 
@@ -1935,12 +1935,14 @@ a#skip-to-bottom {
 }
 
 #footer-authors {
-    display: block;
     min-height: 3.5em;
     list-style-type: none;
+    display: flex;
+    justify-content: space-evenly;
 }
 #footer-authors .author {
     display: inline-block;
+    text-align:left;
     width: 300px;
     min-height: 80px;
     margin-left: 10%;
@@ -3282,6 +3284,10 @@ select option #blue-class-select {
     display: inline-block;
     z-index: -1;
     vertical-align: top;
+}
+
+#nw-catchphrases {
+    display:inline-block;
 }
 
 #nw-catchphrases span {
@@ -4778,6 +4784,11 @@ input[type='button'].btn-block {
     #index-footer {
         margin-top: 4em;
     }
+
+    #nw-catchphrases {
+        display:block;
+    }
+    
     #main-column {
         width: 100%;
         left: 0;
