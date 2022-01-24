@@ -144,6 +144,7 @@ Chat.renderChatMessage = function (p_data) {
   if (missingArea) {
     logger.error(`Chat ${missingArea} not found to place chats in!`);
     return false;
+  }
 
   // put the new content into the author and message areas
   authorArea
