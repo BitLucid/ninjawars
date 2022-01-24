@@ -138,6 +138,12 @@ class ItemTest extends \NWTest {
 		$this->assertGreaterThan(0, $amanita->getMaxTurnChange());
 	}
 
+	public function testInitialAmanitaHasSomeTurnChange()
+	{
+		$amanita = Item::findByIdentity('amanita');
+		$this->assertGreaterThan(1, $amanita->getMaxTurnChange());
+	}
+
 	public function testDimMakHasSomeIntegerDamage()
 	{
 		$item = Item::findByIdentity('dimmak');
