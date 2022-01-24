@@ -1,4 +1,8 @@
 <?php
+
+/**
+ * Behavior of the each skill as used
+ */
 namespace NinjaWars\core\control;
 
 use NinjaWars\core\control\AbstractController;
@@ -11,7 +15,6 @@ use NinjaWars\core\data\Character;
 use NinjaWars\core\data\Inventory;
 use NinjaWars\core\data\Event;
 use NinjaWars\core\data\CloneKill;
-use NinjaWars\core\extensions\SessionFactory;
 use NinjaWars\core\extensions\StreamedViewResponse;
 use Pimple\Container;
 
@@ -529,11 +532,11 @@ class SkillController extends AbstractController {
         $player->turns = $player->turns - max(0, $turn_cost); // Take the skill use cost.
         $player->save();
 
-        $ending_turns         = $player->turns;
 		$parts = [
 			'attack_error'=>$attack_error,
 			'error'=>$attack_error,
 			'targetObj'=>$targetObj,
+			'player' => $player,
 			'display_sight_table'=>$display_sight_table,
 			'sight_data'=>$sight_data,
 			'generic_skill_result_message'=>$generic_skill_result_message,
