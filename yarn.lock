@@ -2139,7 +2139,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"karma@npm:6.3.11":
+"karma@npm:^6.3.11":
   version: 6.3.11
   resolution: "karma@npm:6.3.11"
   dependencies:
@@ -2476,7 +2476,7 @@ __metadata:
     eslint-plugin-react: ^7.28.0
     eslint-plugin-react-hooks: 4.3.0
     jasmine-core: ^4.0.0
-    karma: 6.3.11
+    karma: ^6.3.11
     karma-chrome-launcher: ^3.1.0
     karma-jasmine: ^4.0.1
     karma-requirejs: ^1.1.0
