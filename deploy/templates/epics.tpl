@@ -54,6 +54,7 @@
                 <a class='btn btn-info' href='#list-section'>List</a>
                 <a class='btn btn-info' href='#field-section'>Field</a>
                 <a class='btn btn-info' href='#wip-fight-section'>WIP Fight</a>
+                <a class='btn btn-info' href='#footer'>Footer</a>
                 <a class='btn btn-info' href='#ninjamaster-section'>Ninjamaster</a>
             </div>
         </nav>
@@ -270,6 +271,7 @@
             <h2>List</h2>
             {*  include file="list.tpl" *}
         </section>
+
         <section id='field-section'>
             <h2>Field</h2>
             {assign var="work_multiplier" value="10"}
@@ -280,6 +282,12 @@
             {assign var="recommended_to_work" value="6"}
             {include file="work.tpl"}
         </section>
+
+        <section id='footer'>
+            <h2>Footer</h2>
+            {include file="footer.tpl"}
+        </section>
+
         <section id='ninjamaster-section'>
             <h2>Ninjamaster</h2>
             {* {include file="ninjamaster.tpl"} *}
