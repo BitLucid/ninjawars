@@ -378,7 +378,7 @@ class InventoryController extends AbstractController {
             }
 
             $notice = " lose ".abs($turns_change)." turns.";
-            $target->subtractTurns($turns_change);
+            $target->subtractTurns(-1 * $turns_change);
         } elseif ($item->hasEffect('speed')) {
             $item->setTurnChange($item->getMaxTurnChange());
             $turns_change = $item->getTurnChange();
