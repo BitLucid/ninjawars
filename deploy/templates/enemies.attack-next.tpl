@@ -94,7 +94,7 @@ var enemy = 'enemy to array @json_encode'
     <div class='carousel'>
         <div class='spin-enemy down'>
             {if $shift}
-            <a href='?shift={math equation="max(0, x-1)" x=$shift}'>❮</a>
+            <a href='?shift={if ($shift-1) gte 0}{$shift-1}{else}0{/if}'>❮</a>
             {/if}
             &nbsp;
         </div>
@@ -194,7 +194,7 @@ var enemy = 'enemy to array @json_encode'
             </div><!-- end of attack-area -->
         </div><!-- End of main ninja and attacks display -->
         <div class='spin-enemy up'>
-            <a href='?shift={math equation="min(300, x+1)" x=$shift}'>❯</a>
+            <a href='?shift={$shift+1}'>❯</a>
         </div>
     </div>
 </section>
