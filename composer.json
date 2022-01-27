@@ -24,7 +24,7 @@
         "cboden/ratchet": "^0.4.1",
         "illuminate/database": "~5.4.0",
         "symfony/http-foundation": "^4.1",
-        "twbs/bootstrap": "~3.3",
+        "twbs/bootstrap": "~5.0",
         "pimple/pimple": "~3.0",
         "oomphinc/composer-installers-extender": "^2.0"
     },
