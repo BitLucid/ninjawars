@@ -23,7 +23,7 @@
         "smarty/smarty": "^4.0",
         "cboden/ratchet": "^0.4.1",
         "illuminate/database": "~5.4.0",
-        "symfony/http-foundation": "^4.1",
+        "symfony/http-foundation": "^6.0",
         "twbs/bootstrap": "~3.3",
         "pimple/pimple": "~3.0",
         "oomphinc/composer-installers-extender": "^2.0"
