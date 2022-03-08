@@ -1312,7 +1312,7 @@ td.playerTable {
 }
 .novice {
     /* Level categories */
-    color: black;
+    color: white;
     background-color: rgb(238, 238, 238, 0.4);
 }
 .acolyte {
