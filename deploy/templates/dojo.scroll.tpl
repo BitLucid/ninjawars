@@ -1,20 +1,100 @@
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+<style>
+{literal}
+    @import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+    #scroll{
+        margin:0 auto 1em;
+        text-align:center;
+    }
+    #scroll .scroll-link{
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        width:100%;
+    }
+    .left-scroll-bookend{
+        display:inline-block;
+        background:url(/images/scroll_accent_left.png) no-repeat left;
+        height:100px;
+        padding-left:57px;
+        margin:0 auto;
+    }
+    .right-scroll-bookend{
+        vertical-align:middle;
+        background:url(/images/scroll_accent_right.png) no-repeat right;
+        height:100px;
+        min-width:50%;
+        padding-right:57px;
+        display:inline-block;
+        position:relative;        
+    }
+    #scroll .scroll-interior{
+        background: rgb(158,88,100);
+        background: linear-gradient(0deg, rgba(158,88,100,1) 0%, rgba(221,216,207,1) 100%);
+    }
+    #scroll #scroll-title{
+        font-family: 'Pacifico', cursive;
+        text-transform:uppercase;
+        text-decoration:underline;
+        height:93px;
+        display:flex;
+        justify-content: center;
+        align-items: center;
+        padding: 35px .7em 35px;
+        font-size: 3rem;
+        color:#050505;
+        text-align:center;
+        font-weight:bold;
+        margin:0 auto;
+        cursor:pointer;
+        -webkit-text-stroke-width: 1px;
+        -webkit-text-stroke-color: rgb(194 67 67);
+    }
+    .training-requirements tbody tr:nth-child(odd) {
+        background-color: rgba(100, 100, 100, 0.5);
+     }
+     .training-requirements{
+       width:80%;
+     }
+     .training-requirements .chart-title{
+        font-size:1.5rem;
+        font-weight:bold;
+     }
+     .training-requirements caption{
+        text-align:center;padding:.2em;font-size:1.3em;color:chocolate;
+     }
+     .training-requirements tfoot{
+        background-color: rgba(100, 100, 100, 0.5);
+        font-size:2rem;
+        font-weight:bold;
+        text-decoration:overline;
+     }
+{/literal}
+</style>
+
 <!-- Nesting of divs here to allow for bookending of the scroll images -->
 <div id='scroll'>
-    <div class='left-scroll-bookend'>
-        <div class='right-scroll-bookend'>
-            <strong id='scroll-title'>
-                <a target='#scroll-reveal'>Scroll of training requirements</a>
-            </strong>
+    <a class='scroll-link' target='#scroll-unfurl'>
+        <div class='left-scroll-bookend'>
+            <div class='right-scroll-bookend'>
+                <div class='scroll-interior'>
+                    <strong id='scroll-title'>
+                        Scroll of training requirements
+                    </strong>
+                </div>
+            </div>
         </div>
-    </div>
+    </a>
 </div>
 
-<section id='scroll-reveal'>
+<section id='scroll-unfurled'>
     <h2>Dojo Advancement Chart</h2>
 
     <table class='training-requirements' style='width:80%'>
         <caption colspan='100%'>
-            Kills needed to progress to each level and how a ninja's stats change:
+            <em>Kills needed to progress to each level and how a ninja's stats change:</em>
         </caption>
         <thead>
             <tr class='chart-title'>
@@ -46,17 +126,26 @@
     {assign var="kills_chart" value=5+$kills_chart}
 {/section}
         </tbody>
+        <tfoot>
+            <tr>
+                <td colspan=6>
+                    <div class='max-level text-centered' style='text-transform:smallcaps'>(Maximum level)</div>
+                </td>
+            </tr>
+        </tfoot>
     </table>
-
-    <p class='text-centered'>(Maximum level)</p>
 </section>
 
 <script>
 {literal}
 $().ready(function() {
-          // Show the scroll section on a click of any part of the scroll area.
-          var hidden = $('#scroll-reveal').hide();
-          $('#scroll').click(function(){hidden.toggle();return false;});
-          });
+    // Show the scroll section on a click of any part of the scroll area.
+    var unfurled = $('#scroll-unfurled');
+    unfurled.hide();
+    $('#scroll').click(function(e) {
+        unfurled.slideToggle('slow');
+        return false;
+    });
+});
 {/literal}
 </script>
