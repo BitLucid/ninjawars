@@ -65,7 +65,8 @@
         font-weight:bold;
      }
      .training-requirements caption{
-        text-align:center;padding:.2em;font-size:1.3em;color:chocolate;
+        text-align:center;padding:.2em;font-size:1.3em;color:rgb(150, 137, 128);
+        padding-top: 3rem;
      }
      .training-requirements tfoot{
         background-color: rgba(100, 100, 100, 0.5);
