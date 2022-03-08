@@ -57,6 +57,8 @@
      }
      .training-requirements{
        width:80%;
+       margin-left:auto;
+       margin-right:auto;
      }
      .training-requirements .chart-title{
         font-size:1.5rem;
@@ -92,7 +94,7 @@
 <section id='scroll-unfurled'>
     <h2>Dojo Advancement Chart</h2>
 
-    <table class='training-requirements' style='width:80%'>
+    <table class='training-requirements'>
         <caption colspan='100%'>
             <em>Kills needed to progress to each level and how a ninja's stats change:</em>
         </caption>
