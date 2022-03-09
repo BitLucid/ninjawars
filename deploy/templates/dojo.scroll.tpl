@@ -57,13 +57,16 @@
      }
      .training-requirements{
        width:80%;
+       margin-left:auto;
+       margin-right:auto;
      }
      .training-requirements .chart-title{
         font-size:1.5rem;
         font-weight:bold;
      }
      .training-requirements caption{
-        text-align:center;padding:.2em;font-size:1.3em;color:chocolate;
+        text-align:center;padding:.2em;font-size:1.3em;color:rgb(150, 137, 128);
+        padding-top: 3rem;
      }
      .training-requirements tfoot{
         background-color: rgba(100, 100, 100, 0.5);
@@ -92,7 +95,7 @@
 <section id='scroll-unfurled'>
     <h2>Dojo Advancement Chart</h2>
 
-    <table class='training-requirements' style='width:80%'>
+    <table class='training-requirements'>
         <caption colspan='100%'>
             <em>Kills needed to progress to each level and how a ninja's stats change:</em>
         </caption>
