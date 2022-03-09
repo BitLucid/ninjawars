@@ -10,6 +10,7 @@
         "lint": "eslint --ext .jsx,.js deploy/www/js",
         "prepare-unit-test-ci": "echo 'no-op for now'",
         "start": "yarn time && make build && yarn time",
+        "post-deploy": "php deploy/deployed_scripts/resetcache.php",
         "watch": "livereload ./deploy/* ./deploy/www/* ./deploy/templates/* ./deploy/lib/control/* --debug",
         "security-check": "yarn audit",
         "time": "node -e \"console.log( new Date().toISOString() );\"",
