@@ -36,25 +36,25 @@ earned 石{$earned_gold}.</p>
 
 {if $authenticated}
     <div style="width:40%;margin:3rem auto;">
-    <form id="work" action="/work/request_work" method="post" name="work">
-        <span class="input-group">
-            <span class='input-group-addon'>Work for</span>
-            <input id="worked" type="number" size="3" maxlength="3" min=1 max=999 name="worked" class="textField form-control">
-            <span class='input-group-btn'>
-                <input id="workButton" class="formButton btn btn-primary" type="submit" value="Turns" name="workButton">
+        <form id="work" action="/work/request_work" method="post" name="work">
+            <span class="input-group">
+                <span class='input-group-addon'>Work for</span>
+                <input id="worked" type="number" size="3" maxlength="3" min=1 max=999 name="worked" class="textField form-control">
+                <span class='input-group-btn'>
+                    <input id="workButton" class="formButton btn btn-primary" type="submit" value="Turns" name="workButton">
+                </span>
             </span>
-        </span>
-    </form>
+        </form>
 
     <small>Work the fields for the daimyo to earn your keep. <span
             style='color:turquoise;'>1 Turn</span> = <span class='gold'>石{$work_multiplier}</span>.</small>
-</div>
-<p class='gold-count'>
-  Current gold: 石{$gold_display|escape}
-<p>
-<p>
-    Current turns: <span class='turns-count'>{($char)? $char->turns : ''}</span>
-</p>
+    </div>
+    <p class='gold-count'>
+        Current gold: 石{$gold_display|escape}
+    <p>
+    <p>
+        Current turns: <span class='turns-count'>{($char)? $char->turns : ''}</span>
+    </p>
 {else}
 <p class='slide-in-from-left'>
 To earn pay for your work you must first <a href="/signup">become a citizen of this village.</a>

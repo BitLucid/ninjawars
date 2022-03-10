@@ -397,6 +397,16 @@ class Player implements Character {
     }
 
     /**
+     * Get the player's current turns
+     *
+     * @return int The number of turns the player object now has
+     */
+    public function getTurns(): int
+    {
+        return $this->vo->turns;
+    }
+
+    /**
      * Decreases the turns property of the player object
      *
      * @param int $turns

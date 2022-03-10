@@ -90,9 +90,10 @@ class TestAccountCreateAndDestroy {
     /**
      * Create a testing account
      */
-    public static function create_testing_account($confirm=false) {
+    public static function create_testing_account($confirm = false, $overrides = null)
+    {
         self::purge_test_accounts();
-        return self::createAccount(self::$test_ninja_name, self::$test_email, 'tiger');
+        return self::createAccount($overrides['name'] ?? self::$test_ninja_name, self::$test_email, 'tiger');
     }
 
     /**

@@ -24,23 +24,22 @@
 	</div>
 
 	{if $display_sight_table}
-
-  <table id='sight-info' class='full-width'>
-  	<thead>
-		<tr>
-		{foreach from=$sight_data item="loop_data" key="loop_header"}
-      <th>{$loop_header}</th>
-		{/foreach}
-		</tr>
-	</thead>
-	<tbody>
-		<tr>
-		{foreach from=$sight_data item="loop_data" key="loop_header"}
-		<td>{$loop_data}</td>
-		{/foreach}
-		</tr>
-	</tbody>
-  </table>
+	<table id='sight-info' class='full-width'>
+		<thead>
+			<tr>
+			{foreach from=$sight_data item="loop_data" key="loop_header"}
+		<th>{$loop_header}</th>
+			{/foreach}
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+			{foreach from=$sight_data item="loop_data" key="loop_header"}
+			<td>{$loop_data}</td>
+			{/foreach}
+			</tr>
+		</tbody>
+	</table>
 	{/if}
 
 
@@ -74,6 +73,11 @@
 	{/if}
 
 {include file="defender_health.tpl" health=$targetObj->health level=$targetObj->level target_name=$targetObj->name()}
+{if isset($self_use) and $self_use}
+<div class='centered'>
+	{include file='self.current_turns.tpl' self=$player}
+</div>
+{/if}
 
 {if $turn_cost}
 	<div id='turn-cost'> You used {$turn_cost} turn{if $turn_cost > 1}s{/if}.</div>
@@ -87,13 +91,15 @@
 
 {/if}{* End of there was no attack-error block. *}
 
-	<nav class='attack-nav'>
-    {if $reuse && !$attack_error}
+	<nav class='attack-nav' style='padding-left:2rem'>
+	{if $reuse && !$attack_error}
 		<a class='attack-again thick btn btn-primary' href="/skill/{if $self_use}self_{/if}use/{$act|escape:'url'}/{if $targetObj->id()}{$targetObj->id()|escape:'url'}/{/if}">
 			Use {$act} again
 		</a>
-    {/if}
-		<a href='/enemies' class='return-to-location'>Return to the Fight</a>
+	{/if}
+		<a href='/enemies' class='return-to-location'>
+			Return to the Fight
+		</a>
 	</nav>
 
 </section>
