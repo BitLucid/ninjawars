@@ -1,6 +1,14 @@
 <style>
+#chat-and-switch{
+  padding-left: 1rem;
+  padding-top: 1.7rem;
+}
 #chat-and-switch #chat-input{
-   width:55%;display:inline;margin-top:.5em;margin-bottom:.5em;
+   padding-left: 2rem;
+   width:55%;
+   display:inline;
+   margin-top:.5em;
+   margin-bottom:.5em;
 }
 #chat-and-switch #chat-button-box{
   width:40%;display:inline;margin-top:.5em;margin-bottom:.5em;
@@ -32,7 +40,7 @@
                         <input type="text" size="20" maxlength="250" name="message" autocomplete='off' class="textField">
                     </div>
                     <div id='chat-button-box'>
-                        <input id='chat-button' type="submit" value="Chat" class="formButton">
+                        <input id='chat-button' type="submit" value="Chat" class="formButton btn btn-sm">
                     </div>
                   </form>
 
