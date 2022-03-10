@@ -2,6 +2,8 @@
 
 namespace NinjaWars\core\extensions;
 
+// More docs: https://ma.ttias.be/how-to-clear-php-opcache/
+
 require_once(dirname(__DIR__ . '..') . '/lib/base.inc.php');
 
 use NinjaWars\core\extensions\NWTemplate;
