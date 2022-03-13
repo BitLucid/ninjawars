@@ -5,6 +5,7 @@ namespace NinjaWars\core\data;
 use NinjaWars\core\extensions\SessionFactory;
 use NinjaWars\core\data\DatabaseConnection;
 use NinjaWars\core\data\Enemies;
+use NinjaWars\core\data\Npc;
 use NinjaWars\core\data\Player;
 use NinjaWars\core\data\Message;
 use \PDO;
@@ -23,6 +24,21 @@ class Api
         $char = Player::find(SessionFactory::getSession()->get('player_id'));
         $target = $char ? Enemies::nextTarget($char, (int) $offset) : null;
         return $char && $target ? $target->publicData() : [];
+    }
+
+    /**
+     * Get a selection of players and npcs to target
+     */
+    public function nearbyList($data)
+    {
+        ['offset' => $offset, 'limit' => $limit] = ['offset' => $data];
+        $char = Player::find(SessionFactory::getSession()->get('player_id'));
+        // get nearby from map
+        $targets = $char ? Map::nearbyList($char, (int) $limit, (int) $offset) : [];
+        // map targets to public data
+        return array_map(function ($target) {
+            return $target->publicData();
+        }, $targets);
     }
 
     /**

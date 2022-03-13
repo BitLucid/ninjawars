@@ -166,6 +166,9 @@
     <button class='btn btn-primary'>ATTACK</button>
 </div>
 
+<div class='target-selection'>
+    {include file='nearby.characters.tpl' active_ninja=$active_ninjas}
+</div>
 <div class='enemy-selection'>
     <div>Enemy</div>
     <div>Enemy</div>

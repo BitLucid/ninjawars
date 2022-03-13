@@ -6,7 +6,6 @@
  * @TODO turns, message count, etc
  * Don't worry about the chats api too much as we're moving away from that
  */
-
 const apiMethods = {
   nextTarget: (data) => fetch(`/api?type=nextTarget&json=1&data=${encodeURIComponent(JSON.stringify(data))}`),
   deactivateChar: (data) => fetch(`/api?type=deactivateChar&json=1&data=${encodeURIComponent(JSON.stringify(data))}`),
@@ -23,6 +22,7 @@ const apiMethods = {
   latestChatId: () => fetch('/api?type=latestChatId&json=1'),
   latestEvent: () => fetch('/api?type=latestEvent&json=1'),
   charSearch: (term, limit) => fetch(`/api?type=char_search&json=1&term=${encodeURIComponent(JSON.stringify(term))}&limit=${encodeURIComponent(JSON.stringify(limit))}`),
+  nearbyList: (data) => fetch(`/api?type=nearbyList&json=1&data=${encodeURIComponent(JSON.stringify(data))}`),
 };
 
 /*
