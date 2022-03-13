@@ -27,6 +27,15 @@
 .casino-area .description p + p {
 	margin: 1rem 0;
 }
+
+.your-loot-container{
+	display:flex;
+	justify-content: flex-start;
+}
+.your-loot{
+	padding: 2rem;
+	border: thin solid rgb(66, 66, 66);
+}
 </style>
 {/literal}
 
@@ -42,7 +51,7 @@
 
 	{include file="flash-message.tpl"}
 
-	<div class='glassbox' style='border-bottom:1px solid gold'>
+	<div class='glassbox'>
 		<div class="description">
 			<p>You walk down the alley towards a shadowed door on a low, squat building with golden gilt peeling off of the entranceway. As you enter the small casino, <a href='/npc/attack/guard'>a guard</a> eyes you with caution.</p>
 			<p>No-one else is in the casino.  You walk towards the only table with a wizened old man, missing most of his teeth, behind it. He shows you a shiny coin.</p>
@@ -59,13 +68,17 @@
 
 		<form id="coin_flip" class='js-hooked' action="/casino/bet" method="post" name="coin_flip">
 			<div>
-			Bet: <input id="bet" type="text" size="3" maxlength="4" name="bet" class="textField">
-			&nbsp;&nbsp;<input type="submit" value="Place bet" class="formButton">
+			Bet: <input id="bet" type="text" size="3" maxlength="4" name="bet" class="textField" style='color:gold'>
+			&nbsp;&nbsp;<input type="submit" value="Place bet" class="btn btn-primary">
 			</div>
 		</form>
-
-		<div class='gold-count'>Current Gold: 石{$player->gold|number_format:0|escape}</div>
 	</div><!-- End of betting div -->
+
+	<div class='your-loot-container'>
+		<div class='your-loot'>
+			<div>You have <span class='gold-count'>石{$player->gold|number_format:0|escape} gold</span></div>
+		</div>
+	</div>
 
 </section>
 
