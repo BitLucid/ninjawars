@@ -56,7 +56,7 @@
         "karma-jasmine": "^4.0.1",
         "karma-requirejs": "^1.1.0",
         "karma-sinon": "^1.0.5",
-        "prettier": "2.5.1",
+        "prettier": "2.6.0",
         "puppeteer": "^13.1.1",
         "requirejs": "^2.3.6",
         "sinon": "^13.0.0"
