@@ -2472,7 +2472,7 @@ __metadata:
     karma-jasmine: ^4.0.1
     karma-requirejs: ^1.1.0
     karma-sinon: ^1.0.5
-    prettier: 2.6.0
+    prettier: 2.6.1
     puppeteer: ^13.1.1
     requirejs: ^2.3.6
     sinon: ^13.0.0
@@ -2808,12 +2808,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier@npm:2.6.0":
-  version: 2.6.0
-  resolution: "prettier@npm:2.6.0"
+"prettier@npm:2.6.1":
+  version: 2.6.1
+  resolution: "prettier@npm:2.6.1"
   bin:
     prettier: bin-prettier.js
-  checksum: 3e527ad62279676778a8404d18174d7ca2365ada4caba6eebbcdd9907d1187afd3bc6ade5b4e5f5d4549bb9fb71e45ca8930d71500017635524f8fc05bc52e93
+  checksum: 78be1f8a3ddfad7c3d8a854b6c8941a3bb1ddfca4225c38d778e0fe1029a55368f71b3bbefff82c689015fbb4d391ec44add957f01308ad2725e01a7c1f37cb6
   languageName: node
   linkType: hard
 
