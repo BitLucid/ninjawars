@@ -62,8 +62,9 @@ class Api
         } else {
             $char = Player::find($char_id);
             if ($char) {
-                $chars_reactivated = Account::reactivateByCharacter(Player::find($char_id));
-                $accounts_reactivated = Account::reactivateByCharacter($char);
+                $reactivated_count = Account::reactivateByCharacter($char);
+                $chars_reactivated = $reactivated_count ? 1 : 0;
+                $accounts_reactivated = $reactivated_count;
             }
             return ['chars_reactivated' => $chars_reactivated, 'accounts_reactivated' => $accounts_reactivated];
         }

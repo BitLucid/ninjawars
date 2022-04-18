@@ -646,13 +646,13 @@ class Account {
      */
     public static function reactivateByCharacter(Player $char): int
     {
-        $deactivated = update_query(
+        $reactivated = update_query(
             'UPDATE accounts a JOIN account_players ap ON a.account_id = ap._account_id
             JOIN players p ON p.player_id = ap._player_id
-            SET a.operational = 1 WHERE p.player_id = :player_id',
+            SET a.operational = 1, p.active = 1 WHERE p.player_id = :player_id',
             [':player_id' => [$char->id(), PDO::PARAM_INT]]
         );
-        return $deactivated;
+        return $reactivated;
     }
 
     /**
