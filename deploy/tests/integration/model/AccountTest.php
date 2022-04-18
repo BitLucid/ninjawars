@@ -21,10 +21,7 @@ class AccountTest extends NWTest {
         $this->test_email = TestAccountCreateAndDestroy::$test_email;
         $this->test_password = TestAccountCreateAndDestroy::$test_password;
         $this->test_ninja_name = TestAccountCreateAndDestroy::$test_ninja_name;
-        $this->testAccountId = TestAccountCreateAndDestroy::account_id([
-            'name' => $this->extra_char_name,
-            'email' => 'temp_account_test_phpunit@example.com'
-        ]);
+        $this->testAccountId = query_item("SELECT account_id FROM accounts WHERE account_identity = :email", [':email' => $this->test_email]);
     }
 
     public function tearDown():void {
@@ -45,6 +42,7 @@ class AccountTest extends NWTest {
     {
 
         $account = Account::findByChar($this->char);
+        $this->assertNotEmpty(Player::find($this->char->id()), 'Player::find failed to find pre-existing account');
         $this->assertNotNull($account, 'Account::findByCharacter() failed to find pre-existing account');
     }
 
