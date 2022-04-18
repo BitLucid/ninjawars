@@ -83,6 +83,7 @@ class EnemiesTest extends NWTest
     public function testNextTarget()
     {
         $target = Enemies::nextTarget($this->char, 0);
+        $this->assertNotEmpty($target, 'nextTarget found no target');
         $this->assertGreaterThan(0, $target->id());
     }
 
