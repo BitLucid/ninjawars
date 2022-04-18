@@ -621,7 +621,7 @@ class Account {
     public static function deactivate(Account $account): int
     {
         $deactivated = update_query(
-            'UPDATE accounts SET operational = 0 WHERE account_id = :account_id',
+            'UPDATE accounts SET operational = false WHERE account_id = :account_id',
             [':account_id' => [$account->id(), PDO::PARAM_INT]]
         );
         return $deactivated;
@@ -633,9 +633,13 @@ class Account {
     public static function deactivateByCharacter(Player $char): int
     {
         $deactivated = update_query(
-            'UPDATE accounts a JOIN account_players ap ON a.account_id = ap._account_id
-            JOIN players p ON p.player_id = ap._player_id
-            SET a.operational = 0 WHERE p.player_id = :player_id',
+            'UPDATE accounts
+            SET operational = false
+            WHERE account_id = (
+                SELECT ap._account_id
+                FROM account_players ap
+                WHERE ap._player_id = :player_id
+            )',
             [':player_id' => [$char->id(), PDO::PARAM_INT]]
         );
         return $deactivated;
@@ -647,9 +651,10 @@ class Account {
     public static function reactivateByCharacter(Player $char): int
     {
         $reactivated = update_query(
-            'UPDATE accounts a JOIN account_players ap ON a.account_id = ap._account_id
-            JOIN players p ON p.player_id = ap._player_id
-            SET a.operational = 1, p.active = 1 WHERE p.player_id = :player_id',
+            'UPDATE accounts
+            SET operational = true WHERE account_id = (
+                select ap._account_id from account_players ap where ap._player_id = :player_id
+            )',
             [':player_id' => [$char->id(), PDO::PARAM_INT]]
         );
         return $reactivated;
