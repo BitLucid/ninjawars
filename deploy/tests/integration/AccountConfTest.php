@@ -10,6 +10,8 @@ use NinjaWars\core\data\Account;
 use NinjaWars\core\environment\RequestWrapper;
 use Symfony\Component\HttpFoundation\Request;
 
+/** SEE ALSO AccountTest */
+
 /** Account behavior
  *
  * When an account is created, it is initially unconfirmed, but "operational"

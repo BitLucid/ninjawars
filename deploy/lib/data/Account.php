@@ -3,6 +3,7 @@ namespace NinjaWars\core\data;
 
 use NinjaWars\core\data\DatabaseConnection;
 use NinjaWars\core\Filter;
+use NinjaWars\core\data\Player;
 use \PDO;
 
 /**
@@ -122,12 +123,14 @@ class Account {
      */
     public static function findByChar(Player $char): ?Account
     {
-        $query = 'SELECT account_id FROM accounts
-            JOIN account_players ON _account_id = account_id
-            JOIN players ON _player_id = player_id
-            WHERE players.player_id = :pid';
+        $query =
+            'SELECT account_id FROM accounts
+                    WHERE account_id = (
+                        select _account_id from account_players where _player_id = :pid
+                        )';
+        $id = query_item($query, [':pid' => $char->id()]);
 
-        return self::findById(query_item($query, [':pid' => $char->id()]));
+        return $id ? self::findById($id) : null;
     }
 
     /**
@@ -625,6 +628,18 @@ class Account {
             [':account_id' => [$account->id(), PDO::PARAM_INT]]
         );
         return $deactivated;
+    }
+
+    /**
+     * Activate an account by id
+     */
+    public static function activate(Account $account): int
+    {
+        $activated = update_query(
+            'UPDATE accounts SET operational = true WHERE account_id = :account_id',
+            [':account_id' => [$account->id(), PDO::PARAM_INT]]
+        );
+        return $activated;
     }
 
     /** 
