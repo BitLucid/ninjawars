@@ -16,7 +16,7 @@ var Chat = undefined !== window.Chat ? window.Chat : {};
 (function jQueryShakePluginAttach($) {
   // Add shake plugin to jQuery
   // eslint-disable-next-line no-param-reassign
-  $.fn.shake = function (options) {
+  $.fn.shake = function fnShake(options) {
     // defaults
     const settings = {
       shakes: 2,
@@ -32,7 +32,7 @@ var Chat = undefined !== window.Chat ? window.Chat : {};
     // make it so
     let pos;
 
-    return this.each(function () {
+    return this.each(function fnChangePosit() {
       const $this = $(this);
 
       // position if necessary
@@ -104,7 +104,7 @@ Chat.getExistingChatMessages = function fnCh() {
 };
 
 // Display at least the messages area when there are some messages in it.
-Chat.displayMessages = function () {
+Chat.displayMessages = function fnDisMsg() {
   $('#mini-chat-display').show();
 };
 
@@ -115,7 +115,7 @@ Chat.displayMessages = function () {
  *              'date':Date.now(),
  *              'sender_id':'128274'});
  */
-Chat.renderChatMessage = function (p_data) {
+Chat.renderChatMessage = function fnRendChat(p_data) {
   if (!p_data.message) {
     logger.error(
       'Error: Bad data sent in to renderChatMessage to be rendered',

@@ -1,6 +1,6 @@
 /* Assist sending of messages to clan or individuals */
 /* jshint browser: true, white: true, plusplus: true */
-/* global $, NW, refocus */
+/* global $, NW, refocus, focusArea */
 
 // eslint-disable-next-line no-var
 // var presence = window.presence || {};
@@ -33,10 +33,10 @@ function performTalk() {
   if (
     typeof refocus !== 'undefined'
         && refocus
-        && typeof focus !== 'undefined'
-        && focus
+    && typeof focusArea !== 'undefined'
+    && focusArea
   ) {
-    if (focus === 'clan') {
+    if (focusArea === 'clan') {
       $('input#message-clan').focus();
     } else {
       $('input#message-to-ninja').focus();
