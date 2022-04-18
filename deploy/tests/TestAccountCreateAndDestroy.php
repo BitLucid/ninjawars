@@ -29,7 +29,8 @@ class TestAccountCreateAndDestroy {
      * or account_identity='testphpunit@example.com';
      * @param string $test_ninja_nm Newly created ninja name to delete from
      */
-    public static function purge_test_accounts($test_ninja_nm=null) {
+    public static function purge_test_accounts($test_ninja_nm = null): int
+    {
         $test_ninja_name = $test_ninja_nm? $test_ninja_nm : self::$test_ninja_name;
         $alt_test_ninja_name = self::$alt_test_ninja_name;
         $active_email = self::$test_email;
@@ -83,14 +84,15 @@ class TestAccountCreateAndDestroy {
     /**
      * More memorable wrapper to the purge_test_accounts functionality.
      */
-    public static function destroy($test=null) {
+    public static function destroy($test = null): void
+    {
         static::purge_test_accounts($test);
     }
 
     /**
      * Create a testing account
      */
-    public static function create_testing_account($confirm = false, $overrides = null)
+    public static function create_testing_account($confirm = false, $overrides = null): int
     {
         self::purge_test_accounts();
         return self::createAccount($overrides['name'] ?? self::$test_ninja_name, self::$test_email, 'tiger');
@@ -99,11 +101,13 @@ class TestAccountCreateAndDestroy {
     /**
      * Create a separate, second testing account
      */
-    public static function create_alternate_testing_account($confirm=false) {
-        return self::createAccount(self::$alt_test_ninja_name, self::$alt_test_email, 'dragon');
+    public static function create_alternate_testing_account($confirm = false): int
+    {
+        return self::createAccount(self::$alt_test_ninja_name, self::$alt_test_email, 'viper');
     }
 
-    public static function createAccount($ninja_name, $email, $class_identity) {
+    public static function createAccount($ninja_name, $email, $class_identity): int
+    {
         $found = Player::findByName($ninja_name);
 
         if ($found) {
@@ -145,42 +149,48 @@ class TestAccountCreateAndDestroy {
     /**
      * Convenience wrapper for the above, but confirms the account and returns the account id.
      */
-    public static function create_complete_test_account_and_return_id() {
-        $player_mock = new Player();
-        $player_mock->player_id = self::create_testing_account(true);
-        $account = Account::findByChar($player_mock);
+    public static function create_complete_test_account_and_return_id(): int
+    {
+        $pid = self::create_testing_account(true);
+        $player = Player::find($pid);
+        $account = Account::findByChar($player);
         return $account->id();
     }
 
     /**
      * Just return a character wholesale
      */
-    public static function char() {
+    public static function char(): Player
+    {
         return Player::find(self::char_id());
     }
 
     /**
      * Return alternate character
      */
-    public static function char_2() {
+    public static function char_2(): Player
+    {
         return Player::find(self::char_id_2());
     }
 
     /**
      * Alias for create_testing_account but clearer.
      */
-    public static function char_id($confirm=false) {
+    public static function char_id($confirm = false): int
+    {
         return self::create_testing_account($confirm);
     }
 
-    public static function char_id_2($confirm=false) {
+    public static function char_id_2($confirm = false): int
+    {
         return self::create_alternate_testing_account($confirm);
     }
 
     /**
      * Alias to get an account id
      */
-    public static function account_id() {
+    public static function account_id(): int
+    {
         return self::create_complete_test_account_and_return_id();
     }
 }
