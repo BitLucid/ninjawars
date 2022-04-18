@@ -4,7 +4,11 @@
 /* global $, NW, Chat, jQuery, window.conn, window.parent, window.WebSocket, window.Chat */
 
 // eslint-disable-next-line no-var
-var logger = console || { log: () => { /* no-op */ } };
+var logger = console || {
+  log: () => {
+    /* no-op */
+  },
+};
 
 // eslint-disable-next-line no-var
 var Chat = undefined !== window.Chat ? window.Chat : {};
@@ -81,8 +85,7 @@ Chat.getExistingChatMessages = function fnCh() {
   const since = '1424019122';
 
   $.getJSON(
-    `/api?type=new_chats&since=${encodeURIComponent(since)
-    }&jsoncallback=?`,
+    `/api?type=new_chats&since=${encodeURIComponent(since)}&jsoncallback=?`,
     (data) => {
       logger.info('Existing chats data found:', data);
       window.storeChats = data;
@@ -164,8 +167,9 @@ Chat.sendChatContents = function fnChSendCont(p_form) {
     const message = p_form.message.value;
     // Send a new chat.  // ASYNC
     $.getJSON(
-      `/api?type=send_chat&msg=${encodeURIComponent(message)
-      }&jsoncallback=?`,
+      `/api?type=send_chat&msg=${encodeURIComponent(
+        message,
+      )}&jsoncallback=?`,
       (echoed) => {
         if (!echoed) {
           Chat.rejected();
@@ -333,11 +337,15 @@ $(() => {
 function refreshpagechat() {
   const messageInput = $('#message');
   // Refresh only if text not being written.
-  if (!messageInput.length || messageInput.val() === false || messageInput.val() === '') {
+  if (
+    !messageInput.length
+        || messageInput.val() === false
+        || messageInput.val() === ''
+  ) {
     if (
       window.parent
-      && window.parent.main
-      && window.parent.main.location
+            && window.parent.main
+            && window.parent.main.location
     ) {
       window.parent.main.location.reload();
     } else {

@@ -14,9 +14,11 @@ presence.stats = true;
  * Update the Description area text on the fly
  */
 (() => {
-  $('#description').on('input',
+  $('#description').on(
+    'input',
     debounce((e) => {
       logger().log('Field change registered.');
       $('#ninja-description-append').text($(e.target).val());
-    }, 50));
+    }, 50),
+  );
 })();

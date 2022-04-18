@@ -3,7 +3,9 @@ export const debounce = (func, timeout = 300) => {
   let timer;
   return (...args) => {
     clearTimeout(timer);
-    timer = setTimeout(() => { func.apply(this, args); }, timeout);
+    timer = setTimeout(() => {
+      func.apply(this, args);
+    }, timeout);
   };
 };
 
@@ -18,18 +20,21 @@ export const canDebug = () => {
     const debug = urlParams.get('debug');
     urlDebug = debug === '1';
   }
-  return (typeof (process) !== 'undefined'
-    && typeof (process.env) !== 'undefined'
-    && process.env.NODE_ENV === 'development')
-    || urlDebug
-    || (typeof window !== 'undefined'
-        && typeof window.NW !== 'undefined'
-        && window.NW.debug
-    );
+  return (
+    (typeof process !== 'undefined'
+            && typeof process.env !== 'undefined'
+            && process.env.NODE_ENV === 'development')
+        || urlDebug
+        || (typeof window !== 'undefined'
+            && typeof window.NW !== 'undefined'
+            && window.NW.debug)
+  );
 };
 
 // eslint-disable-next-line no-unused-vars
-const noop = (_) => { /* no-op */ };
+const noop = (_) => {
+  /* no-op */
+};
 
 /**
  * Mimic console, except ignore certain loggings if not in debug mode

@@ -7,7 +7,11 @@
 // presence.talk = true;
 
 // eslint-disable-next-line no-var
-var logger = console || { log: () => { /* no-op */ } };
+var logger = console || {
+  log: () => {
+    /* no-op */
+  },
+};
 
 function performTalk() {
   logger.debug('performTalk() run');
@@ -21,7 +25,9 @@ function performTalk() {
   });
 
   // eslint-disable-next-line no-alert
-  $('#delete-messages form').submit(() => (window && window.confirm('Delete all messages?'))); // *** boolean return value ***
+  $('#delete-messages form').submit(
+    () => window && window.confirm('Delete all messages?'),
+  ); // *** boolean return value ***
 
   // If a refocus is requested, because a message was just sent, then refocus on the area.
   if (

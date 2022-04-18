@@ -13,9 +13,11 @@ presence.ninjamaster = true;
 
 $(function initializeNMPage() {
   // Handle the show/hide sections
-  $('.show-hide-next').click(function showHideNext() {
-    $(this).parent().next().slideToggle();
-  }).html("<span class='slider'><span class='dot'></span></span>");
+  $('.show-hide-next')
+    .click(function showHideNext() {
+      $(this).parent().next().slideToggle();
+    })
+    .html("<span class='slider'><span class='dot'></span></span>");
   $('.show-hide-next').parent().next().toggle();
 
   $('#start-deactivate').click(() => {

@@ -2,19 +2,19 @@
 /* global describe, beforeEach, afterEach, it, expect, performTalk */
 
 describe('talk', () => {
-  describe('Introductory talk script testing context', () => {
-    beforeEach(() => { });
+    describe('Introductory talk script testing context', () => {
+        beforeEach(() => {});
 
-    afterEach(() => { });
+        afterEach(() => {});
 
-    it('should have initialized the talk functionality', () => {
-      // Running the file should work without error
-      expect(performTalk).toBeDefined();
+        it('should have initialized the talk functionality', () => {
+            // Running the file should work without error
+            expect(performTalk).toBeDefined();
+        });
+
+        it('should be able to run performTalk', () => {
+            const output = performTalk();
+            expect(output).toBeTrue();
+        });
     });
-
-    it('should be able to run performTalk', () => {
-      const output = performTalk();
-      expect(output).toBeTrue();
-    });
-  });
 });
