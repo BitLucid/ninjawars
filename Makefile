@@ -62,6 +62,7 @@ install: build start-chat writable
 	echo "Check that the webserver user has permissions to the script!"
 
 writable:
+	mkdir -p ./deploy/templates/compiled ./deploy/templates/cache ./deploy/resources/logs/
 	chown ${WEBUSER} ./deploy/resources/logs/*
 	mkdir -p ./deploy/templates/compiled ./deploy/templates/cache ./deploy/resources/logs/
 	chown ${WEBUSER} ./deploy/resources/logs/*
