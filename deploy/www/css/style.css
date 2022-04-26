@@ -600,11 +600,12 @@ h2 {
         sans-serif;
     font-weight: normal;
 }
+/** Very important main title on many pages **/
 h1,
 .player-info .player-name {
     background: #1d0f00;
     color: #ad6e40;
-    border-bottom: thick solid #800000;
+    border-bottom: thick solid #420404;
     padding-left: 0;
     padding-right: 0;
     font: 30px/34px 'Aclonica', 'edding-780-1', 'edding-780-2', Charcoal,
@@ -616,7 +617,7 @@ h1,
     text-shadow: black 2px 2px 3px;
 }
 h1 {
-    margin: 0 0 1rem;
+    margin: 0 0 2.5rem;
 }
 .player-info .player-name {
     min-height: 4.5rem;
@@ -680,9 +681,9 @@ h6 {
 }
 
 #latest-commit {
-    border-bottom: thin green dashed;
+    border-bottom: thin rgb(7, 48, 7) dashed;
     padding-left: 0.5em;
-    color: greenYellow;
+    color: rgb(92, 99, 83);
 }
 
 #product-languages,
@@ -1312,7 +1313,7 @@ td.playerTable {
 }
 .novice {
     /* Level categories */
-    color: black;
+    color: white;
     background-color: rgb(238, 238, 238, 0.4);
 }
 .acolyte {
@@ -1524,15 +1525,6 @@ body.solo-page h1 {
     text-align: right;
 }
 
-.created-by {
-    display: none;
-    margin-top: 10px;
-    margin-bottom: 30px;
-    text-align: center;
-    color: darkGray;
-    font-family: Tahoma, Arial, Helvetica, sans-serif;
-    font-size: 10px;
-}
 .boxes {
     padding: 3px 0 3px 5px;
 }
@@ -1881,7 +1873,7 @@ a#skip-to-bottom {
     min-height: 3%;
     width: 100%;
     opacity: 0.96;
-    border-top: 1px solid #666;
+    border-top: 1px solid #444343;
     font-family: 'Open Sans', sans-serif;
 }
 
@@ -1931,7 +1923,6 @@ a#skip-to-bottom {
     background: none;
     border: none;
     color: #d8d8d8;
-    font-size: 3.2rem;
 }
 #authors {
     display: inline-block;
@@ -1945,12 +1936,14 @@ a#skip-to-bottom {
 }
 
 #footer-authors {
-    display: block;
     min-height: 3.5em;
     list-style-type: none;
+    display: flex;
+    justify-content: space-evenly;
 }
 #footer-authors .author {
     display: inline-block;
+    text-align:left;
     width: 300px;
     min-height: 80px;
     margin-left: 10%;
@@ -2245,9 +2238,9 @@ span.ninja-success {
 
 .error {
     text-align: center;
-    color: rgb(125, 27, 126);
-    background-color: #f683ff;
-    border: #7a89d9 0.2rem solid;
+    background-color: rgb(125, 27, 126);
+    color: #f683ff;
+    border: rgb(181, 8, 183) 0.2rem solid;
     font-family: 'Lucida Console', Monaco, monospace;
     font-weight: bold;
     font-size: larger;
@@ -2918,8 +2911,7 @@ ul#clan-options {
 
 .shop-list {
     background-color: rgba(30, 30, 30, 0.3);
-    width: 90%;
-    margin: 0.5em 5%;
+    margin: 0.5em 3%;
     text-align: center;
     font-size: larger;
 }
@@ -2940,17 +2932,9 @@ ul#clan-options {
     color: #808177;
 }
 
-.shop-list .usage-text {
-    max-width: 10rem;
-}
-
-.shop-list .item-icon {
-    max-height: 25px;
-    max-width: 50px;
-}
 .item-purchase-area {
     display: inline-block;
-    padding: 1em;
+    padding: 3rem 0.3rem 0.5rem;
     margin: 0;
     min-width: 100px;
     min-height: 100px;
@@ -3209,8 +3193,9 @@ select option #blue-class-select {
 .return-to-location {
     display: block;
     font-size: 1.3rem;
-    margin-top: 1.5rem;
-    margin-left: 1rem;
+    padding-top: 1.5rem;
+    padding-left: 1rem;
+    font-size:larger;
 }
 .return-to-location,
 .player-ranking-linkback {
@@ -3301,6 +3286,10 @@ select option #blue-class-select {
     display: inline-block;
     z-index: -1;
     vertical-align: top;
+}
+
+#nw-catchphrases {
+    display:inline-block;
 }
 
 #nw-catchphrases span {
@@ -4797,6 +4786,11 @@ input[type='button'].btn-block {
     #index-footer {
         margin-top: 4em;
     }
+
+    #nw-catchphrases {
+        display:block;
+    }
+    
     #main-column {
         width: 100%;
         left: 0;
@@ -4840,6 +4834,10 @@ input[type='button'].btn-block {
         padding: 0.5em 1em;
         font-size: larger;
         line-height: 2em;
+    }
+    #ninjawars-title-image {
+        width:60px;
+        height:60px;
     }
 }
 

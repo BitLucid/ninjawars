@@ -10,7 +10,7 @@
 var logger = console || { log: () => { /* no-op */ } };
 
 function performTalk() {
-  logger.log('performTalk() run');
+  logger.debug('performTalk() run');
   // Cache the last messaged character after send
   if ($('#send-to').val() === '') {
     $('#send-to').val(NW.storage.appState.get('last_messaged', ''));

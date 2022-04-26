@@ -7,6 +7,17 @@ yarn.lock
 .yarn/*
 .yarnrc.yml
 
+# node packages
+.yarn
+node_modules
+
+# Build files
+storybook-static
+
+# don't format docs
+*.md
+docs/*
+
 # Don't reformat github markdown
 .github
 

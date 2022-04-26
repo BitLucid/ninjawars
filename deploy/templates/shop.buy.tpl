@@ -1,9 +1,13 @@
 {if $valid}
-<div class='slide-in-from-left'>
-    <p class='obtained-item'>
-        The shopkeeper hands over {$quantity|escape} {$item_text}.
-    </p>
-    <p>As he puts your gold into his safe he asks you, <em class='speech'>Will you be needing anything else today?</em>.</p>
+<div style='display:flex;justify-content:center'>
+    <div style='glassbox thick'>
+        <div class='slide-in-from-left'>
+            <p class='obtained-item'>
+                The shopkeeper hands over {$quantity|escape} {$item_text}.
+            </p>
+            <p>As he puts your gold into his safe he asks you, <em class='speech'>Will you be needing anything else today?</em>.</p>
+        </div>
+    </div>
 </div>
 {elseif $no_such_item}
     <div class='slide-in-from-left'>
