@@ -10,15 +10,17 @@ use NinjaWars\core\environment\RequestWrapper;
 class SignupControllerTest extends NWTest {
     private $char_id;
     private $fake_email = 'new@local.host';
+    private $fake_user = 'signup-test-user';
 
 	public function setUp():void {
         parent::setUp();
 		SessionFactory::init(new MockArraySessionStorage());
-        $this->char_id = TestAccountCreateAndDestroy::create_testing_account();
+        $this->char_id = TestAccountCreateAndDestroy::create_testing_account($this->fake_user);
 		SessionFactory::getSession()->set('player_id', $this->char_id);
 	}
 
 	public function tearDown():void {
+        TestAccountCreateAndDestroy::destroy($this->fake_user);
         $session = SessionFactory::getSession();
         $session->invalidate();
         parent::tearDown();
@@ -292,7 +294,7 @@ class SignupControllerTest extends NWTest {
 
     public function testSuccessfulSignupResultsInNoConfirmation() {
         $uname = 'KnownGood';
-        $email = 'shouldneverexist77748348@hotmail.com';
+        $email = 'thisshouldnevergotoarealperson77748348@hotmail.com';
         // Due to the nature of hotmail, hotmail emails are listed
         // such that they will not be preconfirmed.  This leaves an account needing confirmation.
 
@@ -309,8 +311,8 @@ class SignupControllerTest extends NWTest {
         $account = Account::findByEmail($email);
         $player = Player::findByName($uname);
 
-        $this->assertNotNull($player);
-        $this->assertNotNull($account);
+        $this->assertNotNull($player, 'Player was not created');
+        $this->assertNotNull($account, 'Account was not created');
 
         $query_relationship = 'SELECT count(*) FROM account_players WHERE _account_id = :id1 AND _player_id = :id2';
         $account_unconfirmed = null;

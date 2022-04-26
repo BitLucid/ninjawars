@@ -187,14 +187,14 @@ Chat.sendChatContents = function fnChSendCont(p_form) {
 };
 
 // Notify the user when a chat send was rejected.
-Chat.rejected = function () {
+Chat.rejected = function fnCCR() {
   logger.error('Error: Failed to send the chat to server.');
   Chat.submissionArea().shake(); // Shake the submission area to show a failed send of a chat.
   return false;
 };
 
 // Send a messageData object to the websockets chat
-Chat.send = function fnS77(messageData) {
+Chat.send = function fnCCS(messageData) {
   if (!Chat.canSend()) {
     return false;
   }
@@ -212,20 +212,29 @@ Chat.send = function fnS77(messageData) {
 };
 
 // Get the area that handles chat submission.
-Chat.submissionArea = function () {
+Chat.submissionArea = function fnCSA() {
   return $('#post_msg_js');
 };
 
+// Hide the submission area
+Chat.hideSubmissionArea = function fnCSH() {
+  Chat.submissionArea().hide();
+};
+
+// Show the submission area
+Chat.showSubmissionArea = function fnCSH() {
+  Chat.submissionArea().show();
+};
+
 // Once the chat is ready, initialize the ability to actually send chats.
-Chat.chatReady = function () {
+Chat.chatReady = function fnCCR() {
   Chat.displayMessages(); // Will display the whole messages area.
-  const $submitter = Chat.submissionArea();
 
   if (Chat.canSend()) {
-    $submitter.show();
+    Chat.showSubmissionArea();
   } else {
-    $submitter.hide();
-    logger.info('Warning: Not logged in to be able to send messages.');
+    Chat.hideSubmissionArea();
+    logger.info('Chat: Not logged in to be able to send messages.');
   }
 
   logger.info('Chat connected and ready');
@@ -233,8 +242,9 @@ Chat.chatReady = function () {
 };
 
 // Check whether logged in for chat sending
-Chat.canSend = function fnCS() {
+Chat.canSend = function fnCCanSend() {
   const $area = Chat.submissionArea();
+  logger.info('Chat: Logged in or out: ', $area.data('logged-in'));
   return Boolean($area.data('logged-in'));
 };
 

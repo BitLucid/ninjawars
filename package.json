@@ -10,6 +10,7 @@
         "lint": "eslint --ext .jsx,.js deploy/www/js",
         "prepare-unit-test-ci": "echo 'no-op for now'",
         "start": "yarn time && make build && yarn time",
+        "post-deploy": "php deploy/deployed_scripts/resetcache.php",
         "watch": "livereload ./deploy/* ./deploy/www/* ./deploy/templates/* ./deploy/lib/control/* --debug",
         "security-check": "yarn audit",
         "time": "node -e \"console.log( new Date().toISOString() );\"",
@@ -55,10 +56,10 @@
         "karma-jasmine": "^4.0.1",
         "karma-requirejs": "^1.1.0",
         "karma-sinon": "^1.0.5",
-        "prettier": "2.5.1",
+        "prettier": "2.6.2",
         "puppeteer": "^13.1.1",
         "requirejs": "^2.3.6",
-        "sinon": "^12.0.1"
+        "sinon": "^13.0.0"
     },
     "packageManager": "yarn@3.1.1"
 }
