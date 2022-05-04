@@ -104,8 +104,8 @@ class Enemies
     public static function nextTarget(Player $char, int $shift = 0): ?Player
     {
         $sel =
-            '
-            SELECT rank_id, uname, level, player_id, health FROM players JOIN player_rank ON _player_id = player_id 
+        '
+            SELECT rank_id, uname, level, player_id, health FROM players LEFT JOIN player_rank ON _player_id = player_id 
             WHERE active = 1 AND level <= (5 + :char_level) AND health > 0 
                 AND player_id != :char_id2
             ORDER BY score < (SELECT score FROM player_rank WHERE _player_id = :char_id) desc, score DESC LIMIT 1 OFFSET greatest(0, :off)';
@@ -118,7 +118,8 @@ class Enemies
                 ':off'      => [$shift, PDO::PARAM_INT],
             ]
         );
-        return !empty($enemies) ? Player::find(reset($enemies)['player_id']) : null;
+        $first_enemy = !empty($enemies) ? $enemies[0] ?? null : null;
+        return $first_enemy['player_id'] ? Player::find($first_enemy['player_id']) : null;
     }
 
     /**

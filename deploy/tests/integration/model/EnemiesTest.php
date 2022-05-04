@@ -4,7 +4,6 @@ use NinjaWars\core\data\Deity;
 use NinjaWars\core\data\Enemies;
 use NinjaWars\core\data\GameLog;
 use NinjaWars\core\data\Player;
-use NinjaWars\core\extensions\SessionFactory;
 
 class EnemiesTest extends NWTest
 {
@@ -105,6 +104,7 @@ class EnemiesTest extends NWTest
     public function testNextTargetById()
     {
         $target = Enemies::nextTargetById($this->char->id(), 0);
+        $this->assertNotEmpty($target, 'nextTargetById found no target');
         $this->assertGreaterThan(0, $target->id());
     }
 }
