@@ -1,4 +1,6 @@
 version = 1
+# configured at https://deepsource.io/gh/NinjaWars
+# and in github secrets
 
 exclude_patterns = [
     "*.log",
