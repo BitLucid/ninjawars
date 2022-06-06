@@ -104,12 +104,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sinonjs/fake-timers@npm:>=5, @sinonjs/fake-timers@npm:^9.0.0":
+"@sinonjs/fake-timers@npm:>=5":
   version: 9.1.0
   resolution: "@sinonjs/fake-timers@npm:9.1.0"
   dependencies:
     "@sinonjs/commons": ^1.7.0
   checksum: 83b921f9bbc985ea08f19c4642a6af647acc9a9e0e317fe86ea79ea2d453658eb641f316f94f0c02e02756db3ae4da0e6046e4cd5415575c3fb89c41e32286d3
+  languageName: node
+  linkType: hard
+
+"@sinonjs/fake-timers@npm:^9.1.2":
+  version: 9.1.2
+  resolution: "@sinonjs/fake-timers@npm:9.1.2"
+  dependencies:
+    "@sinonjs/commons": ^1.7.0
+  checksum: 7d3aef54e17c1073101cb64d953157c19d62a40e261a30923fa1ee337b049c5f29cc47b1f0c477880f42b5659848ba9ab897607ac8ea4acd5c30ddcfac57fca6
   languageName: node
   linkType: hard
 
@@ -713,6 +722,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"cross-fetch@npm:3.1.5":
+  version: 3.1.5
+  resolution: "cross-fetch@npm:3.1.5"
+  dependencies:
+    node-fetch: 2.6.7
+  checksum: f6b8c6ee3ef993ace6277fd789c71b6acf1b504fd5f5c7128df4ef2f125a429e29cd62dc8c127523f04a5f2fa4771ed80e3f3d9695617f441425045f505cf3bb
+  languageName: node
+  linkType: hard
+
 "cross-spawn@npm:^7.0.2":
   version: 7.0.3
   resolution: "cross-spawn@npm:7.0.3"
@@ -773,15 +791,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"debug@npm:4.3.2":
-  version: 4.3.2
-  resolution: "debug@npm:4.3.2"
+"debug@npm:4.3.4":
+  version: 4.3.4
+  resolution: "debug@npm:4.3.4"
   dependencies:
     ms: 2.1.2
   peerDependenciesMeta:
     supports-color:
       optional: true
-  checksum: 820ea160e267e23c953c9ed87e7ad93494d8cda2f7349af5e7e3bb236d23707ee3022f477d5a7d2ee86ef2bf7d60aa9ab22d1f58080d7deb9dccd073585e1e43
+  checksum: 3dbad3f94ea64f34431a9cbf0bafb61853eda57bff2880036153438f50fb5a84f27683ba0d8e5426bf41a8c6ff03879488120cf5b3a761e77953169c0600a708
   languageName: node
   linkType: hard
 
@@ -824,10 +842,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"devtools-protocol@npm:0.0.948846":
-  version: 0.0.948846
-  resolution: "devtools-protocol@npm:0.0.948846"
-  checksum: add29ebdcc60d2ccb11f8c7125c3d500957da63bac6bc7633041761ea12320febebbc58530e94bc23e0586ce4de2623fb5eaae0971ecbfc778f7159448519b0a
+"devtools-protocol@npm:0.0.982423":
+  version: 0.0.982423
+  resolution: "devtools-protocol@npm:0.0.982423"
+  checksum: c144574b9c2092f38a1a9153e5d723f0bf4ad4f4363d9d2ea5bdd3d7e0e1416d1a71a77256120ba0e0dd524bc101845d42aa0b723aaedc0b6b4023137da76cf3
   languageName: node
   linkType: hard
 
@@ -1126,12 +1144,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-react-hooks@npm:4.3.0":
-  version: 4.3.0
-  resolution: "eslint-plugin-react-hooks@npm:4.3.0"
+"eslint-plugin-react-hooks@npm:4.5.0":
+  version: 4.5.0
+  resolution: "eslint-plugin-react-hooks@npm:4.5.0"
   peerDependencies:
     eslint: ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0-0
-  checksum: 0ba1566ba0780bbc75a5921f49188edf232db2085ab32c8d3889592f0db9d6fadc97fcf639775e0101dec6b5409ca3c803ec44213b90c8bacaf0bdf921871c2e
+  checksum: 0389377de635dd9b769f6f52e2c9e6ab857a0cdfecc3734c95ce81676a752e781bb5c44fd180e01953a03a77278323d90729776438815557b069ceb988ab1f9f
   languageName: node
   linkType: hard
 
@@ -1693,7 +1711,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"https-proxy-agent@npm:5.0.0, https-proxy-agent@npm:^5.0.0":
+"https-proxy-agent@npm:5.0.1":
+  version: 5.0.1
+  resolution: "https-proxy-agent@npm:5.0.1"
+  dependencies:
+    agent-base: 6
+    debug: 4
+  checksum: 571fccdf38184f05943e12d37d6ce38197becdd69e58d03f43637f7fa1269cf303a7d228aa27e5b27bbd3af8f09fd938e1c91dcfefff2df7ba77c20ed8dfc765
+  languageName: node
+  linkType: hard
+
+"https-proxy-agent@npm:^5.0.0":
   version: 5.0.0
   resolution: "https-proxy-agent@npm:5.0.0"
   dependencies:
@@ -2465,17 +2493,17 @@ __metadata:
     eslint-plugin-import: ^2.25.4
     eslint-plugin-jsx-a11y: ^6.5.1
     eslint-plugin-react: ^7.28.0
-    eslint-plugin-react-hooks: 4.3.0
+    eslint-plugin-react-hooks: 4.5.0
     jasmine-core: ^4.0.0
     karma: ^6.3.11
     karma-chrome-launcher: ^3.1.0
     karma-jasmine: ^4.0.1
     karma-requirejs: ^1.1.0
     karma-sinon: ^1.0.5
-    prettier: 2.6.2
-    puppeteer: ^13.1.1
+    prettier: ^2.6.2
+    puppeteer: ^14.0.0
     requirejs: ^2.3.6
-    sinon: ^13.0.0
+    sinon: ^14.0.0
   languageName: unknown
   linkType: soft
 
@@ -2492,12 +2520,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"node-fetch@npm:2.6.5":
-  version: 2.6.5
-  resolution: "node-fetch@npm:2.6.5"
+"node-fetch@npm:2.6.7":
+  version: 2.6.7
+  resolution: "node-fetch@npm:2.6.7"
   dependencies:
     whatwg-url: ^5.0.0
-  checksum: 4e83db450718e70762882f00d96f647a7f2f3170035225934ddd5450cb1d91ef339ceb180d3687bcb0a6ed78c3fa5636ce8d3e44ec81ab59e0224ebf8965f65f
+  peerDependencies:
+    encoding: ^0.1.0
+  peerDependenciesMeta:
+    encoding:
+      optional: true
+  checksum: 8d816ffd1ee22cab8301c7756ef04f3437f18dace86a1dae22cf81db8ef29c0bf6655f3215cb0cdb22b420b6fe141e64b26905e7f33f9377a7fa59135ea3e10b
   languageName: node
   linkType: hard
 
@@ -2876,23 +2909,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"puppeteer@npm:^13.1.1":
-  version: 13.1.1
-  resolution: "puppeteer@npm:13.1.1"
+"puppeteer@npm:^14.0.0":
+  version: 14.0.0
+  resolution: "puppeteer@npm:14.0.0"
   dependencies:
-    debug: 4.3.2
-    devtools-protocol: 0.0.948846
+    cross-fetch: 3.1.5
+    debug: 4.3.4
+    devtools-protocol: 0.0.982423
     extract-zip: 2.0.1
-    https-proxy-agent: 5.0.0
-    node-fetch: 2.6.5
+    https-proxy-agent: 5.0.1
     pkg-dir: 4.2.0
     progress: 2.0.3
     proxy-from-env: 1.1.0
     rimraf: 3.0.2
     tar-fs: 2.1.1
     unbzip2-stream: 1.4.3
-    ws: 8.2.3
-  checksum: 83861437c70cd8c96c36d25e12133bb3f67bb62aaeb47072d2f7a8a3c6ac98c4f2b63780d4bac788292ecd9568a4ab5dd6e21381a2924be3d53fc8bbb3f025f7
+    ws: 8.6.0
+  checksum: cce00cede6a5c970604e744f481c852b8af76727b1ddfe2969598a69767a5f4a060cef4e5059dd71b25c952a76387a595b8804746c57363a96ce35f607010f59
   languageName: node
   linkType: hard
 
@@ -3158,17 +3191,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sinon@npm:^13.0.0":
-  version: 13.0.1
-  resolution: "sinon@npm:13.0.1"
+"sinon@npm:^14.0.0":
+  version: 14.0.0
+  resolution: "sinon@npm:14.0.0"
   dependencies:
     "@sinonjs/commons": ^1.8.3
-    "@sinonjs/fake-timers": ^9.0.0
+    "@sinonjs/fake-timers": ^9.1.2
     "@sinonjs/samsam": ^6.1.1
     diff: ^5.0.0
     nise: ^5.1.1
     supports-color: ^7.2.0
-  checksum: d0d90fdc5aea4170b9cbebaf0e2f6cb04c0feeadc4f5d1dfe1eaf22162637840dd3c989c5386a904b8995f44a9ca6bab61bd1bfac40e425112737f5b12b2a2a1
+  checksum: b2aeeb0cdc2cd30f904ccbcd60bae4e1b3dcf3aeeface09c1832db0336be0dbaa461f3b91b769bed84f05c83d45d5072a9da7ee14bc7289daeda2a1214fe173c
   languageName: node
   linkType: hard
 
@@ -3675,7 +3708,22 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ws@npm:8.2.3, ws@npm:~8.2.3":
+"ws@npm:8.6.0":
+  version: 8.6.0
+  resolution: "ws@npm:8.6.0"
+  peerDependencies:
+    bufferutil: ^4.0.1
+    utf-8-validate: ^5.0.2
+  peerDependenciesMeta:
+    bufferutil:
+      optional: true
+    utf-8-validate:
+      optional: true
+  checksum: e2fca82059f1e087d0c78e2f37135e1b8332bc804fce46f83c2db1cb8571685abf9d2c99b964bab3752536ad90b99b46fb8d1428899aed3e560684ab4641bffd
+  languageName: node
+  linkType: hard
+
+"ws@npm:~8.2.3":
   version: 8.2.3
   resolution: "ws@npm:8.2.3"
   peerDependencies:

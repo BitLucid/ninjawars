@@ -49,17 +49,17 @@
         "eslint-plugin-import": "^2.25.4",
         "eslint-plugin-jsx-a11y": "^6.5.1",
         "eslint-plugin-react": "^7.28.0",
-        "eslint-plugin-react-hooks": "4.3.0",
+        "eslint-plugin-react-hooks": "4.5.0",
         "jasmine-core": "^4.0.0",
         "karma": "^6.3.11",
         "karma-chrome-launcher": "^3.1.0",
         "karma-jasmine": "^4.0.1",
         "karma-requirejs": "^1.1.0",
         "karma-sinon": "^1.0.5",
-        "prettier": "2.6.2",
-        "puppeteer": "^13.1.1",
+        "prettier": "^2.6.2",
+        "puppeteer": "^14.0.0",
         "requirejs": "^2.3.6",
-        "sinon": "^13.0.0"
+        "sinon": "^14.0.0"
     },
     "packageManager": "yarn@3.1.1"
 }
