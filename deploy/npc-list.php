@@ -98,6 +98,7 @@ NpcFactory::$data = [
         ],
         'traits'    => [
             'flying',
+            'escaper',
         ]
     ],
     'ushioni'   => [
@@ -107,6 +108,9 @@ NpcFactory::$data = [
         'speed'    => 50,
         'race'     => 'ushioni',
         'img'      => 'ushioni2.jpg',
+        'inventory' => [
+            'shell' => '1',
+        ],
         'traits'   => [
             'horned'
         ]
@@ -122,6 +126,7 @@ NpcFactory::$data = [
         'traits'   => [
             'armored',
             'rich',
+            'defender'
         ],
     ],
 ] + (
@@ -201,6 +206,7 @@ NpcFactory::$data = [
                 'steals',
                 'escaper',
                 'gang',
+            'defender',
             ],
         ],
         'monk'          => [
@@ -260,6 +266,10 @@ NpcFactory::$data = [
             'speed'    => 5,
             'damage'   => 0,
             'race'     => 'bird',
+        'traits'    => [
+            'escaper',
+            'flying',
+        ],
         ],
         'bees'          => [
             'name'     => 'Swarm of Bees',
@@ -284,7 +294,12 @@ NpcFactory::$data = [
             'strength' => 3,
             'speed'    => 25,
             'damage'   => 3,
+        'stamina'  => 3,
             'race'     => 'bird',
+        'traits'    => [
+            'escaper',
+            'flying',
+        ],
         ],
         'kingfisher'    => [
             'name'     => 'Kingfisher',
@@ -293,6 +308,10 @@ NpcFactory::$data = [
             'speed'    => 30,
             'damage'   => 3,
             'race'     => 'bird',
+        'traits'    => [
+            'escaper',
+            'flying',
+        ],
         ],
         'horse'         => [
             'name'     => 'Horse',
