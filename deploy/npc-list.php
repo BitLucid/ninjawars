@@ -129,6 +129,25 @@ NpcFactory::$data = [
             'defender'
         ],
     ],
+    'thief2'          => [
+        'name'      => 'Theif',
+        'strength'  => 17,
+        'stamina'   => 10,
+        'speed'     => 10,
+        'race'      => 'human',
+        'img'       => 'thief.png',
+        'inventory' => [
+            'shuriken' => '1',
+
+        ],
+        'gold'      => 40,
+        'traits'    => [
+            'steals',
+            'escaper',
+            'gang',
+            'defender',
+        ],
+    ],
 ] + (
     !defined('DEBUG') || !DEBUG ? [] :
     [
@@ -189,26 +208,7 @@ NpcFactory::$data = [
             'traits'     => [
                 'partial_match_strength',
             ],
-        ],
-        'thief2'          => [
-            'name'      => 'Theif',
-            'strength'  => 17,
-            'stamina'   => 10,
-            'speed'     => 10,
-            'race'      => 'human',
-            'img'       => 'thief.png',
-            'inventory' => [
-                'shuriken' => '1',
-
-            ],
-            'gold'      => 40,
-            'traits'    => [
-                'steals',
-                'escaper',
-                'gang',
-            'defender',
-            ],
-        ],
+    ],
         'monk'          => [
             'name'      => 'Monk',
             'strength'  => 10,
