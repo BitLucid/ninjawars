@@ -8,7 +8,7 @@ verify_ssl = true
 [packages]
 atomicwrites = "==1.4.0"
 attrs = "==19.1.0"
-certifi = "==2021.10.8"
+certifi = "==2022.6.15"
 chardet = "==4.0.0"
 idna = "==2.8"
 lxml = "==4.9.0"
