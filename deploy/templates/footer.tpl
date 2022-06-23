@@ -6,7 +6,7 @@
 
       <div id='index-footer' class='navigation'>
         <!-- Stuff like links, and the author information -->
-        {include file='linkbar_section.tpl'}
+        {include file='footer.linkbar.tpl'}
       </div>
 
     </footer>

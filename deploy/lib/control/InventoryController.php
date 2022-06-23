@@ -85,7 +85,6 @@ class InventoryController extends AbstractController {
             $error = 3;
         } else {
             $error = 0;
-
             $display_message = "__TARGET__ will receive your ".$item->getName().".";
             $mail_message    = "You have been given $article $item by $player.";
 
@@ -152,10 +151,8 @@ class InventoryController extends AbstractController {
             } else {
                 $error  = null;
                 $result = $this->applyItemEffects($player, $player, $item);
-
                 if ($result['success']) {
                     $inventory->remove($item->identity(), 1);
-
                     if ($player->health <= 0) {
                         $this->sendKillMails($player, $player, $player->name(), $article, $item->getName(), 0);
                     }
@@ -174,6 +171,7 @@ class InventoryController extends AbstractController {
 
         return $this->renderUse([
             'error'                  => $error,
+            'self_use'               => true,
             'target'                 => $player,
             'resultMessage'          => $display_message,
             'alternateResultMessage' => $extra_message,
@@ -210,6 +208,7 @@ class InventoryController extends AbstractController {
         $extra_message   = '';
         $attacker_label  = $player->name();
         $loot            = null;
+        $self_use        = false;
 
         try {
             $item    = $this->findItem($slugs['item_in']);
@@ -286,6 +285,7 @@ class InventoryController extends AbstractController {
             'bountyMessage'          => $bounty_message,
             'article'                => $article,
             'loot'                   => $loot,
+            'self_use'               => $self_use,
         ]);
     }
 
@@ -378,7 +378,7 @@ class InventoryController extends AbstractController {
             }
 
             $notice = " lose ".abs($turns_change)." turns.";
-            $target->setTurns($target->turns - min($turns_change, $target->turns));
+            $target->subtractTurns(-1 * $turns_change);
         } elseif ($item->hasEffect('speed')) {
             $item->setTurnChange($item->getMaxTurnChange());
             $turns_change = $item->getTurnChange();
@@ -396,7 +396,7 @@ class InventoryController extends AbstractController {
             }
 
             $notice = " gain $turns_change turns.";
-            $target->setTurns($target->turns - min($target->turns, $turns_change));
+            $target->addTurns($turns_change);
         }
 
         if ($item->getTargetDamage() > 0) { // HP Altering
@@ -435,7 +435,6 @@ class InventoryController extends AbstractController {
 
         if ($item->hasEffect('death')) {
             $target->death();
-
             $message = "The life force drains from __TARGET__ and they drop dead before your eyes!";
             $notice  = " be drained of your life-force and die!";
         }

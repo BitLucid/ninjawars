@@ -600,11 +600,12 @@ h2 {
         sans-serif;
     font-weight: normal;
 }
+/** Very important main title on many pages **/
 h1,
 .player-info .player-name {
     background: #1d0f00;
     color: #ad6e40;
-    border-bottom: thick solid #800000;
+    border-bottom: thick solid #420404;
     padding-left: 0;
     padding-right: 0;
     font: 30px/34px 'Aclonica', 'edding-780-1', 'edding-780-2', Charcoal,
@@ -616,7 +617,7 @@ h1,
     text-shadow: black 2px 2px 3px;
 }
 h1 {
-    margin: 0 0 1rem;
+    margin: 0 0 2.5rem;
 }
 .player-info .player-name {
     min-height: 4.5rem;
@@ -1312,7 +1313,7 @@ td.playerTable {
 }
 .novice {
     /* Level categories */
-    color: black;
+    color: white;
     background-color: rgb(238, 238, 238, 0.4);
 }
 .acolyte {
@@ -1872,7 +1873,7 @@ a#skip-to-bottom {
     min-height: 3%;
     width: 100%;
     opacity: 0.96;
-    border-top: 1px solid #666;
+    border-top: 1px solid #444343;
     font-family: 'Open Sans', sans-serif;
 }
 
@@ -1935,12 +1936,14 @@ a#skip-to-bottom {
 }
 
 #footer-authors {
-    display: block;
     min-height: 3.5em;
     list-style-type: none;
+    display: flex;
+    justify-content: space-evenly;
 }
 #footer-authors .author {
     display: inline-block;
+    text-align:left;
     width: 300px;
     min-height: 80px;
     margin-left: 10%;
@@ -3190,8 +3193,9 @@ select option #blue-class-select {
 .return-to-location {
     display: block;
     font-size: 1.3rem;
-    margin-top: 1.5rem;
-    margin-left: 1rem;
+    padding-top: 1.5rem;
+    padding-left: 1rem;
+    font-size:larger;
 }
 .return-to-location,
 .player-ranking-linkback {
@@ -3282,6 +3286,10 @@ select option #blue-class-select {
     display: inline-block;
     z-index: -1;
     vertical-align: top;
+}
+
+#nw-catchphrases {
+    display:inline-block;
 }
 
 #nw-catchphrases span {
@@ -4778,6 +4786,11 @@ input[type='button'].btn-block {
     #index-footer {
         margin-top: 4em;
     }
+
+    #nw-catchphrases {
+        display:block;
+    }
+    
     #main-column {
         width: 100%;
         left: 0;

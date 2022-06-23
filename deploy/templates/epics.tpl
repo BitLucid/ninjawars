@@ -45,6 +45,7 @@
                 <a class='btn btn-info' href='#events-section'>Events</a>
                 <a class='btn btn-info' href='#single-event-section'>Single Event</a>
                 <a class='btn btn-info' href='#dojo-section'>Dojo</a>
+<a class='btn btn-info' href='#dojo-scroll-section'>Dojo.Scroll</a>
                 <a class='btn btn-info' href='#shop-section'>Shop</a>
                 <a class='btn btn-info' href='#shop-items-section'>Shop.Items</a>
                 <a class='btn btn-info' href='#shop-buy-section'>Shop.Buy</a>
@@ -54,6 +55,7 @@
                 <a class='btn btn-info' href='#list-section'>List</a>
                 <a class='btn btn-info' href='#field-section'>Field</a>
                 <a class='btn btn-info' href='#wip-fight-section'>WIP Fight</a>
+                <a class='btn btn-info' href='#footer'>Footer</a>
                 <a class='btn btn-info' href='#ninjamaster-section'>Ninjamaster</a>
             </div>
         </nav>
@@ -252,6 +254,12 @@
             {include file="dojo.tpl"}
         </section>
 
+        <section id='dojo-scroll-section'>
+            <h2>Dojo Scroll</h2>
+            {assign var="player" value=$char}
+            {assign var="error" value="Some error string for dojo"}
+            {include file="dojo.scroll.tpl"}
+</section>
         <section id='map-section'>
             <h2>Map</h2>
             {* Nodes assigned in controller *}
@@ -270,6 +278,7 @@
             <h2>List</h2>
             {*  include file="list.tpl" *}
         </section>
+
         <section id='field-section'>
             <h2>Field</h2>
             {assign var="work_multiplier" value="10"}
@@ -280,6 +289,12 @@
             {assign var="recommended_to_work" value="6"}
             {include file="work.tpl"}
         </section>
+
+        <section id='footer'>
+            <h2>Footer</h2>
+            {include file="footer.tpl"}
+        </section>
+
         <section id='ninjamaster-section'>
             <h2>Ninjamaster</h2>
             {* {include file="ninjamaster.tpl"} *}
