@@ -23,7 +23,7 @@ _(check box with an x where it applies)_
 
 -   [ ] I attached a screenshot of the changed part of the app working
 -   [ ] I added tests
--   [ ] This feature is requested specifically by a player
+-   [ ] This feature is requested specifically by a user
 -   [ ] This will fix a bug
 
 ## _Preview results in my branch at the url:_

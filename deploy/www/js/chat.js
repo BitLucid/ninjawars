@@ -4,15 +4,21 @@
 /* global $, NW, Chat, jQuery, window.conn, window.parent, window.WebSocket, window.Chat */
 
 // eslint-disable-next-line no-var
-var logger = console || { log: () => { /* no-op */ } };
+var logger = window.logger || console || {
+  log: () => { /* noop */ },
+  error: () => { /* noop */ },
+  info: () => { /* noop */ },
+  warn: () => { /* noop */ },
+  dir: () => { /* noop */ },
+};
 
 // eslint-disable-next-line no-var
-var Chat = undefined !== window.Chat ? window.Chat : {};
+var Chat = window && typeof window.Chat !== 'undefined' ? window.Chat : {};
 
 (function jQueryShakePluginAttach($) {
   // Add shake plugin to jQuery
   // eslint-disable-next-line no-param-reassign
-  $.fn.shake = function (options) {
+  $.fn.shake = function fn7(options) {
     // defaults
     const settings = {
       shakes: 2,
@@ -28,7 +34,7 @@ var Chat = undefined !== window.Chat ? window.Chat : {};
     // make it so
     let pos;
 
-    return this.each(function () {
+    return this.each(function fn8() {
       const $this = $(this);
 
       // position if necessary
@@ -64,10 +70,13 @@ var Chat = undefined !== window.Chat ? window.Chat : {};
  * Run the chat server via: php bin/chat-server.php
 
  Create chat object.
- Initialize maximum mini-chat listings...  it should be a pretty damn high starting amount.
- store the chat data locally, don't even have to cache this, it should pretty much be a js var
- allow sending of the chat from the input
- Set up a min/max refreshing cycle, theoretically with a typewatch kind of approach.
+ Initialize maximum mini-chat listings...
+ it should be a pretty damn high starting amount.
+ store the chat data locally, don't even have to cache this,
+ it should pretty much be a js var
+ allow pushing over the wire of the chat from the input
+ Set up a min/max refreshing cycle, theoretically with a
+ typewatch kind of approach.
  Update the datastore with the latest chat info.
  Pass a chained callback using setTimeout
  Note that the Chat var may pre-exist
@@ -121,7 +130,6 @@ Chat.renderChatMessage = function (p_data) {
     return false;
   }
 
-  let area = null;
   const fullLink = `player.php?player_id=${p_data.sender_id}`;
   const list = $('#mini-chat-display'); // The outer container.
 
@@ -131,16 +139,11 @@ Chat.renderChatMessage = function (p_data) {
   const messageArea = list.find('.chat-message.template').clone();
   list.end();
 
-  if (!list.length) {
-    area = 'list';
-  } else if (!authorArea.length) {
-    area = 'authorArea';
-  } else if (!messageArea.length) {
-    area = 'messageArea';
-  }
+  const missingArea = (!list.length && 'list') || (!authorArea.length && 'authorArea') || (!messageArea.length && 'messageArea');
 
-  if (area) {
-    logger.error(`Chat ${area} not found to place chats in!`);
+  if (missingArea) {
+    logger.error(`Chat ${missingArea} not found to place chats in!`);
+    return false;
   }
 
   // put the new content into the author and message areas
@@ -180,6 +183,7 @@ Chat.sendChatContents = function fnChSendCont(p_form) {
         return success;
       },
     ).fail(() => {
+      logger.error('Error: Failed to send chat message.');
       Chat.rejected();
       return false;
     });
@@ -196,6 +200,7 @@ Chat.rejected = function fnCCR() {
 // Send a messageData object to the websockets chat
 Chat.send = function fnCCS(messageData) {
   if (!Chat.canSend()) {
+    logger.warn('Warn: Cannot send chat message.');
     return false;
   }
   let passfail = true;
@@ -204,7 +209,7 @@ Chat.send = function fnCCS(messageData) {
     logger.info('Chat message sent.');
   } catch (ex) {
     // Maybe the connection send didn't work out.
-    logger.error('Error with chat connection:', ex && ex.message);
+    logger.warn(`Chat connection failed with: ${ex.message}`);
     passfail = false;
   }
 
@@ -229,6 +234,10 @@ Chat.showSubmissionArea = function fnCSH() {
 // Once the chat is ready, initialize the ability to actually send chats.
 Chat.chatReady = function fnCCR() {
   Chat.displayMessages(); // Will display the whole messages area.
+  const $submitter = Chat.submissionArea();
+  if (!$submitter.length) {
+    logger.error('Error: Chat submission area not found. Continung to try operations, however.');
+  }
 
   if (Chat.canSend()) {
     Chat.showSubmissionArea();

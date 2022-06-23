@@ -124,7 +124,7 @@ browse:
 all: build test-unit db python-build test
 
 test-one:
-	$(TEST_RUNNER) $(CC_FLAG) $(TESTFILE)
+	./vendor/bin/phpunit-watcher watch $(TESTFILE)
 
 test-one-no-watch:
 	php ./vendor/bin/phpunit $(TESTFILE)
@@ -293,4 +293,4 @@ python-install:
 
 ci: ci-pre-configure build python-install test-unit db-init db-init-roles db-init-grants db db-fixtures
 
-ci-test: pre-test test-main test-cron-run test-ratchets post-test
+ci-test: pre-test test-cron-run test-main test-cron-run test-ratchets post-test

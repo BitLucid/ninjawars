@@ -3,6 +3,7 @@ namespace NinjaWars\core\data;
 
 use NinjaWars\core\data\DatabaseConnection;
 use NinjaWars\core\Filter;
+use NinjaWars\core\data\Player;
 use \PDO;
 
 /**
@@ -62,7 +63,8 @@ class Account {
      * @param int $account_id
      * @return Account|null
      */
-    public static function findById($account_id) {
+    public static function findById($account_id): ?Account
+    {
         $data = self::accountInfo($account_id);
 
         if (isset($data['account_identity']) && !empty($data['account_identity'])) {
@@ -78,7 +80,8 @@ class Account {
      * @param String $email_identity
      * @return Account|null
      */
-	public static function findByIdentity($email_identity) {
+    public static function findByIdentity($email_identity): ?Account
+    {
         $account_info = query_row(
             "select account_id from accounts where account_identity = :identity_email",
             [':identity_email'=>$email_identity]
@@ -95,7 +98,8 @@ class Account {
      * @todo oauth_id should probably be made a string to avoid overflow problems.
      * @return Account|null
      */
-	public static function findAccountByOauthId($oauth_id, $provider='facebook'){
+    public static function findAccountByOauthId($oauth_id, $provider = 'facebook'): ?Account
+    {
         $account_info = query_row(
             "SELECT account_id FROM accounts WHERE (oauth_id = :id AND oauth_provider = :provider) ORDER BY operational, type, created_date ASC LIMIT 1",
             [
@@ -117,13 +121,16 @@ class Account {
      * @param Character $char
      * @return Account|null
      */
-    public static function findByChar(Player $char) {
-        $query = 'SELECT account_id FROM accounts
-            JOIN account_players ON _account_id = account_id
-            JOIN players ON _player_id = player_id
-            WHERE players.player_id = :pid';
+    public static function findByChar(Player $char): ?Account
+    {
+        $query =
+            'SELECT account_id FROM accounts
+                    WHERE account_id = (
+                        select _account_id from account_players where _player_id = :pid
+                        )';
+        $id = query_item($query, [':pid' => $char->id()]);
 
-        return self::findById(query_item($query, [':pid' => $char->id()]));
+        return $id ? self::findById($id) : null;
     }
 
     /**
@@ -132,7 +139,8 @@ class Account {
      * @param String $email
      * @return Account|null
      */
-    public static function findByEmail($email) {
+    public static function findByEmail($email): ?Account
+    {
         $normalized_email = strtolower(trim($email));
 
         if ($normalized_email === '') {
@@ -150,7 +158,8 @@ class Account {
      * @param String $ninja_name
      * @return Account|null
      */
-    public static function findByNinjaName($ninja_name) {
+    public static function findByNinjaName($ninja_name): ?Account
+    {
         $query = 'SELECT account_id FROM accounts
             JOIN account_players ON account_id = _account_id
             JOIN players ON player_id = _player_id
@@ -163,7 +172,8 @@ class Account {
      * @param string $username
      * @return Account|null
      */
-    public static function findByLogin($username) {
+    public static function findByLogin($username): ?Account
+    {
         $query = 'SELECT account_id FROM accounts WHERE active_email = :login1
             UNION
             SELECT _account_id AS account_id FROM players
@@ -184,7 +194,8 @@ class Account {
      * @param int $account_id
      * @return Array
      */
-    public static function accountInfo($account_id) {
+    public static function accountInfo($account_id): array | bool
+    {
         return query_row(
             "SELECT *, date_part('epoch', now() - coalesce(last_login_failure, '1999-01-01')) AS login_failure_interval FROM accounts WHERE account_id = :account_id",
             [':account_id'=>[$account_id, PDO::PARAM_INT]]
@@ -195,7 +206,8 @@ class Account {
      * Create a new account
      * @return int|false
      */
-    public static function create($ninja_id, $email, $password_to_hash, $confirm, $type=0, $active=1, $ip=null) {
+    public static function create($ninja_id, $email, $password_to_hash, $confirm, $type = 0, $active = 1, $ip = null): int | false
+    {
         DatabaseConnection::getInstance();
 
         $newID = query_item("SELECT nextval('accounts_account_id_seq')");
@@ -238,32 +250,36 @@ class Account {
      * The array of account data as pulled from the database
      * @return array
      */
-    public function info() {
+    public function info(): array
+    {
         return $this->info;
     }
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getId() {
+    public function getId(): ?int
+    {
         return $this->account_id;
     }
 
     /**
      * Alias for getId()
      *
-     * @return int
+     * @return int|null
      */
-    public function id() {
+    public function id(): ?int
+    {
         return $this->getId();
     }
 
     /**
      * Simple wrapper function for getting email from accounts
      *
-     * @return String email of the account
+     * @return string email of the account
      */
-    public function email() {
+    public function email(): string
+    {
         return $this->getActiveEmail();
     }
 
@@ -272,14 +288,16 @@ class Account {
      * immutably fixed as the signup email
      * @return string
      */
-    public function getActiveEmail() {
+    public function getActiveEmail(): string
+    {
         return $this->active_email;
     }
 
     /**
      * Set new email to send to.
      */
-    public function setActiveEmail($p_email) {
+    public function setActiveEmail($p_email): void
+    {
         if (self::emailIsValid($p_email)) {
             $this->active_email     = $p_email;
             $this->account_identity = $p_email;
@@ -291,14 +309,16 @@ class Account {
     /**
      * @return string|null Time of last login
      */
-    public function getLastLogin() {
+    public function getLastLogin(): ?string
+    {
         return $this->info['last_login'];
     }
 
     /**
      * @return string|null Time of last failed login attempt
      */
-    public function getLastLoginFailure() {
+    public function getLastLoginFailure(): ?string
+    {
         return $this->info['last_login_failure'];
     }
 
@@ -308,21 +328,24 @@ class Account {
      * This should only ever increment upwards.
      * @return int
      */
-    public function getKarmaTotal() {
+    public function getKarmaTotal(): int
+    {
         return $this->info['karma_total'];
     }
 
     /**
      * @param int $p_amount
      */
-    public function setKarmaTotal($p_amount) {
+    public function setKarmaTotal($p_amount): void
+    {
         $this->info['karma_total'] = (int) $p_amount;
     }
 
     /**
      * @return string|null
      */
-    public function getLastIp() {
+    public function getLastIp(): ?string
+    {
         return $this->info['last_ip'];
     }
 
@@ -330,29 +353,33 @@ class Account {
      * Identity wrapper.
      * @return string The initial signup email is the identity, generally.
      */
-    public function identity() {
+    public function identity(): string
+    {
         return $this->getIdentity();
     }
 
     /**
      * @return string
      */
-    public function getIdentity() {
+    public function getIdentity(): string
+    {
         return $this->account_identity;
     }
 
     /**
      * Type, ostensibly used for "member" "admin" or other roles.
-     * @return integer
+     * @return int
      */
-    public function getType() {
+    public function getType(): int
+    {
         return $this->type;
     }
 
     /**
      * @param int $type
      */
-    public function setType($type) {
+    public function setType($type): int
+    {
         $cast_type = Filter::toNonNegativeInt($type);
 
         if ($cast_type != $type) {
@@ -367,8 +394,10 @@ class Account {
     /**
      * Numeric Id for a oauth login provider
      * facebook, google+, etc etc
+     * @param $id int|string|null Ids can be strings because of their length against the integer overflow limit
      */
-    public function setOauthId($id, $provider='facebook') {
+    public function setOauthId($id, $provider = 'facebook'): bool
+    {
         $this->oauth_id = $id;
         if($provider){
             $this->oauth_provider = $provider;
@@ -377,24 +406,29 @@ class Account {
     }
 
     /**
-     * @return int
+     * @return int|string|null
+     * Getting ids per provider not implemented yet.
      */
-    public function getOauthId($provider='facebook') {
+    public function getOauthId($provider = 'facebook'): int|string|null
+    {
         return $this->oauth_id;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getOauthProvider() {
+    public function getOauthProvider(): ?string
+    {
         return $this->oauth_provider;
     }
 
     /**
      * @param string $provider
      */
-    public function setOauthProvider($provider) {
-        return ($this->oauth_provider = $provider);
+    public function setOauthProvider($provider): string
+    {
+        $this->oauth_provider = $provider;
+        return $this->oauth_provider;
     }
 
     /**
@@ -402,21 +436,24 @@ class Account {
      *
      * @return boolean
      */
-    public function isOperational() {
+    public function isOperational(): bool
+    {
         return ($this->operational === true);
     }
 
     /**
      * @return void
      */
-    public function setOperational($p_operational) {
+    public function setOperational($p_operational): void
+    {
         $this->operational = (bool) $p_operational;
     }
 
     /**
      * Check whether an account is confirmed.
      */
-    public function isConfirmed() {
+    public function isConfirmed(): bool
+    {
         return ($this->confirmed === 1);
     }
 
@@ -426,7 +463,8 @@ class Account {
      * @param string $new_password
      * @return int Number of rows updated
      */
-    public function changePassword($new_password) {
+    public function changePassword($new_password): int
+    {
         $query = "UPDATE accounts SET phash = crypt(:password, gen_salt('bf', 10)) WHERE account_id = :account_id";
 
         return update_query(
@@ -441,7 +479,8 @@ class Account {
     /**
      * A partial save of account information.
      */
-    public function save() {
+    public function save(): int
+    {
         $params = [
             ':identity'       => $this->getIdentity(),
             ':active_email'   => $this->getActiveEmail(),
@@ -465,16 +504,18 @@ class Account {
     /**
      * Update the time of last failed login.
      */
-    public static function updateLastLoginFailure(Account $account) {
+    public static function updateLastLoginFailure(Account $account): int
+    {
         $update = "UPDATE accounts SET last_login_failure = now() WHERE account_id = :account_id";
-        return query($update, [':account_id' => [$account->id(), PDO::PARAM_INT]]);
+        return update_query($update, [':account_id' => [$account->id(), PDO::PARAM_INT]]);
     }
 
     /**
      * Very rough check that am email is approximately correct & allowable
      * It should be very non-strict overall.
      */
-    public static function emailIsValid($p_email) {
+    public static function emailIsValid($p_email): bool
+    {
         return preg_match("/^[a-z0-9!#$%&'*+?^_`{|}~=\.-]+@[a-z0-9.-]+\.[a-z]+$/i", $p_email);
     }
 
@@ -490,7 +531,8 @@ class Account {
      *
      * @return string|boolean
      */
-    public static function usernameIsValid($username) {
+    public static function usernameIsValid($username): string | bool
+    {
         $error = false;
         $username = (string) $username;
 
@@ -540,7 +582,8 @@ class Account {
      * @note that this does not check for operational or confirmed.
      * @return boolean
      */
-    public function authenticate($password) {
+    public function authenticate($password): bool
+    {
 		$sql = "SELECT account_id,
 		    CASE WHEN phash = crypt(:pass, phash) THEN 1 ELSE 0 END AS authenticated
 			FROM accounts
@@ -558,7 +601,8 @@ class Account {
      * Get the Ninjas belonging to an account
      * @return Player[] The ninjas for the account
      */
-    public function getCharacters(){
+    public function getCharacters(): array
+    {
         $pcs = query(
             'select player_id from players p 
             join account_players ap on ap._player_id = p.player_id
@@ -572,5 +616,90 @@ class Account {
             $ninjas[$ninja->name()] = $ninja;
         }
         return $ninjas;
+    }
+
+    /**
+     * Deactivate an account by id
+     */
+    public static function deactivate(Account $account): int
+    {
+        $deactivated = update_query(
+            'UPDATE accounts SET operational = false WHERE account_id = :account_id',
+            [':account_id' => [$account->id(), PDO::PARAM_INT]]
+        );
+        return $deactivated;
+    }
+
+    /**
+     * Activate an account by id
+     */
+    public static function activate(Account $account): int
+    {
+        $activated = update_query(
+            'UPDATE accounts SET operational = true WHERE account_id = :account_id',
+            [':account_id' => [$account->id(), PDO::PARAM_INT]]
+        );
+        return $activated;
+    }
+
+    /** 
+     * Deactivate an account by it's player
+     */
+    public static function deactivateByCharacter(Player $char): int
+    {
+        $deactivated = update_query(
+            'UPDATE accounts
+            SET operational = false
+            WHERE account_id = (
+                SELECT ap._account_id
+                FROM account_players ap
+                WHERE ap._player_id = :player_id
+            )',
+            [':player_id' => [$char->id(), PDO::PARAM_INT]]
+        );
+        return $deactivated;
+    }
+
+    /** 
+     * Reactivate an account by it's player
+     */
+    public static function reactivateByCharacter(Player $char): int
+    {
+        $reactivated = update_query(
+            'UPDATE accounts
+            SET operational = true WHERE account_id = (
+                select ap._account_id from account_players ap where ap._player_id = :player_id
+            )',
+            [':player_id' => [$char->id(), PDO::PARAM_INT]]
+        );
+        return $reactivated;
+    }
+
+    /**
+     * Deactivate a single player character
+     */
+    public static function deactivateSingleCharacter(Player $char): int
+    {
+        return query_item(
+            'UPDATE players SET active = :status WHERE player_id = :id',
+            [
+                ':status' => 0,
+                ':id' => $char->id()
+            ]
+        );
+    }
+
+    /**
+     * Activate a single player character
+     */
+    public static function reactivateSingleCharacter(Player $char): int
+    {
+        return query_item(
+            'UPDATE players SET active = :status WHERE player_id = :id',
+            [
+                ':status' => 1,
+                ':id' => $char->id()
+            ]
+        );
     }
 }
