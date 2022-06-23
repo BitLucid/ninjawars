@@ -10,6 +10,10 @@ use Symfony\Component\HttpFoundation\Request;
 class NWTest extends \PHPUnit\Framework\TestCase {
     protected $m_dependencies;
 
+    public static function setUpBeforeClass(): void
+    {
+    }
+
     /**
      */
     public function setUp(): void {

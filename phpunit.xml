@@ -2,6 +2,7 @@
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" bootstrap="deploy/tests/bootstrap.php" colors="true" convertNoticesToExceptions="true" convertWarningsToExceptions="true" convertErrorsToExceptions="true" stopOnError="false" stopOnFailure="false" stopOnIncomplete="false" stopOnSkipped="false" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd">
   <coverage processUncoveredFiles="true">
     <include>
+      <file>deploy/tests/integration/DeityTest.php</file>
       <directory suffix=".php">deploy/</directory>
     </include>
     <exclude>
@@ -25,6 +26,7 @@
       <directory suffix=".php">deploy/tests/unit</directory>
     </testsuite>
     <testsuite name="Integration">
+      <file>deploy/tests/integration/DeityTest.php</file>
       <directory suffix=".php">deploy/tests/integration</directory>
     </testsuite>
     <testsuite name="Quick">

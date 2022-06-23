@@ -6,11 +6,15 @@
 function debug($val) {
     if (DEBUG) {
     	$vals = func_get_args();
+		echo "
+		<pre class='debug' style='font-size:12pt;background-color:white;color:black;position:relative;z-index:10'>
+		";
 		foreach ($vals as $fval) {
-		    echo "<pre class='debug' style='font-size:12pt;background-color:white;color:black;position:relative;z-index:10'>";
 			var_dump($fval);
-		    echo "</pre>";
         }
+		echo "
+		</pre>
+		";
     }
 }
 
