@@ -64,14 +64,14 @@ article#fight nav{
 	<section class='npc-fight'>
 	{if $image_path}
 		<figure class='npc-avatar'>
-		  <img src='{cachebust file=$image_path}' alt='A {$race}'>
+		  <img src='{cachebust file=$image_path}' alt='A {$race}' title='A {$race}'>
 		</figure>
 	{/if}
 
 	{if isset($npc_stats.short) && $npc_stats.short}
 	<p>The {$display_name|escape} {$npc_stats.short}.</p>
 	{/if}
-	{if $is_quick}
+	{if $is_quick or $npco->hasTrait('defender')}
 	The {$race|escape} sees you and prepares to defend!
 	{/if}
 	{if $is_stronger}
@@ -119,7 +119,7 @@ article#fight nav{
 				{if $is_stronger}
 				<p class='you-escape'>You are unable to kill the {$display_name|escape}, so you escape instead!</p>
 				{else}
-				 <p>&nbsp;</p>
+				 <p>You fight to a standstill and neither wins.</p>
 				{/if}
 			{/if}
 
