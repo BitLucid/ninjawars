@@ -99,3 +99,5 @@ karma.conf.js
 .phpunit.result.cache
 deploy/www/index.html
 deploy/www/intro.html
+deploy/www/login.html
+deploy/www/signup.html
