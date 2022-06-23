@@ -56,7 +56,7 @@ earned 石{$earned_gold}.</p>
         Current turns: <span class='turns-count'>{($char)? $char->turns : ''}</span>
     </p>
 {else}
-<p>
+<p class='slide-in-from-left'>
 To earn pay for your work you must first <a href="/signup">become a citizen of this village.</a>
 </p>
 {/if}
