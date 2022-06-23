@@ -102,7 +102,7 @@
   <a name="gameplay" class="question">How does the game play ?</a>
 
   <p class="answer">
-    To play the game, you create an account and then log in. Once logged in you will be able to do a number of things by clicking links: attack other ninja (from the "ninjas" list, you click on their name and then click "attack"), attack npcs (click "combat" and then click "Theif" to attack a theif, for example), gamble your money away at the casino, or come back from the dead at the monk's shrine.
+    To play the game, you create an account and then log in. Once logged in you will be able to do a number of things by clicking links: attack other ninja (from the "ninjas" list, you click on their name and then click "attack"), attack npcs (click "combat" and then click "Thief" to attack a thief, for example), gamble your money away at the casino, or come back from the dead at the monk's shrine.
   </p>
 
   <a href="/about">Return to Contents</a>

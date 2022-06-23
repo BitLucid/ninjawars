@@ -111,7 +111,7 @@ class NpcUnitTest extends NWTest {
         if (!(defined('DEBUG') && DEBUG)) {
             $this->markTestSkipped();
         } else {
-            $humans = array('peasant2', /*'theif2', */'guard2', 'merchant2');
+            $humans = array('peasant2', /*'thief2', */ 'guard2', 'merchant2');
             foreach($humans as $human){
                 $this->assertEquals('human', (new Npc($human))->race());
             }
@@ -198,7 +198,7 @@ class NpcUnitTest extends NWTest {
          * it should have zero reward gold
          * it should sometimes be able to steal the equivalent of it's reward gold
          * it should always give a shuriken as long as it was "killed"
-         * also adds to the theif counter based on being in a gang, and thus has a chance
+         * also adds to the thief counter based on being in a gang, and thus has a chance
          * for the gang to enact retribution (though this won't be tested in unit behavior)
          */
         $thief2 = new Npc('thief2');

@@ -130,7 +130,7 @@ NpcFactory::$data = [
         ],
     ],
     'thief2'          => [
-        'name'      => 'Theif',
+        'name'      => 'Thief',
         'strength'  => 17,
         'stamina'   => 10,
         'speed'     => 10,
