@@ -47,7 +47,9 @@ build: dep
 	@ln -sf "$(RELATIVE_VENDOR)twbs/bootstrap/dist/js/bootstrap.min.js" "$(JS)"
 	php deploy/www/intro-controller.php > deploy/www/intro.html
 	php deploy/www/front-controller.php > deploy/www/index.html
-	@echo "Built front controller to static deploy/www/index.html file and deploy/www/intro.html file"
+	php deploy/www/login-controller.php > deploy/www/login.html
+	php deploy/www/signup-controller.php > deploy/www/signup.html
+	@echo "Built front controller to static deploy/www/index.html file, as well as intro.html, login.html, and signup.html"
 
 dep:
 	@$(COMPOSER) install
