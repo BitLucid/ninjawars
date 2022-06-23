@@ -18,7 +18,8 @@ class SmartyPluginUnitTest extends \PHPUnit\Framework\TestCase {
 
     public function testCachebustPositive() {
         $result = smarty_function_cachebust(['file' => self::EXISTING_FILE]);
-        $this->assertContains(self::EXISTING_FILE, $result);
+        $this->assertNotEmpty($result);
+        $this->assertStringContainsString(self::EXISTING_FILE, $result);
     }
 
     public function testCachebustNegative() {
