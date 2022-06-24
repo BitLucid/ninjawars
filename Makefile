@@ -38,6 +38,7 @@ build: dep
 	@ln -sf "$(RELATIVE_COMPONENTS)jquery-linkify/jquery.linkify.js" "$(JS)"
 	@ln -sf "$(RELATIVE_VENDOR)twbs/bootstrap/dist/css/bootstrap.min.css" "$(CSS)"
 	@ln -sf "$(RELATIVE_VENDOR)twbs/bootstrap/dist/js/bootstrap.min.js" "$(JS)"
+	make check-base
 	php deploy/www/intro-controller.php > deploy/www/intro.html
 	php deploy/www/front-controller.php > deploy/www/index.html
 	@echo "Built front controller to static deploy/www/index.html file and deploy/www/intro.html file"
@@ -52,6 +53,9 @@ dep:
 
 
 check: pre-test
+
+check-base:
+	php deploy/checkbase.php
 
 js-deps:
 	node -v
