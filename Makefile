@@ -44,6 +44,7 @@ build: dep
 	@ln -sf "$(RELATIVE_COMPONENTS)jquery-linkify/jquery.linkify.js" "$(JS)"
 	@ln -sf "$(RELATIVE_VENDOR)twbs/bootstrap/dist/css/bootstrap.min.css" "$(CSS)"
 	@ln -sf "$(RELATIVE_VENDOR)twbs/bootstrap/dist/js/bootstrap.min.js" "$(JS)"
+	make check-base
 	php deploy/www/intro-controller.php > deploy/www/intro.html
 	php deploy/www/front-controller.php > deploy/www/index.html
 	php deploy/www/login-controller.php > deploy/www/login.html
@@ -56,6 +57,9 @@ dep:
 
 
 check: pre-test
+
+check-base:
+	php deploy/checkbase.php
 
 js-deps:
 	node -v
