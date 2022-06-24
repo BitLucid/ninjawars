@@ -1,6 +1,8 @@
 <?php
 
+use NinjaWars\core\data\Deity;
 use NinjaWars\core\data\Enemies;
+use NinjaWars\core\data\GameLog;
 use NinjaWars\core\data\Player;
 
 class EnemiesTest extends NWTest
@@ -8,6 +10,19 @@ class EnemiesTest extends NWTest
     var $char;
     var $char_id;
     var $char_id_2;
+
+    public static function setUpBeforeClass(): void
+    {
+        $logger = new GameLog();
+        // rerank the deity rankings list
+        $deity = new Deity($logger);
+        $deity->rerank();
+    }
+
+    /*public static function tearDownAfterClass()
+    {
+        // No known appropriate way to tear down the ranking view
+    }*/
 
     public function setUp(): void
     {
@@ -77,5 +92,19 @@ class EnemiesTest extends NWTest
     public function testSearchEnemiesCanFindActive()
     {
         $this->assertEquals(1, count(Enemies::search($this->char, Player::find($this->char_id_2)->name())));
+    }
+
+    public function testNextTarget()
+    {
+        $target = Enemies::nextTarget($this->char, 0);
+        $this->assertNotEmpty($target, 'nextTarget found no target');
+        $this->assertGreaterThan(0, $target->id());
+    }
+
+    public function testNextTargetById()
+    {
+        $target = Enemies::nextTargetById($this->char->id(), 0);
+        $this->assertNotEmpty($target, 'nextTargetById found no target');
+        $this->assertGreaterThan(0, $target->id());
     }
 }
