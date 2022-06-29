@@ -3,6 +3,7 @@
 /**
  * Handle the behavior of setting up the game state after login, as well as checking for trimmed username, etc
  */
+
 namespace NinjaWars\core\control;
 
 use Pimple\Container;
@@ -13,14 +14,15 @@ use NinjaWars\core\environment\RequestWrapper;
 use NinjaWars\core\extensions\SessionFactory;
 use NinjaWars\core\extensions\StreamedViewResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use \Constants;
-use \PDO;
+use Constants;
+use PDO;
 
 /**
  */
-class LoginController extends AbstractController {
-    const ALIVE = false;
-    const PRIV  = false;
+class LoginController extends AbstractController
+{
+    public const ALIVE = false;
+    public const PRIV  = false;
 
     /**
      * Try to perform a login
@@ -78,7 +80,8 @@ class LoginController extends AbstractController {
      * Render the concrete elements of the response
      * @return StreamedViewResponse
      */
-    private function render($title, $parts) {
+    private function render($title, $parts)
+    {
         return new StreamedViewResponse($title, 'login.tpl', $parts, ['body_classes'=>'login-page']);
     }
 

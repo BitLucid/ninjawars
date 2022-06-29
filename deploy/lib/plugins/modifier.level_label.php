@@ -1,5 +1,7 @@
 <?php
-function smarty_modifier_level_label($p_level) {
+
+function smarty_modifier_level_label($p_level)
+{
     $level_labels = [
         [0, 'Novice'],
         [2, 'Acolyte'],
@@ -10,7 +12,7 @@ function smarty_modifier_level_label($p_level) {
 
     $label = current($level_labels);
 
-    foreach ($level_labels AS $level_label) {
+    foreach ($level_labels as $level_label) {
         if ($p_level > $level_label[0]) {
             $label = $level_label[1];
         } else {

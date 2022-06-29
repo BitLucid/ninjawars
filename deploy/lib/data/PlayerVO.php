@@ -1,4 +1,5 @@
 <?php
+
 namespace NinjaWars\core\data;
 
 use NinjaWars\core\data\ValueObject;
@@ -9,7 +10,8 @@ use NinjaWars\core\data\ValueObject;
  * Essentially this acts as the container for the model's data.
  * @var database_fields
  */
-class PlayerVO extends ValueObject {
+class PlayerVO extends ValueObject
+{
     public $player_id;
     public $uname;
     public $health;

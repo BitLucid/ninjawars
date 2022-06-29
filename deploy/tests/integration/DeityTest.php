@@ -5,7 +5,6 @@ use NinjaWars\core\data\GameLog;
 
 class DeityTest extends NWTest
 {
-
     public function setUp(): void
     {
         parent::setUp();

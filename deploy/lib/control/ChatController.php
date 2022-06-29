@@ -1,4 +1,5 @@
 <?php
+
 namespace NinjaWars\core\control;
 
 use NinjaWars\core\control\AbstractController;
@@ -12,20 +13,22 @@ use NinjaWars\core\environment\RequestWrapper;
 /**
  * The controller for effects of a village request and the default index display of the page
  */
-class ChatController extends AbstractController {
-    const ALIVE         = false;
-    const PRIV          = false;
-    const DEFAULT_LIMIT = 200;
-    const FIELD_SIZE    = 40;
-    const MAX_CHATS     = 3000;
-    const MIN_CHATS     = 30;
+class ChatController extends AbstractController
+{
+    public const ALIVE         = false;
+    public const PRIV          = false;
+    public const DEFAULT_LIMIT = 200;
+    public const FIELD_SIZE    = 40;
+    public const MAX_CHATS     = 3000;
+    public const MIN_CHATS     = 30;
 
     /**
      * Take in a chat and record it to the database.
      *
      * @return Response
      */
-    public function receive() {
+    public function receive()
+    {
         $char_id = SessionFactory::getSession()->get('player_id');
         $message = RequestWrapper::getPostOrGet('message');
         $error   = null;
@@ -38,7 +41,7 @@ class ChatController extends AbstractController {
             }
         }
 
-		return new RedirectResponse('/village/'.($error? '?error='.rawurlencode($error) : ''));
+        return new RedirectResponse('/village/'.($error ? '?error='.rawurlencode($error) : ''));
     }
 
     /**
@@ -46,7 +49,8 @@ class ChatController extends AbstractController {
      *
      * @return Response
      */
-    public function index() {
+    public function index()
+    {
         $request    = RequestWrapper::$request;
         $view_all   = $request->get('view_all');
         $chatlength = max(self::DEFAULT_LIMIT, (int) $request->get('chatlength'));
@@ -68,14 +72,16 @@ class ChatController extends AbstractController {
     /**
      * @return Response
      */
-    private function render($parts) {
-        return new StreamedViewResponse('Chat Board',  'village.tpl', $parts, [ 'quickstat' => false ]);
+    private function render($parts)
+    {
+        return new StreamedViewResponse('Chat Board', 'village.tpl', $parts, [ 'quickstat' => false ]);
     }
 
     /**
      * Get all the chat messages info.
      */
-    private function getChats($chatlength=null) {
+    private function getChats($chatlength=null)
+    {
         $chatlength = Filter::toNonNegativeInt($chatlength); // Prevent negatives.
         $limit = ($chatlength ? 'LIMIT :limit' : '');
 
@@ -96,7 +102,8 @@ class ChatController extends AbstractController {
      *
      * @return int
      */
-    private function getChatCount() {
+    private function getChatCount()
+    {
         return query_item("SELECT count(*) FROM chat");
     }
 }

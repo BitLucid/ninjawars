@@ -1,4 +1,5 @@
 <?php
+
 namespace NinjaWars\core\control;
 
 use Pimple\Container;
@@ -15,27 +16,30 @@ use NinjaWars\core\extensions\StreamedViewResponse;
 use NinjaWars\core\environment\RequestWrapper;
 use NinjaWars\core\extensions\NWLogger;
 use NWError;
-use \PDO;
+use PDO;
 
 /**
  * Display ninja & monsters to potentially pick fights with
  */
-class ConsiderController extends AbstractController {
-    const ALIVE       = false;
-    const PRIV        = false;
-    const ENEMY_LIMIT = 20;
+class ConsiderController extends AbstractController
+{
+    public const ALIVE       = false;
+    public const PRIV        = false;
+    public const ENEMY_LIMIT = 20;
 
     /**
      * Show the intial consider page
      */
-    public function index(Container $p_dependencies): StreamedViewResponse {
+    public function index(Container $p_dependencies): StreamedViewResponse
+    {
         return $this->render($this->configure());
     }
 
     /**
      * Search for enemies to remember.
      */
-    public function search(Container $p_dependencies): StreamedViewResponse {
+    public function search(Container $p_dependencies): StreamedViewResponse
+    {
         $enemy_match = RequestWrapper::getPostOrGet('enemy_match');
         $current_player = $p_dependencies['current_player'];
         $found_enemies = ($enemy_match && $current_player ? Enemies::search($current_player, $enemy_match) : []);
@@ -53,7 +57,8 @@ class ConsiderController extends AbstractController {
     /**
      * Display just the next ninja to attack
      */
-    public function nextEnemy(Container $p_dependencies): StreamedViewResponse {
+    public function nextEnemy(Container $p_dependencies): StreamedViewResponse
+    {
         $char             = Player::find(SessionFactory::getSession()->get('player_id'));
         $shift = max(0, min(300, (int) RequestWrapper::get('shift')));
         $char_info        = ($char ? $char->data() : []);
@@ -65,10 +70,10 @@ class ConsiderController extends AbstractController {
         $skillDAO = new SkillDAO();
 
         // Set up combat and single-use skills
-        if(!$char){
+        if (!$char) {
             $combat_skills = null;
             $targeted_skills = null;
-        }elseif (!$char->isAdmin()) {
+        } elseif (!$char->isAdmin()) {
             // PCs get what is appropriate for their class
             $combat_skills   = $skillDAO->getSkillsByTypeAndClass($char->_class_id, 'combat', $char->level);
             $targeted_skills = $skillDAO->getSkillsByTypeAndClass($char->_class_id, 'targeted', $char->level);
@@ -77,7 +82,7 @@ class ConsiderController extends AbstractController {
             $combat_skills   = $skillDAO->all('combat');
             $targeted_skills = $skillDAO->all('targeted');
         }
-        if($combat_skills instanceof \PDOStatement){
+        if ($combat_skills instanceof \PDOStatement) {
             // Unwrap combat skills
             $combat_skills = $combat_skills->fetchAll(\PDO::FETCH_ASSOC);
         }
@@ -100,7 +105,8 @@ class ConsiderController extends AbstractController {
     /**
      * Add an enemy to pc's list if valid.
      */
-    public function addEnemy(Container $p_dependencies): RedirectResponse {
+    public function addEnemy(Container $p_dependencies): RedirectResponse
+    {
         $enemy_id = (int) RequestWrapper::getPostOrGet('add_enemy');
         if ($enemy_id) {
             Enemies::add($p_dependencies['current_player'], $enemy_id);
@@ -113,7 +119,8 @@ class ConsiderController extends AbstractController {
     /**
      * Take an enemy off a pc's list.
      */
-    public function deleteEnemy(Container $p_dependencies): RedirectResponse {
+    public function deleteEnemy(Container $p_dependencies): RedirectResponse
+    {
         Enemies::remove($p_dependencies['current_player'], RequestWrapper::getPostOrGet('remove_enemy'));
         return new RedirectResponse('/enemies');
     }
@@ -121,7 +128,8 @@ class ConsiderController extends AbstractController {
     /**
      * Bring together all the parts for the main display
      */
-    private function configure(): array {
+    private function configure(): array
+    {
         $shift = max(0, min(300, (int) RequestWrapper::get('shift')));
         $char             = Player::find(SessionFactory::getSession()->get('player_id'));
         $peers            = ($char ? $this->getNearbyPeers($char->id()) : []);
@@ -147,7 +155,7 @@ class ConsiderController extends AbstractController {
             $combat_skills   = $skillDAO->all('combat');
             $targeted_skills = $skillDAO->all('targeted');
         }
-        if($combat_skills instanceof \PDOStatement){
+        if ($combat_skills instanceof \PDOStatement) {
             // Unwrap combat skills
             $combat_skills = $combat_skills->fetchAll(\PDO::FETCH_ASSOC);
         }
@@ -175,7 +183,8 @@ class ConsiderController extends AbstractController {
     /**
      * Render the parts, since the template is always currently the same.
      */
-    private function render(array $parts): StreamedViewResponse {
+    private function render(array $parts): StreamedViewResponse
+    {
         return new StreamedViewResponse('Fight', 'fight.tpl', $parts, ['quickstat' => false]);
     }
 
@@ -198,7 +207,8 @@ class ConsiderController extends AbstractController {
      * @param int $p_playerId
      * @return array
      */
-    private function getNearbyPeers(int $p_playerId): array {
+    private function getNearbyPeers(int $p_playerId): array
+    {
         $sel =
             "(SELECT rank_id, uname, level, player_id, health FROM players JOIN player_rank ON _player_id = player_id WHERE score >
             (SELECT score FROM player_rank WHERE _player_id = :char_id) AND active = 1 AND health > 0 ORDER BY score ASC LIMIT 5)
@@ -230,7 +240,8 @@ class ConsiderController extends AbstractController {
      * @param Player $char
      * @return Player
      */
-    private function getNextEnemy(Player $char, int $shift=0): ?Player {
+    private function getNextEnemy(Player $char, int $shift=0): ?Player
+    {
         $sel = '
             SELECT rank_id, uname, level, player_id, health FROM players JOIN player_rank ON _player_id = player_id 
             WHERE score < (SELECT score FROM player_rank WHERE _player_id = :char_id) 

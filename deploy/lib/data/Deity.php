@@ -1,29 +1,32 @@
 <?php
+
 namespace NinjaWars\core\data;
 
 use NinjaWars\core\data\DatabaseConnection;
 use NinjaWars\core\data\Event;
 use NinjaWars\core\data\Message;
 use NinjaWars\core\data\Player;
-use \PDO;
-use \debug;
+use PDO;
+use debug;
 
 /**
  * Functions for use in the deities.
  */
-class Deity {
-    const VICIOUS_KILLER_STAT = 4; // the ID of the vicious killer stat
-    const MIDNIGHT_HEAL_SKILL = 'midnightheal'; // the identity of the midnight heal skill
-    const LEVEL_REGEN_INCREASE = false;
-    const STAMINA_REGEN_INCREASE = true;
-    const LEVEL_REVIVE_INCREASE = false;
-    const STAMINA_REVIVE_INCREASE = true;
-    const DEFAULT_REGEN = 1;
-    const BASE_HEALTH = NEW_PLAYER_INITIAL_HEALTH; // e.g. a new, unmodified character, maybe 100 or 150 for dragon
+class Deity
+{
+    public const VICIOUS_KILLER_STAT = 4; // the ID of the vicious killer stat
+    public const MIDNIGHT_HEAL_SKILL = 'midnightheal'; // the identity of the midnight heal skill
+    public const LEVEL_REGEN_INCREASE = false;
+    public const STAMINA_REGEN_INCREASE = true;
+    public const LEVEL_REVIVE_INCREASE = false;
+    public const STAMINA_REVIVE_INCREASE = true;
+    public const DEFAULT_REGEN = 1;
+    public const BASE_HEALTH = NEW_PLAYER_INITIAL_HEALTH; // e.g. a new, unmodified character, maybe 100 or 150 for dragon
 
     public $logger;
 
-    public function __construct(GameLog $logger) {
+    public function __construct(GameLog $logger)
+    {
         $this->logger = $logger;
     }
 
@@ -31,7 +34,8 @@ class Deity {
      * Increase Ki for the recently active
      * Add 1 to player's ki when they've been active in the last few minutes.
      */
-    public function increaseKi(){
+    public function increaseKi()
+    {
         DatabaseConnection::getInstance();
         $s = DatabaseConnection::$pdo->prepare("update players set ki = ki + :regen_rate where last_started_attack > (now() - :regen_timeout::interval)");
         $s->bindValue(':regen_timeout', KI_REGEN_TIMEOUT);
@@ -45,7 +49,8 @@ class Deity {
      *
      * @return int Number of ranked players
      */
-    public function rerank(){
+    public function rerank()
+    {
         DatabaseConnection::getInstance();
         DatabaseConnection::$pdo->query('BEGIN TRANSACTION');
         DatabaseConnection::$pdo->query('TRUNCATE player_rank RESTART IDENTITY');
@@ -62,7 +67,8 @@ class Deity {
     /**
      * Zero any negative bounties
      */
-    public function fixBounties(){
+    public function fixBounties()
+    {
         DatabaseConnection::getInstance();
         DatabaseConnection::$pdo->query('BEGIN TRANSACTION');
         DatabaseConnection::$pdo->query("UPDATE players SET bounty = 0 WHERE bounty < 0"); // Prevent negative bounties
@@ -72,11 +78,12 @@ class Deity {
     /**
      * Increase turns by a tick
      */
-    public function computeTurns(){
+    public function computeTurns()
+    {
         DatabaseConnection::getInstance();
         DatabaseConnection::$pdo->query('BEGIN TRANSACTION');
         DatabaseConnection::$pdo->query("UPDATE players SET turns = 0 WHERE turns < 0");
-         // SPEED skill turn gain
+        // SPEED skill turn gain
         $s = DatabaseConnection::$pdo->prepare("UPDATE players SET turns = turns+1 FROM class_skill 
             JOIN skill ON skill_id = _skill_id 
             WHERE turns < :threshold AND _skill_id = 3 
@@ -95,7 +102,8 @@ class Deity {
     /**
      * Update the game time counter
      */
-    public function computeTime(){
+    public function computeTime()
+    {
         DatabaseConnection::getInstance();
         DatabaseConnection::$pdo->query("UPDATE time SET amount = amount+1 WHERE time_label = 'hours'"); // Update the hours ticker.
         DatabaseConnection::$pdo->query("UPDATE time SET amount = 0 WHERE time_label = 'hours' AND amount >= 24"); // Rollover the time to hour zero.
@@ -104,7 +112,8 @@ class Deity {
     /**
      * Unfreeze and unstealth characters
      */
-    public function computeStatuses(){
+    public function computeStatuses()
+    {
         DatabaseConnection::getInstance();
         assert(FROZEN != 'FROZEN'); // These constants should be ints
         assert(STEALTH != 'STEALTH');
@@ -124,7 +133,8 @@ class Deity {
      *
      * @return int|boolean
      */
-    public static function unconfirmOlderPlayersOverMinimums($keep_players=2300, $unconfirm_days_over=90, $max_to_unconfirm=30) {
+    public static function unconfirmOlderPlayersOverMinimums($keep_players=2300, $unconfirm_days_over=90, $max_to_unconfirm=30)
+    {
         $minimum_days = 30;
         $max_to_unconfirm = (is_numeric($max_to_unconfirm) ? $max_to_unconfirm : 30);
         DatabaseConnection::getInstance();
@@ -162,7 +172,8 @@ class Deity {
      *
      * @return int
      */
-    public function updateDays() {
+    public function updateDays()
+    {
         DatabaseConnection::getInstance();
         $players = DatabaseConnection::$pdo->query("UPDATE players SET days = days+1");
         return $players->rowCount();
@@ -174,20 +185,23 @@ class Deity {
      *
      * @return int
      */
-    public function pcsUpdate(){
+    public function pcsUpdate()
+    {
         DatabaseConnection::getInstance();
         self::updateDays();
-        $status_removal = DatabaseConnection::$pdo->query("UPDATE players SET status = 0");  
+        $status_removal = DatabaseConnection::$pdo->query("UPDATE players SET status = 0");
         // We may not want to wipe status nightly, some day
         return $status_removal->rowCount();
     }
 
-    public function truncateMessages() {
+    public function truncateMessages()
+    {
         self::shortenChat();
         Event::deleteOldEvents();
     }
 
-    public function rearrangeStats(){
+    public function rearrangeStats()
+    {
         $logger = $this->logger;
         if ($killer = $logger::findViciousKiller()) {
             $update = DatabaseConnection::$pdo->prepare('UPDATE past_stats SET stat_result = :viciousKiller WHERE id = :viciousKillerStat');
@@ -200,7 +214,8 @@ class Deity {
         DatabaseConnection::$pdo->query("delete from dueling_log where date < (now()- interval '3 days')");
     }
 
-    public function processUnconfirms(){
+    public function processUnconfirms()
+    {
         //Nightly Unconfirm of aged players
         $unconfirmed = self::unconfirmOlderPlayersOverMinimums(MIN_PLAYERS_FOR_UNCONFIRM, MIN_DAYS_FOR_UNCONFIRM, MAX_PLAYERS_TO_UNCONFIRM);
         assert($unconfirmed < MAX_PLAYERS_TO_UNCONFIRM+1);
@@ -210,10 +225,11 @@ class Deity {
 
     /**
      * Truncate the chat periodically
-     * 
+     *
      * @return int Number of chats removed
      */
-    public function shortenChat() {
+    public function shortenChat()
+    {
         return Message::shortenChat();
     }
 
@@ -229,7 +245,8 @@ class Deity {
      * @param int|null $basic      Per tick regen, usually about 3hp
      * @param bool     $with_extras whether regen increases stamina and other extras
      */
-    public function regenCharacters($basic, $with_extras=true){ // REGEN!
+    public function regenCharacters($basic, $with_extras=true)
+    { // REGEN!
         assert(POISON != 'POISON');
         $max_with_stamina = $with_extras ? ''.self::BASE_HEALTH.' +(players.stamina * '.Player::HEALTH_PER_STAMINA.')' : self::BASE_HEALTH;
         $add_with_stamina = $with_extras ? '+(players.stamina/50 * '.Player::HEALTH_PER_STAMINA.')' : '';
@@ -261,7 +278,8 @@ class Deity {
      * Get sums about all the active pcs, counts of dead/alive
      * @return array
      */
-    private static function pcsActiveDeadAlive() {
+    private static function pcsActiveDeadAlive()
+    {
         $pc_data = query_row(
             'select count(player_id) as active, 
                 sum(case when health < 1 then 1 else 0 end) as dead 
@@ -275,21 +293,23 @@ class Deity {
      * Get the game environment hour
      * @return int
      */
-    private static function gameHour() {
+    private static function gameHour()
+    {
         return query_item('select amount from time where time_label = \'hours\'');
     }
 
     /**
      * Revive x characters
      *
-     * Use the order by clause to determine who revives, by time, days and 
+     * Use the order by clause to determine who revives, by time, days and
      * then by level, using the limit set previously.
      *
      * Here is a runnable version:
      * select uname, player_id, level,floor(($major_revive_percent/100)*$total_active) days, resurrection_time from players where active = 1 AND health < 1 ORDER BY abs(8 - resurrection_time) asc, level desc, days asc
      * @return int
      */
-    private static function performNecromancy($revive_amount, $game_hour){
+    private static function performNecromancy($revive_amount, $game_hour)
+    {
         $stamina_add = self::STAMINA_REVIVE_INCREASE ? '+(players.stamina * '.Player::HEALTH_PER_STAMINA.')' : '';
         // Note: This is limited to only active and dead players already
         $up_revive_players= 'UPDATE players 
@@ -343,16 +363,17 @@ class Deity {
      * Defaults
      * sample_use: revive_players(30, 3));
      * @param array('minor_revive_to'=>100, 'major_revive_percent'=>5)
-     * @return mixed 
+     * @return mixed
      */
-    public function revivePlayers($set=array()) {
-        $minor_revive_to      = (isset($set['minor_revive_to']) ? $set['minor_revive_to'] : 100); 
+    public function revivePlayers($set=array())
+    {
+        $minor_revive_to      = (isset($set['minor_revive_to']) ? $set['minor_revive_to'] : 100);
         $major_revive_percent = (isset($set['major_revive_percent']) ? $set['major_revive_percent'] : 5);
         $major_hour           = 3; // Hour for the major revive.
 
         $pc_data = self::pcsActiveDeadAlive();
         assert($pc_data['active'] > 0);
-        
+
         // If none dead, return false.
         if ($pc_data['dead'] < 1) {
             return array(0, 0);

@@ -1,4 +1,5 @@
 <?php
+
 namespace NinjaWars\core\control;
 
 use Pimple\Container;
@@ -15,560 +16,575 @@ use NinjaWars\core\data\DatabaseConnection;
 /**
  * Controller for all actions involving clan
  */
-class ClanController extends AbstractController {
-	const CLAN_CREATOR_MIN_LEVEL = 20;
-	const ALIVE                  = false;
-	const PRIV                   = false;
+class ClanController extends AbstractController
+{
+    public const CLAN_CREATOR_MIN_LEVEL = 20;
+    public const ALIVE                  = false;
+    public const PRIV                   = false;
 
-	/**
-	 * View information about a clan
-	 *
-     * @param Container $p_dependencies 
-	 * @return Response
-	 * @note
-	 * If a clan_id is not specified, the clan of the current user will be used
-	 */
-	public function view(Container $p_dependencies) {
+    /**
+     * View information about a clan
+     *
+     * @param Container $p_dependencies
+     * @return Response
+     * @note
+     * If a clan_id is not specified, the clan of the current user will be used
+     */
+    public function view(Container $p_dependencies)
+    {
         $clanID = RequestWrapper::getPostOrGet('clan_id', null);
         $player = $p_dependencies['current_player'];
 
         if ($clanID === null && $player) {
             $clan = Clan::findByMember($player);
         } else {
-            $clan = $clanID? Clan::find($clanID) : null;
+            $clan = $clanID ? Clan::find($clanID) : null;
         }
 
-		if (isset($clan) && $clan instanceof Clan) {
-			$parts = [
-				'title'     => $clan->getName().' Clan',
-				'clan'      => $clan,
-				'pageSections' => [
-					'info',
-					'member-list',
-				],
-			];
-		} else {
-			$parts = [
-				'title'     => 'Clan Not Found',
-				'clans'     => Clan::rankings(),
-				'error'     => 'The clan you requested does not exist. Pick one from the list below',
-				'pageSections' => [
-					'list',
-				],
-			];
-		}
+        if (isset($clan) && $clan instanceof Clan) {
+            $parts = [
+                'title'     => $clan->getName().' Clan',
+                'clan'      => $clan,
+                'pageSections' => [
+                    'info',
+                    'member-list',
+                ],
+            ];
+        } else {
+            $parts = [
+                'title'     => 'Clan Not Found',
+                'clans'     => Clan::rankings(),
+                'error'     => 'The clan you requested does not exist. Pick one from the list below',
+                'pageSections' => [
+                    'list',
+                ],
+            ];
+        }
 
-		if ($player) {
-			$myClan = Clan::findByMember($player);
+        if ($player) {
+            $myClan = Clan::findByMember($player);
 
-			if ($myClan) {
-				if ($clan) {
-					if ($this->playerIsLeader($player, $clan)) {
-						array_unshift($parts['pageSections'], 'manage');
-					} elseif ($myClan->id === $clan->id) {
-						array_unshift($parts['pageSections'], 'non-leader-panel');
-					} else {
-						array_unshift($parts['pageSections'], 'reminder-member');
-					}
-				} else {
-					array_unshift($parts['pageSections'], 'reminder-member');
-				}
-			} else {
-				array_unshift($parts['pageSections'], 'join');
-				array_unshift($parts['pageSections'], 'reminder-no-clan');
-			}
-		}
+            if ($myClan) {
+                if ($clan) {
+                    if ($this->playerIsLeader($player, $clan)) {
+                        array_unshift($parts['pageSections'], 'manage');
+                    } elseif ($myClan->id === $clan->id) {
+                        array_unshift($parts['pageSections'], 'non-leader-panel');
+                    } else {
+                        array_unshift($parts['pageSections'], 'reminder-member');
+                    }
+                } else {
+                    array_unshift($parts['pageSections'], 'reminder-member');
+                }
+            } else {
+                array_unshift($parts['pageSections'], 'join');
+                array_unshift($parts['pageSections'], 'reminder-no-clan');
+            }
+        }
 
-		return $this->render($parts);
-	}
+        return $this->render($parts);
+    }
 
-	/**
-	 * Send an invitation to a character that will ask them to join your clan
-	 *
-     * @param Container $p_dependencies 
-	 * @return Response
-	 * @throws Exception You cannot use this function if you are not the leader of a clan
-	 */
-	public function invite(Container $p_dependencies) {
-		$player = $p_dependencies['current_player'];
-		$clan   = Clan::findByMember($player);
+    /**
+     * Send an invitation to a character that will ask them to join your clan
+     *
+     * @param Container $p_dependencies
+     * @return Response
+     * @throws Exception You cannot use this function if you are not the leader of a clan
+     */
+    public function invite(Container $p_dependencies)
+    {
+        $player = $p_dependencies['current_player'];
+        $clan   = Clan::findByMember($player);
 
-		if (!$clan || !$this->playerIsLeader($player, $clan)) {
-			throw new \RuntimeException('You must be a clan leader to invite new members');
-		}
+        if (!$clan || !$this->playerIsLeader($player, $clan)) {
+            throw new \RuntimeException('You must be a clan leader to invite new members');
+        }
 
-		$person_to_invite = Player::findByName(RequestWrapper::getPostOrGet('person_invited', ''));
+        $person_to_invite = Player::findByName(RequestWrapper::getPostOrGet('person_invited', ''));
 
-		$parts = [
-			'clan'      => $clan,
-			'title'     => 'Invite players to your clan',
-			'pageSections' => [
-				'edit',
-				'info',
-				'member-list',
-			],
-		];
+        $parts = [
+            'clan'      => $clan,
+            'title'     => 'Invite players to your clan',
+            'pageSections' => [
+                'edit',
+                'info',
+                'member-list',
+            ],
+        ];
 
-		if ($person_to_invite) {
-			$error = $clan->invite($person_to_invite, $player);
+        if ($person_to_invite) {
+            $error = $clan->invite($person_to_invite, $player);
 
-			if ($error === null) {
-				$parts['action_message'] = 'Invited '.$person_to_invite->name().' to your clan.';
-			} else {
-				$parts['error'] = $error;
-			}
-		} else {
-			$parts['error'] = 'Sorry, unable to find a ninja to invite by that name.';
-		}
+            if ($error === null) {
+                $parts['action_message'] = 'Invited '.$person_to_invite->name().' to your clan.';
+            } else {
+                $parts['error'] = $error;
+            }
+        } else {
+            $parts['error'] = 'Sorry, unable to find a ninja to invite by that name.';
+        }
 
-		return $this->render($parts);
-	}
+        return $this->render($parts);
+    }
 
-	/**
-	 * Removes the active player from the clan they are in
-	 *
-     * @param Container $p_dependencies 
-	 * @return Response
-	 * @throws Exception If you are the only leader of your clan, you cannot leave, you must disband
-	 */
-	public function leave(Container $p_dependencies) {
-		$player = $p_dependencies['current_player'];
-		$clan   = Clan::findByMember($player);
+    /**
+     * Removes the active player from the clan they are in
+     *
+     * @param Container $p_dependencies
+     * @return Response
+     * @throws Exception If you are the only leader of your clan, you cannot leave, you must disband
+     */
+    public function leave(Container $p_dependencies)
+    {
+        $player = $p_dependencies['current_player'];
+        $clan   = Clan::findByMember($player);
 
-		if ($this->playerIsLeader($player, $clan)) {
-			throw new \RuntimeException('You are the only leader of your clan. You must disband your clan if you wish to leave.');
-		}
+        if ($this->playerIsLeader($player, $clan)) {
+            throw new \RuntimeException('You are the only leader of your clan. You must disband your clan if you wish to leave.');
+        }
 
-		$clan->leave($player);
+        $clan->leave($player);
 
-		return $this->render([
-			'action_message' => 'You have left your clan.',
-			'title'          => 'You have left your clan.',
-			'clans'          => Clan::rankings(),
-			'pageSections'      => [
-				'reminder-no-clan',
-				'list',
-			]
-		]);
-	}
+        return $this->render([
+            'action_message' => 'You have left your clan.',
+            'title'          => 'You have left your clan.',
+            'clans'          => Clan::rankings(),
+            'pageSections'      => [
+                'reminder-no-clan',
+                'list',
+            ]
+        ]);
+    }
 
-	/**
-	 * Creates a new clan with the current user as the leader
-	 *
-     * @param Container $p_dependencies 
-	 * @return Response
-	 * @note
-	 * Player must be high enough level to create a clan
-	 *
-	 * @see CLAN_CREATOR_MIN_LEVEL
-	 */
-	public function create(Container $p_dependencies) {
-		$player = $p_dependencies['current_player'];
+    /**
+     * Creates a new clan with the current user as the leader
+     *
+     * @param Container $p_dependencies
+     * @return Response
+     * @note
+     * Player must be high enough level to create a clan
+     *
+     * @see CLAN_CREATOR_MIN_LEVEL
+     */
+    public function create(Container $p_dependencies)
+    {
+        $player = $p_dependencies['current_player'];
 
-		if ($player->level >= self::CLAN_CREATOR_MIN_LEVEL) {
-			$default_clan_name = 'Clan '.$player->name();
+        if ($player->level >= self::CLAN_CREATOR_MIN_LEVEL) {
+            $default_clan_name = 'Clan '.$player->name();
 
-			while (!Clan::isUniqueClanName($default_clan_name)) {
-				$default_clan_name = $default_clan_name.rand(1,999);
-			}
+            while (!Clan::isUniqueClanName($default_clan_name)) {
+                $default_clan_name = $default_clan_name.rand(1, 999);
+            }
 
-			$clan = Clan::create($player, $default_clan_name);
+            $clan = Clan::create($player, $default_clan_name);
 
-			$parts = [
-				'action_message' => 'Your clan was created with the default name: '.$clan->getName().'. Change it below.',
-				'title'          => 'Clan '.$clan->getName(),
-				'clan'           => $clan,
-				'pageSections'      => [
-					'edit',
-				],
-			];
-		} else {
-			$parts = [
-				'error'     => 'You do not have enough renown to create a clan. You must be at least level '.self::CLAN_CREATOR_MIN_LEVEL.'.',
-				'title'     => 'You cannot create a clan yet',
-				'clans'     => Clan::rankings(),
-				'pageSections' => [
-					'list',
-				],
-			];
-		}
+            $parts = [
+                'action_message' => 'Your clan was created with the default name: '.$clan->getName().'. Change it below.',
+                'title'          => 'Clan '.$clan->getName(),
+                'clan'           => $clan,
+                'pageSections'      => [
+                    'edit',
+                ],
+            ];
+        } else {
+            $parts = [
+                'error'     => 'You do not have enough renown to create a clan. You must be at least level '.self::CLAN_CREATOR_MIN_LEVEL.'.',
+                'title'     => 'You cannot create a clan yet',
+                'clans'     => Clan::rankings(),
+                'pageSections' => [
+                    'list',
+                ],
+            ];
+        }
 
-		return $this->render($parts);
-	}
+        return $this->render($parts);
+    }
 
-	/**
-	 * Sends a request to a clan leader for the current user to join a clan
-	 * @param Container $p_dependencies 
-	 * @return Response
-	 */
-	public function join(Container $p_dependencies): StreamedViewResponse {
-		$clanID = (int) RequestWrapper::getPostOrGet('clan_id', 0);
-		$clan   = Clan::find($clanID);
-		
-		$leader = $clan->getLeaderInfo();
+    /**
+     * Sends a request to a clan leader for the current user to join a clan
+     * @param Container $p_dependencies
+     * @return Response
+     */
+    public function join(Container $p_dependencies): StreamedViewResponse
+    {
+        $clanID = (int) RequestWrapper::getPostOrGet('clan_id', 0);
+        $clan   = Clan::find($clanID);
 
-		$message = 'The leader to this clan is inactive, try another.';
-		if (!empty($leader)) {
-			$available = $this->sendClanJoinRequest($p_dependencies['session']->get('player_id'), $clanID);
-			$message = "Your request to join {$clan->getName()} has been sent to $leader[uname]";
-		}
+        $leader = $clan->getLeaderInfo();
 
-		return $this->render([
-			'action_message' => $message,
-			'title'          => 'Viewing a clan',
-			'clan'           => $clan,
-			'pageSections'      => [
-				'reminder-no-clan',
-				'info',
-				'member-list',
-			],
-		]);
-	}
+        $message = 'The leader to this clan is inactive, try another.';
+        if (!empty($leader)) {
+            $available = $this->sendClanJoinRequest($p_dependencies['session']->get('player_id'), $clanID);
+            $message = "Your request to join {$clan->getName()} has been sent to $leader[uname]";
+        }
 
-	/**
-	 * Deletes a clan and messages all members that it has been disbanded
-	 *
-	 * @param Container $p_dependencies 
-	 * @throws \RuntimeException On invalid leader disband request
-	 * @return Response
-	 */
-	public function disband(Container $p_dependencies): StreamedViewResponse {
-		$player = $p_dependencies['current_player'];
-		$clan   = Clan::findByMember($player);
-		$sure   = RequestWrapper::getPostOrGet('sure', '');
+        return $this->render([
+            'action_message' => $message,
+            'title'          => 'Viewing a clan',
+            'clan'           => $clan,
+            'pageSections'      => [
+                'reminder-no-clan',
+                'info',
+                'member-list',
+            ],
+        ]);
+    }
 
-		if (!$this->playerIsLeader($player, $clan)) {
-			throw new \RuntimeException('You may not disband a clan you are not a leader of.');
-		}
+    /**
+     * Deletes a clan and messages all members that it has been disbanded
+     *
+     * @param Container $p_dependencies
+     * @throws \RuntimeException On invalid leader disband request
+     * @return Response
+     */
+    public function disband(Container $p_dependencies): StreamedViewResponse
+    {
+        $player = $p_dependencies['current_player'];
+        $clan   = Clan::findByMember($player);
+        $sure   = RequestWrapper::getPostOrGet('sure', '');
 
-		if ($sure === 'yes') {
-			$clan->disband();
+        if (!$this->playerIsLeader($player, $clan)) {
+            throw new \RuntimeException('You may not disband a clan you are not a leader of.');
+        }
 
-			$parts = [
-				'action_message' => 'Your clan has been disbanded.',
-				'title'          => 'Clan disbanded',
-				'clans'          => Clan::rankings(),
-				'pageSections'      => [
-					'reminder-no-clan',
-					'list',
-				],
-			];
-		} else {
-			$parts = [
-				'title'     => 'Confirm disbanding of your clan',
-				'pageSections' => [
-					'confirm-disband',
-				],
-			];
-		}
+        if ($sure === 'yes') {
+            $clan->disband();
 
-		return $this->render($parts);
-	}
+            $parts = [
+                'action_message' => 'Your clan has been disbanded.',
+                'title'          => 'Clan disbanded',
+                'clans'          => Clan::rankings(),
+                'pageSections'      => [
+                    'reminder-no-clan',
+                    'list',
+                ],
+            ];
+        } else {
+            $parts = [
+                'title'     => 'Confirm disbanding of your clan',
+                'pageSections' => [
+                    'confirm-disband',
+                ],
+            ];
+        }
 
-	/**
-	 * Removes a player from a clan
-	 *
-     * @param Container $p_dependencies 
-	 * @return Response
-	 * @throws Exception The player must be the leader of the clan to kick a member
-	 */
-	public function kick(Container $p_dependencies) {
-		$kicker = $p_dependencies['current_player'];
-		$clan   = Clan::findByMember($kicker);
-		$kicked = Player::find(RequestWrapper::getPostOrGet('kicked', ''));
+        return $this->render($parts);
+    }
 
-		if (!$this->playerIsLeader($kicker, $clan)) {
-			throw new \RuntimeException('You may not kick members from a clan you are not a leader of.');
-		}
+    /**
+     * Removes a player from a clan
+     *
+     * @param Container $p_dependencies
+     * @return Response
+     * @throws Exception The player must be the leader of the clan to kick a member
+     */
+    public function kick(Container $p_dependencies)
+    {
+        $kicker = $p_dependencies['current_player'];
+        $clan   = Clan::findByMember($kicker);
+        $kicked = Player::find(RequestWrapper::getPostOrGet('kicked', ''));
 
-		$clan->kickMember($kicked->id(), $kicker);
+        if (!$this->playerIsLeader($kicker, $clan)) {
+            throw new \RuntimeException('You may not kick members from a clan you are not a leader of.');
+        }
 
-		return $this->render([
-			'action_message' => "You have removed ".$kicked->name()." from your clan",
-			'title'          => 'Manage your clan',
-			'clan'           => $clan,
-			'pageSections'      => [
-				'manage',
-				'info',
-				'member-list',
-			]
-		]);
-	}
+        $clan->kickMember($kicked->id(), $kicker);
 
-	/**
-	 * Edits clan metadata
-	 *
+        return $this->render([
+            'action_message' => "You have removed ".$kicked->name()." from your clan",
+            'title'          => 'Manage your clan',
+            'clan'           => $clan,
+            'pageSections'      => [
+                'manage',
+                'info',
+                'member-list',
+            ]
+        ]);
+    }
+
+    /**
+     * Edits clan metadata
+     *
      * @todo accumulate error messages
-     * @param Container $p_dependencies 
-	 * @return Response
-	 * @throws Exception Only leaders can update clan details
-	 * @note
-	 * All parameters are options
-	 */
-	public function update(Container $p_dependencies) {
+     * @param Container $p_dependencies
+     * @return Response
+     * @throws Exception Only leaders can update clan details
+     * @note
+     * All parameters are options
+     */
+    public function update(Container $p_dependencies)
+    {
         $request = RequestWrapper::$request;
-		$player  = $p_dependencies['current_player'];
-		$clan    = Clan::findByMember($player);
+        $player  = $p_dependencies['current_player'];
+        $clan    = Clan::findByMember($player);
 
-		if (!$this->playerIsLeader($player, $clan)) {
-			throw new \Exception('You may not update a clan you are not a leader of.');
-		}
+        if (!$this->playerIsLeader($player, $clan)) {
+            throw new \Exception('You may not update a clan you are not a leader of.');
+        }
 
-		$new_clan_avatar_url  = $request->get('clan-avatar-url');
-		$new_clan_description = $request->get('clan-description');
-		$new_clan_name        = trim($request->get('new_clan_name', ''));
-		$error                = null;
+        $new_clan_avatar_url  = $request->get('clan-avatar-url');
+        $new_clan_description = $request->get('clan-description');
+        $new_clan_name        = trim($request->get('new_clan_name', ''));
+        $error                = null;
 
-		if ($new_clan_name != $clan->getName()) {
-			if (Clan::isValidClanName($new_clan_name)) {
-				if (Clan::isUniqueClanName($new_clan_name)) {
-					// *** Rename the clan if it is valid.
-					$new_clan_name = Clan::renameClan($clan->id, $new_clan_name);
-					$clan->setName($new_clan_name);
-				} else {
-					$error = 'That clan name is already in use!';
-				}
-			} elseif ($new_clan_name) {
-				$error = 'Sorry, too many special symbols in your clan name.';
-			}
-		}
+        if ($new_clan_name != $clan->getName()) {
+            if (Clan::isValidClanName($new_clan_name)) {
+                if (Clan::isUniqueClanName($new_clan_name)) {
+                    // *** Rename the clan if it is valid.
+                    $new_clan_name = Clan::renameClan($clan->id, $new_clan_name);
+                    $clan->setName($new_clan_name);
+                } else {
+                    $error = 'That clan name is already in use!';
+                }
+            } elseif ($new_clan_name) {
+                $error = 'Sorry, too many special symbols in your clan name.';
+            }
+        }
 
-		// Saving incoming changes to clan leader edits.
-		if (Clan::clanAvatarIsValid($new_clan_avatar_url)) {
-			Clan::saveClanAvatarUrl($new_clan_avatar_url, $clan->id);
-			$clan->setAvatarUrl($new_clan_avatar_url);
-		} else {
-			$error = 'That avatar url is not valid.';
-		}
+        // Saving incoming changes to clan leader edits.
+        if (Clan::clanAvatarIsValid($new_clan_avatar_url)) {
+            Clan::saveClanAvatarUrl($new_clan_avatar_url, $clan->id);
+            $clan->setAvatarUrl($new_clan_avatar_url);
+        } else {
+            $error = 'That avatar url is not valid.';
+        }
 
-		// Truncate at 500 chars if necessary.
-		$truncated_clan_desc = substr((string)$new_clan_description, 0, 500);
-		if ($truncated_clan_desc != (string) $new_clan_description) {
-			$new_clan_description = $truncated_clan_desc;
-		}
+        // Truncate at 500 chars if necessary.
+        $truncated_clan_desc = substr((string)$new_clan_description, 0, 500);
+        if ($truncated_clan_desc != (string) $new_clan_description) {
+            $new_clan_description = $truncated_clan_desc;
+        }
 
-		if ($new_clan_description) {
-			Clan::saveClanDescription($new_clan_description, $clan->id);
-			$clan->setDescription($new_clan_description);
-		}
+        if ($new_clan_description) {
+            Clan::saveClanDescription($new_clan_description, $clan->id);
+            $clan->setDescription($new_clan_description);
+        }
 
-		return $this->render([
-			'action_message' => 'Your clan has been updated.',
-			'title'          => 'Edit your clan',
-			'clan'           => $clan,
-			'error'          => $error,
-			'pageSections'      => [
-				'edit',
-				'info',
-				'member-list',
-			],
-		]);
-	}
+        return $this->render([
+            'action_message' => 'Your clan has been updated.',
+            'title'          => 'Edit your clan',
+            'clan'           => $clan,
+            'error'          => $error,
+            'pageSections'      => [
+                'edit',
+                'info',
+                'member-list',
+            ],
+        ]);
+    }
 
-	/**
-	 * Shows a form for editing clan metadata
-	 *
-     * @param Container $p_dependencies 
-	 * @return Response
-	 * @see update()
-	 */
-	public function edit(Container $p_dependencies) {
-		$player = $p_dependencies['current_player'];
-		$clan   = Clan::findByMember($player);
+    /**
+     * Shows a form for editing clan metadata
+     *
+     * @param Container $p_dependencies
+     * @return Response
+     * @see update()
+     */
+    public function edit(Container $p_dependencies)
+    {
+        $player = $p_dependencies['current_player'];
+        $clan   = Clan::findByMember($player);
 
-		return $this->render([
-			'clan'      => $clan,
-			'title'     => 'Edit your clan',
-			'pageSections' => [
-				'edit',
-				'info',
-			],
-		]);
-	}
+        return $this->render([
+            'clan'      => $clan,
+            'title'     => 'Edit your clan',
+            'pageSections' => [
+                'edit',
+                'info',
+            ],
+        ]);
+    }
 
-	/**
-	 * Sends a message to all members of the clan of the current player
-	 *
-     * @param Container $p_dependencies 
-	 * @return Response
-	 */
-	public function message(Container $p_dependencies) {
-		$player = $p_dependencies['current_player'];
-		$message = RequestWrapper::getPostOrGet('message', null);
+    /**
+     * Sends a message to all members of the clan of the current player
+     *
+     * @param Container $p_dependencies
+     * @return Response
+     */
+    public function message(Container $p_dependencies)
+    {
+        $player = $p_dependencies['current_player'];
+        $message = RequestWrapper::getPostOrGet('message', null);
 
-		if ($player) {
-			$myClan = Clan::findByMember($player);
+        if ($player) {
+            $myClan = Clan::findByMember($player);
 
-			if ($myClan) {
-				$target_id_list = $myClan->getMemberIds();
+            if ($myClan) {
+                $target_id_list = $myClan->getMemberIds();
 
-				Message::sendToGroup($player, $target_id_list, $message, 1);
+                Message::sendToGroup($player, $target_id_list, $message, 1);
 
-				$parts = [
-					'clan'           => $myClan,
-					'title'          => 'Your clan',
-					'action_message' => 'Message sent to your clan.',
-					'pageSections'      => [
-						'info',
-						'member-list',
-					],
-				];
+                $parts = [
+                    'clan'           => $myClan,
+                    'title'          => 'Your clan',
+                    'action_message' => 'Message sent to your clan.',
+                    'pageSections'      => [
+                        'info',
+                        'member-list',
+                    ],
+                ];
 
-				if ($this->playerIsLeader($player, $myClan)) {
-					array_unshift($parts['pageSections'], 'manage');
-				} else {
-					array_unshift($parts['pageSections'], 'non-leader-panel');
-				}
+                if ($this->playerIsLeader($player, $myClan)) {
+                    array_unshift($parts['pageSections'], 'manage');
+                } else {
+                    array_unshift($parts['pageSections'], 'non-leader-panel');
+                }
 
-				return $this->render($parts);
-			} else {
-				return $this->listClans($p_dependencies);
-			}
-		} else {
-			return $this->listClans($p_dependencies);
-		}
-	}
+                return $this->render($parts);
+            } else {
+                return $this->listClans($p_dependencies);
+            }
+        } else {
+            return $this->listClans($p_dependencies);
+        }
+    }
 
-	/**
-	 * Shows a ranked list of all clans in the game
-	 *
-     * @param Container $p_dependencies 
-	 * @return Response
-	 */
-	public function listClans(Container $p_dependencies) {
-		$parts = [
-			'title'     => 'Clan List',
-			'clans'     => Clan::rankings(),
-			'pageSections' => ['list'],
-		];
+    /**
+     * Shows a ranked list of all clans in the game
+     *
+     * @param Container $p_dependencies
+     * @return Response
+     */
+    public function listClans(Container $p_dependencies)
+    {
+        $parts = [
+            'title'     => 'Clan List',
+            'clans'     => Clan::rankings(),
+            'pageSections' => ['list'],
+        ];
 
-		$player = $p_dependencies['current_player'];
+        $player = $p_dependencies['current_player'];
 
-		if ($player) {
-			$clan = Clan::findByMember($player);
+        if ($player) {
+            $clan = Clan::findByMember($player);
 
-			if ($clan) {
-				array_unshift($parts['pageSections'], 'reminder-member');
-			} else {
-				array_unshift($parts['pageSections'], 'reminder-no-clan');
-			}
-		}
+            if ($clan) {
+                array_unshift($parts['pageSections'], 'reminder-member');
+            } else {
+                array_unshift($parts['pageSections'], 'reminder-no-clan');
+            }
+        }
 
-		return $this->render($parts);
-	}
+        return $this->render($parts);
+    }
 
-	/**
-	 * Review a request to join a clan
-	 *
-     * @param Container $p_dependencies 
-	 * @return Response
-	 */
-	public function review(Container $p_dependencies) {
+    /**
+     * Review a request to join a clan
+     *
+     * @param Container $p_dependencies
+     * @return Response
+     */
+    public function review(Container $p_dependencies)
+    {
         $request = RequestWrapper::$request;
-		$ninja   = $p_dependencies['current_player'];
-		$clan    = Clan::findByMember($ninja);
+        $ninja   = $p_dependencies['current_player'];
+        $clan    = Clan::findByMember($ninja);
 
-		$joiner = Player::find($request->get('joiner'));
-		$confirmation = (int) $request->get('confirmation');
+        $joiner = Player::find($request->get('joiner'));
+        $confirmation = (int) $request->get('confirmation');
 
-		$parts = [
-			'title' => 'Accept a New Clan Member',
-		];
+        $parts = [
+            'title' => 'Accept a New Clan Member',
+        ];
 
-		if ($clan && $this->playerIsLeader($ninja, $clan)) {
-			if ($joiner) {
-				$parts['pageSections'] = [
-					'reminder-join-request',
-					'form-confirm-join',
-				];
+        if ($clan && $this->playerIsLeader($ninja, $clan)) {
+            if ($joiner) {
+                $parts['pageSections'] = [
+                    'reminder-join-request',
+                    'form-confirm-join',
+                ];
 
-				$parts['joiner'] = $joiner;
-				$parts['confirmation'] = $confirmation;
-			} else {
-				$parts['error'] = 'No such ninja to bring into the clan.';
-			}
-		} else {
-			$parts['error'] = 'You are not the leader of your clan.';
-		}
+                $parts['joiner'] = $joiner;
+                $parts['confirmation'] = $confirmation;
+            } else {
+                $parts['error'] = 'No such ninja to bring into the clan.';
+            }
+        } else {
+            $parts['error'] = 'You are not the leader of your clan.';
+        }
 
-		return $this->render($parts);
-	}
+        return $this->render($parts);
+    }
 
-	/**
-	 * Accept a player as a new member of a clan
-	 *
-     * @param Container $p_dependencies 
-	 * @return Response
-	 *
-	 * @par Preconditions:
-	 * Active player must be leader of a clan
-	 */
-	public function accept(Container $p_dependencies) {
+    /**
+     * Accept a player as a new member of a clan
+     *
+     * @param Container $p_dependencies
+     * @return Response
+     *
+     * @par Preconditions:
+     * Active player must be leader of a clan
+     */
+    public function accept(Container $p_dependencies)
+    {
         $request = RequestWrapper::$request;
-		$ninja   = $p_dependencies['current_player'];
-		$clan    = Clan::findByMember($ninja);
+        $ninja   = $p_dependencies['current_player'];
+        $clan    = Clan::findByMember($ninja);
 
-		$joiner = Player::find($request->get('joiner'));
-		$confirmation = (int) $request->get('confirmation');
+        $joiner = Player::find($request->get('joiner'));
+        $confirmation = (int) $request->get('confirmation');
 
-		$parts = [
-			'title' => 'Accept a New Clan Member',
-		];
+        $parts = [
+            'title' => 'Accept a New Clan Member',
+        ];
 
-		if ($clan && $this->playerIsLeader($ninja, $clan)) {
-			if ($joiner) {
-				$parts['pageSections'] = [
-					'reminder-join-request',
-				];
+        if ($clan && $this->playerIsLeader($ninja, $clan)) {
+            if ($joiner) {
+                $parts['pageSections'] = [
+                    'reminder-join-request',
+                ];
 
-				$parts['joiner'] = $joiner;
+                $parts['joiner'] = $joiner;
 
-				// Allow joining as long as the verification number is correct.
-				if ($confirmation === $joiner->getVerificationNumber()) {
-					$result = $clan->addMember($joiner, $ninja);
+                // Allow joining as long as the verification number is correct.
+                if ($confirmation === $joiner->getVerificationNumber()) {
+                    $result = $clan->addMember($joiner, $ninja);
 
-					if ($result === true) {
-						$parts['pageSections'][] = 'result-join';
-					} else {
-						$parts['error'] = (is_string($result) ? $result : 'Unable to add member, please try again later.');
-					}
-				} else {
-					$parts['error'] = 'That request was old or invalid, please try inviting that ninja again.';
-				}
-			} else {
-				$parts['error'] = 'No such ninja to bring into the clan.';
-			}
-		} else {
-			$parts['error'] = 'You are not the leader of your clan.';
-		}
+                    if ($result === true) {
+                        $parts['pageSections'][] = 'result-join';
+                    } else {
+                        $parts['error'] = (is_string($result) ? $result : 'Unable to add member, please try again later.');
+                    }
+                } else {
+                    $parts['error'] = 'That request was old or invalid, please try inviting that ninja again.';
+                }
+            } else {
+                $parts['error'] = 'No such ninja to bring into the clan.';
+            }
+        } else {
+            $parts['error'] = 'You are not the leader of your clan.';
+        }
 
-		return $this->render($parts);
-	}
+        return $this->render($parts);
+    }
 
-	/**
-	 * Generates a Response for rendering pages
-	 *
+    /**
+     * Generates a Response for rendering pages
+     *
      * @todo inject dependencies instead of pulling from the model
-	 * @param Array $p_parts Name-Value pairs of values to send to the view
-	 * @return Response
-	 */
-	private function render(array $p_parts): StreamedViewResponse {
-		if (!isset($p_parts['pageSections'])) {
-			$p_parts['pageSections'] = [];
-		}
+     * @param Array $p_parts Name-Value pairs of values to send to the view
+     * @return Response
+     */
+    private function render(array $p_parts): StreamedViewResponse
+    {
+        if (!isset($p_parts['pageSections'])) {
+            $p_parts['pageSections'] = [];
+        }
 
-		if (!isset($p_parts['error'])) {
-			$p_parts['error'] = null;
-		}
+        if (!isset($p_parts['error'])) {
+            $p_parts['error'] = null;
+        }
 
-		if (!isset($p_parts['action_message'])) {
-			$p_parts['action_message'] = null;
-		}
+        if (!isset($p_parts['action_message'])) {
+            $p_parts['action_message'] = null;
+        }
 
-		$p_parts['player'] = Player::find(SessionFactory::getSession()->get('player_id'));
-		$p_parts['myClan'] = ($p_parts['player'] ? Clan::findByMember($p_parts['player']) : null);
+        $p_parts['player'] = Player::find(SessionFactory::getSession()->get('player_id'));
+        $p_parts['myClan'] = ($p_parts['player'] ? Clan::findByMember($p_parts['player']) : null);
 
-		$p_parts['clan_creator_min_level'] = self::CLAN_CREATOR_MIN_LEVEL;
+        $p_parts['clan_creator_min_level'] = self::CLAN_CREATOR_MIN_LEVEL;
 
         $options  = [
             'body_classes' => 'clan',
@@ -576,55 +592,57 @@ class ClanController extends AbstractController {
         ];
 
         return new StreamedViewResponse($p_parts['title'], 'clan.tpl', $p_parts, $options);
-	}
+    }
 
-	/**
-	 * Tests whether the specified player is a leader of the specified clan
-	 *
-	 * @param Player $p_objPlayer The player in question
-	 * @param Clan   $p_objClan   The clan to check against
-	 * @return boolean
-	 */
-	private function playerIsLeader(Player $p_objPlayer, Clan $p_objClan): bool {
-		$leaders = $p_objClan->getAllClanLeaders();
+    /**
+     * Tests whether the specified player is a leader of the specified clan
+     *
+     * @param Player $p_objPlayer The player in question
+     * @param Clan   $p_objClan   The clan to check against
+     * @return boolean
+     */
+    private function playerIsLeader(Player $p_objPlayer, Clan $p_objClan): bool
+    {
+        $leaders = $p_objClan->getAllClanLeaders();
 
-		foreach ($leaders AS $leader) {
-			if ($leader['player_id'] == $p_objPlayer->id()) {
-				return true;
-			}
-		}
+        foreach ($leaders as $leader) {
+            if ($leader['player_id'] == $p_objPlayer->id()) {
+                return true;
+            }
+        }
 
-		return false;
-	}
+        return false;
+    }
 
     /**
      * Send a message that links a player to a clan join request message
      *
      * @todo Simplify this invite system.
-     * @param int $user_id 
-     * @param int $clan_id 
-	 * @return Array|bool
+     * @param int $user_id
+     * @param int $clan_id
+     * @return Array|bool
      */
-    private function sendClanJoinRequest(int $user_id, int $clan_id) {
+    private function sendClanJoinRequest(int $user_id, int $clan_id)
+    {
         DatabaseConnection::getInstance();
         $clan_obj  = new Clan($clan_id);
         $leader    = $clan_obj->getLeaderInfo();
         $leader_id = $leader['player_id'];
         $user      = Player::find($user_id);
-		$username  = $user->name();
-		
-		if(!$leader_id){
-			return [
-				'error'=>true,
-				'message'=>'No leader to this clan is available, sorry.'
-			];
-		}
+        $username  = $user->name();
+
+        if (!$leader_id) {
+            return [
+                'error'=>true,
+                'message'=>'No leader to this clan is available, sorry.'
+            ];
+        }
 
         $confirmStatement = DatabaseConnection::$pdo->prepare('SELECT verification_number FROM players WHERE player_id = :user');
         $confirmStatement->bindValue(':user', $user_id);
         $confirmStatement->execute();
-		$confirm = $confirmStatement->fetchColumn();
-		
+        $confirm = $confirmStatement->fetchColumn();
+
 
 
         // These ampersands get encoded later.
@@ -639,7 +657,7 @@ class ClanController extends AbstractController {
             'send_to'   => $leader_id,
             'message'   => $join_request_message,
             'type'      => 0,
-		]);
-		return true;
+        ]);
+        return true;
     }
 }

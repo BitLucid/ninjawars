@@ -1,13 +1,16 @@
 <?php
+
 use NinjaWars\core\data\Account;
 use NinjaWars\core\data\Player;
 
 /** SEE ALSO AccountConfTest */
 
-class AccountTest extends NWTest {
-    var $testAccountId;
+class AccountTest extends NWTest
+{
+    public $testAccountId;
 
-    public function setUp():void {
+    public function setUp(): void
+    {
         parent::setUp();
         TestAccountCreateAndDestroy::destroy();
         $this->extra_char_name = 'some_extra_test_char';
@@ -24,7 +27,8 @@ class AccountTest extends NWTest {
         $this->testAccountId = query_item("SELECT account_id FROM accounts WHERE account_identity = :email", [':email' => $this->test_email]);
     }
 
-    public function tearDown():void {
+    public function tearDown(): void
+    {
         TestAccountCreateAndDestroy::destroy();
         TestAccountCreateAndDestroy::destroy($this->extra_char_name);
         parent::tearDown();
@@ -40,7 +44,6 @@ class AccountTest extends NWTest {
 
     public function testCanObtainPreExistingAccountByCharacter()
     {
-
         $account = Account::findByChar($this->char);
         $this->assertNotEmpty(Player::find($this->char->id()), 'Player::find failed to find pre-existing account');
         $this->assertNotNull($account, 'Account::findByCharacter() failed to find pre-existing account');
@@ -87,59 +90,69 @@ class AccountTest extends NWTest {
         $this->assertTrue($accountF->isOperational(), 'Account::reactivateByCharacter() failed to change operational status');
     }
 
-    public function testCreatingAnAccount() {
+    public function testCreatingAnAccount()
+    {
         $account_id = $this->testAccountId;
         $acc = Account::findById($account_id);
-        $this->assertTrue($acc instanceof Account); 
+        $this->assertTrue($acc instanceof Account);
         $this->assertNotEmpty($acc->getIdentity());
     }
 
-    public function testAccountHasIdentity() {
+    public function testAccountHasIdentity()
+    {
         $account = Account::findById($this->testAccountId);
         $this->assertNotEmpty($account->getIdentity());
     }
 
-    public function testAccountHasAType() {
+    public function testAccountHasAType()
+    {
         $account = Account::findById($this->testAccountId);
         $this->assertTrue(gettype($account->getType()) === 'integer');
     }
 
-    public function testAccountHasAnId() {
+    public function testAccountHasAnId()
+    {
         $account = Account::findById($this->testAccountId);
         $this->assertGreaterThan(0, $account->getId());
     }
 
-    public function testAccountReturnsAccount() {
+    public function testAccountReturnsAccount()
+    {
         $account = Account::findById($this->testAccountId);
         $this->assertTrue($account instanceof Account);
         $this->assertNotEmpty($account->getIdentity());
     }
 
-    public function testAccountReturnsAccountWithMatchingIdentity() {
+    public function testAccountReturnsAccountWithMatchingIdentity()
+    {
         $identity = $this->test_email;
         $acc = Account::findByIdentity($identity);
         $this->assertEquals($identity, $acc->getIdentity());
     }
 
-    public function testAccountHasActiveEmail() {
+    public function testAccountHasActiveEmail()
+    {
         $account = Account::findById($this->testAccountId);
         $this->assertNotEmpty($account->getActiveEmail());
     }
 
-    public function testAccountCanHaveOauthAddedInMemory() {
+    public function testAccountCanHaveOauthAddedInMemory()
+    {
         $account = Account::findById($this->testAccountId);
         $oauth_id = 88888888888888;
         $account->setOauthId($oauth_id, 'facebook');
         $this->assertEquals($oauth_id, $account->getOauthId());
     }
 
-    public function testSetAndGetOauthProvider(){
+    public function testSetAndGetOauthProvider()
+    {
         $account = new Account();
         $account->setOauthProvider('facebook');
         $this->assertEquals('facebook', $account->getOauthProvider());
     }
 
-    public function testAccountCanSaveNewOauthIdAfterHavingItAdded() {
+    public function testAccountCanSaveNewOauthIdAfterHavingItAdded()
+    {
         $account = Account::findById($this->testAccountId);
         $oauth_id = 88888888888888;
         $account->setOauthId($oauth_id, 'facebook');
@@ -148,52 +161,61 @@ class AccountTest extends NWTest {
         $this->assertEquals($oauth_id, $account_dupe->getOauthId());
     }
 
-    public function testAccountPasswordCanBeChanged() {
+    public function testAccountPasswordCanBeChanged()
+    {
         $account = Account::findById($this->testAccountId);
         $updated = $account->changePassword('whatever gibberish');
         $this->assertTrue((bool)$updated);
     }
 
-    public function testFindAccountByEmail() {
+    public function testFindAccountByEmail()
+    {
         $account = Account::findById($this->testAccountId);
         $account2 = Account::findByEmail($account->email());
         $this->assertEquals($account->id(), $account2->id());
     }
 
-    public function testFindAccountByEmailWithEmptyInput() {
+    public function testFindAccountByEmailWithEmptyInput()
+    {
         $account = Account::findByEmail('   ');
         $this->assertNull($account);
     }
 
-    public function testFindAccountByNinja() {
+    public function testFindAccountByNinja()
+    {
         $player = Player::findByName($this->test_ninja_name);
         $account = Account::findByChar($player);
         $this->assertNotNull($account);
     }
 
-    public function testFindAccountByNinjaName() {
+    public function testFindAccountByNinjaName()
+    {
         $account = Account::findByNinjaName($this->test_ninja_name);
         $this->assertNotNull($account);
     }
 
-    public function testFindAccountByNonexistentId() {
+    public function testFindAccountByNonexistentId()
+    {
         $account = Account::findById(-120);
         $this->assertNull($account);
     }
 
 
-    public function testThanAccountCanBeSetAsDifferentType(){
+    public function testThanAccountCanBeSetAsDifferentType()
+    {
         $account = new Account();
         $account->setType(2);
         $this->assertEquals(2, $account->type);
     }
 
-    public function testAuthenticationOfAccountWithNoDatabaseAnalogFails(){
+    public function testAuthenticationOfAccountWithNoDatabaseAnalogFails()
+    {
         $account = new Account();
         $this->assertFalse($account->authenticate('an invalid password'));
     }
 
-    public function testAccountCanHavePlayers(){
+    public function testAccountCanHavePlayers()
+    {
         $account = Account::findByNinjaName($this->test_ninja_name);
         $pcs = $account->getCharacters();
         $this->assertNotEmpty($pcs);
@@ -222,5 +244,4 @@ class AccountTest extends NWTest {
         $updated_pc = Player::find($pc->id());
         $this->assertTrue($updated_pc->isActive());
     }
-
 }

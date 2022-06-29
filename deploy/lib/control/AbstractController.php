@@ -1,11 +1,13 @@
 <?php
+
 namespace NinjaWars\core\control;
 
 use Pimple\Container;
 use NinjaWars\core\extensions\SessionFactory;
 use NinjaWars\core\extensions\StreamedViewResponse;
 
-abstract class AbstractController {
+abstract class AbstractController
+{
     /**
      * Check if a player can access any of this controllers methods
      *
@@ -48,7 +50,8 @@ abstract class AbstractController {
      * Get the current account_id from the session, if any
      * @return int|null
      */
-    public function getAccountId(){
+    public function getAccountId()
+    {
         return SessionFactory::getSession()->get('account_id');
     }
 }

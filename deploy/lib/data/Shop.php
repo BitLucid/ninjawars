@@ -3,7 +3,7 @@
 namespace NinjaWars\core\data;
 
 use NinjaWars\core\data\DatabaseConnection;
-use \PDO;
+use PDO;
 
 /**
  *

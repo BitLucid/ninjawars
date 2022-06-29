@@ -1,9 +1,10 @@
 <?php
+
 namespace NinjaWars\core\data;
 
 use NinjaWars\core\data\Player;
 use Illuminate\Database\Eloquent\Model;
-use \PDO;
+use PDO;
 
 /**
  * Managing items like shuriken, dimmak
@@ -24,19 +25,21 @@ use \PDO;
  * @property-read boolean other_usable
  * @property-read string traits (comma separated)
  */
-class Item extends Model{
+class Item extends Model
+{
     protected $table = 'item';
     protected $primaryKey = 'item_id';
     protected $guarded = ['item_id', 'created_at'];
 
-    const MIN_DYNAMIC_DAMAGE = 9;
+    public const MIN_DYNAMIC_DAMAGE = 9;
 
     /**
      * Returns not the identity, but the display name
      *
      * @return String
      */
-    public function getName() {
+    public function getName()
+    {
         return $this->item_display_name;
     }
 
@@ -45,14 +48,16 @@ class Item extends Model{
      *
      * @return String
      */
-    public function getPluralName() {
+    public function getPluralName()
+    {
         return $this->item_display_name.$this->plural;
     }
 
     /**
      * @return String
      */
-    public function __toString() {
+    public function __toString()
+    {
         return $this->getName();
     }
 
@@ -61,7 +66,8 @@ class Item extends Model{
      *
      * @return String
      */
-    public function identity() {
+    public function identity()
+    {
         return $this->item_internal_name;
     }
 
@@ -70,7 +76,8 @@ class Item extends Model{
      *
      * @return Array
      */
-    public function effects() {
+    public function effects()
+    {
         // Pull the effects array via the external function.
         return $this->itemEffects($this->item_id);
     }
@@ -81,7 +88,8 @@ class Item extends Model{
      * @param String $effect_identity
      * @return boolean
      */
-    public function hasEffect($effect_identity) {
+    public function hasEffect($effect_identity)
+    {
         $effects = $this->effects();
 
         return (
@@ -97,7 +105,8 @@ class Item extends Model{
      * @param int $p_turns
      * @return void
      */
-    public function setTurnChange($p_turns) {
+    public function setTurnChange($p_turns)
+    {
         $this->turn_change = (float)$p_turns;
     }
 
@@ -106,7 +115,8 @@ class Item extends Model{
      *
      * @return int
      */
-    public function getMaxTurnChange() {
+    public function getMaxTurnChange()
+    {
         return (int) $this->turn_change;
     }
 
@@ -116,7 +126,8 @@ class Item extends Model{
      * @TODO: should be modified by existing effects, should accept target obj
      * @return int
      */
-    public function getTurnChange() {
+    public function getTurnChange()
+    {
         return (int) $this->turn_change;
     }
 
@@ -126,8 +137,9 @@ class Item extends Model{
      * @param boolean $p_ignore
      * @return void
      */
-    public function setIgnoresStealth($p_ignore) {
-        $this->ignore_stealth = (boolean)$p_ignore;
+    public function setIgnoresStealth($p_ignore)
+    {
+        $this->ignore_stealth = (bool)$p_ignore;
     }
 
     /**
@@ -135,7 +147,8 @@ class Item extends Model{
      *
      * @return boolean
      */
-    public function ignoresStealth() {
+    public function ignoresStealth()
+    {
         return $this->ignore_stealth;
     }
 
@@ -145,7 +158,8 @@ class Item extends Model{
      * @param int $p_damage
      * @return void
      */
-    public function setTargetDamage($p_damage) {
+    public function setTargetDamage($p_damage)
+    {
         $this->target_damage = (int)$p_damage;
     }
 
@@ -156,7 +170,8 @@ class Item extends Model{
      * @note
      * Ex: A shuriken relies exclusively on the slice effect for it's damage.
      */
-    public function getTargetDamage() {
+    public function getTargetDamage()
+    {
         return (int)$this->target_damage;
     }
 
@@ -171,7 +186,8 @@ class Item extends Model{
      * @note
      * Some effects-based object will not actually have a pre-known maxDamage
      */
-    public function getMaxDamage(Player $pc=null) {
+    public function getMaxDamage(Player $pc=null)
+    {
         if ($pc instanceof Player && $this->hasDynamicDamage()) {
             return max(static::MIN_DYNAMIC_DAMAGE, (int) floor($pc->getStrength() * 2/3)-4);
         } else {
@@ -186,14 +202,16 @@ class Item extends Model{
      * @note
      * Currently just slicing weapons have this trait.
      */
-    private function hasDynamicDamage() {
+    private function hasDynamicDamage()
+    {
         return $this->hasEffect('slice');
     }
 
     /**
      * @return int
      */
-    public function getRandomDamage() {
+    public function getRandomDamage()
+    {
         return rand(0, $this->getMaxDamage());
     }
 
@@ -201,7 +219,8 @@ class Item extends Model{
      * @return int
      * Turn cost to use
      */
-    public function getTurnCost() {
+    public function getTurnCost()
+    {
         return $this->turn_cost;
     }
 
@@ -210,21 +229,24 @@ class Item extends Model{
      * @param boolean $p_covert
      * @return void
      */
-    public function setCovert($p_covert) {
-        $this->covert = (boolean)$p_covert;
+    public function setCovert($p_covert)
+    {
+        $this->covert = (bool)$p_covert;
     }
 
     /**
      * @return boolean
      */
-    public function isCovert() {
+    public function isCovert()
+    {
         return $this->covert;
     }
 
     /**
      * @return boolean
      */
-    public function isSelfUsable() {
+    public function isSelfUsable()
+    {
         return $this->self_use;
     }
 
@@ -233,14 +255,16 @@ class Item extends Model{
      *
      * @return boolean
      */
-    public function isOtherUsable() {
+    public function isOtherUsable()
+    {
         return $this->other_usable;
     }
 
     /**
      * @return int
      */
-    public function getType() {
+    public function getType()
+    {
         return $this->item_id;
     }
 
@@ -250,7 +274,8 @@ class Item extends Model{
      * @param int $itemId
      * @return array
      */
-    private function itemEffects($itemId) {
+    private function itemEffects($itemId)
+    {
         $sel = 'SELECT '.
             'effect_identity, effect_name, effect_verb, effect_self '.
             'FROM effects JOIN item_effects ON _effect_id = effect_id '.
@@ -269,7 +294,8 @@ class Item extends Model{
      * Get an item model by it's identity string.
      * @return Item
      */
-    public static function findByIdentity($identity){
+    public static function findByIdentity($identity)
+    {
         return self::where('item_internal_name', trim(strtolower($identity)))->first();
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -7,18 +8,21 @@ use NinjaWars\core\extensions\SessionFactory;
 use NinjaWars\core\extensions\StreamedViewResponse;
 use NinjaWars\core\control\ConsiderController;
 
-class ConsiderControllerTest extends NWTest {
+class ConsiderControllerTest extends NWTest
+{
     private $controller;
 
-	public function setUp():void {
+    public function setUp(): void
+    {
         parent::setUp();
         $this->controller = new ConsiderController();
-		SessionFactory::init(new MockArraySessionStorage());
+        SessionFactory::init(new MockArraySessionStorage());
         $char_id = TestAccountCreateAndDestroy::create_testing_account();
-		SessionFactory::getSession()->set('player_id', $char_id);
+        SessionFactory::getSession()->set('player_id', $char_id);
     }
 
-	public function tearDown():void {
+    public function tearDown(): void
+    {
         RequestWrapper::destroy();
         $session = SessionFactory::getSession();
         $session->invalidate();
@@ -41,7 +45,8 @@ class ConsiderControllerTest extends NWTest {
     }
 
 
-    public function testAddBlankEnemy() {
+    public function testAddBlankEnemy()
+    {
         $response = $this->controller->addEnemy($this->m_dependencies);
 
         $this->assertInstanceOf(RedirectResponse::class, $response);

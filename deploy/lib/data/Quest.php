@@ -1,4 +1,5 @@
 <?php
+
 namespace NinjaWars\core\data;
 
 use Illuminate\Database\Eloquent\Model;
@@ -21,14 +22,15 @@ use NinjaWars\core\data\Character;
  created_at  | timestamp with time zone | not null default now()
  updated_at  | timestamp with time zone | not null default now()
  deleted_at  | timestamp with time zone | not null
- type        | integer                     | 
- difficulty  | integer 
+ type        | integer                     |
+ difficulty  | integer
 
  * @property int quest_id
  * @property Player player
  * @property int _player_id
  */
-class Quest extends Model {
+class Quest extends Model
+{
     use SoftDeletes;
 
     protected $primaryKey = 'quest_id'; // Anything other than id
@@ -39,7 +41,8 @@ class Quest extends Model {
     /**
      * Special case method to get the id regardless of what it's actually called in the database
      */
-    public function id() {
+    public function id()
+    {
         return $this->quest_id;
     }
 
@@ -47,8 +50,9 @@ class Quest extends Model {
      * Get the hydrated player from the quest's player_id
      * @return Player The quest originator/giver
      */
-    public function player($id=null) {
-        if(isset($this->player)){
+    public function player($id=null)
+    {
+        if (isset($this->player)) {
             return $this->player;
         } else {
             return $this->player = Player::find($id);
@@ -59,7 +63,8 @@ class Quest extends Model {
      * Override to get the custom _player_id attribute
      *
      */
-    public function getPlayerIdAttribute($id) {
+    public function getPlayerIdAttribute($id)
+    {
         return $this->attributes['_player_id'];
     }
 
@@ -67,23 +72,26 @@ class Quest extends Model {
      * Set the custom _player_id attribute
      *
      */
-    public function setPlayerIdAttribute($id) {
+    public function setPlayerIdAttribute($id)
+    {
         $this->attributes['_player_id'] = $id;
     }
 
     /**
      * Set the character who is the quest giver
      */
-    public function setPlayer(Character $player) {
+    public function setPlayer(Character $player)
+    {
         $this->player = $player;
     }
 
     /**
      * Override save to add _player_id foreign key
      */
-    public function save(array $options = []) {
+    public function save(array $options = [])
+    {
         $player = $this->player($this->_player_id);
-        if($player !== null){
+        if ($player !== null) {
             $this->_player_id = $player->id();
         }
         return parent::save($options);
@@ -93,10 +101,11 @@ class Quest extends Model {
      * Get the quests from the database, undyrated
      * @return array Of quest data
      */
-    public static function get_quests(){
+    public static function get_quests()
+    {
         //$quests = Quest::where('active', 1)->orderBy('created_at', 'desc');
         $quests = [];
-        if(DEBUG){ // While debugging, mock a single quest
+        if (DEBUG) { // While debugging, mock a single quest
             $quests = [
                 [
                 'quest_id'=>1, 'giver'=>'glassbox', 'player_id'=>10, 'title'=>'some quest', 'tags'=>'fake bob jim',
@@ -113,8 +122,9 @@ class Quest extends Model {
      * Decorate the array with additional data
      * @return array $quests_data Replaced with decoded values
      */
-    public static function hydrate_quests(array $quests_data){
-        foreach($quests_data as &$quest){
+    public static function hydrate_quests(array $quests_data)
+    {
+        foreach ($quests_data as &$quest) {
             $quest['rewards'] = json_decode($quest['rewards']);
             // Eventually linkify the tags here.
             $quest['obstacles'] = json_decode($quest['obstacles']);

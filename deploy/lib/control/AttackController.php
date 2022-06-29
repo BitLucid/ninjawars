@@ -1,4 +1,5 @@
 <?php
+
 namespace NinjaWars\core\control;
 
 use Pimple\Container;
@@ -17,21 +18,23 @@ use NinjaWars\core\environment\RequestWrapper;
 /**
  * Handles the processing of results of the attack page
  */
-class AttackController extends AbstractController {
-    const ALIVE                  = true;
-    const PRIV                   = true;
-    const BASE_WRATH_REGAIN      = 2;
-    const DEFAULT_GOLD_MOD       = 0.2;
-    const DUEL_GOLD_MOD          = 0.25;
-    const STEALTH_GOLD_MOD       = 0.1;
-    const STEALTH_STRIKE_COST    = 1;
-    const EVEN_MATCH_KI_REWARD   = 1;
-    const EVEN_MATCH_ROUND_COUNT = 4;
+class AttackController extends AbstractController
+{
+    public const ALIVE                  = true;
+    public const PRIV                   = true;
+    public const BASE_WRATH_REGAIN      = 2;
+    public const DEFAULT_GOLD_MOD       = 0.2;
+    public const DUEL_GOLD_MOD          = 0.25;
+    public const STEALTH_GOLD_MOD       = 0.1;
+    public const STEALTH_STRIKE_COST    = 1;
+    public const EVEN_MATCH_KI_REWARD   = 1;
+    public const EVEN_MATCH_ROUND_COUNT = 4;
 
     /**
      * @return StreamedViewResponse
      */
-    public function index(Container $p_dependencies) {
+    public function index(Container $p_dependencies)
+    {
         $request = RequestWrapper::$request;
 
         $options = [
@@ -94,7 +97,8 @@ class AttackController extends AbstractController {
     /**
      * @return StreamedViewResponse
      */
-    private function combat(Player $attacker, Player $target, int $required_turns=0, $options=[]) {
+    private function combat(Player $attacker, Player $target, int $required_turns=0, $options=[])
+    {
         $error             = '';
         $stealthed_attack  = false;
         $stealth_damage    = false;
@@ -151,7 +155,8 @@ class AttackController extends AbstractController {
                  */
                 if ($options['evade'] && (
                     $attacker->health < ($target->getStrength()*.5) ||
-                    $attacker->health < ($attacker->health*.1))
+                    $attacker->health < ($attacker->health*.1)
+                )
                 ) {
                     break;
                 }
@@ -249,7 +254,8 @@ class AttackController extends AbstractController {
      * Perform a stealthed attack, modifying the actors by reference
      * @return void
      */
-    private function stealthStrike(Player $attacker, Player $target) {
+    private function stealthStrike(Player $attacker, Player $target)
+    {
         $target->harm($attacker->getStrength());
         $attacker->turns = $attacker->turns - self::STEALTH_STRIKE_COST;
     }
@@ -257,7 +263,8 @@ class AttackController extends AbstractController {
     /**
      * @return void
      */
-    private function strike(Player $attacker, Player $target, bool $blaze, bool $deflect) {
+    private function strike(Player $attacker, Player $target, bool $blaze, bool $deflect)
+    {
         $target_damage   = rand(1, $target->getStrength());
         $attacker_damage = rand(1, $attacker->getStrength());
 
@@ -276,7 +283,8 @@ class AttackController extends AbstractController {
     /**
      * @return void
      */
-    private function lose(Player $loser, Player $victor, int $loot) {
+    private function lose(Player $loser, Player $victor, int $loot)
+    {
         $loser->setGold($loser->gold - $loot);
         $loser->death();
 
@@ -287,7 +295,8 @@ class AttackController extends AbstractController {
     /**
      * @return void
      */
-    private function win(Player $victor, Player $loser, int $loot, int $killpoints) {
+    private function win(Player $victor, Player $loser, int $loot, int $killpoints)
+    {
         $victor_msg = "You defeated {$loser->name()} in combat and took $loot gold.";
         Event::create($loser->id(), $victor->id(), $victor_msg);
         $victor->setGold($victor->gold + $loot);
@@ -297,7 +306,8 @@ class AttackController extends AbstractController {
     /**
      * Simply records a numeric duel log entry
      */
-    private function logDuel(Player $attacker, Player $target, $winner, int $killpoints): bool {
+    private function logDuel(Player $attacker, Player $target, $winner, int $killpoints): bool
+    {
         return GameLog::sendLogOfDuel($attacker, $target, (bool) ($killpoints > 0), $killpoints);
     }
 }

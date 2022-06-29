@@ -4,7 +4,7 @@ namespace NinjaWars\core\data;
 
 use NinjaWars\core\data\DatabaseConnection;
 use NinjaWars\core\Filter;
-use \PDO;
+use PDO;
 use PDOStatement;
 
 /**
@@ -12,8 +12,8 @@ use PDOStatement;
  */
 class Enemies
 {
-    const TABLE = 'enemies';
-    const MAX_ENEMIES = 10;
+    public const TABLE = 'enemies';
+    public const MAX_ENEMIES = 10;
 
     /**
      * Retrieve enemies for the player specified

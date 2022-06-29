@@ -19,8 +19,8 @@ use NinjaWars\core\environment\RequestWrapper;
  */
 class EpicsController extends AbstractController
 {
-    const ALIVE = false;
-    const PRIV  = false;
+    public const ALIVE = false;
+    public const PRIV  = false;
 
     /**
      * Check user authentication as an admin before continuing.

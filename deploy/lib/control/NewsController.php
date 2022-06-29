@@ -1,10 +1,11 @@
 <?php
+
 namespace NinjaWars\core\control;
 
 use NinjaWars\core\control\AbstractController;
-use \model\News as News;
-use \InvalidArgumentException;
-use \ErrorException;
+use model\News as News;
+use InvalidArgumentException;
+use ErrorException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use NinjaWars\core\data\Player;
 use NinjaWars\core\data\Account;
@@ -15,23 +16,26 @@ use NinjaWars\core\environment\RequestWrapper;
 /**
  * Allows creation of news and displaying of news by admins
  */
-class NewsController extends AbstractController {
-    const ALIVE = false;
-    const PRIV  = false;
+class NewsController extends AbstractController
+{
+    public const ALIVE = false;
+    public const PRIV  = false;
 
     protected $pc = null;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->pc = Player::find(SessionFactory::getSession()->get('player_id'));
     }
 
     /**
      * Check whether a player has the necessary create role
      *
-     * @param Player|null $pc 
+     * @param Player|null $pc
      * @return boolean
      */
-    private function hasCreateRole($pc) {
+    private function hasCreateRole($pc)
+    {
         if (!($pc instanceof Player)) {
             throw new InvalidArgumentException('No account permissions');
         }
@@ -41,10 +45,11 @@ class NewsController extends AbstractController {
 
     /**
      * Display listing of posts
-     * 
+     *
      * @return StreamedViewResponse
      */
-    public function index() {
+    public function index()
+    {
         $request = RequestWrapper::$request;
         $view = 'news.tpl';
         $create_successful = (bool) $request->get('create_successful');
@@ -82,10 +87,11 @@ class NewsController extends AbstractController {
 
     /**
      * Create new post
-     * 
+     *
      * @return StreamedViewResponse
      */
-    public function create() {
+    public function create()
+    {
         try {
             $create_role = $this->hasCreateRole($this->pc);
         } catch (InvalidArgumentException $e) {
@@ -115,7 +121,8 @@ class NewsController extends AbstractController {
      *
      * @return RedirectResponse
      */
-    public function store() {
+    public function store()
+    {
         $request = RequestWrapper::$request;
 
         try {

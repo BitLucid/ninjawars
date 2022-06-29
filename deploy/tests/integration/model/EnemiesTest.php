@@ -7,9 +7,9 @@ use NinjaWars\core\data\Player;
 
 class EnemiesTest extends NWTest
 {
-    var $char;
-    var $char_id;
-    var $char_id_2;
+    public $char;
+    public $char_id;
+    public $char_id_2;
 
     public static function setUpBeforeClass(): void
     {

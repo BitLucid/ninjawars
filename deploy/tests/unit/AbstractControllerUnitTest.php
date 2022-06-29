@@ -1,41 +1,49 @@
 <?php
+
 namespace NinjaWars\tests\unit;
 
-use \NWTest;
+use NWTest;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use NinjaWars\core\control\AbstractController;
 use NinjaWars\core\extensions\StreamedViewResponse;
 use NinjaWars\core\extensions\SessionFactory;
 use NinjaWars\core\data\Player;
 
-class LocalTestController extends AbstractController {
-    const PRIV  = true;
-    const ALIVE = true;
+class LocalTestController extends AbstractController
+{
+    public const PRIV  = true;
+    public const ALIVE = true;
 }
 
-class AbstractControllerUnitTest extends NWTest {
-	public function setUp(): void {
+class AbstractControllerUnitTest extends NWTest
+{
+    public function setUp(): void
+    {
         parent::setUp();
-		SessionFactory::init(new MockArraySessionStorage());
+        SessionFactory::init(new MockArraySessionStorage());
     }
 
-	public function tearDown(): void {
+    public function tearDown(): void
+    {
         parent::tearDown();
     }
 
-    public function testRenderDefaultError() {
+    public function testRenderDefaultError()
+    {
         $c = new LocalTestController();
         $response = $c->renderDefaultError();
         $this->assertInstanceOf(StreamedViewResponse::class, $response);
     }
 
-    public function testValidatePrivate() {
+    public function testValidatePrivate()
+    {
         $c = new LocalTestController();
         $error = $c->validate($this->m_dependencies);
         $this->assertEquals('log_in', $error);
     }
 
-    public function testValidateFrozen() {
+    public function testValidateFrozen()
+    {
         $ninja = new Player();
         $ninja->addStatus(FROZEN);
         $this->m_dependencies['current_player'] = $ninja;
@@ -45,7 +53,8 @@ class AbstractControllerUnitTest extends NWTest {
         $this->assertEquals('frozen', $error);
     }
 
-    public function testValidateDead() {
+    public function testValidateDead()
+    {
         $ninja = new Player();
         $ninja->setHealth(0);
         SessionFactory::getSession()->set('authenticated', true);

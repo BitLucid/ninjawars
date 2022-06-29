@@ -1,16 +1,19 @@
 <?php
+
 // Note that the file has to have a file ending of ...test.php to be run by phpunit
 
 use NinjaWars\core\data\Message;
 use NinjaWars\core\data\Player;
 
-class MessageTest extends \NWTest {
+class MessageTest extends \NWTest
+{
     private $char_id;
     private $char_id_2;
     private $messageData;
-	private $message_id;
+    private $message_id;
 
-    public function setUp():void {
+    public function setUp(): void
+    {
         parent::setUp();
         $this->char_id = TestAccountCreateAndDestroy::char_id(true);
         $this->char_id_2 = TestAccountCreateAndDestroy::char_id_2(true);
@@ -26,7 +29,8 @@ class MessageTest extends \NWTest {
         $this->message_id = null;
     }
 
-    public function tearDown():void {
+    public function tearDown(): void
+    {
         TestAccountCreateAndDestroy::destroy();
         if ($this->message_id !== null) {
             query('delete from messages where message_id = :id', [':id'=>$this->message_id]);
@@ -34,30 +38,35 @@ class MessageTest extends \NWTest {
         parent::tearDown();
     }
 
-    public function testMessageCanInstantiate() {
+    public function testMessageCanInstantiate()
+    {
         $mess = new Message();
         $this->assertTrue($mess instanceof Message);
     }
 
-    public function testMessageClassHasACreateMethod() {
+    public function testMessageClassHasACreateMethod()
+    {
         $mess = new Message();
         $this->assertTrue(is_callable('Message', 'create'), 'No create method found on message object!');
     }
 
-    public function testMessageCanBeSent() {
+    public function testMessageCanBeSent()
+    {
         $mess = Message::create($this->messageData);
         $this->message_id = $mess->id();
         $this->assertEquals($this->messageData['message'], $mess->message);
     }
 
-    public function testMessageCanBeReceived() {
+    public function testMessageCanBeReceived()
+    {
         $mess = Message::create($this->messageData);
         $this->message_id = $mess->id();
         $first_message = Message::find($mess->id());
         $this->assertEquals($this->messageData['message'], $first_message->message);
     }
 
-    public function testMessageCanBeSentToGroup() {
+    public function testMessageCanBeSentToGroup()
+    {
         $this->messageData['type'] = 1;
 
         $mess = Message::create($this->messageData);
@@ -71,7 +80,8 @@ class MessageTest extends \NWTest {
         $this->assertEquals($this->messageData['message'], $first_message->message);
     }
 
-    public function testMessageHasARobustSender() {
+    public function testMessageHasARobustSender()
+    {
         $mess = Message::create($this->messageData);
         $this->message_id = $mess->id();
         $messages = Message::findByReceiver(Player::find($this->char_id_2), 0, 1000, 0);
@@ -83,7 +93,8 @@ class MessageTest extends \NWTest {
         $this->assertGreaterThan(0, strlen($first_message->sender));
     }
 
-    public function testCreateMessageViaMassAssignment() {
+    public function testCreateMessageViaMassAssignment()
+    {
         $this->messageData['send_to']   = $this->char_id;
         $this->messageData['send_from'] = $this->char_id_2;
 
@@ -100,7 +111,8 @@ class MessageTest extends \NWTest {
         $this->assertEquals($text, $retrieved_text);
     }
 
-    public function testFindPrivateMessagesForACertainChar() {
+    public function testFindPrivateMessagesForACertainChar()
+    {
         $messageCount = 4;
 
         $this->messageData['send_to']   = $this->char_id;

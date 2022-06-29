@@ -1,12 +1,15 @@
 <?php
+
 use NinjaWars\core\data\PlayerVO;
 use NinjaWars\core\data\Player;
 
-class PlayerUnitTest extends NWTest {
+class PlayerUnitTest extends NWTest
+{
     private $player;
     private $data;
 
-	public function setUp():void {
+    public function setUp(): void
+    {
         parent::setUp();
         $this->data = new PlayerVO();
         $this->data->uname = 'User1';
@@ -23,24 +26,29 @@ class PlayerUnitTest extends NWTest {
         $this->player->speed = Player::baseSpeedByLevel($this->data->level);
     }
 
-    public function tearDown():void {
+    public function tearDown(): void
+    {
         unset($this->player);
         parent::tearDown();
     }
 
-    public function testPlayerConstructor() {
+    public function testPlayerConstructor()
+    {
         $this->assertInstanceOf(Player::class, $this->player);
     }
 
-    public function testToString() {
+    public function testToString()
+    {
         $this->assertEquals((string)$this->player, $this->data->uname);
     }
 
-    public function testAccessor_magic() {
+    public function testAccessor_magic()
+    {
         $this->assertEquals($this->player->level, $this->data->level);
     }
 
-    public function testAccessor_id() {
+    public function testAccessor_id()
+    {
         $this->assertEquals($this->player->id(), $this->data->player_id);
     }
 
@@ -49,28 +57,34 @@ class PlayerUnitTest extends NWTest {
         $this->assertEquals(null, (new Player())->id());
     }
 
-    public function testAccessor_level() {
+    public function testAccessor_level()
+    {
         $this->assertEquals($this->player->level, $this->data->level);
     }
 
-    public function testIsHurtBy() {
+    public function testIsHurtBy()
+    {
         $this->assertGreaterThanOrEqual(0, $this->player->is_hurt_by());
     }
 
-    public function testHealthPercent() {
+    public function testHealthPercent()
+    {
         $this->assertEquals(100, $this->player->health_percent());
     }
 
-    public function testInitialPlayerHealthIsAtLeastBaseConstant(){
+    public function testInitialPlayerHealthIsAtLeastBaseConstant()
+    {
         $this->assertGreaterThanOrEqual(NEW_PLAYER_INITIAL_HEALTH, $this->player->health);
     }
 
-    public function testInitialPlayerStaminaConformsToSettings(){
+    public function testInitialPlayerStaminaConformsToSettings()
+    {
         $expected_stamina = NEW_PLAYER_INITIAL_STATS + (LEVEL_UP_STAT_RAISE * ($this->player->level -1));
         $this->assertGreaterThanOrEqual(NEW_PLAYER_INITIAL_STATS, $expected_stamina);
     }
 
-    public function testInitialPlayerHealthConformsToSettings(){
+    public function testInitialPlayerHealthConformsToSettings()
+    {
         $expected_stamina = NEW_PLAYER_INITIAL_STATS + (LEVEL_UP_STAT_RAISE * ($this->player->level -1));
         $expected_health = NEW_PLAYER_INITIAL_HEALTH+($expected_stamina*Player::HEALTH_PER_STAMINA);
         $expected_stamina = NEW_PLAYER_INITIAL_STATS;
@@ -78,11 +92,12 @@ class PlayerUnitTest extends NWTest {
         $this->assertEquals($expected_health, $this->player->health);
     }
 
-    public function testHealAPlayer(){
+    public function testHealAPlayer()
+    {
         $max_health = $this->player->getMaxHealth();
         $max_harm = 10;
         $max_heal = 5;
-        if($max_harm > $max_health){
+        if ($max_harm > $max_health) {
             throw new LogicException('The max harm is greater than the total max health of players currently!');
         }
 
@@ -91,26 +106,29 @@ class PlayerUnitTest extends NWTest {
         $this->assertEquals($this->player->getMaxHealth()-5, $this->player->health);
     }
 
-    public function testHarmAPlayer(){
+    public function testHarmAPlayer()
+    {
         $this->player->harm(7);
         $this->assertEquals($this->player->getMaxHealth()-7, $this->player->health);
     }
 
-    public function testHarmAPlayerWithMoreHealthThanTheyHave() {
+    public function testHarmAPlayerWithMoreHealthThanTheyHave()
+    {
         $this->player->harm(9999);
         $this->assertEquals(0, $this->player->health);
     }
 
-    public function testMaxHealthCriteriaDoesNotOverFlowBadlyForDeityUses() {
+    public function testMaxHealthCriteriaDoesNotOverFlowBadlyForDeityUses()
+    {
         $this->assertLessThan(200, Player::maxHealthByLevel(3));
     }
 
-    public function testMaxHealthForMaxLevelReturnsAUsefulNumber() {
-        if(LEVEL_UP_HP_RAISE < 1){
+    public function testMaxHealthForMaxLevelReturnsAUsefulNumber()
+    {
+        if (LEVEL_UP_HP_RAISE < 1) {
             // Skip under no-health-raise "communism" configuration
             $this->markTestSkipped();
         }
         $this->assertGreaterThan(1000, Player::maxHealthByLevel(MAX_PLAYER_LEVEL));
     }
-
 }

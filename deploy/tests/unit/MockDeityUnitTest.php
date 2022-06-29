@@ -1,12 +1,15 @@
 <?php
+
 namespace NinjaWars\tests\unit;
 
 use NinjaWars\tests\MockDeity;
 use NinjaWars\tests\MockGameLog;
-use \NWTest;
+use NWTest;
 
-class MockDeityUnitTest extends NWTest {
-    public function testMockDeityFunctions(){
+class MockDeityUnitTest extends NWTest
+{
+    public function testMockDeityFunctions()
+    {
         $logger = new MockGameLog();
         $deity = new MockDeity($logger);
         $increase_ki = $deity->increaseki();
@@ -16,4 +19,3 @@ class MockDeityUnitTest extends NWTest {
         $this->assertTrue((bool)$deity::DEFAULT_REGEN);
     }
 }
-

@@ -1,10 +1,11 @@
 <?php
+
 namespace NinjaWars\core\data;
 
 use NinjaWars\core\data\DatabaseConnection;
 use NinjaWars\core\Filter;
 use NinjaWars\core\data\Player;
-use \PDO;
+use PDO;
 
 /**
  * Player accounts and their info
@@ -26,7 +27,8 @@ use \PDO;
  * @property-read string oauth_provider
  * @property-read int oauth_id
  */
-class Account {
+class Account
+{
     public static $fields = [
         'account_id',
         'account_identity',
@@ -49,10 +51,11 @@ class Account {
     /**
      * Takes raw db column data and sets properties each from the field list
      */
-    public function __construct($data = []) {
+    public function __construct($data = [])
+    {
         $this->info = $data;
 
-        foreach (self::$fields AS $field) {
+        foreach (self::$fields as $field) {
             $this->$field = (isset($data[$field]) ? $data[$field] : null);
         }
     }
@@ -87,8 +90,8 @@ class Account {
             [':identity_email'=>$email_identity]
         );
 
-		return self::findById($account_info['account_id']);
-	}
+        return self::findById($account_info['account_id']);
+    }
 
     /**
      * Get the account that matches an oauth id.
@@ -108,12 +111,12 @@ class Account {
             ]
         );
 
-		if (empty($account_info) || !$account_info['account_id']) {
-			return null;
-		} else {
+        if (empty($account_info) || !$account_info['account_id']) {
+            return null;
+        } else {
             return self::findById($account_info['account_id']);
-		}
-	}
+        }
+    }
 
     /**
      * Get an account for a character
@@ -284,7 +287,7 @@ class Account {
     }
 
     /**
-     * This is the currently sent-to email, whereas the identity becomes 
+     * This is the currently sent-to email, whereas the identity becomes
      * immutably fixed as the signup email
      * @return string
      */
@@ -323,7 +326,7 @@ class Account {
     }
 
     /**
-     * The total karma that the account ever gained, 
+     * The total karma that the account ever gained,
      * though some of the karma may have been spent per player
      * This should only ever increment upwards.
      * @return int
@@ -399,7 +402,7 @@ class Account {
     public function setOauthId($id, $provider = 'facebook'): bool
     {
         $this->oauth_id = $id;
-        if($provider){
+        if ($provider) {
             $this->oauth_provider = $provider;
         }
         return true;
@@ -584,12 +587,12 @@ class Account {
      */
     public function authenticate($password): bool
     {
-		$sql = "SELECT account_id,
+        $sql = "SELECT account_id,
 		    CASE WHEN phash = crypt(:pass, phash) THEN 1 ELSE 0 END AS authenticated
 			FROM accounts
 			WHERE account_id = :account";
-		$result = query($sql, [':account' => $this->id(), ':pass' => $password]);
-		if ($result->rowCount() === 1) {
+        $result = query($sql, [':account' => $this->id(), ':pass' => $password]);
+        if ($result->rowCount() === 1) {
             $row = $result->fetch();
             return (intval($row['authenticated']) === 1);
         } else {
@@ -607,11 +610,11 @@ class Account {
             'select player_id from players p 
             join account_players ap on ap._player_id = p.player_id
             join accounts a on a.account_id = ap._account_id
-            where a.account_id = :aid', 
+            where a.account_id = :aid',
             [':aid'=>[$this->account_id, PDO::PARAM_INT]]
         );
         $ninjas = [];
-        foreach($pcs as $pc){
+        foreach ($pcs as $pc) {
             $ninja = Player::find($pc['player_id']);
             $ninjas[$ninja->name()] = $ninja;
         }
@@ -642,7 +645,7 @@ class Account {
         return $activated;
     }
 
-    /** 
+    /**
      * Deactivate an account by it's player
      */
     public static function deactivateByCharacter(Player $char): int
@@ -660,7 +663,7 @@ class Account {
         return $deactivated;
     }
 
-    /** 
+    /**
      * Reactivate an account by it's player
      */
     public static function reactivateByCharacter(Player $char): int

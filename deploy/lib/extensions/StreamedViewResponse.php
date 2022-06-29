@@ -1,17 +1,20 @@
 <?php
+
 namespace NinjaWars\core\extensions;
 
 use NinjaWars\core\extensions\NWTemplate;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
-class StreamedViewResponse extends StreamedResponse {
+class StreamedViewResponse extends StreamedResponse
+{
     private $title;
     private $template;
     private $data;
     private $options;
 
-    public function __construct($title, $template, $data = [], $options = [], $headers = []) {
+    public function __construct($title, $template, $data = [], $options = [], $headers = [])
+    {
         parent::__construct();
 
         $this->title    = $title;
@@ -19,7 +22,7 @@ class StreamedViewResponse extends StreamedResponse {
         $this->data     = $data;
         $this->options  = $options;
 
-        $this->setCallback(function() use ($title, $template, $data, $options) {
+        $this->setCallback(function () use ($title, $template, $data, $options) {
             $view = new NWTemplate();
             $view->displayPage($template, $title, $data, $options);
         });

@@ -1,4 +1,5 @@
 <?php
+
 namespace NinjaWars\core\control;
 
 use NinjaWars\core\control\AbstractController;
@@ -6,21 +7,23 @@ use NinjaWars\core\extensions\SessionFactory;
 use NinjaWars\core\extensions\StreamedViewResponse;
 use NinjaWars\core\environment\RequestWrapper;
 use NinjaWars\core\data\Quest;
-use \RuntimeException;
+use RuntimeException;
 
 /**
  * Get player quests, accept, and view individual ones, etc.
  * at example urls like /quest and /quest/view/##
  */
-class QuestController extends AbstractController {
-    const ALIVE = false;
-    const PRIV  = false;
+class QuestController extends AbstractController
+{
+    public const ALIVE = false;
+    public const PRIV  = false;
 
     /**
      * Display that list of public quests!
      * @return StreamedViewResponse
      */
-    public function index($p_dependencies){
+    public function index($p_dependencies)
+    {
         $request = RequestWrapper::$request;
         $quest_id = $request->get('quest_id');
         $quest_accepted = $request->get('quest_accepted');
@@ -29,7 +32,7 @@ class QuestController extends AbstractController {
         $tpl = 'quests.tpl';
 
         $parts = [
-            'quests'=>$quests, 
+            'quests'=>$quests,
             ];
 
         return new StreamedViewResponse($title, $tpl, $parts);
@@ -38,7 +41,8 @@ class QuestController extends AbstractController {
     /**
      * Accept posted quest info to create a new quest.
      */
-    public function create($p_dependencies){
+    public function create($p_dependencies)
+    {
         throw new RuntimeException('Creating quests not yet implemented.', 500);
         $post = '';
         $title = 'Create a Quest';
@@ -52,11 +56,12 @@ class QuestController extends AbstractController {
     /**
      * Try to view a single quest
      */
-    public function view($p_dependencies, $qid = null){
+    public function view($p_dependencies, $qid = null)
+    {
         // Hack to get the quest/view/{id}
         $url_part = $_SERVER['REQUEST_URI'];
-        if(preg_match('#\/(\w+)(\/)?$#',$url_part,$matches)){
-            $quest_id=isset($matches[1])? $matches[1] : $qid;
+        if (preg_match('#\/(\w+)(\/)?$#', $url_part, $matches)) {
+            $quest_id=isset($matches[1]) ? $matches[1] : $qid;
         } else {
             $quest_id = $qid;
         }
@@ -66,16 +71,16 @@ class QuestController extends AbstractController {
         $title = 'A Quest';
         $error = null;
 
-        if($quest_id){
-            try{
+        if ($quest_id) {
+            try {
                 $quest = Quest::hydrate_quests([Quest::where('quest_id', $quest_id)->get()]);
-            } catch(\Exception $e){
-                $error = $e->getMessage()? 'There was a problem viewing this quest' : null;
+            } catch (\Exception $e) {
+                $error = $e->getMessage() ? 'There was a problem viewing this quest' : null;
             }
         }
 
         $parts = [
-            'quest'=>$quest, 
+            'quest'=>$quest,
             'quests'=>$quests,
             'error'=>$error,
             ];
@@ -86,11 +91,12 @@ class QuestController extends AbstractController {
     /**
      * accept just wraps a single quest view for now, eventually will make viewer as one of the questors
      */
-    public function accept($p_dependencies){
+    public function accept($p_dependencies)
+    {
         // Hack to get the quest/accept/{id}
         $url_part = $_SERVER['REQUEST_URI'];
-        if(preg_match('#\/(\w+)(\/)?$#',$url_part,$matches)){
-            $in_quest_id=isset($matches[1])? $matches[1] : null;
+        if (preg_match('#\/(\w+)(\/)?$#', $url_part, $matches)) {
+            $in_quest_id=isset($matches[1]) ? $matches[1] : null;
         } else {
             $in_quest_id = null;
         }

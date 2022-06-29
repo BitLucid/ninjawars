@@ -1,4 +1,5 @@
 <?php
+
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use NinjaWars\core\control\AccountController;
@@ -7,10 +8,12 @@ use NinjaWars\core\environment\RequestWrapper;
 use NinjaWars\core\data\Player;
 use NinjaWars\core\data\Account;
 
-class AccountControllerTest extends NWTest {
-	public function setUp():void {
+class AccountControllerTest extends NWTest
+{
+    public function setUp(): void
+    {
         parent::setUp();
-		SessionFactory::init(new MockArraySessionStorage());
+        SessionFactory::init(new MockArraySessionStorage());
         $char_id = TestAccountCreateAndDestroy::char_id();
         $char = Player::find($char_id);
         $account = Account::findByChar($char);
@@ -23,45 +26,52 @@ class AccountControllerTest extends NWTest {
             'account'=>$account,
             'account_id'=>$account_id
         ];
-	}
+    }
 
-	public function tearDown():void {
+    public function tearDown(): void
+    {
         $session = SessionFactory::getSession();
         $session->invalidate();
         unset($this->deps);
         parent::tearDown();
     }
 
-    public function testInstantiation() {
+    public function testInstantiation()
+    {
         $controller = new AccountController();
         $this->assertInstanceOf('NinjaWars\core\control\AccountController', $controller);
     }
 
-    public function testIndexRuns() {
+    public function testIndexRuns()
+    {
         $controller = new AccountController();
         $response = $controller->index($this->deps);
         $this->assertNotEmpty($response);
     }
 
-    public function testChangeEmailFormRuns() {
+    public function testChangeEmailFormRuns()
+    {
         $controller = new AccountController();
         $response = $controller->showChangeEmailForm($this->deps);
         $this->assertNotEmpty($response);
     }
 
-    public function testChangePasswordFormRuns() {
+    public function testChangePasswordFormRuns()
+    {
         $controller = new AccountController();
         $response = $controller->showChangePasswordForm($this->deps);
         $this->assertNotEmpty($response);
     }
 
-    public function testDeleteConfirmationFormRuns() {
+    public function testDeleteConfirmationFormRuns()
+    {
         $controller = new AccountController();
         $response = $controller->deleteAccountConfirmation($this->deps);
         $this->assertNotEmpty($response);
     }
 
-    public function testChangeEmailWithEmptyPassword() {
+    public function testChangeEmailWithEmptyPassword()
+    {
         RequestWrapper::inject(
             new Request([
                 'newemail'     => 'new@localhost',
@@ -79,7 +89,8 @@ class AccountControllerTest extends NWTest {
         $this->assertNotEmpty($response_data['error']);
     }
 
-    public function testChangePasswordWithEmptyPassword() {
+    public function testChangePasswordWithEmptyPassword()
+    {
         RequestWrapper::inject(
             new Request([
                 'newpassw'     => 'newpassword',
@@ -97,7 +108,8 @@ class AccountControllerTest extends NWTest {
         $this->assertNotEmpty($response_data['error']);
     }
 
-    public function testDeleteWithEmptyPassword() {
+    public function testDeleteWithEmptyPassword()
+    {
         RequestWrapper::inject(
             new Request([
                 'passw'        => '',

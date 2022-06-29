@@ -1,11 +1,13 @@
 <?php
+
 namespace NinjaWars\core\data;
 
 use NinjaWars\core\data\DatabaseConnection;
 use Illuminate\Database\Eloquent\Model;
 use NinjaWars\core\data\Player;
 
-class Message extends Model {
+class Message extends Model
+{
     protected $primaryKey = 'message_id'; // Anything other than id
     public $timestamps = false;
     // The non-mass-fillable fields
@@ -24,8 +26,9 @@ class Message extends Model {
     /**
      * Custom initialization of `date` field, since this model only keeps one
      */
-    public static function boot() {
-        static::creating(function($model) {
+    public static function boot()
+    {
+        static::creating(function ($model) {
             $model->date = $model->freshTimestamp();
         });
     }
@@ -33,14 +36,16 @@ class Message extends Model {
     /**
      * Special case method to get the id regardless of what it's actually called in the database
      */
-    public function id() {
+    public function id()
+    {
         return $this->message_id;
     }
 
     /**
      * Send the message to a group of target ids
      */
-    public static function sendToGroup(Player $sender, array $groupTargets, $message, $type) {
+    public static function sendToGroup(Player $sender, array $groupTargets, $message, $type)
+    {
         if (!$sender || !$sender->id()) {
             throw new \Exception('Error: Message sender not set.');
         }
@@ -62,13 +67,14 @@ class Message extends Model {
     /**
      * Get messages to a receiver.
      */
-    public static function findByReceiver(Player $sender, $type=0, $limit=null, $offset=null) {
+    public static function findByReceiver(Player $sender, $type=0, $limit=null, $offset=null)
+    {
         if ($limit !== null && $offset !== null) {
             return self::where([
                 'send_to' => $sender->id(),
                 'type'    => $type
             ])
-            ->leftJoin('players', function($join) {
+            ->leftJoin('players', function ($join) {
                 $join->on('messages.send_from', '=', 'players.player_id');
             })
             ->orderBy('date', 'DESC')
@@ -88,7 +94,7 @@ class Message extends Model {
                 'send_to' => $sender->id(),
                 'type'    => $type
             ])
-            ->leftJoin('players', function($join) {
+            ->leftJoin('players', function ($join) {
                 $join->on('messages.send_from', '=', 'players.player_id');
             })
             ->orderBy('date', 'DESC')
@@ -107,7 +113,8 @@ class Message extends Model {
     /**
      * Get a count of the messages to a receiver.
      */
-    public static function countByReceiver(Player $char, $type=0) {
+    public static function countByReceiver(Player $char, $type=0)
+    {
         return self::where([
             'send_to' => $char->id(),
             'type'    => $type
@@ -117,7 +124,8 @@ class Message extends Model {
     /**
      * Delete personal messages to a receiver.
      */
-    public static function deleteByReceiver(Player $char, $type) {
+    public static function deleteByReceiver(Player $char, $type)
+    {
         return self::where([
             'send_to' => $char->id(),
             'type'    => $type
@@ -127,7 +135,8 @@ class Message extends Model {
     /**
      * mark all messages of a type for a ninja as read
      */
-    public static function markAsRead(Player $char, $type) {
+    public static function markAsRead(Player $char, $type)
+    {
         return self::where([
             'send_to' => $char->id(),
             'type'    => $type
@@ -136,7 +145,8 @@ class Message extends Model {
         ]);
     }
 
-    public static function sendChat($user_id, $msg) {
+    public static function sendChat($user_id, $msg)
+    {
         DatabaseConnection::getInstance();
 
         $msg = trim($msg);
@@ -163,7 +173,8 @@ class Message extends Model {
     /**
      * @return int Number of rows deleted
      */
-    public static function deleteOldMessages() {
+    public static function deleteOldMessages()
+    {
         $statement = query("delete from messages where date < ( now() - '3 months'::interval)");
         return $statement->rowCount();
     }
@@ -171,7 +182,8 @@ class Message extends Model {
     /**
      * Deletes old chat messages.
      */
-    public static function shortenChat($message_limit=800) {
+    public static function shortenChat($message_limit=800)
+    {
         DatabaseConnection::getInstance();
         // Find the latest 800 messages and delete all the rest;
         $deleted = DatabaseConnection::$pdo->prepare("DELETE FROM chat WHERE chat_id NOT IN (SELECT chat_id FROM chat ORDER BY date DESC LIMIT :msg_limit)");

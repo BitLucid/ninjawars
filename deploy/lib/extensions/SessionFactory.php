@@ -1,4 +1,5 @@
 <?php
+
 namespace NinjaWars\core\extensions;
 
 use Symfony\Component\HttpFoundation\Session\Session as SymfonySession;
@@ -8,32 +9,35 @@ use Symfony\Component\HttpFoundation\Session\Session as SymfonySession;
  *
  * @see \Symfony\Component\HttpFoundation\Session\Session
  */
-class SessionFactory {
-	public static $self = null;
+class SessionFactory
+{
+    public static $self = null;
 
-	public static function init(
-		$storage = null,
-		$attributes = null,
-		$flashes = null
-	) {
-		if (self::$self) {
-			return self::$self;
-		} else {
-			self::$self = new SymfonySession(
-				$storage,
-				$attributes,
-				$flashes
-			);
+    public static function init(
+        $storage = null,
+        $attributes = null,
+        $flashes = null
+    ) {
+        if (self::$self) {
+            return self::$self;
+        } else {
+            self::$self = new SymfonySession(
+                $storage,
+                $attributes,
+                $flashes
+            );
 
-			return self::$self;
-		}
-	}
+            return self::$self;
+        }
+    }
 
-	public static function getSession() {
-		return self::init();
-	}
+    public static function getSession()
+    {
+        return self::init();
+    }
 
-    public static function annihilate() {
+    public static function annihilate()
+    {
         if (self::$self) {
             self::$self->invalidate();
         }

@@ -1,4 +1,5 @@
 <?php
+
 namespace NinjaWars\core\control;
 
 use Pimple\Container;
@@ -18,18 +19,19 @@ use NinjaWars\core\environment\RequestWrapper;
 /**
  * Handles displaying npcs and attacking specific npcs
  */
-class NpcController extends AbstractController {
-    const ALIVE                      = true;
-    const PRIV                       = false;
-    const HIGH_TURNS                 = 50;
-    const ITEM_DECREASES_GOLD_DIVISOR = 1.11;
-    const ONI_DAMAGE_CAP             = 20;
-    const RANDOM_ENCOUNTER_DIVISOR   = 400;
-    const SAMURAI_REWARD_DMG         = 100;
-    const ONI_TURN_LOSS              = 10;
-    const ONI_KILL_LOSS              = 1;
-    const MIN_LEVEL_FOR_BOUNTY       = 5;
-    const MAX_LEVEL_FOR_BOUNTY       = 50;
+class NpcController extends AbstractController
+{
+    public const ALIVE                      = true;
+    public const PRIV                       = false;
+    public const HIGH_TURNS                 = 50;
+    public const ITEM_DECREASES_GOLD_DIVISOR = 1.11;
+    public const ONI_DAMAGE_CAP             = 20;
+    public const RANDOM_ENCOUNTER_DIVISOR   = 400;
+    public const SAMURAI_REWARD_DMG         = 100;
+    public const ONI_TURN_LOSS              = 10;
+    public const ONI_KILL_LOSS              = 1;
+    public const MIN_LEVEL_FOR_BOUNTY       = 5;
+    public const MAX_LEVEL_FOR_BOUNTY       = 50;
 
     public static $STEALTH_REMOVING_NPCS = ['samurai', 'oni'];
 
@@ -38,11 +40,12 @@ class NpcController extends AbstractController {
     /**
      * Inject different seed when non-randomness is needed (for testing)
      */
-    public function __construct($options=[]) {
+    public function __construct($options=[])
+    {
         if (isset($options['randomness']) && is_callable($options['randomness'])) {
             $this->randomness = $options['randomness'];
         } else {
-            $this->randomness = function() {
+            $this->randomness = function () {
                 return mt_rand() / mt_getrandmax();
             };
         }
@@ -55,7 +58,8 @@ class NpcController extends AbstractController {
      * Currently only random enc. is an Oni attack! Yay! They take turns and a
      * kill and do a little damage.
      */
-    private function randomEncounter(Player $player) {
+    private function randomEncounter(Player $player)
+    {
         $oni_health_loss  = rand(1, self::ONI_DAMAGE_CAP);
         $multiple_rewards = false;
         $oni_killed       = false;
@@ -101,7 +105,8 @@ class NpcController extends AbstractController {
      * @param Container
      * @return int
      */
-    private function getThiefCounter(Container $p_dependencies) {
+    private function getThiefCounter(Container $p_dependencies)
+    {
         return $p_dependencies['session']->get('thief_counter', 1);
     }
 
@@ -112,7 +117,8 @@ class NpcController extends AbstractController {
      * @param Container
      * @return void
      */
-    private function setThiefCounter($num, Container $p_dependencies) {
+    private function setThiefCounter($num, Container $p_dependencies)
+    {
         $p_dependencies['session']->set('thief_counter', $num);
     }
 
@@ -126,7 +132,8 @@ class NpcController extends AbstractController {
      * If npc gold explicitly set to 0, reward gold will be totally skipped
      * "rich" npcs will have a higher gold minimum
      */
-    private function calcReceivedGold(Npc $npco, $reward_item) {
+    private function calcReceivedGold(Npc $npco, $reward_item)
+    {
         if ($npco->gold() === 0) { // These npcs simply don't give gold.
             return 0;
         }
@@ -148,13 +155,14 @@ class NpcController extends AbstractController {
      * @param Array  $npcs
      * @return array [$npc_template, $combat_data]
      */
-    private function attackAbstractNpc(string $victim, Player $player, array $npcs): array {
+    private function attackAbstractNpc(string $victim, Player $player, array $npcs): array
+    {
         $npc_stats        = $npcs[$victim]; // Pull an npcs individual stats with generic fallbacks.
         $npco             = new Npc($npc_stats); // Construct the npc object.
         $display_name     = (isset($npc_stats['name']) ? $npc_stats['name'] : ucfirst($victim));
         $status_effect    = (isset($npc_stats['status']) ? $npc_stats['status'] : null);
         $reward_item      = (isset($npc_stats['item']) && $npc_stats['item'] ? $npc_stats['item'] : null);
-        $is_quick         = (boolean) ($npco->getSpeed() > $player->getSpeed()); // Beyond basic speed and they see you coming, so show that message.
+        $is_quick         = (bool) ($npco->getSpeed() > $player->getSpeed()); // Beyond basic speed and they see you coming, so show that message.
         $is_weaker        = ($npco->getStrength() * 3) < $player->getStrength(); // Npc much weaker?
         $is_stronger      = ($npco->getStrength()) > ($player->getStrength() * 3); // Npc More than twice as strong?
         $image            = $npc_stats['img'] ?? $npc_stats['full_img'] ?? null;
@@ -259,9 +267,10 @@ class NpcController extends AbstractController {
      * @note
      * Used to be rand(1, 400) === 1
      */
-    private function startRandomEncounter(): bool {
+    private function startRandomEncounter(): bool
+    {
         $randomness = $this->randomness;
-        return (boolean) (ceil($randomness() * self::RANDOM_ENCOUNTER_DIVISOR) == self::RANDOM_ENCOUNTER_DIVISOR);
+        return (bool) (ceil($randomness() * self::RANDOM_ENCOUNTER_DIVISOR) == self::RANDOM_ENCOUNTER_DIVISOR);
     }
 
     /**
@@ -270,7 +279,8 @@ class NpcController extends AbstractController {
      * @param Container
      * @return StreamedViewResponse
      */
-    public function attack(Container $p_dependencies) {
+    public function attack(Container $p_dependencies)
+    {
         $request = RequestWrapper::$request;
 
         $url_part = $request->getRequestUri();
@@ -369,14 +379,15 @@ class NpcController extends AbstractController {
             'ninja'        => $player,
             'npc_template' => $npc_template,
             'attacked'     => 1,
-            'turns'        => $player? $player->turns : null,
+            'turns'        => $player ? $player->turns : null,
             'health'       => $health,
         ];
 
         return new StreamedViewResponse('Battle', 'npc.tpl', $parts + $combat_data, ['quickstat' => 'player']);
     }
 
-    private function attackGuard(Player $player): array {
+    private function attackGuard(Player $player): array
+    {
         $damage = rand(1, $player->getStrength() + 10);
         $herb   = false;
         $gold   = 0;
@@ -413,7 +424,8 @@ class NpcController extends AbstractController {
         ];
     }
 
-    private function attackVillager(Player $player): array {
+    private function attackVillager(Player $player): array
+    {
         $damage        = rand(0, 10);
         $just_villager = rand(0, 20);
         $bounty        = 0;
@@ -451,7 +463,8 @@ class NpcController extends AbstractController {
         ];
     }
 
-    private function attackSamurai(Player $player) {
+    private function attackSamurai(Player $player)
+    {
         $gold         = 0;
         $victory      = false;
         $drop         = false;
@@ -525,7 +538,8 @@ class NpcController extends AbstractController {
     /**
      * Encounter triggered randomly after attacking enough thieves
      */
-    private function attackGroupOfThieves(Player $player) {
+    private function attackGroupOfThieves(Player $player)
+    {
         $damage = rand(50, 150);
         $victory = $player->harm($damage) > 0;
 
@@ -560,7 +574,8 @@ class NpcController extends AbstractController {
     /**
      * Attack merchant
      */
-    private function attackMerchant(Player $player) {
+    private function attackMerchant(Player $player)
+    {
         $damage = rand(15, 35);
         $bounty = 0;
 
@@ -598,7 +613,8 @@ class NpcController extends AbstractController {
     /**
      * Normal attack on a single thief.
      */
-    private function attackNormalThief(Player $player) {
+    private function attackNormalThief(Player $player)
+    {
         $damage = rand(0, 35);  // Damage done
         $gold   = 0;
 
@@ -631,7 +647,8 @@ class NpcController extends AbstractController {
      *
      * @return Array
      */
-    private function npcs() {
+    private function npcs()
+    {
         return [
             'abstract_npcs' => NpcFactory::npcsData(),
             'custom_npcs'   => NpcFactory::customNpcs(),
@@ -644,7 +661,8 @@ class NpcController extends AbstractController {
      * @param Container
      * @return Response
      */
-    public function index(Container $p_dependencies) {
+    public function index(Container $p_dependencies)
+    {
         $all_npcs   = $this->npcs();
         $other_npcs = $all_npcs['abstract_npcs'];
         $npcs       = $all_npcs['custom_npcs'];

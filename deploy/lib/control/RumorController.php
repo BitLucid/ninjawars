@@ -1,4 +1,5 @@
 <?php
+
 namespace NinjaWars\core\control;
 
 use Pimple\Container;
@@ -9,11 +10,13 @@ use NinjaWars\core\extensions\StreamedViewResponse;
 /**
  * Handles the rumors and info displayed by the bathhouse.
  */
-class RumorController extends AbstractController {
-    const ALIVE = false;
-    const PRIV  = false;
+class RumorController extends AbstractController
+{
+    public const ALIVE = false;
+    public const PRIV  = false;
 
-    private function notableDuels($limit=50, $simple_limit=5): array {
+    private function notableDuels($limit=50, $simple_limit=5): array
+    {
         return query_array("(SELECT dueling_log.*, attackers.player_id AS attacker_id, defenders.player_id AS defender_id FROM dueling_log JOIN players AS attackers ON attackers.uname = attacker JOIN players AS defenders ON defender = defenders.uname 
         where (dueling_log.killpoints != 1 OR dueling_log.won is not true) LIMIT :limit)
         UNION
@@ -21,7 +24,8 @@ class RumorController extends AbstractController {
         where (dueling_log.killpoints = 1 AND dueling_log.won is true) ORDER BY id DESC LIMIT :simple_limit);", [':limit'=>$limit, ':simple_limit'=>$simple_limit]);
     }
 
-    public function index(Container $p_dependencies) {
+    public function index(Container $p_dependencies)
+    {
         $stats           = $this->stats();
         $parts           = [
             'stats'          => $stats,
@@ -37,7 +41,8 @@ class RumorController extends AbstractController {
      *
      * @return array
      */
-    private function stats() {
+    private function stats()
+    {
         $stats = [];
         $stats['vicious_killer'] = query_item('SELECT stat_result from past_stats where id = 4');
 

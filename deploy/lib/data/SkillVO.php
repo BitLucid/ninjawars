@@ -1,4 +1,5 @@
 <?php
+
 namespace NinjaWars\core\data;
 
 /*
@@ -7,6 +8,12 @@ namespace NinjaWars\core\data;
  * Essentially this acts as the container for the model's data.
  * @var database_fields
  */
-class SkillVO {
-	public $skill_id, $skill_level, $skill_is_active, $skill_display_name, $skill_internal_name, $skill_type;
+class SkillVO
+{
+    public $skill_id;
+    public $skill_level;
+    public $skill_is_active;
+    public $skill_display_name;
+    public $skill_internal_name;
+    public $skill_type;
 }

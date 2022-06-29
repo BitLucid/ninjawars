@@ -1,11 +1,13 @@
 <?php
+
 use NinjaWars\core\data\Player;
 use NinjaWars\core\data\Account;
 
 /**
  * Library for creating and destroying test-only accounts, for use in their various ways in testing.
  */
-class TestAccountCreateAndDestroy {
+class TestAccountCreateAndDestroy
+{
     public static $test_email = 'testphpunit@example.com';
     public static $alt_test_email = 'testphpunit2@example.com';
     public static $test_password = 'password';
@@ -35,7 +37,8 @@ class TestAccountCreateAndDestroy {
         $active_email = self::$test_email;
         $alt_active_email = self::$alt_test_email;
 
-        query('delete from players where player_id in '.
+        query(
+            'delete from players where player_id in '.
             '(select player_id from players '.
             'left join account_players on _player_id = player_id '.
             'left join accounts on _account_id = account_id '.
@@ -51,7 +54,8 @@ class TestAccountCreateAndDestroy {
             ]
         ); // Delete the players
 
-        query('delete from account_players where _account_id in '.
+        query(
+            'delete from account_players where _account_id in '.
             '(select account_id from accounts '.
             'where active_email = :active_email or account_identity= :ae2 '.
             'or active_email = :alt_active_email '.
@@ -64,7 +68,8 @@ class TestAccountCreateAndDestroy {
             ]
         ); // Delete the account_players linkage.
 
-        $query = query('delete from accounts '.
+        $query = query(
+            'delete from accounts '.
             'where active_email = :active_email or account_identity= :ae2 '.
             'or active_email = :alt_active_email '.
             'or account_identity = :alt_active_email2',
@@ -115,7 +120,7 @@ class TestAccountCreateAndDestroy {
         $ip = (isset($_SERVER['REMOTE_ADDR']) && $_SERVER['REMOTE_ADDR'] ? $_SERVER['REMOTE_ADDR'] : '127.0.0.1');
 
         // Create test user, unconfirmed, whatever the default is for activity.
-        $confirm = rand(1000,9999); //generate confirmation code
+        $confirm = rand(1000, 9999); //generate confirmation code
 
         $class_id = query_item(
             'SELECT class_id FROM class WHERE identity = :class_identity',

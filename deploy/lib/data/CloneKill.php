@@ -1,4 +1,5 @@
 <?php
+
 namespace NinjaWars\core\data;
 
 use NinjaWars\core\data\Player;
@@ -9,41 +10,43 @@ use NinjaWars\core\Filter;
 /**
  * Class to house static methods for killing characters of players with multis
  */
-class CloneKill {
-
-    public static function searchForChar($search){
-        if($search instanceof Player){
+class CloneKill
+{
+    public static function searchForChar($search)
+    {
+        if ($search instanceof Player) {
             return $search;
         }
-        if($search && $search == Filter::toNonNegativeInt($search)){
+        if ($search && $search == Filter::toNonNegativeInt($search)) {
             return Player::find($search);
-        } elseif(is_string($search)){
+        } elseif (is_string($search)) {
             return Player::findByName($search);
         }
         return null;
     }
 
-    public static function canKill($clone1, $clone2) {
+    public static function canKill($clone1, $clone2)
+    {
         // Search for characters matching the criteria
         $char1 = self::searchForChar($clone1);
         $char2 = self::searchForChar($clone2);
 
         // Reject invalid/nonexistent characters
-        if($char1 === null || $char2 === null){
+        if ($char1 === null || $char2 === null) {
             return false;
         }
 
         // Reject same character
-        if($char1->id() == $char2->id()){
+        if ($char1->id() == $char2->id()) {
             return false;
         }
 
         // Don't clone kill admins.
-        if($char1->isAdmin() || $char2->isAdmin()){
+        if ($char1->isAdmin() || $char2->isAdmin()) {
             return false;
         }
         // Reject inactive characters
-        if(!$char1->isActive() || !$char2->isActive()){
+        if (!$char1->isActive() || !$char2->isActive()) {
             return false;
         }
 
@@ -59,12 +62,12 @@ class CloneKill {
         $account2 = Account::findByChar($char2);
 
         // Reject invalid custom ips
-        if(in_array($account1->getLastIp(), $untouchable_ips) || in_array($account2->getLastIp(), $untouchable_ips)){
+        if (in_array($account1->getLastIp(), $untouchable_ips) || in_array($account2->getLastIp(), $untouchable_ips)) {
             return false;
         }
 
         // If characters have the same joint account, and have been logged in recently...
-        if($account1->getLastIp() === $account2->getLastIp()){ // Activity was already tested above.
+        if ($account1->getLastIp() === $account2->getLastIp()) { // Activity was already tested above.
             return true;
         }
 
@@ -75,7 +78,8 @@ class CloneKill {
      * Perform the effects of a clonekill.
      * @return string outcome or false
      */
-    public static function kill(Player $self, Player $clone1, Player $clone2) {
+    public static function kill(Player $self, Player $clone1, Player $clone2)
+    {
         if (self::canKill($clone1, $clone2)) {
             $today = date("F j, Y, g:i a");
             $clone1_health = $clone1->health;

@@ -9,7 +9,6 @@ use NinjaWars\core\data\Api;
 
 class ApiTest extends NWTest
 {
-
     public function setUp(): void
     {
         parent::setUp();

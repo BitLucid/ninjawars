@@ -6,7 +6,7 @@
 
 use Illuminate\Database\Capsule\Manager as Capsule;
 
-$capsule = new Capsule;
+$capsule = new Capsule();
 
 $info = [
     'driver'    => 'pgsql',
@@ -18,15 +18,14 @@ $info = [
 ];
 
 if (DATABASE_USE_HOST) {
-	$info['host'] = DATABASE_HOST;
+    $info['host'] = DATABASE_HOST;
 }
 
 if (DATABASE_USE_PASSWORD) {
-	$info['password'] = DATABASE_PASSWORD;
-
+    $info['password'] = DATABASE_PASSWORD;
 }
 if (DATABASE_USE_PORT) {
-	$info['port'] = DATABASE_PORT;
+    $info['port'] = DATABASE_PORT;
 }
 
 $capsule->addConnection($info);

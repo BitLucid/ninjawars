@@ -1,4 +1,5 @@
 <?php
+
 namespace NinjaWars\core;
 
 use Pimple\Container;
@@ -15,12 +16,13 @@ use NinjaWars\core\environment\RequestWrapper;
  * By default, routes of the form /controller/action are mapped to
  * Controller->action(). Overrides are defined here in the $routes member.
  */
-class Router {
-    const CONTROLLER_NS   = 'NinjaWars\core\control'; /// Namespace for controllers
-    const DEFAULT_ACTION  = 'index';
-    const DEFAULT_COMMAND = 'default';
-    const DEFAULT_ROUTE   = 'homepage';
-    const COMMAND_PARAM   = 'command';
+class Router
+{
+    public const CONTROLLER_NS   = 'NinjaWars\core\control'; /// Namespace for controllers
+    public const DEFAULT_ACTION  = 'index';
+    public const DEFAULT_COMMAND = 'default';
+    public const DEFAULT_ROUTE   = 'homepage';
+    public const COMMAND_PARAM   = 'command';
 
     /**
      * Set during bootstapping by the file routes.php. Routes are defined as a
@@ -49,7 +51,8 @@ class Router {
      *
      * @todo remove the second isServableFile block when an index controller exists
      */
-    public static function route($p_request, $p_dependencies) {
+    public static function route($p_request, $p_dependencies)
+    {
         // split the requested path by slash
         $routeSegments = explode('/', trim($p_request->getPathInfo(), '/'));
 
@@ -98,7 +101,8 @@ class Router {
      *
      * @todo stop supporting ?command=action
      */
-    public static function parseRoute($p_request) {
+    public static function parseRoute($p_request)
+    {
         // split the requested path by slash
         $routeSegments = explode('/', trim($p_request->getPathInfo(), '/'));
 
@@ -134,7 +138,8 @@ class Router {
      * @param string $p_main The token to turn into a classname
      * @return string A fully qualified controller classname
      */
-    public static function buildClassName($p_main) {
+    public static function buildClassName($p_main)
+    {
         return self::CONTROLLER_NS.'\\'.ucfirst($p_main)."Controller";
     }
 
@@ -144,7 +149,8 @@ class Router {
      * @param string $p_main
      * @return string
      */
-    public static function sanitizeRoute($p_main) {
+    public static function sanitizeRoute($p_main)
+    {
         if (stripos($p_main, '.php') === (strlen($p_main) - 4)) {
             $p_main = substr($p_main, 0, -4);
         }
@@ -158,7 +164,8 @@ class Router {
      * @param string $p_main
      * @return string
      */
-    public static function translateRoute($p_main) {
+    public static function translateRoute($p_main)
+    {
         return (isset(self::$controllerAliases[$p_main]) ?
             self::$controllerAliases[$p_main] : $p_main);
     }
@@ -181,7 +188,8 @@ class Router {
      * @todo Throw a specific exception when the command requested is not found
      * @todo Abstract out the rendering of the error screen
      */
-    public static function execute($p_main, $p_command, $p_dependencies) {
+    public static function execute($p_main, $p_command, $p_dependencies)
+    {
         // dynamically define the controller classname
         $controllerClass = self::buildClassName($p_main);
 
@@ -221,7 +229,8 @@ class Router {
      * @param string $p_route The route requested by the user
      * @return boolean
      */
-    public static function isServableFile($p_route) {
+    public static function isServableFile($p_route)
+    {
         return (is_file($p_route) && realpath($p_route) === getcwd().'/'.$p_route);
     }
 
@@ -231,14 +240,16 @@ class Router {
      * @param string $p_mainRoute The 1st-level route requested by the user
      * @return Response
      */
-    public static function serveSimpleRoute($p_mainRoute) {
+    public static function serveSimpleRoute($p_mainRoute)
+    {
         return new StreamedViewResponse(self::$routes[$p_mainRoute]['title'], "$p_mainRoute.tpl");
     }
 
     /**
      * Return 404 and 404 headers
      */
-    public static function respond404() {
+    public static function respond404()
+    {
         header($_SERVER['SERVER_PROTOCOL']." 404 Not Found", true, 404); //.replace = true
         $view = new NWTemplate();
         $view->display('404.tpl');

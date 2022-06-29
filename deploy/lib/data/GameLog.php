@@ -1,4 +1,5 @@
 <?php
+
 namespace NinjaWars\core\data;
 
 use NinjaWars\core\data\DatabaseConnection;
@@ -6,12 +7,13 @@ use NinjaWars\core\data\DatabaseConnection;
 /**
  * Holds game-specific logging functionality
  */
-class GameLog {
-
+class GameLog
+{
     /**
      * Make the gamelog constructable to allow dependency injection of log obj
      */
-    public function __construct(){
+    public function __construct()
+    {
     }
 
     /**
@@ -20,17 +22,19 @@ class GameLog {
      * @param string $log_message
      * @param int    $priority    Simple priority level, higher is more important
      */
-    public function log($log_message, $priority=0){
+    public function log($log_message, $priority=0)
+    {
         $priority = (int) $priority; // Prevent non-int priority levels
         $log_file = LOGS.'game.log';
-        $final_message = date('Y-m-d h:i:sa').' '.($priority>0? "[PRIORITY ".$priority."]" : '').$log_message;
+        $final_message = date('Y-m-d h:i:sa').' '.($priority>0 ? "[PRIORITY ".$priority."]" : '').$log_message;
         return (bool) file_put_contents($log_file, $final_message, FILE_APPEND);
     }
 
     /**
      * Records kills/xp to the levelling_log
      */
-    public static function recordLevelUp($who) {
+    public static function recordLevelUp($who)
+    {
         $amount = 1;
 
         DatabaseConnection::getInstance();
@@ -41,7 +45,7 @@ class GameLog {
         $statement->execute();
         $notYetANewDay = $statement->fetch();  //Throws back a row result if there is a pre-existing record.
 
-        if ($notYetANewDay != NULL) {
+        if ($notYetANewDay != null) {
             //if record already exists.
             $statement = DatabaseConnection::$pdo->prepare("UPDATE levelling_log SET levelling=levelling + :amount WHERE _player_id = :player AND killsdate=now() LIMIT 1");
             $statement->bindValue(':amount', $amount);
@@ -57,11 +61,12 @@ class GameLog {
 
     /**
      * Update the levelling log with the increased kills.
-     * 
+     *
      * TODO: This should become deprecated once kills only increase,
      * though right now resurrects still cost a single kill sometimes.
      */
-    public static function updateLevellingLog($who, $amount) {
+    public static function updateLevellingLog($who, $amount)
+    {
         DatabaseConnection::getInstance();
 
         $amount = (int)$amount;
@@ -83,7 +88,7 @@ class GameLog {
         $statement->execute();
 
         $notYetANewDay = $statement->fetch();  //positive if todays record already exists
-        if ($notYetANewDay != NULL) {
+        if ($notYetANewDay != null) {
             // If an entry already exists, update it.
             $statement = DatabaseConnection::$pdo->prepare("UPDATE levelling_log SET killpoints = killpoints + :amount WHERE _player_id = :player AND killsdate = now() AND killpoints $record_check 0");  //increase killpoints
         } else {
@@ -101,8 +106,8 @@ class GameLog {
     /**
      * Record the kills/xp results of a duel attack by a pc
      */
-    public static function sendLogOfDuel(Player $attacker, Player $defender, bool $won, int $killpoints): bool {
-
+    public static function sendLogOfDuel(Player $attacker, Player $defender, bool $won, int $killpoints): bool
+    {
         DatabaseConnection::getInstance();
         $statement = DatabaseConnection::$pdo->prepare("INSERT INTO dueling_log
             (attacker, defender, won, killpoints) values (:attacker, :defender, :won, :killpoints)");
@@ -121,7 +126,8 @@ class GameLog {
      *
      * @return string The name of the top active player
      */
-    public static function findViciousKiller() {
+    public static function findViciousKiller()
+    {
         $result = DatabaseConnection::$pdo->query('SELECT uname FROM levelling_log JOIN players ON player_id = _player_id WHERE killsdate = cast(now() AS date) GROUP BY uname, killpoints ORDER BY killpoints DESC LIMIT 1');
         return $result->fetchColumn();
     }

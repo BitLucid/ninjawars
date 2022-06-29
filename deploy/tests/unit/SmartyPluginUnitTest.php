@@ -1,4 +1,5 @@
 <?php
+
 require_once(CORE.'/plugins/function.cachebust.php');
 require_once(CORE.'/plugins/modifier.replace_urls.php');
 require_once(CORE.'/plugins/modifier.markdown.php');
@@ -8,34 +9,40 @@ require_once(CORE.'/plugins/modifier.css_classify.php');
 require_once(CORE.'/plugins/modifier.level_label.php');
 require_once(CORE.'/plugins/modifier.to_tags.php');
 
-class SmartyPluginUnitTest extends \PHPUnit\Framework\TestCase {
-    const EXISTING_FILE = '/js/nw.js';
-    const MISSING_FILE = '/js/nw2.js';
-    const MD_TEXT = 'This is [href:https://localhost/|localhost]';
-    const PLAIN_TEXT = 'This is plain';
-    const URL = 'https://localhost.com/go/?query=string';
+class SmartyPluginUnitTest extends \PHPUnit\Framework\TestCase
+{
+    public const EXISTING_FILE = '/js/nw.js';
+    public const MISSING_FILE = '/js/nw2.js';
+    public const MD_TEXT = 'This is [href:https://localhost/|localhost]';
+    public const PLAIN_TEXT = 'This is plain';
+    public const URL = 'https://localhost.com/go/?query=string';
 
-    public function testCachebustPositive() {
+    public function testCachebustPositive()
+    {
         $result = smarty_function_cachebust(['file'=>self::EXISTING_FILE]);
         $this->assertNotEquals(self::EXISTING_FILE, $result);
         $this->assertGreaterThan(strlen(self::EXISTING_FILE), strlen($result));
     }
 
-    public function testCachebustNegative() {
+    public function testCachebustNegative()
+    {
         $this->assertEquals(self::MISSING_FILE, smarty_function_cachebust(['file'=>self::MISSING_FILE]));
     }
 
-    public function testMarkdownPositive() {
+    public function testMarkdownPositive()
+    {
         $result = smarty_modifier_markdown(self::MD_TEXT);
         $this->assertNotEquals(self::MD_TEXT, $result);
         $this->assertGreaterThan(strlen(self::MD_TEXT), strlen($result));
     }
 
-    public function testMarkdownNegative() {
+    public function testMarkdownNegative()
+    {
         $this->assertEquals(self::PLAIN_TEXT, smarty_modifier_markdown(self::PLAIN_TEXT));
     }
 
-    public function testReplaceUrlsPositive() {
+    public function testReplaceUrlsPositive()
+    {
         $testText = 'The main thing '.self::URL.' is this.';
         $result = smarty_modifier_replace_urls($testText);
         $this->assertNotEquals($testText, $result);
@@ -44,23 +51,27 @@ class SmartyPluginUnitTest extends \PHPUnit\Framework\TestCase {
         $this->assertStringContainsString(self::URL, $result);
     }
 
-    public function testReplaceUrlsNegative() {
+    public function testReplaceUrlsNegative()
+    {
         $this->assertEquals(self::PLAIN_TEXT, smarty_modifier_replace_urls(self::PLAIN_TEXT));
     }
-    public function testTurnCostIsInt() {
+    public function testTurnCostIsInt()
+    {
         $this->assertIsInt(smarty_function_getTurnCost(['skillName'=>'kampo']));
     }
 
-    public function testCSSClassifyIsString() {
+    public function testCSSClassifyIsString()
+    {
         $this->assertIsString(smarty_modifier_css_classify('skillName'));
     }
 
-    public function testLevelLabeIsString() {
+    public function testLevelLabeIsString()
+    {
         $this->assertIsString(smarty_modifier_level_label(4));
     }
 
-    public function testHealthPercentIsFloat() {
+    public function testHealthPercentIsFloat()
+    {
         $this->assertIsFloat(smarty_function_health_percent(['level'=>10, 'health'=>10]));
     }
-
 }

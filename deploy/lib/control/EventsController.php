@@ -1,4 +1,5 @@
 <?php
+
 namespace NinjaWars\core\control;
 
 use NinjaWars\core\control\AbstractController;
@@ -11,20 +12,22 @@ use NinjaWars\core\extensions\StreamedViewResponse;
 /**
  * Handle the listing of events
  */
-class EventsController extends AbstractController {
-    const ALIVE = false;
-    const PRIV  = true;
+class EventsController extends AbstractController
+{
+    public const ALIVE = false;
+    public const PRIV  = true;
 
     /**
      * Display the combat/action events and mark them as read when displayed.
      *
      * @return Response
      */
-    public function index() {
-    	$char   = Player::find(SessionFactory::getSession()->get('player_id'));
-		$events = $this->getEvents($char->id(), 300);
+    public function index()
+    {
+        $char   = Player::find(SessionFactory::getSession()->get('player_id'));
+        $events = $this->getEvents($char->id(), 300);
 
-		$this->readEvents($char->id()); // mark events as viewed.
+        $this->readEvents($char->id()); // mark events as viewed.
 
         $parts    = [
             'events'   => $events,
@@ -38,11 +41,12 @@ class EventsController extends AbstractController {
     /**
      * Retrieve events by user
      *
-     * @param int    $user_id 
-     * @param String $limit 
+     * @param int    $user_id
+     * @param String $limit
      * @return array
      */
-    private function getEvents($user_id, $limit=null) {
+    private function getEvents($user_id, $limit=null)
+    {
         $params = [':to' => $user_id];
 
         if ($limit !== null) {
@@ -57,10 +61,11 @@ class EventsController extends AbstractController {
     /**
      * Mark events as read for a given user
      *
-     * @param int $user_id 
+     * @param int $user_id
      * @return void
      */
-    private function readEvents($user_id) {
+    private function readEvents($user_id)
+    {
         DatabaseConnection::getInstance();
         $statement = DatabaseConnection::$pdo->prepare("UPDATE events SET unread = 0 WHERE send_to = :to");
         $statement->bindValue(':to', $user_id);

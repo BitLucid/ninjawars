@@ -1,43 +1,44 @@
 <?php
+
 namespace NinjaWars\core\data;
 
 /**
  * Npcs and Players should both implement this interface.
  */
-interface Character {
+interface Character
+{
+    /**
+     * @return int
+     */
+    public function getStrength();
 
     /**
      * @return int
      */
-    function getStrength();
+    public function getSpeed();
 
     /**
      * @return int
      */
-    function getSpeed();
+    public function getStamina();
 
     /**
      * @return int
      */
-    function getStamina();
+    public function maxDamage(Character $char=null);
 
     /**
      * @return int
      */
-    function maxDamage(Character $char=null);
+    public function damage(Character $char=null);
 
     /**
      * @return int
      */
-    function damage(Character $char=null);
+    public function getHealth();
 
     /**
      * @return int
      */
-    function getHealth();
-
-    /**
-     * @return int
-     */
-    function difficulty();
+    public function difficulty();
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace NinjaWars\core\control;
 
 use Pimple\Container;
@@ -12,16 +13,17 @@ use NinjaWars\core\environment\RequestWrapper;
 /**
  * Handles all user requests for the in-game Doshin Office
  */
-class DoshinController extends AbstractController {
-    const ALIVE          = true;
-    const PRIV           = false;
-    const MAX_BOUNTY     = 5000;
-    const MIN_BRIBE      = 0;
-    const DOSHIN_CUT     = .8;
-    const SAFE_WEALTH    = 1000;
-    const RICH_REDUCTION = .7;
-    const BRIBERY_DIVISOR = 2;
-    const FAILED_BRIBERY_PAIN = .2;
+class DoshinController extends AbstractController
+{
+    public const ALIVE          = true;
+    public const PRIV           = false;
+    public const MAX_BOUNTY     = 5000;
+    public const MIN_BRIBE      = 0;
+    public const DOSHIN_CUT     = .8;
+    public const SAFE_WEALTH    = 1000;
+    public const RICH_REDUCTION = .7;
+    public const BRIBERY_DIVISOR = 2;
+    public const FAILED_BRIBERY_PAIN = .2;
 
     /**
      * Displays the initial Doshin Office view
@@ -30,7 +32,8 @@ class DoshinController extends AbstractController {
      * @param target String (Optional) Pre-load the bounty form with the specified target
      * @return StreamedViewResponse
      */
-    public function index(Container $p_dependencies) {
+    public function index(Container $p_dependencies)
+    {
         $target = RequestWrapper::getPostOrGet('target');
         $authenticated = (bool)$this->getAccountId();
 
@@ -43,7 +46,7 @@ class DoshinController extends AbstractController {
                 'command'   => 'index',
                 'amount'    => 0,
                 'target'    => $target,
-            ], 
+            ],
             $p_dependencies
         );
     }
@@ -58,18 +61,19 @@ class DoshinController extends AbstractController {
      *
      * @TODO simplify the conditional branching
      */
-    public function offerBounty(Container $p_dependencies) {
+    public function offerBounty(Container $p_dependencies)
+    {
         $request    = RequestWrapper::$request;
         $targetName = $request->get('target');
         $char       = $p_dependencies['current_player'];
-        $target     = $targetName !== null? Player::findByName($targetName) : null;
+        $target     = $targetName !== null ? Player::findByName($targetName) : null;
         $amountIn   = $request->get('amount');
         $amount     = (intval($amountIn) !== 0 ? intval($amountIn) : null);
         $quickstat  = false;
         $success    = false;
         $authenticated = ($char !== null);
 
-        if(!$char){
+        if (!$char) {
             $error = 2; // You don't have enough gold.
         } elseif (!$target) {
             $error = 1; // Target not found
@@ -116,7 +120,8 @@ class DoshinController extends AbstractController {
      * @param int $p_offer
      * @return int
      */
-    private static function calculateMaxOffer($p_currentBounty, $p_offer) {
+    private static function calculateMaxOffer($p_currentBounty, $p_offer)
+    {
         // Cap possible bounty amount
         if (($p_currentBounty + $p_offer) > self::MAX_BOUNTY) {
             $amount = (self::MAX_BOUNTY - $p_currentBounty);
@@ -135,7 +140,8 @@ class DoshinController extends AbstractController {
      * @param int    $p_amount
      * @return int
      */
-    private function validateBountyOffer(Player $char, $p_targetId, $p_amount) {
+    private function validateBountyOffer(Player $char, $p_targetId, $p_amount)
+    {
         $error = 0;
         $target = Player::find($p_targetId);
 
@@ -167,7 +173,8 @@ class DoshinController extends AbstractController {
      * @param int       $bribe          The amount to spend on reducing bounty
      * @return StreamedViewResponse
      */
-    public function bribe(Container $p_dependencies) {
+    public function bribe(Container $p_dependencies)
+    {
         $bribe     = intval(RequestWrapper::getPostOrGet('bribe'));
         $char      = Player::findPlayable($this->getAccountId());
         $error     = 0;
@@ -211,7 +218,8 @@ class DoshinController extends AbstractController {
      * @note
      * If the player loses a substantial enough amount, the doshin will actually decrease the bounty.
      */
-    private function doshinAttack(Player $char) {
+    private function doshinAttack(Player $char)
+    {
         $current_bounty = $char->bounty;
         $doshin_takes = floor($char->gold * self::DOSHIN_CUT);
         // If the doshin take a lot of money, they'll
@@ -219,7 +227,7 @@ class DoshinController extends AbstractController {
 
         $bounty_reduction = (int) min(
             $current_bounty,
-            (($doshin_takes > self::SAFE_WEALTH)? $doshin_takes/self::BRIBERY_DIVISOR : 0)
+            (($doshin_takes > self::SAFE_WEALTH) ? $doshin_takes/self::BRIBERY_DIVISOR : 0)
         );
 
         if (0 < $bounty_reduction) {
@@ -244,8 +252,9 @@ class DoshinController extends AbstractController {
      * @param Container $deps  Pass the pimple container
      * @return StreamedViewResponse
      */
-    private function render(array $parts, Container $deps=null): StreamedViewResponse {
-        $char     = $deps? $deps['current_player'] : null;
+    private function render(array $parts, Container $deps=null): StreamedViewResponse
+    {
+        $char     = $deps ? $deps['current_player'] : null;
 
         if (!$char) {
             $char = new Player();

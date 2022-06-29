@@ -7,7 +7,7 @@ use NinjaWars\core\data\DatabaseConnection;
 use NinjaWars\core\data\Enemies;
 use NinjaWars\core\data\Player;
 use NinjaWars\core\data\Message;
-use \PDO;
+use PDO;
 
 /**
  * Api calls
@@ -194,7 +194,7 @@ class Api
         ];
     }
 
-    /** 
+    /**
      * Just count the number of currently active players.
      */
     public function memberCount()

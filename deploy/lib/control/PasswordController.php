@@ -3,6 +3,7 @@
 /**
  * Password resets initialization and communication
  */
+
 namespace NinjaWars\core\control;
 
 use Pimple\Container;
@@ -14,11 +15,12 @@ use NinjaWars\core\data\PasswordResetRequest;
 use NinjaWars\core\data\Account;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use \Nmail;
+use Nmail;
 
-class PasswordController extends AbstractController {
-    const PRIV  = false;
-    const ALIVE = false;
+class PasswordController extends AbstractController
+{
+    public const PRIV  = false;
+    public const ALIVE = false;
 
     /**
      * Private functionality to send out the reset email.
@@ -109,8 +111,8 @@ class PasswordController extends AbstractController {
         }
 
         return new RedirectResponse('/password/?'
-            .($message? 'message='.rawurlencode($message).'&' : '')
-            .($error? 'error='.rawurlencode($error) : ''));
+            .($message ? 'message='.rawurlencode($message).'&' : '')
+            .($error ? 'error='.rawurlencode($error) : ''));
     }
 
     /**
@@ -127,7 +129,7 @@ class PasswordController extends AbstractController {
 
         if (!$req) {
             $error = 'No match for your password reset found or time expired, please request again.';
-            return new RedirectResponse('/password/?'.($error? 'error='.rawurlencode($error) : ''));
+            return new RedirectResponse('/password/?'.($error ? 'error='.rawurlencode($error) : ''));
         } else {
             $account = $req->account();
 

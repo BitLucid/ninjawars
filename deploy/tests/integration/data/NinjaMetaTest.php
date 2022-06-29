@@ -5,7 +5,6 @@ use NinjaWars\core\data\Player;
 
 class NinjaMetaTest extends NWTest
 {
-
     public function setUp(): void
     {
         parent::setUp();

@@ -7,7 +7,7 @@ use NinjaWars\core\extensions\SessionFactory;
 use NinjaWars\core\environment\RequestWrapper;
 use NinjaWars\core\data\Api;
 use Symfony\Component\HttpFoundation\Response;
-use \PDO;
+use PDO;
 
 /**
  * This is a class that provides a jsonP get api via passing in a callback
@@ -15,8 +15,8 @@ use \PDO;
  */
 class ApiController extends AbstractController
 {
-    const ALIVE = false;
-    const PRIV  = false;
+    public const ALIVE = false;
+    public const PRIV  = false;
 
     /**
      * Determine which function to call to get the json for.
