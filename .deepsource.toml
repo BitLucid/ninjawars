@@ -1,20 +1,12 @@
 version = 1
-# configured at https://deepsource.io/gh/NinjaWars
-# and in github secrets
 
-exclude_patterns = [
-    "*.log",
-    "**/deploy/vendor/**",
-    "**/deploy/**/jquery*.js*",
-    "**/deploy/www/js/**/jquery*.js*",
-]
+[[analyzers]]
+name = "secrets"
+enabled = true
 
 [[analyzers]]
 name = "javascript"
 enabled = true
-
-  [analyzers.meta]
-  plugins = ["react"]
 
 [[analyzers]]
 name = "sql"
@@ -28,25 +20,6 @@ enabled = true
 name = "php"
 enabled = true
 
-[[analyzers]]
-name = "secrets"
-enabled = true
-
-[[analyzers]]
-name = "test-coverage"
-enabled = true
-
-[[transformers]]
-name = "prettier"
-enabled = true
-
-[[transformers]]
-name = "yapf"
-enabled = true
-
 [[transformers]]
 name = "php-cs-fixer"
 enabled = true
-
-[analyzers.meta]
-runtime_version = "3.x.x"
