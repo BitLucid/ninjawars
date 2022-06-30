@@ -32,4 +32,22 @@ class NinjaMeta {
             [':player_id'=>$this->char->id()]
         ) ?? null;
     }
+
+    /**
+     * Simplified deactivating of the character, can be easily reverted via login
+     */
+    public function deactivate()
+    {
+        $this->char->active = 0;
+        $this->char->save();
+    }
+
+    /**
+     * Turns the ninja back on/active
+     */
+    public function reactivate()
+    {
+        $this->char->active = 1;
+        $this->char->save();
+    }
 }

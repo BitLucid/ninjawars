@@ -98,6 +98,7 @@ NpcFactory::$data = [
         ],
         'traits'    => [
             'flying',
+            'escaper',
         ]
     ],
     'ushioni'   => [
@@ -107,6 +108,9 @@ NpcFactory::$data = [
         'speed'    => 50,
         'race'     => 'ushioni',
         'img'      => 'ushioni2.jpg',
+        'inventory' => [
+            'shell' => '1',
+        ],
         'traits'   => [
             'horned'
         ]
@@ -122,6 +126,26 @@ NpcFactory::$data = [
         'traits'   => [
             'armored',
             'rich',
+            'defender'
+        ],
+    ],
+    'thief2'          => [
+        'name'      => 'Thief',
+        'strength'  => 17,
+        'stamina'   => 10,
+        'speed'     => 10,
+        'race'      => 'human',
+        'img'       => 'thief.png',
+        'inventory' => [
+            'shuriken' => '1',
+
+        ],
+        'gold'      => 40,
+        'traits'    => [
+            'steals',
+            'escaper',
+            'gang',
+            'defender',
         ],
     ],
 ] + (
@@ -184,25 +208,7 @@ NpcFactory::$data = [
             'traits'     => [
                 'partial_match_strength',
             ],
-        ],
-        'thief2'          => [
-            'name'      => 'Theif',
-            'strength'  => 17,
-            'stamina'   => 10,
-            'speed'     => 10,
-            'race'      => 'human',
-            'img'       => 'thief.png',
-            'inventory' => [
-                'shuriken' => '1',
-
-            ],
-            'gold'      => 40,
-            'traits'    => [
-                'steals',
-                'escaper',
-                'gang',
-            ],
-        ],
+    ],
         'monk'          => [
             'name'      => 'Monk',
             'strength'  => 10,
@@ -260,6 +266,10 @@ NpcFactory::$data = [
             'speed'    => 5,
             'damage'   => 0,
             'race'     => 'bird',
+        'traits'    => [
+            'escaper',
+            'flying',
+        ],
         ],
         'bees'          => [
             'name'     => 'Swarm of Bees',
@@ -284,7 +294,12 @@ NpcFactory::$data = [
             'strength' => 3,
             'speed'    => 25,
             'damage'   => 3,
+        'stamina'  => 3,
             'race'     => 'bird',
+        'traits'    => [
+            'escaper',
+            'flying',
+        ],
         ],
         'kingfisher'    => [
             'name'     => 'Kingfisher',
@@ -293,6 +308,10 @@ NpcFactory::$data = [
             'speed'    => 30,
             'damage'   => 3,
             'race'     => 'bird',
+        'traits'    => [
+            'escaper',
+            'flying',
+        ],
         ],
         'horse'         => [
             'name'     => 'Horse',
