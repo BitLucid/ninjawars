@@ -1,4 +1,5 @@
 <?php
+
 require_once(realpath(__DIR__) . '/resources.php');
 // This file is very raw to be about as simple as possible of an app status check
 ob_start();
@@ -18,8 +19,7 @@ echo $out;
 require(SERVER_ROOT . 'lib/base.inc.php');
 require_once(VENDOR_ROOT . 'autoload.php');
 
-function passfail($passed, $pass, $fail)
-{
+function passfail($passed, $pass, $fail) {
     $messaging = ($passed ? '[PASSING]: Reason ' . $pass : '[FAILING]: Reason ' . $fail);
     echo "$messaging\n";
     return $passed;
