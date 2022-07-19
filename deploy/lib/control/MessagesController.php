@@ -1,4 +1,5 @@
 <?php
+
 namespace NinjaWars\core\control;
 
 use Pimple\Container;
@@ -13,8 +14,8 @@ use NinjaWars\core\extensions\StreamedViewResponse;
 use NinjaWars\core\environment\RequestWrapper;
 
 class MessagesController extends AbstractController {
-    const PRIV  = true;
-    const ALIVE = false;
+    public const PRIV  = true;
+    public const ALIVE = false;
 
     /**
      * Send a private message to a player
@@ -83,7 +84,7 @@ class MessagesController extends AbstractController {
             [
                 'to'            => $request->get('to', ''),
                 'informational' => $request->get('informational'),
-                'has_clan'      => (boolean)Clan::findByMember($ninja),
+                'has_clan'      => (bool)Clan::findByMember($ninja),
                 'current_tab'   => 'messages',
                 'messages'      => Message::findByReceiver($ninja, $type, $limit, $offset),
                 'current_page'  => $page,
@@ -117,7 +118,7 @@ class MessagesController extends AbstractController {
                 'pages'         => ceil($message_count / $limit),
                 'current_page'  => $page,
                 'current_tab'   => 'clan',
-                'has_clan'      => (boolean)Clan::findByMember($ninja),
+                'has_clan'      => (bool)Clan::findByMember($ninja),
             ]
         );
 

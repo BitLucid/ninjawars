@@ -1,4 +1,5 @@
 <?php
+
 namespace NinjaWars\core\data;
 
 use NinjaWars\core\data\DatabaseConnection;
@@ -25,7 +26,7 @@ class Message extends Model {
      * Custom initialization of `date` field, since this model only keeps one
      */
     public static function boot() {
-        static::creating(function($model) {
+        static::creating(function ($model) {
             $model->date = $model->freshTimestamp();
         });
     }
@@ -68,7 +69,7 @@ class Message extends Model {
                 'send_to' => $sender->id(),
                 'type'    => $type
             ])
-            ->leftJoin('players', function($join) {
+            ->leftJoin('players', function ($join) {
                 $join->on('messages.send_from', '=', 'players.player_id');
             })
             ->orderBy('date', 'DESC')
@@ -88,7 +89,7 @@ class Message extends Model {
                 'send_to' => $sender->id(),
                 'type'    => $type
             ])
-            ->leftJoin('players', function($join) {
+            ->leftJoin('players', function ($join) {
                 $join->on('messages.send_from', '=', 'players.player_id');
             })
             ->orderBy('date', 'DESC')

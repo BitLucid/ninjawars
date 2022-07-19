@@ -1,4 +1,5 @@
 <?php
+
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use NinjaWars\core\environment\RequestWrapper;
@@ -12,21 +13,21 @@ class AccountControllerUnitTest extends NWTest {
         $this->controller = new AccountController();
     }
 
-	public function setUp(): void {
+    public function setUp(): void {
         parent::setUp();
         $this->markTestIncomplete('AccountController::render relies on the DB and session.');
-		SessionFactory::init(new MockArraySessionStorage());
+        SessionFactory::init(new MockArraySessionStorage());
 
-		$get = [
-			'command' => 'change'
-		];
+        $get = [
+            'command' => 'change'
+        ];
 
         $request = new Request($get);
 
         RequestWrapper::inject($request); // Pass a request to be used by tests
     }
 
-	public function tearDown(): void {
+    public function tearDown(): void {
         RequestWrapper::destroy();
         $session = SessionFactory::getSession();
         $session->invalidate();
