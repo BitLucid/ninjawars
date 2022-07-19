@@ -110,8 +110,8 @@ class Enemies {
                 ':off'      => [$shift, PDO::PARAM_INT],
             ]
         );
-        $first_enemy = !empty($enemies) ? $enemies[0] ?? null : null;
-        return $first_enemy['player_id'] ? Player::find($first_enemy['player_id']) : null;
+        $first_enemy = !empty($enemies) ? reset($enemies) ?? null : null;
+        return ($first_enemy ?? $first_enemy['player_id']) ? Player::find($first_enemy['player_id']) : null;
     }
 
 
