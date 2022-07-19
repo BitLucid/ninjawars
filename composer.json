@@ -4,7 +4,8 @@
     "license": "proprietary",
     "scripts": {
         "test": "phpunit",
-        "unit-test": "phpunit --testsuite Unit"
+        "unit-test": "phpunit --testsuite Unit",
+        "lint-fix": "tools/php-cs-fixer/vendor/bin/php-cs-fixer fix ./"
     },
     "autoload": {
         "psr-4": {
