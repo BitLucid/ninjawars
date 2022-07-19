@@ -1,4 +1,5 @@
 <?php
+
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use NinjaWars\core\extensions\SessionFactory;
 

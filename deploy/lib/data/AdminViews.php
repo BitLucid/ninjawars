@@ -1,26 +1,30 @@
 <?php
+
 namespace NinjaWars\core\data;
 
 use NinjaWars\core\data\Player;
 use NinjaWars\core\data\Inventory;
-use \InvalidArgumentException;
-use \RuntimeException;
+use InvalidArgumentException;
+use RuntimeException;
 
 /**
  * Sets of admin info
  */
 class AdminViews {
-
     /**
      * Get a sense of who was online recently.
      */
-    public static function recentUsage($limit=30):array{
+    public static function recentUsage($limit=30): array {
         $data = [];
-        $data['recent'] = query_array("select player_id, uname, accounts.last_login from players left join account_players on player_id = _player_id left join accounts on _account_id = account_id where active = 1 and accounts.last_login is not null order by accounts.last_login desc limit :limit", 
-            [':limit'=>$limit]);
+        $data['recent'] = query_array(
+            "select player_id, uname, accounts.last_login from players left join account_players on player_id = _player_id left join accounts on _account_id = account_id where active = 1 and accounts.last_login is not null order by accounts.last_login desc limit :limit",
+            [':limit'=>$limit]
+        );
         $data['recent_count'] = query_item("select count(player_id) from players left join account_players on player_id = _player_id left join accounts on _account_id = account_id where active = 1 and accounts.last_login > (now() - interval '7 days')");
-        $data['new'] = query_array('select player_id, uname, accounts.created_date from players left join account_players on player_id = _player_id left join accounts on _account_id = account_id where active = 1 order by accounts.created_date desc limit :limit', 
-            [':limit'=>$limit]);
+        $data['new'] = query_array(
+            'select player_id, uname, accounts.created_date from players left join account_players on player_id = _player_id left join accounts on _account_id = account_id where active = 1 order by accounts.created_date desc limit :limit',
+            [':limit'=>$limit]
+        );
         $data['new_count'] = query_item("select count(player_id) from players left join account_players on player_id = _player_id left join accounts on _account_id = account_id where active = 1 and accounts.created_date > (now() - interval '7 days')");
         return $data;
     }
@@ -28,8 +32,8 @@ class AdminViews {
     /**
      * Get a list of leaders in an arbitrary column stat on the player table
      */
-    public static function statLeaders($stat, $limit=10):array{
-        if(!ctype_alpha($stat)){
+    public static function statLeaders($stat, $limit=10): array {
+        if (!ctype_alpha($stat)) {
             throw new RuntimeException('Invalid ninjamaster stat to check:[ '.(string)$stat.' ]');
         }
         // Not ideal, but that's the way it is.
@@ -41,7 +45,7 @@ class AdminViews {
     /**
      * Characters with high kills or turns or gold and the like.
      */
-    public static function highRollers():array{
+    public static function highRollers(): array {
         // Select first few max kills from players.
         // Max turns.
         // Max gold.
@@ -59,7 +63,7 @@ class AdminViews {
             'ki'
         ];
         $res = [];
-        foreach($stats as $stat){
+        foreach ($stats as $stat) {
             $res[$stat] = self::statLeaders($stat);
         }
         return $res;
@@ -68,7 +72,7 @@ class AdminViews {
     /**
      * Players at duplicate ips.
      */
-    public static function dupedIps(){
+    public static function dupedIps() {
         $host= gethostname();
         $server_ip = gethostbyname($host);
         // Get name, id, and ip from players, grouped by ip matches
@@ -103,7 +107,7 @@ class AdminViews {
 
         foreach ($ids as $id) {
             $player = $id ? Player::find($id) : null;
-            if(!$player instanceof Player){
+            if (!$player instanceof Player) {
                 throw new InvalidArgumentException('Request to view a character that does not exist.');
             }
             $res[$id] = $player->data();

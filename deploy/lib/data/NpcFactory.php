@@ -1,4 +1,5 @@
 <?php
+
 namespace NinjaWars\core\data;
 
 use NinjaWars\core\data\Npc;
@@ -130,7 +131,7 @@ class NpcFactory {
     public static function allNonTrivialNpcs() {
         $npcs = self::allSortedByDifficulty();
 
-        $nontrivials = array_filter($npcs, function($npc) {
+        $nontrivials = array_filter($npcs, function ($npc) {
             return (bool) ($npc->difficulty() > 0);
         });
 
@@ -145,7 +146,7 @@ class NpcFactory {
     public static function allTrivialNpcs() {
         $npcs = self::allSortedByDifficulty();
 
-        $trivials = array_filter($npcs, function($npc) {
+        $trivials = array_filter($npcs, function ($npc) {
             return (bool) ($npc->difficulty() < 1);
         });
 

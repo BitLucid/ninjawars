@@ -1,19 +1,19 @@
 <?php
+
 namespace NinjaWars\tests\integration\model;
 
 use NinjaWars\core\data\Inventory;
 use NinjaWars\core\data\Player;
-use \TestAccountCreateAndDestroy as TestAccountCreateAndDestroy;
+use TestAccountCreateAndDestroy as TestAccountCreateAndDestroy;
 
 class InventoryTest extends \NWTest {
-    
-    public function setUp():void {
+    public function setUp(): void {
         parent::setUp();
         TestAccountCreateAndDestroy::destroy();
         $this->char = TestAccountCreateAndDestroy::char();
     }
 
-    public function tearDown():void {
+    public function tearDown(): void {
         TestAccountCreateAndDestroy::destroy();
         parent::tearDown();
     }
@@ -28,7 +28,6 @@ class InventoryTest extends \NWTest {
         $count = query_item(
             'select amount from inventory join item on item.item_id = inventory.item_type where owner = :id',
             [':id'=>$this->char->id()]
-
         );
         $this->assertEquals(10, $count);
     }
@@ -58,8 +57,7 @@ class InventoryTest extends \NWTest {
     /**
      * @group Inventory
      */
-    public function testInventoryCanObtainDimMak()
-    {
+    public function testInventoryCanObtainDimMak() {
         $inventory = new Inventory($this->char);
         $inventory->add('dimmak', 1);
         $sorted_inv = Inventory::of($this->char, $sort = 'self');

@@ -1,4 +1,5 @@
 <?php
+
 namespace NinjaWars\core\control;
 
 use Pimple\Container;
@@ -15,15 +16,15 @@ use NinjaWars\core\extensions\StreamedViewResponse;
 use NinjaWars\core\environment\RequestWrapper;
 use NinjaWars\core\extensions\NWLogger;
 use NWError;
-use \PDO;
+use PDO;
 
 /**
  * Display ninja & monsters to potentially pick fights with
  */
 class ConsiderController extends AbstractController {
-    const ALIVE       = false;
-    const PRIV        = false;
-    const ENEMY_LIMIT = 20;
+    public const ALIVE       = false;
+    public const PRIV        = false;
+    public const ENEMY_LIMIT = 20;
 
     /**
      * Show the intial consider page
@@ -65,10 +66,10 @@ class ConsiderController extends AbstractController {
         $skillDAO = new SkillDAO();
 
         // Set up combat and single-use skills
-        if(!$char){
+        if (!$char) {
             $combat_skills = null;
             $targeted_skills = null;
-        }elseif (!$char->isAdmin()) {
+        } elseif (!$char->isAdmin()) {
             // PCs get what is appropriate for their class
             $combat_skills   = $skillDAO->getSkillsByTypeAndClass($char->_class_id, 'combat', $char->level);
             $targeted_skills = $skillDAO->getSkillsByTypeAndClass($char->_class_id, 'targeted', $char->level);
@@ -77,7 +78,7 @@ class ConsiderController extends AbstractController {
             $combat_skills   = $skillDAO->all('combat');
             $targeted_skills = $skillDAO->all('targeted');
         }
-        if($combat_skills instanceof \PDOStatement){
+        if ($combat_skills instanceof \PDOStatement) {
             // Unwrap combat skills
             $combat_skills = $combat_skills->fetchAll(\PDO::FETCH_ASSOC);
         }
@@ -147,7 +148,7 @@ class ConsiderController extends AbstractController {
             $combat_skills   = $skillDAO->all('combat');
             $targeted_skills = $skillDAO->all('targeted');
         }
-        if($combat_skills instanceof \PDOStatement){
+        if ($combat_skills instanceof \PDOStatement) {
             // Unwrap combat skills
             $combat_skills = $combat_skills->fetchAll(\PDO::FETCH_ASSOC);
         }
@@ -178,5 +179,4 @@ class ConsiderController extends AbstractController {
     private function render(array $parts): StreamedViewResponse {
         return new StreamedViewResponse('Fight', 'fight.tpl', $parts, ['quickstat' => false]);
     }
-
 }
