@@ -111,7 +111,8 @@ class Enemies {
             ]
         );
         $first_enemy = !empty($enemies) ? reset($enemies) ?? null : null;
-        return ($first_enemy ?? $first_enemy['player_id']) ? Player::find($first_enemy['player_id']) : null;
+        $target_id = $first_enemy['player_id'] ?? null;
+        return $target_id ? Player::find($target_id) : null;
     }
 
 
