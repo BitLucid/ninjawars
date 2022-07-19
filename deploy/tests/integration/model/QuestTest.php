@@ -1,10 +1,10 @@
 <?php
+
 use NinjaWars\core\data\Quest;
 use NinjaWars\core\data\Player;
 
 class TestQuest extends NWTest {
-
-    public function setUp():void {
+    public function setUp(): void {
         parent::setUp();
         $this->char = TestAccountCreateAndDestroy::char();
 
@@ -20,7 +20,7 @@ class TestQuest extends NWTest {
         $this->quest = new Quest($this->data);
     }
 
-    public function tearDown():void {
+    public function tearDown(): void {
         TestAccountCreateAndDestroy::destroy();
         /*if ($this->quest) {
             //query('delete from quests where quest_id = :id and quest_id > 1', [':id'=>$this->quest->id()]);
@@ -33,7 +33,7 @@ class TestQuest extends NWTest {
         $this->assertTrue($quest instanceof Quest);
     }
 
-    public function testQuestCanBeSaved(){
+    public function testQuestCanBeSaved() {
         $this->markTestIncomplete('Cannot yet save quest models');
         $id = $this->quest->id();
         $this->quest->save();
@@ -44,12 +44,11 @@ class TestQuest extends NWTest {
         $this->assertEquals($copied->karma, $this->quest->karma);
     }
 
-    public function testGettingAPlayerBackFromAQuest(){
+    public function testGettingAPlayerBackFromAQuest() {
         $this->markTestIncomplete('Cannot yet save quest models');
         $id = $this->quest->id();
         $this->quest->save();
         $copiedq = Quest::find($id);
         $this->assertInstanceOf('NinjaWars\core\data\Player', $copiedq->player());
     }
-
 }

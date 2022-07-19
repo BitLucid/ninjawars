@@ -1,10 +1,11 @@
 <?php
+
 namespace NinjaWars\core\control;
 
 use Pimple\Container;
 use NinjaWars\core\control\AbstractController;
 use NinjaWars\core\Filter;
-use \Nmail;
+use Nmail;
 use NinjaWars\core\data\DatabaseConnection;
 use NinjaWars\core\extensions\NWTemplate;
 use NinjaWars\core\extensions\StreamedViewResponse;
@@ -14,8 +15,8 @@ use NinjaWars\core\environment\RequestWrapper;
  * Give assistance to players and proto-players who anonymous users
  */
 class AssistanceController extends AbstractController {
-    const PRIV          = false;
-    const ALIVE         = false;
+    public const PRIV          = false;
+    public const ALIVE         = false;
 
     /**
      * Determines the user information for a certain email.
@@ -30,7 +31,7 @@ class AssistanceController extends AbstractController {
             from accounts LEFT JOIN account_players ON account_id = _account_id
             LEFT JOIN players on _player_id = player_id
             WHERE trim(lower(active_email)) = trim(lower(:email)) limit 1;',
-            array(':email'=>$email)
+            [':email'=>$email]
         );
         return $data;
     }
@@ -46,14 +47,14 @@ class AssistanceController extends AbstractController {
             'level'        => $data['level'],
         ];
 
-        $_from = array(SYSTEM_EMAIL=>SYSTEM_EMAIL_NAME);
+        $_from = [SYSTEM_EMAIL=>SYSTEM_EMAIL_NAME];
         /* additional headers */
-        $_to = array("$email"=>$data['uname']);
+        $_to = ["$email"=>$data['uname']];
         $_subject = 'NinjaWars Account Info Request';
         $_body = (new NWTemplate())->assign($template_vars)->fetch('email.assistance.account.tpl');
         $mail_obj = new Nmail($_to, $_subject, $_body, $_from);
         // *** Set the custom replyto email. ***
-        $mail_obj->setReplyTo(array(SUPPORT_EMAIL=>SUPPORT_EMAIL_NAME));
+        $mail_obj->setReplyTo([SUPPORT_EMAIL=>SUPPORT_EMAIL_NAME]);
         return $mail_obj->send();
     }
 
@@ -74,7 +75,7 @@ class AssistanceController extends AbstractController {
         $_subject = "NinjaWars Account Confirmation Info";
         $_body = (new NWTemplate())->assign($template_vars)->fetch('email.assistance.confirmation.tpl');
         $mail_obj = new Nmail($_to, $_subject, $_body, $_from);
-        $mail_obj->setReplyTo(array(SUPPORT_EMAIL=>SUPPORT_EMAIL_NAME));
+        $mail_obj->setReplyTo([SUPPORT_EMAIL=>SUPPORT_EMAIL_NAME]);
         return $mail_obj->send();
     }
 
@@ -157,7 +158,7 @@ class AssistanceController extends AbstractController {
             status, member, days, players.created_date
             FROM accounts JOIN account_players ON _account_id = account_id
             JOIN players ON _player_id = player_id
-            WHERE account_id = :acctId', array(':acctId'=>$aid));
+            WHERE account_id = :acctId', [':acctId'=>$aid]);
 
         if ($data && count($data)) {
             $check     = $data['verification_number'];
@@ -177,7 +178,7 @@ class AssistanceController extends AbstractController {
             // Confirmation number not null and matches
             // or the admin override was met.
             query('UPDATE accounts SET operational = true, confirmed=1
-                WHERE account_id = :accountID', array(':accountID'=>$aid));
+                WHERE account_id = :accountID', [':accountID'=>$aid]);
 
             $statement = DatabaseConnection::$pdo->prepare(
                 'UPDATE players SET active = 1 WHERE player_id in

@@ -1,4 +1,5 @@
 <?php
+
 namespace NinjaWars\core\control;
 
 use NinjaWars\core\control\AbstractController;
@@ -13,12 +14,12 @@ use NinjaWars\core\environment\RequestWrapper;
  * The controller for effects of a village request and the default index display of the page
  */
 class ChatController extends AbstractController {
-    const ALIVE         = false;
-    const PRIV          = false;
-    const DEFAULT_LIMIT = 200;
-    const FIELD_SIZE    = 40;
-    const MAX_CHATS     = 3000;
-    const MIN_CHATS     = 30;
+    public const ALIVE         = false;
+    public const PRIV          = false;
+    public const DEFAULT_LIMIT = 200;
+    public const FIELD_SIZE    = 40;
+    public const MAX_CHATS     = 3000;
+    public const MIN_CHATS     = 30;
 
     /**
      * Take in a chat and record it to the database.
@@ -38,7 +39,7 @@ class ChatController extends AbstractController {
             }
         }
 
-		return new RedirectResponse('/village/'.($error? '?error='.rawurlencode($error) : ''));
+        return new RedirectResponse('/village/'.($error ? '?error='.rawurlencode($error) : ''));
     }
 
     /**
@@ -69,7 +70,7 @@ class ChatController extends AbstractController {
      * @return Response
      */
     private function render($parts) {
-        return new StreamedViewResponse('Chat Board',  'village.tpl', $parts, [ 'quickstat' => false ]);
+        return new StreamedViewResponse('Chat Board', 'village.tpl', $parts, [ 'quickstat' => false ]);
     }
 
     /**

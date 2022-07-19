@@ -1,11 +1,12 @@
 <?php
+
 namespace NinjaWars\core\data;
 
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 use NinjaWars\core\data\Account;
 use NinjaWars\core\data\Crypto;
-use \Nmail as Nmail;
+use Nmail as Nmail;
 
 /**
  * Model that manipulates the data for a password reset request.
@@ -26,7 +27,7 @@ class PasswordResetRequest extends Model {
      * Custom initialization of `created_at` field, since this model only keeps one
      */
     public static function boot() {
-        static::creating(function($model) {
+        static::creating(function ($model) {
             $model->created_at = $model->freshTimestamp();
         });
     }

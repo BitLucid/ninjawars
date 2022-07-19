@@ -1,4 +1,5 @@
 <?php
+
 namespace NinjaWars\core\control;
 
 use Pimple\Container;
@@ -14,11 +15,11 @@ use NinjaWars\core\environment\RequestWrapper;
  * of the page and initial form
  */
 class WorkController extends AbstractController {
-    const ALIVE = true;
-    const PRIV  = false;
+    public const ALIVE = true;
+    public const PRIV  = false;
 
-    const WORK_MULTIPLIER             = 30;
-    const DEFAULT_RECOMMENDED_TO_WORK = 10;
+    public const WORK_MULTIPLIER             = 30;
+    public const DEFAULT_RECOMMENDED_TO_WORK = 10;
 
     /**
      * Take in a url parameter of work and try to convert it to gold

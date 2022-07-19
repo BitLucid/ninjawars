@@ -1,4 +1,5 @@
 <?php
+
 namespace NinjaWars\core\control;
 
 use Pimple\Container;
@@ -17,10 +18,10 @@ use Symfony\Component\HttpFoundation\Request;
  * To disable class change code: set $classChangeAllowed to boolean false
  */
 class DojoController extends AbstractController {
-    const ALIVE                = false;
-    const PRIV                 = false;
-    const DIM_MAK_COST         = 90; // Cost of acquiring DimMak In turns
-    const CLASS_CHANGE_COST    = 50; // Cost of class change in turns
+    public const ALIVE                = false;
+    public const PRIV                 = false;
+    public const DIM_MAK_COST         = 90; // Cost of acquiring DimMak In turns
+    public const CLASS_CHANGE_COST    = 50; // Cost of class change in turns
 
     /**
      * Default dojo action
@@ -79,7 +80,7 @@ class DojoController extends AbstractController {
      * Get the class and identity data
      *
      */
-    private function getClasses(){
+    private function getClasses() {
         $classes_raw = query_array('select 
                 class_id, 
                 identity, 
@@ -91,7 +92,7 @@ class DojoController extends AbstractController {
                 theme 
                 from class where class_active = true');
         $classes = [];
-        foreach($classes_raw as $class){
+        foreach ($classes_raw as $class) {
             $classes[$class['identity']] = $class;
         }
         unset($class);

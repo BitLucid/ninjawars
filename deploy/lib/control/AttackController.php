@@ -1,4 +1,5 @@
 <?php
+
 namespace NinjaWars\core\control;
 
 use Pimple\Container;
@@ -18,15 +19,15 @@ use NinjaWars\core\environment\RequestWrapper;
  * Handles the processing of results of the attack page
  */
 class AttackController extends AbstractController {
-    const ALIVE                  = true;
-    const PRIV                   = true;
-    const BASE_WRATH_REGAIN      = 2;
-    const DEFAULT_GOLD_MOD       = 0.2;
-    const DUEL_GOLD_MOD          = 0.25;
-    const STEALTH_GOLD_MOD       = 0.1;
-    const STEALTH_STRIKE_COST    = 1;
-    const EVEN_MATCH_KI_REWARD   = 1;
-    const EVEN_MATCH_ROUND_COUNT = 4;
+    public const ALIVE                  = true;
+    public const PRIV                   = true;
+    public const BASE_WRATH_REGAIN      = 2;
+    public const DEFAULT_GOLD_MOD       = 0.2;
+    public const DUEL_GOLD_MOD          = 0.25;
+    public const STEALTH_GOLD_MOD       = 0.1;
+    public const STEALTH_STRIKE_COST    = 1;
+    public const EVEN_MATCH_KI_REWARD   = 1;
+    public const EVEN_MATCH_ROUND_COUNT = 4;
 
     /**
      * @return StreamedViewResponse
@@ -151,7 +152,8 @@ class AttackController extends AbstractController {
                  */
                 if ($options['evade'] && (
                     $attacker->health < ($target->getStrength()*.5) ||
-                    $attacker->health < ($attacker->health*.1))
+                    $attacker->health < ($attacker->health*.1)
+                )
                 ) {
                     break;
                 }

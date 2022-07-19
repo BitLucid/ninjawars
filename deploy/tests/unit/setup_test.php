@@ -1,4 +1,5 @@
 <?php
+
 class SetupTest extends \PHPUnit\Framework\TestCase {
     public function testRequiredConstants() {
         // Main Resources constants

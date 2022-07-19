@@ -1,4 +1,5 @@
 <?php
+
 use NinjaWars\core\data\Player;
 use NinjaWars\core\data\Account;
 use NinjaWars\core\data\CloneKill;
@@ -7,14 +8,14 @@ class CloneKillTest extends NWTest {
     /**
      *
      */
-    function setUp():void{
+    public function setUp(): void {
         parent::setUp();
     }
 
     /**
      * Delete test user.
      */
-    function tearDown():void {
+    public function tearDown(): void {
         TestAccountCreateAndDestroy::purge_test_accounts();
         parent::tearDown();
     }
@@ -24,7 +25,8 @@ class CloneKillTest extends NWTest {
     }
 
     private function syncIps($ip, $char_id, $char_id_2) {
-        query('update accounts set last_ip = :ip '.
+        query(
+            'update accounts set last_ip = :ip '.
             'where account_id in (select account_id from accounts b '.
             'left join account_players on b.account_id = _account_id '.
             'where _player_id is not null and '.

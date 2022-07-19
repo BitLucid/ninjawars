@@ -1,16 +1,17 @@
 <?php
+
 use NinjaWars\core\data\NpcFactory;
 use NinjaWars\core\data\Npc;
 use NinjaWars\core\data\Player;
 
 class NpcUnitTest extends NWTest {
     public function testInstantiatingABlankNpc() {
-        $npc = new Npc(array());
+        $npc = new Npc([]);
         $this->assertTrue($npc instanceof Npc);
     }
 
     public function testBlankNpcHasZeroStrengthPositiveHealth() {
-        $npc = new Npc(array());
+        $npc = new Npc([]);
         $this->assertEquals(0, $npc->getStrength());
         $this->assertGreaterThan(0, $npc->getHealth()); // All npcs should actually get some health!
     }
@@ -35,7 +36,7 @@ class NpcUnitTest extends NWTest {
     }
 
     public function testForExperimentalNpcs() {
-        if(!DEBUG){
+        if (!DEBUG) {
             $this->markTestSkipped();
         }
         $this->assertTrue(array_key_exists('pig', NpcFactory::npcsData()));
@@ -44,7 +45,7 @@ class NpcUnitTest extends NWTest {
     }
 
     public function testBasanNpcWithBaseCreatureRaceWorks() {
-        if(!DEBUG){
+        if (!DEBUG) {
             $this->markTestSkipped();
         }
         $basan = NpcFactory::create('basan'); // Weird cockatrice bird thing, I made it race default creature
@@ -53,7 +54,7 @@ class NpcUnitTest extends NWTest {
     }
 
     public function testNpcListHasLotsOfNpcs() {
-        $min_npcs = defined('DEBUG') && DEBUG? 15 : 8;
+        $min_npcs = defined('DEBUG') && DEBUG ? 15 : 8;
         $this->assertGreaterThan($min_npcs, count(NpcFactory::npcs()));
     }
 
@@ -111,8 +112,8 @@ class NpcUnitTest extends NWTest {
         if (!(defined('DEBUG') && DEBUG)) {
             $this->markTestSkipped();
         } else {
-            $humans = array('peasant2', /*'thief2', */ 'guard2', 'merchant2');
-            foreach($humans as $human){
+            $humans = ['peasant2', /*'thief2', */ 'guard2', 'merchant2'];
+            foreach ($humans as $human) {
                 $this->assertEquals('human', (new Npc($human))->race());
             }
         }
@@ -188,7 +189,7 @@ class NpcUnitTest extends NWTest {
     }
 
 
-    function testThief2DoesStuff() {
+    public function testThief2DoesStuff() {
         if (!DEBUG) {
             $this->markTestSkipped();
         }
@@ -220,22 +221,22 @@ class NpcUnitTest extends NWTest {
         $this->assertLessThan(60, $thief2->difficulty());
     }
 
-    public function testAnNpcHasADifficulty(){
-        if(!DEBUG){
+    public function testAnNpcHasADifficulty() {
+        if (!DEBUG) {
             $this->markTestSkipped();
         }
         $peasant = new Npc('peasant2');
         $this->assertGreaterThan(0, $peasant->difficulty());
     }
 
-    function testNpcDifficultiesAreDifferent() {
+    public function testNpcDifficultiesAreDifferent() {
         $firefly = new Npc('fireflies');
         $tengu = new Npc('tengu');
         $this->assertGreaterThan(0, $tengu->difficulty());
         $this->assertGreaterThan($firefly->difficulty(), $tengu->difficulty());
     }
 
-    function testDefaultRaceForBasanIsCreature() {
+    public function testDefaultRaceForBasanIsCreature() {
         if (!DEBUG) {
             $this->markTestSkipped();
         }
@@ -244,7 +245,7 @@ class NpcUnitTest extends NWTest {
         $this->assertEquals('creature', $npc->race());
     }
 
-    function testGuardsThatMatchStrengthTakeEnemyStrength() {
+    public function testGuardsThatMatchStrengthTakeEnemyStrength() {
         if (!DEBUG) {
             $this->markTestSkipped();
         }
@@ -260,7 +261,7 @@ class NpcUnitTest extends NWTest {
         $this->assertGreaterThan($guard_max_damage, $improved_dam, 'Guard damage should be higher with an enemy that has any strength');
     }
 
-    function testDifficultiesOfDifferentMobsIncreases() {
+    public function testDifficultiesOfDifferentMobsIncreases() {
         if (!DEBUG) {
             $this->markTestSkipped();
         }
