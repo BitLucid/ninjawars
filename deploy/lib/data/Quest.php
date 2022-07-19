@@ -1,4 +1,5 @@
 <?php
+
 namespace NinjaWars\core\data;
 
 use Illuminate\Database\Eloquent\Model;
@@ -21,8 +22,8 @@ use NinjaWars\core\data\Character;
  created_at  | timestamp with time zone | not null default now()
  updated_at  | timestamp with time zone | not null default now()
  deleted_at  | timestamp with time zone | not null
- type        | integer                     | 
- difficulty  | integer 
+ type        | integer                     |
+ difficulty  | integer
 
  * @property int quest_id
  * @property Player player
@@ -48,7 +49,7 @@ class Quest extends Model {
      * @return Player The quest originator/giver
      */
     public function player($id=null) {
-        if(isset($this->player)){
+        if (isset($this->player)) {
             return $this->player;
         } else {
             return $this->player = Player::find($id);
@@ -83,7 +84,7 @@ class Quest extends Model {
      */
     public function save(array $options = []) {
         $player = $this->player($this->_player_id);
-        if($player !== null){
+        if ($player !== null) {
             $this->_player_id = $player->id();
         }
         return parent::save($options);
@@ -93,10 +94,10 @@ class Quest extends Model {
      * Get the quests from the database, undyrated
      * @return array Of quest data
      */
-    public static function get_quests(){
+    public static function get_quests() {
         //$quests = Quest::where('active', 1)->orderBy('created_at', 'desc');
         $quests = [];
-        if(DEBUG){ // While debugging, mock a single quest
+        if (DEBUG) { // While debugging, mock a single quest
             $quests = [
                 [
                 'quest_id'=>1, 'giver'=>'glassbox', 'player_id'=>10, 'title'=>'some quest', 'tags'=>'fake bob jim',
@@ -113,8 +114,8 @@ class Quest extends Model {
      * Decorate the array with additional data
      * @return array $quests_data Replaced with decoded values
      */
-    public static function hydrate_quests(array $quests_data){
-        foreach($quests_data as &$quest){
+    public static function hydrate_quests(array $quests_data) {
+        foreach ($quests_data as &$quest) {
             $quest['rewards'] = json_decode($quest['rewards']);
             // Eventually linkify the tags here.
             $quest['obstacles'] = json_decode($quest['obstacles']);

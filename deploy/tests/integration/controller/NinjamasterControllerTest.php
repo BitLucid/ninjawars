@@ -10,13 +10,13 @@ use NinjaWars\core\extensions\SessionFactory;
 use NinjaWars\core\data\Player;
 
 class NinjamasterControllerTest extends NWTest {
-	function setUp():void {
+    public function setUp(): void {
         parent::setUp();
         // Mock the post request.
-		SessionFactory::init(new MockArraySessionStorage());
-	}
+        SessionFactory::init(new MockArraySessionStorage());
+    }
 
-	function tearDown():void {
+    public function tearDown(): void {
         $session = SessionFactory::getSession();
         $session->invalidate();
         parent::tearDown();
@@ -30,7 +30,7 @@ class NinjamasterControllerTest extends NWTest {
     public function testIndexForAnAdminToEnsureItLoadsAtAll() {
         $cont = new NinjamasterController();
         $player = Player::findByName('tchalvak');
-        if(!$player){
+        if (!$player) {
             $this->markSkippedForMissingDependecy();
         }
         $this->m_dependencies['current_player'] = $player;

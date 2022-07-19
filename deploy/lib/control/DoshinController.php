@@ -1,4 +1,5 @@
 <?php
+
 namespace NinjaWars\core\control;
 
 use Pimple\Container;
@@ -13,15 +14,15 @@ use NinjaWars\core\environment\RequestWrapper;
  * Handles all user requests for the in-game Doshin Office
  */
 class DoshinController extends AbstractController {
-    const ALIVE          = true;
-    const PRIV           = false;
-    const MAX_BOUNTY     = 5000;
-    const MIN_BRIBE      = 0;
-    const DOSHIN_CUT     = .8;
-    const SAFE_WEALTH    = 1000;
-    const RICH_REDUCTION = .7;
-    const BRIBERY_DIVISOR = 2;
-    const FAILED_BRIBERY_PAIN = .2;
+    public const ALIVE          = true;
+    public const PRIV           = false;
+    public const MAX_BOUNTY     = 5000;
+    public const MIN_BRIBE      = 0;
+    public const DOSHIN_CUT     = .8;
+    public const SAFE_WEALTH    = 1000;
+    public const RICH_REDUCTION = .7;
+    public const BRIBERY_DIVISOR = 2;
+    public const FAILED_BRIBERY_PAIN = .2;
 
     /**
      * Displays the initial Doshin Office view
@@ -43,7 +44,7 @@ class DoshinController extends AbstractController {
                 'command'   => 'index',
                 'amount'    => 0,
                 'target'    => $target,
-            ], 
+            ],
             $p_dependencies
         );
     }
@@ -62,14 +63,14 @@ class DoshinController extends AbstractController {
         $request    = RequestWrapper::$request;
         $targetName = $request->get('target');
         $char       = $p_dependencies['current_player'];
-        $target     = $targetName !== null? Player::findByName($targetName) : null;
+        $target     = $targetName !== null ? Player::findByName($targetName) : null;
         $amountIn   = $request->get('amount');
         $amount     = (intval($amountIn) !== 0 ? intval($amountIn) : null);
         $quickstat  = false;
         $success    = false;
         $authenticated = ($char !== null);
 
-        if(!$char){
+        if (!$char) {
             $error = 2; // You don't have enough gold.
         } elseif (!$target) {
             $error = 1; // Target not found
@@ -219,7 +220,7 @@ class DoshinController extends AbstractController {
 
         $bounty_reduction = (int) min(
             $current_bounty,
-            (($doshin_takes > self::SAFE_WEALTH)? $doshin_takes/self::BRIBERY_DIVISOR : 0)
+            (($doshin_takes > self::SAFE_WEALTH) ? $doshin_takes/self::BRIBERY_DIVISOR : 0)
         );
 
         if (0 < $bounty_reduction) {
@@ -245,7 +246,7 @@ class DoshinController extends AbstractController {
      * @return StreamedViewResponse
      */
     private function render(array $parts, Container $deps=null): StreamedViewResponse {
-        $char     = $deps? $deps['current_player'] : null;
+        $char     = $deps ? $deps['current_player'] : null;
 
         if (!$char) {
             $char = new Player();

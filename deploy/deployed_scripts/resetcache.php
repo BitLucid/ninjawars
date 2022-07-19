@@ -15,8 +15,7 @@ require_once(LIB_ROOT . 'environment/bootstrap.php');
 /**
  * Reset the smarty cache
  */
-function template_cache_reset()
-{
+function template_cache_reset() {
     $view = new NWTemplate();
     $view->clearAllCache();
     echo "Smarty cache reset\n";

@@ -4,12 +4,12 @@
  * @return string
  */
 function smarty_modifier_to_tags($str_tags) {
-    $tags = array();
+    $tags = [];
 
     if (strpos($str_tags, ',') !== false) {
         $tags = explode(',', $str_tags);
-    } elseif ( ! empty($str_tags)) {
-        $tags = array($str_tags);
+    } elseif (! empty($str_tags)) {
+        $tags = [$str_tags];
     }
 
     if (empty($tags)) {

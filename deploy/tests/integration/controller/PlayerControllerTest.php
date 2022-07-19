@@ -1,20 +1,21 @@
 <?php
+
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use NinjaWars\core\environment\RequestWrapper;
 use NinjaWars\core\control\PlayerController;
 use NinjaWars\core\extensions\SessionFactory;
-use \Pimple\Container;
+use Pimple\Container;
 
 class PlayerControllerTest extends NWTest {
-	public function setUp():void {
+    public function setUp(): void {
         parent::setUp();
         $this->char = TestAccountCreateAndDestroy::char();
         SessionFactory::init(new MockArraySessionStorage());
         $this->m_dependencies = new Container();
-	}
+    }
 
-	public function tearDown():void {
+    public function tearDown(): void {
         TestAccountCreateAndDestroy::destroy();
         RequestWrapper::inject(new Request([]));
         $session = SessionFactory::getSession();

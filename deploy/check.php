@@ -1,4 +1,5 @@
 <?php
+
 require_once(realpath(__DIR__).'/resources.php');
 require_once(realpath(__DIR__) . '/checkbase.php');
 

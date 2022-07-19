@@ -1,4 +1,5 @@
 <?php
+
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use NinjaWars\core\control\AccountController;
@@ -8,9 +9,9 @@ use NinjaWars\core\data\Player;
 use NinjaWars\core\data\Account;
 
 class AccountControllerTest extends NWTest {
-	public function setUp():void {
+    public function setUp(): void {
         parent::setUp();
-		SessionFactory::init(new MockArraySessionStorage());
+        SessionFactory::init(new MockArraySessionStorage());
         $char_id = TestAccountCreateAndDestroy::char_id();
         $char = Player::find($char_id);
         $account = Account::findByChar($char);
@@ -23,9 +24,9 @@ class AccountControllerTest extends NWTest {
             'account'=>$account,
             'account_id'=>$account_id
         ];
-	}
+    }
 
-	public function tearDown():void {
+    public function tearDown(): void {
         $session = SessionFactory::getSession();
         $session->invalidate();
         unset($this->deps);

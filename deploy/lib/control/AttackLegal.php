@@ -1,10 +1,11 @@
 <?php
+
 namespace NinjaWars\core\control;
 
 use NinjaWars\core\data\Clan;
 use NinjaWars\core\data\Player;
 use NinjaWars\core\data\Account;
-use \Constants;
+use Constants;
 
 /**
  * Validates that all the requirements for attacking are in a legal state.
@@ -52,7 +53,7 @@ class AttackLegal {
      * @param Player $p_target   The target
      * @param array  $params     The further conditions of the attack.
      */
-    public function __construct(Player $p_attacker, Player $p_target, $params = array()) {
+    public function __construct(Player $p_attacker, Player $p_target, $params = []) {
         $this->target   = null;
         $this->error    = null;
         $defaults = ['required_turns'=>null, 'ignores_stealth'=>null, 'self_use'=>null, 'clan_forbidden'=>null];
@@ -81,7 +82,7 @@ class AttackLegal {
      */
     public function sameDomain(Player $target, Player $self): bool {
         // Get all the various ips that shouldn't be matches, and prevent them from being a problem.
-        $server_addr = isset($_SERVER['SERVER_ADDR'])? $_SERVER['SERVER_ADDR'] : null;
+        $server_addr = isset($_SERVER['SERVER_ADDR']) ? $_SERVER['SERVER_ADDR'] : null;
         $host= gethostname();
         $active_ip = gethostbyname($host);
         $allowable = array_merge(['127.0.0.1', $server_addr, $active_ip], Constants::$trusted_proxies);
@@ -137,7 +138,7 @@ class AttackLegal {
      *
      * @return boolean
      */
-    public function iAmDead(): bool{
+    public function iAmDead(): bool {
         return $this->attacker->health < 1;
     }
 
@@ -153,13 +154,13 @@ class AttackLegal {
         // Will also use
         if (!($this->attacker instanceof Player)) {
             $this->error = 'Only Ninja can get close enough to attack.';
-            return FALSE;
-        } elseif (!($this->target instanceof Player)){
+            return false;
+        } elseif (!($this->target instanceof Player)) {
             $this->error = 'No valid target was found.';
-            return FALSE;
-        } elseif ($this->params['required_turns'] === null){
+            return false;
+        } elseif ($this->params['required_turns'] === null) {
             $this->error = 'The required number of turns was not specified.';
-            return FALSE;
+            return false;
         }
 
         $timing_allowed = $this->isOverTimeLimit();

@@ -1,4 +1,5 @@
 <?php
+
 require_once(CORE.'/plugins/function.cachebust.php');
 require_once(CORE.'/plugins/modifier.replace_urls.php');
 require_once(CORE.'/plugins/modifier.markdown.php');
@@ -9,11 +10,11 @@ require_once(CORE.'/plugins/modifier.level_label.php');
 require_once(CORE.'/plugins/modifier.to_tags.php');
 
 class SmartyPluginUnitTest extends \PHPUnit\Framework\TestCase {
-    const EXISTING_FILE = '/js/nw.js';
-    const MISSING_FILE = '/js/nw2.js';
-    const MD_TEXT = 'This is [href:https://localhost/|localhost]';
-    const PLAIN_TEXT = 'This is plain';
-    const URL = 'https://localhost.com/go/?query=string';
+    public const EXISTING_FILE = '/js/nw.js';
+    public const MISSING_FILE = '/js/nw2.js';
+    public const MD_TEXT = 'This is [href:https://localhost/|localhost]';
+    public const PLAIN_TEXT = 'This is plain';
+    public const URL = 'https://localhost.com/go/?query=string';
 
     public function testCachebustPositive() {
         $result = smarty_function_cachebust(['file' => self::EXISTING_FILE]);
@@ -62,5 +63,4 @@ class SmartyPluginUnitTest extends \PHPUnit\Framework\TestCase {
     public function testHealthPercentIsFloat() {
         $this->assertIsFloat(smarty_function_health_percent(['level'=>10, 'health'=>10]));
     }
-
 }

@@ -1,4 +1,5 @@
 <?php
+
 use NinjaWars\core\environment\RequestWrapper;
 
 if (DEBUG) {

@@ -1,4 +1,5 @@
 <?php
+
 namespace NinjaWars\core\control;
 
 use Pimple\Container;
@@ -15,8 +16,8 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
  * Handle updates for changing account password, changing account email and showing the account page
  */
 class AccountController extends AbstractController {
-    const ALIVE = false;
-    const PRIV  = true;
+    public const ALIVE = false;
+    public const PRIV  = true;
 
     /**
      * Show the change email form
@@ -60,7 +61,7 @@ class AccountController extends AbstractController {
 
                 if ($pos_account === null) {
                     try {
-                        if($player === null){
+                        if ($player === null) {
                             throw new \InvalidArgumentException('Not logged in to change email.', 404);
                         }
                         $account = Account::findByChar($player);

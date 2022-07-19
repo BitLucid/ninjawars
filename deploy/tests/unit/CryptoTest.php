@@ -3,7 +3,6 @@
 use NinjaWars\core\data\Crypto;
 
 class CryptoTest extends NWTest {
-
     public function testNonceDoesntEverMatch() {
         $this->assertNotEmpty(Crypto::nonce());
         $i = 30;
