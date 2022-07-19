@@ -1,4 +1,5 @@
 <?php
+
 namespace NinjaWars\core\control;
 
 use NinjaWars\core\control\AbstractController;
@@ -12,8 +13,8 @@ use NinjaWars\core\extensions\StreamedViewResponse;
  * Handle the listing of events
  */
 class EventsController extends AbstractController {
-    const ALIVE = false;
-    const PRIV  = true;
+    public const ALIVE = false;
+    public const PRIV  = true;
 
     /**
      * Display the combat/action events and mark them as read when displayed.
@@ -21,10 +22,10 @@ class EventsController extends AbstractController {
      * @return Response
      */
     public function index() {
-    	$char   = Player::find(SessionFactory::getSession()->get('player_id'));
-		$events = $this->getEvents($char->id(), 300);
+        $char   = Player::find(SessionFactory::getSession()->get('player_id'));
+        $events = $this->getEvents($char->id(), 300);
 
-		$this->readEvents($char->id()); // mark events as viewed.
+        $this->readEvents($char->id()); // mark events as viewed.
 
         $parts    = [
             'events'   => $events,
@@ -38,8 +39,8 @@ class EventsController extends AbstractController {
     /**
      * Retrieve events by user
      *
-     * @param int    $user_id 
-     * @param String $limit 
+     * @param int    $user_id
+     * @param String $limit
      * @return array
      */
     private function getEvents($user_id, $limit=null) {
@@ -57,7 +58,7 @@ class EventsController extends AbstractController {
     /**
      * Mark events as read for a given user
      *
-     * @param int $user_id 
+     * @param int $user_id
      * @return void
      */
     private function readEvents($user_id) {

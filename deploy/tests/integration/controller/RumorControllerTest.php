@@ -1,4 +1,5 @@
 <?php
+
 use NinjaWars\core\control\RumorController;
 
 class RumorControllerTest extends NWTest {

@@ -1,11 +1,12 @@
 <?php
+
 use NinjaWars\core\data\Skill;
 use NinjaWars\core\data\Player;
 
 class SkillUnitTest extends NWTest {
     private $skill;
 
-    public function setUp():void {
+    public function setUp(): void {
         parent::setUp();
         $this->skill = new Skill();
     }
@@ -40,7 +41,7 @@ class SkillUnitTest extends NWTest {
         $this->assertFalse($this->skill->getUsableOnTarget('stealth'));
     }
 
-    public function testStalkingAffectsStats(){
+    public function testStalkingAffectsStats() {
         $pc = new Player();
         $str = $pc->getStrength();
         $speed = $pc->getSpeed();

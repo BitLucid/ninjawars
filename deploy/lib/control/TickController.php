@@ -1,4 +1,5 @@
 <?php
+
 namespace NinjaWars\core\control;
 
 use NinjaWars\core\data\Deity;
@@ -8,14 +9,13 @@ use NinjaWars\tests\MockDeity;
 /**
  * Control the game ticks.
  */
-class TickController{
-
-    const LOG_CHANCE_DIVISOR = 10;
+class TickController {
+    public const LOG_CHANCE_DIVISOR = 10;
 
     private $logger;
-    private $deity; 
+    private $deity;
 
-    public function __construct(GameLog $logger, Deity|MockDeity $deity){
+    public function __construct(GameLog $logger, Deity|MockDeity $deity) {
         $this->logger = $logger;
         $this->deity = $deity;
     }
@@ -23,7 +23,7 @@ class TickController{
     /**
      * Smallest atomic tick
      */
-    public function atomic(){
+    public function atomic() {
         $this->deity->rerank();
         $this->deity->increaseKi();
     }
@@ -31,7 +31,7 @@ class TickController{
     /**
      * Almost the smallest tick
      */
-    public function tiny(){
+    public function tiny() {
         $deity = $this->deity;
         $this->deity->regenCharacters($deity::DEFAULT_REGEN);
 
@@ -54,7 +54,7 @@ class TickController{
     /**
      * half-hour tick
      */
-    public function minor(){
+    public function minor() {
         $this->logger->log("DEITY_MINOR STARTING: ".date(DATE_RFC1036)."\n");
 
         $params = [
@@ -75,7 +75,7 @@ class TickController{
     /**
      * Major/hourly tick
      */
-    public function major(){
+    public function major() {
         $this->logger->log("DEITY_MAJOR STARTING: ".date(DATE_RFC1036)."\n");
 
         $this->deity->computeTime();
@@ -98,7 +98,7 @@ class TickController{
     /**
      * Rare Daily/Nightly tick
      */
-    public function nightly(){
+    public function nightly() {
         $this->logger->log("DEITY_NIGHTLY STARTING: ---- ".date(DATE_RFC1036)." ----\n
             DEITY_NIGHTLY: Deity reset occurred at server date/time: ".date('l jS \of F Y h:i:s A').".\n");
 

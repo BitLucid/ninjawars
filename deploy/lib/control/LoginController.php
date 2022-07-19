@@ -3,6 +3,7 @@
 /**
  * Handle the behavior of setting up the game state after login, as well as checking for trimmed username, etc
  */
+
 namespace NinjaWars\core\control;
 
 use Pimple\Container;
@@ -13,22 +14,21 @@ use NinjaWars\core\environment\RequestWrapper;
 use NinjaWars\core\extensions\SessionFactory;
 use NinjaWars\core\extensions\StreamedViewResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use \Constants;
-use \PDO;
+use Constants;
+use PDO;
 
 /**
  */
 class LoginController extends AbstractController {
-    const ALIVE = false;
-    const PRIV  = false;
+    public const ALIVE = false;
+    public const PRIV  = false;
 
     /**
      * Try to perform a login
      * @param  Container $dependencies
      * @return RedirectResponse
      */
-    public function requestLogin(Container $p_dependencies): RedirectResponse
-    {
+    public function requestLogin(Container $p_dependencies): RedirectResponse {
         $request             = RequestWrapper::$request;
         $login_error_message = $request->get('error'); // Error to display after unsuccessful login and redirection.
         $pass                = $request->request->get('pass');
@@ -53,8 +53,7 @@ class LoginController extends AbstractController {
      * Display standard login page.
      * @return StreamedViewResponse
      */
-    public function index(Container $p_dependencies): StreamedViewResponse | RedirectResponse
-    {
+    public function index(Container $p_dependencies): StreamedViewResponse | RedirectResponse {
         $login_error_message = RequestWrapper::getPostOrGet('error'); // Error to display after unsuccessful login and redirection.
 
         $stored_username = (isset($_COOKIE['username']) ? $_COOKIE['username'] : null);
@@ -86,8 +85,7 @@ class LoginController extends AbstractController {
      * Perform all the login functionality for the login page as requested.
      * @return string
      */
-    public function performLogin(string $username_requested, string $pass): string
-    {
+    public function performLogin(string $username_requested, string $pass): string {
         $request = RequestWrapper::$request;
 
         $user_agent = (isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : null);
@@ -119,8 +117,7 @@ class LoginController extends AbstractController {
     /**
      * Simply store whatever authentication info is passed in.
      */
-    public static function store_auth_attempt(array $info): void
-    {
+    public static function store_auth_attempt(array $info): void {
         // Simply log the attempts in the database.
         $additional_info = null;
 
@@ -159,8 +156,7 @@ class LoginController extends AbstractController {
      *
      * @return array
      */
-    private function loginUser(string $dirty_user, string $p_pass): array
-    {
+    private function loginUser(string $dirty_user, string $p_pass): array {
         $success = false;
         $login_error = 'That password/username combination was incorrect.';
         // Just checks whether the username and password are correct.
@@ -201,8 +197,7 @@ class LoginController extends AbstractController {
      * @param Player  $player
      * @return void
      */
-    private function createGameSession(Account $account, Player $player): void
-    {
+    private function createGameSession(Account $account, Player $player): void {
         $_COOKIE['username'] = $player->name();
 
         $session = SessionFactory::getSession();
@@ -233,8 +228,7 @@ class LoginController extends AbstractController {
      *
      * @return Array
      */
-    private function authenticate(string $dirty_login, string $p_pass, bool $limit_login_attempts = true): array
-    {
+    private function authenticate(string $dirty_login, string $p_pass, bool $limit_login_attempts = true): array {
         $filter_pattern = "/[^\w\d\s_\-\.\@\:\/]/";
         $login          = strtolower(preg_replace($filter_pattern, "", (string)$dirty_login));
         $rate_limit     = false;

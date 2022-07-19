@@ -1,4 +1,5 @@
 <?php
+
 namespace tests\integration\controller;
 
 use NinjaWars\core\data\Npc;
@@ -10,8 +11,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
-use \TestAccountCreateAndDestroy;
-use \NWTest;
+use TestAccountCreateAndDestroy;
+use NWTest;
 
 /**
  * BE AWARE THAT NPCS THAT ARE STRONG ENOUGH (doesn't take much) WILL KILL YOU
@@ -20,17 +21,17 @@ use \NWTest;
  *
  */
 class NpcControllerTest extends NWTest {
-    public function setUp():void {
+    public function setUp(): void {
         parent::setUp();
         $this->char = TestAccountCreateAndDestroy::char();
         SessionFactory::init(new MockArraySessionStorage());
         SessionFactory::getSession()->set('player_id', $this->char->id());
         $this->controller = new NpcController([
-            'randomness' => function(){return 0;}
+            'randomness' => function () {return 0;}
         ]);
     }
 
-    public function tearDown():void {
+    public function tearDown(): void {
         TestAccountCreateAndDestroy::destroy();
         $session = SessionFactory::getSession();
         $session->invalidate();
@@ -50,7 +51,7 @@ class NpcControllerTest extends NWTest {
     public function testControllerGetRandomnessDoesntError() {
         $this->controller = new NpcController([
             'char_id'    => ($this->char->id()),
-            'randomness' => function(){return 0;}
+            'randomness' => function () {return 0;}
         ]);
 
         $response = $this->controller->index($this->m_dependencies);
@@ -172,7 +173,7 @@ class NpcControllerTest extends NWTest {
 
     public function testRandomEncounter() {
         $this->controller = new NpcController([
-            'randomness' => function(){ return 1; }
+            'randomness' => function () { return 1; }
         ]);
 
         RequestWrapper::inject(Request::create('/npc/attack/peasant'));

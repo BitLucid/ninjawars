@@ -1,13 +1,14 @@
 <?php
+
 namespace NinjaWars\core\environment;
 
 use Symfony\Component\HttpFoundation\Request;
-use \Constants;
+use Constants;
 
 /**
  * Creates an API for using a repeatable request and other globals
  */
-class RequestWrapper{
+class RequestWrapper {
     public static $request = null;
 
     /**
@@ -46,7 +47,7 @@ class RequestWrapper{
     /**
      * Get the all the path info after the / of the domain
     **/
-    public static function getPathInfo(){
+    public static function getPathInfo() {
         static::init();
         return static::$request->getPathInfo();
     }

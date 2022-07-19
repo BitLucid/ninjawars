@@ -1,4 +1,5 @@
 <?php
+
 namespace NinjaWars\core\control;
 
 use Pimple\Container;
@@ -19,17 +20,17 @@ use NinjaWars\core\environment\RequestWrapper;
  * Handles displaying npcs and attacking specific npcs
  */
 class NpcController extends AbstractController {
-    const ALIVE                      = true;
-    const PRIV                       = false;
-    const HIGH_TURNS                 = 50;
-    const ITEM_DECREASES_GOLD_DIVISOR = 1.11;
-    const ONI_DAMAGE_CAP             = 20;
-    const RANDOM_ENCOUNTER_DIVISOR   = 400;
-    const SAMURAI_REWARD_DMG         = 100;
-    const ONI_TURN_LOSS              = 10;
-    const ONI_KILL_LOSS              = 1;
-    const MIN_LEVEL_FOR_BOUNTY       = 5;
-    const MAX_LEVEL_FOR_BOUNTY       = 50;
+    public const ALIVE                      = true;
+    public const PRIV                       = false;
+    public const HIGH_TURNS                 = 50;
+    public const ITEM_DECREASES_GOLD_DIVISOR = 1.11;
+    public const ONI_DAMAGE_CAP             = 20;
+    public const RANDOM_ENCOUNTER_DIVISOR   = 400;
+    public const SAMURAI_REWARD_DMG         = 100;
+    public const ONI_TURN_LOSS              = 10;
+    public const ONI_KILL_LOSS              = 1;
+    public const MIN_LEVEL_FOR_BOUNTY       = 5;
+    public const MAX_LEVEL_FOR_BOUNTY       = 50;
 
     public static $STEALTH_REMOVING_NPCS = ['samurai', 'oni'];
 
@@ -42,7 +43,7 @@ class NpcController extends AbstractController {
         if (isset($options['randomness']) && is_callable($options['randomness'])) {
             $this->randomness = $options['randomness'];
         } else {
-            $this->randomness = function() {
+            $this->randomness = function () {
                 return mt_rand() / mt_getrandmax();
             };
         }
@@ -154,7 +155,7 @@ class NpcController extends AbstractController {
         $display_name     = (isset($npc_stats['name']) ? $npc_stats['name'] : ucfirst($victim));
         $status_effect    = (isset($npc_stats['status']) ? $npc_stats['status'] : null);
         $reward_item      = (isset($npc_stats['item']) && $npc_stats['item'] ? $npc_stats['item'] : null);
-        $is_quick         = (boolean) ($npco->getSpeed() > $player->getSpeed()); // Beyond basic speed and they see you coming, so show that message.
+        $is_quick         = (bool) ($npco->getSpeed() > $player->getSpeed()); // Beyond basic speed and they see you coming, so show that message.
         $is_weaker        = ($npco->getStrength() * 3) < $player->getStrength(); // Npc much weaker?
         $is_stronger      = ($npco->getStrength()) > ($player->getStrength() * 3); // Npc More than twice as strong?
         $image            = $npc_stats['img'] ?? $npc_stats['full_img'] ?? null;
@@ -185,7 +186,7 @@ class NpcController extends AbstractController {
             // The ninja survived, they get any gold the npc has.
             $received_gold = $this->calcReceivedGold($npco, (bool) $reward_item);
             $player->setGold($player->gold + $received_gold);
-            $received_items = array();
+            $received_items = [];
 
             if ($kill_npc) {
                 $victory = true;
@@ -261,7 +262,7 @@ class NpcController extends AbstractController {
      */
     private function startRandomEncounter(): bool {
         $randomness = $this->randomness;
-        return (boolean) (ceil($randomness() * self::RANDOM_ENCOUNTER_DIVISOR) == self::RANDOM_ENCOUNTER_DIVISOR);
+        return (bool) (ceil($randomness() * self::RANDOM_ENCOUNTER_DIVISOR) == self::RANDOM_ENCOUNTER_DIVISOR);
     }
 
     /**
@@ -369,7 +370,7 @@ class NpcController extends AbstractController {
             'ninja'        => $player,
             'npc_template' => $npc_template,
             'attacked'     => 1,
-            'turns'        => $player? $player->turns : null,
+            'turns'        => $player ? $player->turns : null,
             'health'       => $health,
         ];
 

@@ -1,4 +1,5 @@
 <?php
+
 // Note that the file has to have a file ending of ...test.php to be run by phpunit
 
 use NinjaWars\core\control\AttackLegal;
@@ -11,14 +12,14 @@ class TestAttackLegal extends NWTest {
     /**
      * group char
      */
-    function setUp():void {
+    public function setUp(): void {
         parent::setUp();
     }
 
     /**
      * group char
      */
-    function tearDown():void {
+    public function tearDown(): void {
         // Delete test user.
         TestAccountCreateAndDestroy::purge_test_accounts();
         parent::tearDown();

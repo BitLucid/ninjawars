@@ -1,4 +1,5 @@
 <?php
+
 namespace NinjaWars\core\data;
 
 use NinjaWars\core\data\NpcFactory;
@@ -12,8 +13,8 @@ use NinjaWars\core\data\Player;
  * Generally they are interacted with from the /enemies page
  */
 class Npc implements Character {
-    const RICH_MIN_GOLD_DIVISOR = 1.3;
-    const MIN_GOLD = 0; // Could become data driven later
+    public const RICH_MIN_GOLD_DIVISOR = 1.3;
+    public const MIN_GOLD = 0; // Could become data driven later
 
     public $traits_array;
     public $name;
@@ -89,7 +90,7 @@ class Npc implements Character {
      */
     public function damage(Character $char = null) {
         // Horned enemies do a little extra damage
-        return rand(0, $this->maxDamage($char)) 
+        return rand(0, $this->maxDamage($char))
             + ($this->hasTrait('horned') ? (int) max(0, floor($this->getStrength()/8)) : 0);
     }
 
@@ -120,7 +121,7 @@ class Npc implements Character {
             + ($horned * 2)
             + ($gang * 2)
             + ($insubstantial * 1)
-            ;
+        ;
     }
 
     /**
@@ -199,7 +200,7 @@ class Npc implements Character {
      */
     public function inventory() {
         if (!isset($this->inventory) && isset($this->inventory_chances) && $this->inventory_chances) {
-            $inv = array();
+            $inv = [];
             foreach ($this->inventory_chances as $item=>$chance) {
                 if ($this->inventory_present($chance)) { // Calculate success from a decimal/float.
                     // Add the item.
