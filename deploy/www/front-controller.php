@@ -1,4 +1,5 @@
 <?php
+
 require_once(dirname(__DIR__.'..').'/lib/base.inc.php');
 
 use Pimple\Container;
@@ -16,12 +17,12 @@ require_once(LIB_ROOT.'environment/bootstrap.php');
 try {
     $container = new Container();
 
-    $container['current_player'] = function($c) {
+    $container['current_player'] = function ($c) {
         $player_id = SessionFactory::getSession()->get('player_id');
         return $player_id ? Player::find($player_id) : null;
     };
 
-    $container['session'] = function($c) {
+    $container['session'] = function ($c) {
         return SessionFactory::getSession();
     };
 

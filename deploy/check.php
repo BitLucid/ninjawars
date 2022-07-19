@@ -1,4 +1,5 @@
 <?php
+
 require_once(realpath(__DIR__).'/resources.php');
 // This file is very raw to be about as simple as possible of an app status check
 ob_start();
@@ -22,8 +23,8 @@ require_once(VENDOR_ROOT.'autoload.php');
 $connected = (bool) query_item('select 1 from players limit 1');
 $is_superuser = (bool) query_item('select usesuper from pg_user where usename = CURRENT_USER;') === true;
 
-function passfail($passed, $pass, $fail){
-    $messaging = ($passed? '[PASSING]: Reason '.$pass : '[FAILING]: Reason '.$fail);
+function passfail($passed, $pass, $fail) {
+    $messaging = ($passed ? '[PASSING]: Reason '.$pass : '[FAILING]: Reason '.$fail);
     echo "$messaging\n";
     return $passed;
 }
@@ -35,4 +36,4 @@ $outcomes = [
     passfail(!$is_superuser, 'Connected to database as appropriate user level', 'Connected as database superuser, you want to connect as a lower permission role')
 ];
 
-return (($outcomes[0] && $outcomes[1] && $outcomes[2])? 0 : 1); // Reversed logic due to linux script return values expected
+return (($outcomes[0] && $outcomes[1] && $outcomes[2]) ? 0 : 1); // Reversed logic due to linux script return values expected

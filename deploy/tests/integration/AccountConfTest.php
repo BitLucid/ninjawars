@@ -1,4 +1,5 @@
 <?php
+
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use NinjaWars\core\extensions\SessionFactory;
 use NinjaWars\core\Filter;
@@ -57,9 +58,9 @@ class TestAccountConfirmation extends NWTest {
     public $test_ninja_id = null;
 
 
-    function setUp():void {
+    public function setUp(): void {
         parent::setUp();
-        $_SERVER['REMOTE_ADDR']=isset($_SERVER['REMOTE_ADDR'])? $_SERVER['REMOTE_ADDR'] : '127.0.0.1';
+        $_SERVER['REMOTE_ADDR']=isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '127.0.0.1';
         $this->test_email = TestAccountCreateAndDestroy::$test_email; // Something@example.com probably
         $this->test_password = TestAccountCreateAndDestroy::$test_password;
         $this->test_ninja_name = TestAccountCreateAndDestroy::$test_ninja_name;
@@ -69,7 +70,7 @@ class TestAccountConfirmation extends NWTest {
     }
 
 
-    function tearDown():void {
+    public function tearDown(): void {
         // Delete test user.
         TestAccountCreateAndDestroy::purge_test_accounts($this->test_ninja_name);
         $session = SessionFactory::getSession();
@@ -79,9 +80,11 @@ class TestAccountConfirmation extends NWTest {
 
     /**
      */
-    function testForNinjaNameValidationErrors() {
-        $this->assertNotEmpty(Account::usernameIsValid('tooooooooooooooolongggggggggggggggggggggggggggggg'),
-            'Username not flagged as too long');
+    public function testForNinjaNameValidationErrors() {
+        $this->assertNotEmpty(
+            Account::usernameIsValid('tooooooooooooooolongggggggggggggggggggggggggggggg'),
+            'Username not flagged as too long'
+        );
         $this->assertNotEmpty(Account::usernameIsValid('st')); // Too short
         $this->assertNotEmpty(Account::usernameIsValid(''));
         $this->assertNotEmpty(Account::usernameIsValid(' '));
@@ -95,7 +98,7 @@ class TestAccountConfirmation extends NWTest {
     }
 
 
-    function testForNinjaThatAccountConfirmationProcessAllowsNinjaNamesOfTheRightFormat() {
+    public function testForNinjaThatAccountConfirmationProcessAllowsNinjaNamesOfTheRightFormat() {
         $this->assertTrue(!(bool)Account::usernameIsValid('tchalvak'), 'Standard all alpha name tchalvak was rejected');
         $this->assertTrue(!(bool)Account::usernameIsValid('Beagle'));
         $this->assertTrue(!(bool)Account::usernameIsValid('Kzqai'));
@@ -132,20 +135,20 @@ class TestAccountConfirmation extends NWTest {
     }
 
 
-    function testThatTestAccountLibActuallyWorksToCreateAndDestroyATestNinja() {
+    public function testThatTestAccountLibActuallyWorksToCreateAndDestroyATestNinja() {
         TestAccountCreateAndDestroy::purge_test_accounts();
         $test_char_id = TestAccountCreateAndDestroy::create_testing_account();
         $this->assertTrue((bool)Filter::toNonNegativeInt($test_char_id));
     }
 
 
-    function testCreateFullAccountConfirmAndReturnAccountId() {
+    public function testCreateFullAccountConfirmAndReturnAccountId() {
         $account_id = TestAccountCreateAndDestroy::create_complete_test_account_and_return_id();
         $this->assertTrue((bool)Filter::toNonNegativeInt($account_id));
     }
 
 
-    function testMakeSureThatNinjaAccountIsOperationalByDefault() {
+    public function testMakeSureThatNinjaAccountIsOperationalByDefault() {
         $ninja_id = $this->test_ninja_id;
         $this->assertTrue(Filter::toNonNegativeInt($ninja_id) > 0);
 
@@ -158,7 +161,7 @@ class TestAccountConfirmation extends NWTest {
     }
 
 
-    function testAttemptLoginOfUnconfirmedAccountShouldFail() {
+    public function testAttemptLoginOfUnconfirmedAccountShouldFail() {
         $email ='noautoconfirm@hotmail.com'; // Create a non-autoconfirmed user
         TestAccountCreateAndDestroy::create_testing_account(false, $email);
 
@@ -169,7 +172,7 @@ class TestAccountConfirmation extends NWTest {
     }
 
 
-    function testConfirmAccount() {
+    public function testConfirmAccount() {
         $player = Player::findByName($this->test_ninja_name);
         $account = Account::findByChar($player);
         $account->confirmed = 1;
@@ -185,7 +188,7 @@ class TestAccountConfirmation extends NWTest {
 
 
 
-    function testLoginConfirmedAccountByName() {
+    public function testLoginConfirmedAccountByName() {
         $player = Player::findByName($this->test_ninja_name);
         $player->active = 1;
         $player->save();
@@ -203,7 +206,7 @@ class TestAccountConfirmation extends NWTest {
         $this->assertEmpty($res, 'Login by ninja name failed for ['.$this->test_ninja_name.'] with password ['.$this->test_password.'] with login error: ['.$res.']');
     }
 
-    function testLoginFailureOnAccountByName(){
+    public function testLoginFailureOnAccountByName() {
         $player = Player::findByName($this->test_ninja_name);
         $player->active = 1;
         $player->save();
@@ -218,7 +221,7 @@ class TestAccountConfirmation extends NWTest {
     }
 
 
-    function testLoginConfirmedAccountByEmail() {
+    public function testLoginConfirmedAccountByEmail() {
         $player = Player::findByName($this->test_ninja_name);
         $player->active = 1;
         $player->save();
@@ -234,7 +237,7 @@ class TestAccountConfirmation extends NWTest {
     }
 
 
-    function testLoginConfirmedAccountWithInactivePlayerSucceeds(){
+    public function testLoginConfirmedAccountWithInactivePlayerSucceeds() {
         $player = Player::findByName($this->test_ninja_name);
         $player->active = 0;
         $player->save();
@@ -250,7 +253,7 @@ class TestAccountConfirmation extends NWTest {
     }
 
 
-    function testPauseAccountAndLoginShouldFail() {
+    public function testPauseAccountAndLoginShouldFail() {
         $player = Player::findByName($this->test_ninja_name);
         $player->active = 1;
         $player->save();
@@ -279,7 +282,7 @@ class TestAccountConfirmation extends NWTest {
     }
 
 
-    function testPreconfirmEmailsReturnRightResultForGmailHotmailAndWildcardEmails(){
+    public function testPreconfirmEmailsReturnRightResultForGmailHotmailAndWildcardEmails() {
         $preconfirm_emails = ['test@gmail.com', 'test@example.com', 'test@russia.com'];
         $no_preconfirm_emails = ['test@hotmail.com', "O'brian@yahoo.com"];
 
@@ -293,7 +296,7 @@ class TestAccountConfirmation extends NWTest {
     }
 
 
-    function testThatAccountConfirmationProcessRejectsNinjaNamesOfTheWrongFormat() {
+    public function testThatAccountConfirmationProcessRejectsNinjaNamesOfTheWrongFormat() {
         // Same requirements as above, here we test that bad names are rejected.
         $bad_names = [
             'xz',

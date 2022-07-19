@@ -1,4 +1,5 @@
 <?php
+
 namespace NinjaWars\core\control;
 
 use Pimple\Container;
@@ -10,7 +11,7 @@ use NinjaWars\core\environment\RequestWrapper;
 use NinjaWars\core\extensions\NWTemplate;
 use NinjaWars\core\extensions\StreamedViewResponse;
 use Symfony\Component\HttpFoundation\Request;
-use \Nmail;
+use Nmail;
 
 /**
  * Implements user actions for creating an account
@@ -21,10 +22,10 @@ use \Nmail;
  * system.
  */
 class SignupController extends AbstractController {
-    const ALIVE    = false;
-    const PRIV     = false;
-    const TEMPLATE = 'signup.tpl';
-    const TITLE    = 'Become a Ninja';
+    public const ALIVE    = false;
+    public const PRIV     = false;
+    public const TEMPLATE = 'signup.tpl';
+    public const TITLE    = 'Become a Ninja';
 
     private $classes;
 
@@ -159,7 +160,7 @@ class SignupController extends AbstractController {
             throw new \RuntimeException('Phase 1 Incomplete: You did not correctly fill out all the necessary information.', 0);
         }
 
-        if($p_request->enteredPass !== Filter::toSimple($p_request->enteredPass)){
+        if ($p_request->enteredPass !== Filter::toSimple($p_request->enteredPass)) {
             throw new \RuntimeException("Sorry, there seem to be some very special non-standard characters in your password that we don't allow.");
         }
 
@@ -236,7 +237,7 @@ class SignupController extends AbstractController {
      */
     private function class_choices() {
         $activeClasses = query_array('SELECT identity, class_name, class_note AS expertise FROM class WHERE class_active');
-        $classes = array();
+        $classes = [];
 
         foreach ($activeClasses as $loopClass) {
             $classes[$loopClass['identity']] = [
@@ -290,7 +291,7 @@ class SignupController extends AbstractController {
      * @return boolean
      */
     private function validate_signup_phase4($enteredClass) {
-        return (boolean)query_item('SELECT identity FROM class WHERE class_active AND identity = :id', array(':id'=>$enteredClass));
+        return (bool)query_item('SELECT identity FROM class WHERE class_active AND identity = :id', [':id'=>$enteredClass]);
     }
 
     /**
@@ -303,13 +304,13 @@ class SignupController extends AbstractController {
         $whitelisted_by = self::getWhitelistedEmails();
 
         // Blacklist only exists because emails beyond the first might not get through if we don't confirm.
-        foreach ($blacklisted_by AS $loop_domain) {
+        foreach ($blacklisted_by as $loop_domain) {
             if (strpos(strtolower($email), $loop_domain) !== false) {
                 return 0;
             }
         }
 
-        foreach ($whitelisted_by AS $loop_domain) {
+        foreach ($whitelisted_by as $loop_domain) {
             if (strpos(strtolower($email), $loop_domain) !== false) {
                 return 1;
             }
@@ -447,7 +448,7 @@ class SignupController extends AbstractController {
     /**
      * Create the account and the initial ninja for that account.
      */
-    private function createAccountAndNinja($params=array()) {
+    private function createAccountAndNinja($params=[]) {
         $confirm = (int) $params['confirm'];
         $ip      = (isset($params['ip']) ? $params['ip'] : null);
 
@@ -470,6 +471,6 @@ class SignupController extends AbstractController {
      * Get the display name from the identity.
      */
     private function classDisplayNameFromIdentity($identity) {
-        return query_item('SELECT class_name from class where identity = :identity', array(':identity'=>$identity));
+        return query_item('SELECT class_name from class where identity = :identity', [':identity'=>$identity]);
     }
 }

@@ -1,9 +1,10 @@
 <?php
+
 namespace NinjaWars\core\data;
 
 use NinjaWars\core\data\Player;
 use Illuminate\Database\Eloquent\Model;
-use \PDO;
+use PDO;
 
 /**
  * Managing items like shuriken, dimmak
@@ -24,12 +25,12 @@ use \PDO;
  * @property-read boolean other_usable
  * @property-read string traits (comma separated)
  */
-class Item extends Model{
+class Item extends Model {
     protected $table = 'item';
     protected $primaryKey = 'item_id';
     protected $guarded = ['item_id', 'created_at'];
 
-    const MIN_DYNAMIC_DAMAGE = 9;
+    public const MIN_DYNAMIC_DAMAGE = 9;
 
     /**
      * Returns not the identity, but the display name
@@ -127,7 +128,7 @@ class Item extends Model{
      * @return void
      */
     public function setIgnoresStealth($p_ignore) {
-        $this->ignore_stealth = (boolean)$p_ignore;
+        $this->ignore_stealth = (bool)$p_ignore;
     }
 
     /**
@@ -211,7 +212,7 @@ class Item extends Model{
      * @return void
      */
     public function setCovert($p_covert) {
-        $this->covert = (boolean)$p_covert;
+        $this->covert = (bool)$p_covert;
     }
 
     /**
@@ -256,7 +257,7 @@ class Item extends Model{
             'FROM effects JOIN item_effects ON _effect_id = effect_id '.
             'WHERE _item_id = :item_id';
         $data = query_array($sel, [':item_id' => [$itemId, PDO::PARAM_INT]]);
-        $res = array();
+        $res = [];
 
         foreach ($data as $effect) {
             $res[strtolower($effect['effect_identity'])] = $effect;
@@ -269,7 +270,7 @@ class Item extends Model{
      * Get an item model by it's identity string.
      * @return Item
      */
-    public static function findByIdentity($identity){
+    public static function findByIdentity($identity) {
         return self::where('item_internal_name', trim(strtolower($identity)))->first();
     }
 }

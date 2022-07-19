@@ -1,4 +1,5 @@
 <?php
+
 // These are the derived resource constants, which can be tracked.
 
 define('VENDOR_ROOT', SERVER_ROOT.'vendor/'); // Composer vendors
@@ -36,20 +37,20 @@ define('GRAVATAR', 1);
 
 // Constants for deity scripts
 define('MIN_PLAYERS_FOR_UNCONFIRM', 500);
-define('MIN_DAYS_FOR_UNCONFIRM',    60);
-define('MAX_PLAYERS_TO_UNCONFIRM',  200);
-define('POISON_DAMAGE',             15);
-define('ONLINE_TIMEOUT',            '70 hours'); // Max time a person is kept online without being active.
-define('TURN_REGEN_PER_TICK',       2);
-define('TURN_REGEN_THRESHOLD',      100);
-define('KI_REGEN_PER_TICK',         1);
-define('KI_REGEN_TIMEOUT',          '6 minutes');
+define('MIN_DAYS_FOR_UNCONFIRM', 60);
+define('MAX_PLAYERS_TO_UNCONFIRM', 200);
+define('POISON_DAMAGE', 15);
+define('ONLINE_TIMEOUT', '70 hours'); // Max time a person is kept online without being active.
+define('TURN_REGEN_PER_TICK', 2);
+define('TURN_REGEN_THRESHOLD', 100);
+define('KI_REGEN_PER_TICK', 1);
+define('KI_REGEN_TIMEOUT', '6 minutes');
 
-define('MINOR_REVIVE_THRESHOLD',    35);
-define('MAJOR_REVIVE_PERCENT',      3);
+define('MINOR_REVIVE_THRESHOLD', 35);
+define('MAJOR_REVIVE_PERCENT', 3);
 
-define('DEITY_LOG_CHANCE_DIVISOR',  60);
+define('DEITY_LOG_CHANCE_DIVISOR', 60);
 
-define('RANK_WEIGHT_LEVEL',      5000);
-define('RANK_WEIGHT_GOLD',       200);
+define('RANK_WEIGHT_LEVEL', 5000);
+define('RANK_WEIGHT_GOLD', 200);
 define('RANK_WEIGHT_INACTIVITY', 200);

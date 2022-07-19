@@ -1,5 +1,7 @@
 <?php
+
 use NinjaWars\core\data\Player;
+
 /**
  * Smarty plugin to wrap player speed calculation
  *

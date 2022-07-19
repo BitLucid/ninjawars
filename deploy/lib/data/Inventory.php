@@ -1,10 +1,11 @@
 <?php
+
 namespace NinjaWars\core\data;
 
 use NinjaWars\core\data\Player;
-use \PDO;
-use \IteratorAggregate;
-use \ArrayIterator;
+use PDO;
+use IteratorAggregate;
+use ArrayIterator;
 
 /**
  * Inventory for characters
@@ -121,10 +122,10 @@ class Inventory implements IteratorAggregate {
      * Get just the item count of a specific item.
      * @return int
      */
-    public function amount(string $identity): int{
+    public function amount(string $identity): int {
         $items_count = $this->counts();
-        foreach($items_count as $item){
-            if($item['item_internal_name'] === $identity){
+        foreach ($items_count as $item) {
+            if ($item['item_internal_name'] === $identity) {
                 return $item['count'];
             }
         }
@@ -135,10 +136,10 @@ class Inventory implements IteratorAggregate {
      * Get the info of a specific item
      * @return array Of info for an item
      */
-    public function infoFor(string $identity): ?array{
+    public function infoFor(string $identity): ?array {
         $items_count = $this->counts();
-        foreach($items_count as $item){
-            if($item['item_internal_name'] === $identity){
+        foreach ($items_count as $item) {
+            if ($item['item_internal_name'] === $identity) {
                 return $item;
             }
         }

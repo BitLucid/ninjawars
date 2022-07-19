@@ -1,4 +1,5 @@
 <?php
+
 use NinjaWars\core\data\Player;
 use NinjaWars\core\Filter;
 use NinjaWars\core\data\Account;
@@ -7,7 +8,7 @@ class CharacterTest extends NWTest {
     private $previous_server_ip = '';
     private $char_id;
 
-    public function setUp():void {
+    public function setUp(): void {
         parent::setUp();
         $this->previous_server_ip = @$_SERVER['REMOTE_ADDR'];
         $this->test_email = TestAccountCreateAndDestroy::$test_email; // Something@example.com
@@ -18,7 +19,7 @@ class CharacterTest extends NWTest {
         $this->char_id = $char_id;
     }
 
-    public function tearDown():void {
+    public function tearDown(): void {
         // Delete test user.
         TestAccountCreateAndDestroy::purge_test_accounts($this->test_ninja_name);
         $_SERVER['REMOTE_ADDR']=$this->previous_server_ip; // Reset remote addr to whatever it was before, just in case.
@@ -36,7 +37,7 @@ class CharacterTest extends NWTest {
         $this->assertTrue((bool)$char->name());
     }
 
-    public function testFindPlayable(){
+    public function testFindPlayable() {
         $pcs_data = Player::findActive(1, false);
         $pc_data = reset($pcs_data);
         $pc = Player::find($pc_data['player_id']);
@@ -45,7 +46,7 @@ class CharacterTest extends NWTest {
         $this->assertEquals($pc->id(), $pc2->id());
     }
 
-    public function testFindPlayableFromInitialChar(){
+    public function testFindPlayableFromInitialChar() {
         $pc = Player::find($this->char_id);
         $acc = Account::findByChar($pc);
         $pc2 = Player::findPlayable($acc->id());
@@ -263,7 +264,7 @@ class CharacterTest extends NWTest {
         $this->assertEquals($char_copy->gold, 343);
     }
 
-    public function testPlayerMaxHealthShouldMatchInitialHealthForTestPlayer(){
+    public function testPlayerMaxHealthShouldMatchInitialHealthForTestPlayer() {
         $char = Player::find($this->char_id);
         $this->assertEquals($char->health, $char->getMaxHealth(), 'Test character created with an invalid max health!');
     }
@@ -392,7 +393,7 @@ class CharacterTest extends NWTest {
         $char->setClass('BANANA');
     }
 
-    public function testSetClassChangesCurrentPCClass(){
+    public function testSetClassChangesCurrentPCClass() {
         $char = Player::find($this->char_id);
         $class = $char->getClassName();
         $char->setClass('Viper');
@@ -419,7 +420,7 @@ class CharacterTest extends NWTest {
         $active = true;
         $count = 0;
 
-        foreach ($result AS $record) {
+        foreach ($result as $record) {
             $active = $active && Player::find($record['player_id'])->active;
             $count++;
         }
@@ -427,5 +428,4 @@ class CharacterTest extends NWTest {
         $this->assertTrue($active);
         $this->assertLessThan(6, $count);
     }
-
 }

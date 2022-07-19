@@ -1,4 +1,5 @@
 <?php
+
 namespace NinjaWars\core\control;
 
 use Pimple\Container;
@@ -21,8 +22,7 @@ abstract class AbstractController {
      * @return string
      * @TODO this whole thing should be factored out.
      */
-    public function validate(Container $p_dependencies): string | null
-    {
+    public function validate(Container $p_dependencies): string | null {
         $error_type  = null;
         $player = $p_dependencies['current_player'];
 
@@ -39,8 +39,7 @@ abstract class AbstractController {
         return $error_type;
     }
 
-    public function renderDefaultError($error_type = "default"): StreamedViewResponse
-    {
+    public function renderDefaultError($error_type = "default"): StreamedViewResponse {
         return new StreamedViewResponse('There is an obstacle to your progress...', 'error.tpl', ['error_type' => $error_type], []);
     }
 
@@ -48,7 +47,7 @@ abstract class AbstractController {
      * Get the current account_id from the session, if any
      * @return int|null
      */
-    public function getAccountId(){
+    public function getAccountId() {
         return SessionFactory::getSession()->get('account_id');
     }
 }

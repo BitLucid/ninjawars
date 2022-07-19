@@ -1,4 +1,5 @@
 <?php
+
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use NinjaWars\core\environment\RequestWrapper;
@@ -10,21 +11,21 @@ class DojoControllerTest extends NWTest {
     private $controller;
     private $char_id;
 
-	public function setUp():void {
+    public function setUp(): void {
         parent::setUp();
         $this->controller = new DojoController();
         // Mock the post request.
         $request = new Request([], []);
         RequestWrapper::inject($request);
-		$this->char_id = TestAccountCreateAndDestroy::create_testing_account();
-		$session = SessionFactory::init(new MockArraySessionStorage());
+        $this->char_id = TestAccountCreateAndDestroy::create_testing_account();
+        $session = SessionFactory::init(new MockArraySessionStorage());
         $session->set('player_id', $this->char_id);
         $session->set('account_id', $this->char_id);
-	}
+    }
 
     /**
      */
-	public function tearDown():void {
+    public function tearDown(): void {
         RequestWrapper::inject(new Request([]));
         $session = SessionFactory::getSession();
         $session->invalidate();
@@ -136,5 +137,4 @@ class DojoControllerTest extends NWTest {
         $session->invalidate();
         $this->assertNotEmpty($this->controller->changeClass($this->m_dependencies));
     }
-
 }

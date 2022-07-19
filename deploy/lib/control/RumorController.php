@@ -1,4 +1,5 @@
 <?php
+
 namespace NinjaWars\core\control;
 
 use Pimple\Container;
@@ -10,8 +11,8 @@ use NinjaWars\core\extensions\StreamedViewResponse;
  * Handles the rumors and info displayed by the bathhouse.
  */
 class RumorController extends AbstractController {
-    const ALIVE = false;
-    const PRIV  = false;
+    public const ALIVE = false;
+    public const PRIV  = false;
 
     private function notableDuels($limit=50, $simple_limit=5): array {
         return query_array("(SELECT dueling_log.*, attackers.player_id AS attacker_id, defenders.player_id AS defender_id FROM dueling_log JOIN players AS attackers ON attackers.uname = attacker JOIN players AS defenders ON defender = defenders.uname 

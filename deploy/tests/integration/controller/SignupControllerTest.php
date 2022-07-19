@@ -1,4 +1,5 @@
 <?php
+
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use NinjaWars\core\data\Account;
@@ -12,14 +13,14 @@ class SignupControllerTest extends NWTest {
     private $fake_email = 'new@local.host';
     private $fake_user = 'signup-test-user';
 
-	public function setUp():void {
+    public function setUp(): void {
         parent::setUp();
-		SessionFactory::init(new MockArraySessionStorage());
+        SessionFactory::init(new MockArraySessionStorage());
         $this->char_id = TestAccountCreateAndDestroy::create_testing_account($this->fake_user);
-		SessionFactory::getSession()->set('player_id', $this->char_id);
-	}
+        SessionFactory::getSession()->set('player_id', $this->char_id);
+    }
 
-	public function tearDown():void {
+    public function tearDown(): void {
         TestAccountCreateAndDestroy::destroy($this->fake_user);
         $session = SessionFactory::getSession();
         $session->invalidate();

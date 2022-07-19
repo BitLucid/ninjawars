@@ -1,10 +1,11 @@
 <?php
+
 namespace NinjaWars\core\data;
 
 use NinjaWars\core\data\Message;
 use NinjaWars\core\data\DatabaseConnection;
 use NinjaWars\core\data\Player;
-use \PDO;
+use PDO;
 
 /**
  *
@@ -22,51 +23,47 @@ class Clan {
      * @param int $p_id of the clan or null to create a new one
      */
     public function __construct(int $p_id=null, string $p_name=null, $data=null) {
-        if(null !== $p_id){
+        if (null !== $p_id) {
             $this->setID($p_id);
-            if(!$p_name){
+            if (!$p_name) {
                 $p_name = $this->nameFromId($p_id);
             }
         }
 
-        if($p_name){
+        if ($p_name) {
             $this->setName($p_name);
         }
 
         // Special for optional clan data
-        if(null !== $data && null !== $data['clan_avatar_url']){
+        if (null !== $data && null !== $data['clan_avatar_url']) {
             $this->setAvatarUrl($data['clan_avatar_url']);
         }
 
-        if(null !== $data && null !== $data['description']){
+        if (null !== $data && null !== $data['description']) {
             $this->setDescription($data['description']);
         }
 
-        if(null !== $data && null !== $data['clan_founder']){
+        if (null !== $data && null !== $data['clan_founder']) {
             $this->setFounder($data['clan_founder']);
         }
     }
 
-    public function getName(): ?string
-    {
+    public function getName(): ?string {
         return $this->name;
     }
 
-    public function setID(int $p_id): void
-    {
+    public function setID(int $p_id): void {
         $this->id = (int)$p_id;
     }
 
-    public function setName(string $p_name): void
-    {
+    public function setName(string $p_name): void {
         $this->name = trim($p_name);
     }
 
     /**
      * @return int
      */
-    public function getLeaderID(): ?int
-    {
+    public function getLeaderID(): ?int {
         $leaderInfo = $this->getLeaderInfo();
         return $leaderInfo['player_id'];
     }
@@ -74,8 +71,7 @@ class Clan {
     /**
      * @return string
      */
-    public function getFounder(): ?string
-    {
+    public function getFounder(): ?string {
         if (!$this->founder) {
             $this->founder = query_item('select clan_founder from clan where clan_id = :id', [':id'=>$this->id]);
         }
@@ -93,8 +89,7 @@ class Clan {
     /**
      * @return string
      */
-    public function getDescription(): ?string
-    {
+    public function getDescription(): ?string {
         return $this->description;
     }
 
@@ -105,20 +100,17 @@ class Clan {
     /**
      * @return string
      */
-    public function getAvatarUrl(): ?string
-    {
+    public function getAvatarUrl(): ?string {
         return $this->avatarUrl;
     }
 
-    public function setAvatarUrl(string $url): void
-    {
+    public function setAvatarUrl(string $url): void {
         $this->avatarUrl = $url;
     }
 
     // End of getters and setters.
 
-    private function nameFromId(int $id): ?string
-    {
+    private function nameFromId(int $id): ?string {
         return query_item(
             'SELECT clan_name FROM clan WHERE clan_id = :id',
             [ ':id' => [$id, PDO::PARAM_INT]]
@@ -152,8 +144,7 @@ class Clan {
     /**
      * @return boolean|String
      */
-    public function addMember(Player $ninja, Player $adder): bool|string
-    {
+    public function addMember(Player $ninja, Player $adder): bool|string {
         if ($this->hasMember($ninja->id())) {
             return 'That ninja is already a member of the clan.';
         }
@@ -177,8 +168,7 @@ class Clan {
      *
      * @return string|null
      */
-    public function invite(Player $p_target, Player $p_inviter): ?string
-    {
+    public function invite(Player $p_target, Player $p_inviter): ?string {
         if (empty($p_target) || null === $p_target->id()) {
             return 'No such ninja.';
         }
@@ -209,7 +199,7 @@ class Clan {
      * For when a player chooses to leave their clan of their own volition.
      */
     public function leave(Player $ninja): bool {
-        if(null === $ninja->id()){
+        if (null === $ninja->id()) {
             return false;
         } else {
             return $this->kickMember($ninja->id(), $ninja, true);
@@ -248,7 +238,7 @@ class Clan {
      * Check if a character is a member of this clan
      */
     public function hasMember(?int $playerId): bool {
-        if(null === $playerId) {
+        if (null === $playerId) {
             return false;
         }
         $query = 'SELECT _player_id FROM clan_player WHERE _player_id = :pid AND _clan_id = :clan_id';
@@ -269,7 +259,7 @@ class Clan {
             [':cid' => $this->id]
         );
 
-        $ids = array();
+        $ids = [];
 
         foreach ($playerRows as $row) {
             $ids[] = $row['player_id'];
@@ -351,7 +341,7 @@ class Clan {
         // Modify the members by reference
         foreach ($membersArray as &$member) {
             $member['leader'] = false;
-            $member['size']   = floor(( ($member['level'] - $member['days'] < 1 ? 0 : $member['level'] - $member['days']) / $max) * 2) + 1;
+            $member['size']   = floor((($member['level'] - $member['days'] < 1 ? 0 : $member['level'] - $member['days']) / $max) * 2) + 1;
 
             // Calc the member display size based on their level relative to the max.
             if ($member['member_level'] >= 1) {
@@ -388,7 +378,7 @@ class Clan {
                 'ninjawars.net'
             ];
             $valid = false;
-            foreach($possible_image_hosts as $host){
+            foreach ($possible_image_hosts as $host) {
                 $valid = $valid || !!preg_match('#([\w\d]+\.)?'.$host.'\.[\w\d]*#i', $parts['host']);
             }
             return $valid;
@@ -404,7 +394,7 @@ class Clan {
      */
     public static function saveClanAvatarUrl(string $url, int $clan_id) {
         $update = 'UPDATE clan SET clan_avatar_url = :url WHERE clan_id = :clan_id';
-        query($update, array(':url'=>$url, ':clan_id'=>$clan_id));
+        query($update, [':url'=>$url, ':clan_id'=>$clan_id]);
     }
 
     /**
@@ -416,7 +406,7 @@ class Clan {
      */
     public static function saveClanDescription(string $desc, int $clan_id) {
         $update = 'UPDATE clan SET description = :desc WHERE clan_id = :clan_id';
-        query($update, array(':desc'=>$desc, ':clan_id'=>$clan_id));
+        query($update, [':desc'=>$desc, ':clan_id'=>$clan_id]);
     }
 
     /**
@@ -436,7 +426,7 @@ class Clan {
         $statement->execute();
 
         $clan_id = DatabaseConnection::$pdo->lastInsertId();
-        if(!(int)$clan_id){
+        if (!(int)$clan_id) {
             throw new \RuntimeException('Unable to obtain id of clan just created.');
         }
 
@@ -505,12 +495,12 @@ class Clan {
      */
     public static function find($identity): ?Clan {
         $clan_info = null;
-        if(is_numeric($identity)){
+        if (is_numeric($identity)) {
             $clan_info = query_row(
                 'select clan_id, clan_name, clan_created_date, clan_founder, clan_avatar_url, description from clan where clan_id = :id',
                 [':id'=>[$identity, PDO::PARAM_INT]]
             );
-        } elseif(static::isValidClanName($identity)) {
+        } elseif (static::isValidClanName($identity)) {
             $clan_info = query_row(
                 'select clan_id, clan_name, clan_created_date, clan_founder, clan_avatar_url, description from clan where clan_name = :name',
                 [':name'=>$identity]
@@ -581,7 +571,7 @@ class Clan {
             $max = (isset($max) ? $max : $clan_info['sum']);
             // *** make percentage of highest, multiply by 10 and round to give a 1-10 size ***
             $res[$clan_info['clan_id']]['name']  = $clan_info['clan_name'];
-            $res[$clan_info['clan_id']]['score'] = floor(( (($clan_info['sum'] - 1 < 1 ? 0 : $clan_info['sum'] - 1)) / $max) * 10) + 1;
+            $res[$clan_info['clan_id']]['score'] = floor(((($clan_info['sum'] - 1 < 1 ? 0 : $clan_info['sum'] - 1)) / $max) * 10) + 1;
         }
 
         return $res;

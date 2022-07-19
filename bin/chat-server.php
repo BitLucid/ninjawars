@@ -1,4 +1,5 @@
 <?php
+
 // Run the chat server via: php bin/chat-server.php
 
 use Ratchet\Server\IoServer;

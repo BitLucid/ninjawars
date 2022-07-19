@@ -1,4 +1,5 @@
 <?php
+
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use NinjaWars\core\environment\RequestWrapper;
@@ -7,7 +8,7 @@ use NinjaWars\core\control\DoshinController;
 use NinjaWars\core\data\Player;
 
 class DoshinControllerTest extends NWTest {
-    public function setUp():void {
+    public function setUp(): void {
         parent::setUp();
         // Mock the post request.
         $request = new Request([], []);
@@ -15,7 +16,7 @@ class DoshinControllerTest extends NWTest {
         $this->login();
     }
 
-    public function tearDown():void {
+    public function tearDown(): void {
         RequestWrapper::inject(new Request([]));
         $this->loginTearDown();
         parent::tearDown();
