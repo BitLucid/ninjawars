@@ -1,4 +1,5 @@
 <?php
+
 use NinjaWars\core\data\Clan;
 
 class ClanUnitTest extends NWTest {
@@ -12,13 +13,13 @@ class ClanUnitTest extends NWTest {
     ];
 
 
-	public function setUp():void {
+    public function setUp(): void {
         parent::setUp();
         $this->clan = new Clan($this->data['clan_id'], $this->data['clan_name'], $this->data);
     }
 
 
-	public function tearDown():void {
+    public function tearDown(): void {
         parent::tearDown();
     }
 
@@ -26,8 +27,7 @@ class ClanUnitTest extends NWTest {
         $this->assertInstanceOf('NinjaWars\core\data\Clan', $this->clan);
     }
 
-    public function testClanGetId()
-    {
+    public function testClanGetId() {
         $this->assertGreaterThan(0, $this->clan->id);
     }
 

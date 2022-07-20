@@ -1,4 +1,5 @@
 <?php
+
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use NinjaWars\core\environment\RequestWrapper;
@@ -9,13 +10,13 @@ use NinjaWars\core\control\HomepageController;
 class HomepageControllerTest extends NWTest {
     private $controller;
 
-	public function setUp():void {
+    public function setUp(): void {
         parent::setUp();
         $this->login();
         $this->controller = new HomepageController();
     }
 
-	public function tearDown():void {
+    public function tearDown(): void {
         $this->mockLogout();
         parent::tearDown();
     }

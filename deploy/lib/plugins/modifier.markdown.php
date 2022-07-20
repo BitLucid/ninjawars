@@ -1,4 +1,5 @@
 <?php
+
 function smarty_modifier_markdown($p_string) {
     return preg_replace_callback(
         "/\[href:([^\[\]]+)\|([^\[\]]+)\]/",

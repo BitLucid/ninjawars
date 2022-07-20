@@ -1,11 +1,12 @@
 <?php
+
 use NinjaWars\core\data\Quest;
 
 class QuestTest extends NWTest {
     private $quest;
     private $data;
 
-	public function setUp():void {
+    public function setUp(): void {
         parent::setUp();
         $this->data = [
             'title'       => 'Some QuEst TiTle HeRe',
@@ -18,7 +19,7 @@ class QuestTest extends NWTest {
         $this->quest = new Quest($this->data);
     }
 
-	public function tearDown():void {
+    public function tearDown(): void {
         $this->quest = null;
         parent::tearDown();
     }
@@ -27,7 +28,7 @@ class QuestTest extends NWTest {
         $this->assertInstanceOf('NinjaWars\core\data\Quest', $this->quest);
     }
 
-    public function testConstructEmptyQuest(){
+    public function testConstructEmptyQuest() {
         $q = new Quest();
         $this->assertInstanceOf('NinjaWars\core\data\Quest', $q);
     }
@@ -35,5 +36,4 @@ class QuestTest extends NWTest {
     public function testGetDescription() {
         $this->assertEquals($this->quest->description, $this->data['description']);
     }
-
 }
