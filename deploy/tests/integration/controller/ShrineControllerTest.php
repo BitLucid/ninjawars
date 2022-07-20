@@ -1,4 +1,5 @@
 <?php
+
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use NinjaWars\core\environment\RequestWrapper;
@@ -7,22 +8,21 @@ use NinjaWars\core\data\Player;
 use NinjaWars\core\data\Skill;
 use NinjaWars\core\extensions\SessionFactory;
 
-
 class ShrineControllerTest extends NWTest {
     private $char;
     private $part = "shrineSections";
 
-	function setUp():void {
+    public function setUp(): void {
         parent::setUp();
         $this->char = TestAccountCreateAndDestroy::char();
         $request = new Request([], []);
         RequestWrapper::inject($request);
-		SessionFactory::init(new MockArraySessionStorage());
+        SessionFactory::init(new MockArraySessionStorage());
         $sess = SessionFactory::getSession();
         $sess->set('player_id', $this->char->id());
-	}
+    }
 
-	function tearDown():void {
+    public function tearDown(): void {
         TestAccountCreateAndDestroy::destroy();
         RequestWrapper::inject(new Request([]));
         $session = SessionFactory::getSession();
@@ -46,7 +46,7 @@ class ShrineControllerTest extends NWTest {
         $player->level = 1;
         $player->health = $player->getMaxHealth();
 
-        $this->m_dependencies['current_player'] = function($c) use ($player) {
+        $this->m_dependencies['current_player'] = function ($c) use ($player) {
             return $player;
         };
 
@@ -66,7 +66,7 @@ class ShrineControllerTest extends NWTest {
         $player->health = $player->getMaxHealth();
         $player->addStatus(POISON);
 
-        $this->m_dependencies['current_player'] = function($c) use ($player) {
+        $this->m_dependencies['current_player'] = function ($c) use ($player) {
             return $player;
         };
 
@@ -80,7 +80,7 @@ class ShrineControllerTest extends NWTest {
         $this->assertContains('form-cure', $response_data[$this->part]);
     }
 
-    public function testHealAndResurrectOfDeadPlayer(){
+    public function testHealAndResurrectOfDeadPlayer() {
         $this->char->death();
         $this->char->save();
 
@@ -122,7 +122,7 @@ class ShrineControllerTest extends NWTest {
     /**
      * Test max heal of player
      */
-    public function testShrineMaxHeal(){
+    public function testShrineMaxHeal() {
         $request = new Request(['heal_points'=>'max'], []);
         RequestWrapper::inject($request);
         $this->char->harm((int)floor($this->char->health/2)); // Have to be wounded first.
@@ -141,10 +141,9 @@ class ShrineControllerTest extends NWTest {
         $final_char = Player::find($this->char->id());
         $this->assertEquals(min($initial_health+$initial_gold, $final_char->getMaxHealth()), $final_char->health);
         $this->assertEquals(Player::maxHealthByLevel($final_char->level), $final_char->health);
-
     }
 
-    public function testPartialHealWithZeroGoldGivesErrorInPageParts(){
+    public function testPartialHealWithZeroGoldGivesErrorInPageParts() {
         $request = new Request(['heal_points'=>999], []);
         RequestWrapper::inject($request);
         $this->char->harm((int)floor($this->char->health/2)); // Have to be wounded first.
@@ -164,7 +163,7 @@ class ShrineControllerTest extends NWTest {
         $this->assertEquals($initial_health, $final_char->health);
     }
 
-    public function testResurrectOfPlayerByShrine(){
+    public function testResurrectOfPlayerByShrine() {
         $this->char->death();
         $this->char->save();
 
@@ -178,7 +177,7 @@ class ShrineControllerTest extends NWTest {
         $this->assertGreaterThan(floor(Player::maxHealthByLevel($this->char->level)/2), $final_char->health);
     }
 
-    public function testAntidoteUnpoisoningOfPoisonedCharacter(){
+    public function testAntidoteUnpoisoningOfPoisonedCharacter() {
         $this->char->addStatus(POISON);
         $this->char->save();
         $this->assertTrue($this->char->hasStatus(POISON));

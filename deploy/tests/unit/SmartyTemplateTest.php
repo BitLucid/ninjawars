@@ -1,4 +1,5 @@
 <?php
+
 use NinjaWars\core\extensions\NWTemplate;
 
 class SmartyTemplateTest extends \PHPUnit\Framework\TestCase {

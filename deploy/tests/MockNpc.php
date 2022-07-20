@@ -1,13 +1,13 @@
 <?php
-namespace NinjaWars\tests;
 
+namespace NinjaWars\tests;
 
 use NinjaWars\core\data\Character;
 
 /**
  * Create a mock npc to manipulate
  */
-class MockNpc implements Character{
+class MockNpc implements Character {
     public $bounty_mod = 10;
     public $strength = 10;
     public $speed = 10;
@@ -18,43 +18,43 @@ class MockNpc implements Character{
     public $gold = 10;
     public $name = 'mock_name';
 
-    public function gold(){
+    public function gold() {
         return $this->gold;
     }
 
-    public function bountyMod(){
+    public function bountyMod() {
         return $this->bounty_mod;
     }
 
-    public function getStrength(){
+    public function getStrength() {
         return $this->strength;
     }
 
-    public function getSpeed(){
+    public function getSpeed() {
         return $this->speed;
     }
 
-    public function getStamina(){
+    public function getStamina() {
         return $this->stamina;
     }
 
-    public function maxDamage(Character $char=null){
+    public function maxDamage(Character $char=null) {
         return $this->max_damage;
     }
 
-    public function damage(Character $char=null){
+    public function damage(Character $char=null) {
         return $this->damage;
     }
 
-    public function getHealth(){
+    public function getHealth() {
         return $this->health;
     }
 
-    public function difficulty(){
+    public function difficulty() {
         return $this->difficulty;
     }
 
-    public function __toString(){
+    public function __toString() {
         return $this->name;
     }
 }

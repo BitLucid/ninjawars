@@ -4,10 +4,10 @@ namespace NinjaWars\core\data;
 
 /**
  * Cryptographic functionality
- * Initial inspiration from here: 
+ * Initial inspiration from here:
  * http://stackoverflow.com/questions/4145531/how-to-create-and-use-nonces
  */
-class Crypto{
+class Crypto {
     /**
      * Create a hash from a random string.
      *
@@ -17,6 +17,3 @@ class Crypto{
         return bin2hex(random_bytes(32));
     }
 }
-
-
-

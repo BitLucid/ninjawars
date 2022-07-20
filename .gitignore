@@ -97,3 +97,4 @@ deploy/.env
 .vscode/
 karma.conf.js
 .phpunit.result.cache
+.php-cs-fixer.cache

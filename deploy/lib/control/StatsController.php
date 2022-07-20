@@ -1,4 +1,5 @@
 <?php
+
 namespace NinjaWars\core\control;
 
 use Pimple\Container;
@@ -16,73 +17,73 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
  * Handle updates for changing details and profile details
  */
 class StatsController extends AbstractController {
-	const ALIVE = false;
-	const PRIV  = true;
+    public const ALIVE = false;
+    public const PRIV  = true;
 
-	/**
-	 * 	Should match the limit in limitStatChars.js - ajv: No, limitStatChars.js should be dynamically generated with this number from a common location -
-	 */
-	const PROFILE_MAX_LENGTH = 500;
+    /**
+     * 	Should match the limit in limitStatChars.js - ajv: No, limitStatChars.js should be dynamically generated with this number from a common location -
+     */
+    public const PROFILE_MAX_LENGTH = 500;
 
     /**
      * Change account details
      *
      * @param Container
      */
-	public function changeDetails(Container $p_dependencies) {
+    public function changeDetails(Container $p_dependencies) {
         $request = RequestWrapper::$request;
-		$char = $p_dependencies['current_player'];
+        $char = $p_dependencies['current_player'];
 
-		$description = $request->get('description', $char->description);
-		$goals       = $request->get('goals', $char->goals);
-		$instincts   = $request->get('instincts', $char->instincts);
-		$beliefs     = $request->get('beliefs', $char->beliefs);
-		$traits      = $request->get('traits', $char->traits);
+        $description = $request->get('description', $char->description);
+        $goals       = $request->get('goals', $char->goals);
+        $instincts   = $request->get('instincts', $char->instincts);
+        $beliefs     = $request->get('beliefs', $char->beliefs);
+        $traits      = $request->get('traits', $char->traits);
 
-		// Check that the text features don't differ
-		$char->description = $description;
-		$char->goals       = $goals;
-		$char->instincts   = $instincts;
-		$char->beliefs     = $beliefs;
-		$char->traits      = $traits;
+        // Check that the text features don't differ
+        $char->description = $description;
+        $char->goals       = $goals;
+        $char->instincts   = $instincts;
+        $char->beliefs     = $beliefs;
+        $char->traits      = $traits;
 
-		$char->save();
+        $char->save();
 
-		return new RedirectResponse('/stats?changed=1');
-	}
+        return new RedirectResponse('/stats?changed=1');
+    }
 
     /**
      * Update profile
      *
      * @param Container
      */
-	public function updateProfile(Container $p_dependencies) {
-		$char            = $p_dependencies['current_player'];
-		$new_profile     = trim(RequestWrapper::getPostOrGet('newprofile', null));
-		$profile_changed = false;
-		$error           = '';
+    public function updateProfile(Container $p_dependencies) {
+        $char            = $p_dependencies['current_player'];
+        $new_profile     = trim(RequestWrapper::getPostOrGet('newprofile', null));
+        $profile_changed = false;
+        $error           = '';
 
-		if (!empty($new_profile)) {
-			DatabaseConnection::getInstance();
-			$statement = DatabaseConnection::$pdo->prepare('UPDATE players SET messages = :profile WHERE player_id = :char_id');
-			$statement->bindValue(':profile', $new_profile);
-			$statement->bindValue(':char_id', $char->id());
-			$statement->execute();
-			$profile_changed = true;
-		} else {
-			$error = 'Cannot enter a blank profile.';
-		}
+        if (!empty($new_profile)) {
+            DatabaseConnection::getInstance();
+            $statement = DatabaseConnection::$pdo->prepare('UPDATE players SET messages = :profile WHERE player_id = :char_id');
+            $statement->bindValue(':profile', $new_profile);
+            $statement->bindValue(':char_id', $char->id());
+            $statement->execute();
+            $profile_changed = true;
+        } else {
+            $error = 'Cannot enter a blank profile.';
+        }
 
-		$query_str = [];
-		if ($profile_changed) {
-			$query_str['profile_changed'] = 1;
-		} else {
-			$query_str['error'] = $error;
-		}
+        $query_str = [];
+        if ($profile_changed) {
+            $query_str['profile_changed'] = 1;
+        } else {
+            $query_str['error'] = $error;
+        }
 
-		$raw_query_str = count($query_str) ? '?'.http_build_query($query_str, null, '&') : null;
-		return new RedirectResponse('/stats'.$raw_query_str);
-	}
+        $raw_query_str = count($query_str) ? '?'.http_build_query($query_str, null, '&') : null;
+        return new RedirectResponse('/stats'.$raw_query_str);
+    }
 
     /**
      * Display the default stats page

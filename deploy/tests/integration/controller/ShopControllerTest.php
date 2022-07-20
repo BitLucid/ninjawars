@@ -1,4 +1,5 @@
 <?php
+
 use Symfony\Component\HttpFoundation\Request;
 use NinjaWars\core\environment\RequestWrapper;
 use NinjaWars\core\control\ShopController;
@@ -8,15 +9,15 @@ use NinjaWars\core\data\Player;
 use NinjaWars\core\data\Account;
 
 class ShopControllerTest extends NWTest {
-	function setUp():void {
+    public function setUp(): void {
         parent::setUp();
         // Mock the post request.
         $request = new Request([], ['purchase'=>1, 'quantity'=>2, 'item'=>'Shuriken']);
         RequestWrapper::inject($request);
         $this->login();
-	}
+    }
 
-	function tearDown():void {
+    public function tearDown(): void {
         $this->loginTearDown();
         parent::tearDown();
     }

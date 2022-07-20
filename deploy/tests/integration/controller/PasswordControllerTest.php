@@ -1,4 +1,5 @@
 <?php
+
 use NinjaWars\core\control\PasswordController;
 use NinjaWars\core\data\PasswordResetRequest;
 use NinjaWars\core\data\Account;
@@ -10,14 +11,14 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class PasswordControllerTest extends NWTest {
-    public function setUp():void {
+    public function setUp(): void {
         parent::setUp();
         $this->account_id = TestAccountCreateAndDestroy::account_id();
         $this->account = Account::findById($this->account_id);
         $this->nonce = Crypto::nonce();
     }
 
-    public function tearDown():void {
+    public function tearDown(): void {
         query("delete from password_reset_requests where nonce = '777777' or nonce = :nonce", [':nonce'=>$this->nonce]);
         TestAccountCreateAndDestroy::purge_test_accounts();
         parent::tearDown();
@@ -77,7 +78,7 @@ class PasswordControllerTest extends NWTest {
         $this->nonce = $pwrr->nonce;
     }
 
-    public function testPostEmailReturnsErrorWhenNoEmailOrNinjaName(){
+    public function testPostEmailReturnsErrorWhenNoEmailOrNinjaName() {
         $req = Request::create('/password/post_email/');
         $req->setMethod('POST');
         RequestWrapper::inject($req);
@@ -88,7 +89,7 @@ class PasswordControllerTest extends NWTest {
         $this->assertTrue(strpos($response->getTargetUrl(), rawurlencode('email or a ninja name')) !== false, 'Url Redirection did not contain expected error string');
     }
 
-    public function testPostEmailReturnsErrorOnUnmatchableEmailAndNinjaName(){
+    public function testPostEmailReturnsErrorOnUnmatchableEmailAndNinjaName() {
         $req = Request::create('/password/post_email');
         $req->setMethod('POST');
         $req->request->set('email', 'unmatchable@'.Crypto::nonce().'com');
@@ -102,7 +103,7 @@ class PasswordControllerTest extends NWTest {
         $this->assertTrue(stripos($response->getTargetUrl(), rawurlencode($expected)) !== false, 'Url Redirection for ['.$response->getTargetUrl().'] did not contain expected error string of ['.$expected.']');
     }
 
-    public function testPostEmailCanGetAnAccountUsingANinjaName(){
+    public function testPostEmailCanGetAnAccountUsingANinjaName() {
         $req = Request::create('/password/post_email/');
         $req->setMethod('POST');
         $char = TestAccountCreateAndDestroy::char();
@@ -123,7 +124,7 @@ class PasswordControllerTest extends NWTest {
         $this->nonce = $pwrr->nonce;
     }
 
-    public function testGetResetWithARandomTokenErrorRedirects(){
+    public function testGetResetWithARandomTokenErrorRedirects() {
         $this->nonce = $token = 'asdlfkjjklkasdfjkl';
 
         // Symfony Request
@@ -159,7 +160,7 @@ class PasswordControllerTest extends NWTest {
         $response = $controller->getReset($this->m_dependencies);
 
         // Response should contain an array with the token in the parts.
-        $this->assertFalse($response instanceof RedirectResponse, 'Redirection to the url ['.($response instanceof RedirectResponse? $response->getTargetUrl() : null).'] was the invalid result of password reset.');
+        $this->assertFalse($response instanceof RedirectResponse, 'Redirection to the url ['.($response instanceof RedirectResponse ? $response->getTargetUrl() : null).'] was the invalid result of password reset.');
 
         $this->assertInstanceOf(StreamedViewResponse::class, $response, 'Response was not a StreamedViewResponse');
         $reflection = new \ReflectionProperty(get_class($response), 'data');
@@ -296,8 +297,7 @@ class PasswordControllerTest extends NWTest {
         $this->assertFalse($this->checkTestPasswordMatches($password), 'Password should not have been changed on a rejection!');
     }
 
-    public function testPostResetWithBlankToken()
-    {
+    public function testPostResetWithBlankToken() {
         $token = '';
 
         // Generate a password reset req to be matched!

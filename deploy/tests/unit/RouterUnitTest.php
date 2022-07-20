@@ -1,4 +1,5 @@
 <?php
+
 use NinjaWars\core\Router;
 use Symfony\Component\HttpFoundation\Request;
 

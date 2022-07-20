@@ -1,4 +1,6 @@
 <?php
+
 namespace NinjaWars\core;
 
-class InvalidNpcException extends \RuntimeException{}
+class InvalidNpcException extends \RuntimeException {
+}

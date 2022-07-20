@@ -1,4 +1,5 @@
 <?php
+
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -10,30 +11,28 @@ use NinjaWars\core\control\ConsiderController;
 class ConsiderControllerTest extends NWTest {
     private $controller;
 
-	public function setUp():void {
+    public function setUp(): void {
         parent::setUp();
         $this->controller = new ConsiderController();
-		SessionFactory::init(new MockArraySessionStorage());
+        SessionFactory::init(new MockArraySessionStorage());
         $char_id = TestAccountCreateAndDestroy::create_testing_account();
-		SessionFactory::getSession()->set('player_id', $char_id);
+        SessionFactory::getSession()->set('player_id', $char_id);
     }
 
-	public function tearDown():void {
+    public function tearDown(): void {
         RequestWrapper::destroy();
         $session = SessionFactory::getSession();
         $session->invalidate();
         parent::tearDown();
     }
 
-    public function testIndex()
-    {
+    public function testIndex() {
         $response = $this->controller->index($this->m_dependencies);
 
         $this->assertInstanceOf(StreamedViewResponse::class, $response);
     }
 
-    public function testNextEnemy()
-    {
+    public function testNextEnemy() {
         $this->markTestSkipped('Not working in ci with fixture data');
         $response = $this->controller->nextEnemy($this->m_dependencies);
 

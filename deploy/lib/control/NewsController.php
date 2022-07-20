@@ -1,10 +1,11 @@
 <?php
+
 namespace NinjaWars\core\control;
 
 use NinjaWars\core\control\AbstractController;
-use \model\News as News;
-use \InvalidArgumentException;
-use \ErrorException;
+use model\News as News;
+use InvalidArgumentException;
+use ErrorException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use NinjaWars\core\data\Player;
 use NinjaWars\core\data\Account;
@@ -16,8 +17,8 @@ use NinjaWars\core\environment\RequestWrapper;
  * Allows creation of news and displaying of news by admins
  */
 class NewsController extends AbstractController {
-    const ALIVE = false;
-    const PRIV  = false;
+    public const ALIVE = false;
+    public const PRIV  = false;
 
     protected $pc = null;
 
@@ -28,7 +29,7 @@ class NewsController extends AbstractController {
     /**
      * Check whether a player has the necessary create role
      *
-     * @param Player|null $pc 
+     * @param Player|null $pc
      * @return boolean
      */
     private function hasCreateRole($pc) {
@@ -41,7 +42,7 @@ class NewsController extends AbstractController {
 
     /**
      * Display listing of posts
-     * 
+     *
      * @return StreamedViewResponse
      */
     public function index() {
@@ -82,7 +83,7 @@ class NewsController extends AbstractController {
 
     /**
      * Create new post
-     * 
+     *
      * @return StreamedViewResponse
      */
     public function create() {
