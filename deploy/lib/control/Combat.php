@@ -2,16 +2,17 @@
 /**
  * Combat behaviors during standard attacking.
  */
+
 namespace NinjaWars\core\control;
 
 use NinjaWars\core\data\Player;
 use NinjaWars\core\data\Character;
 
 class Combat {
-    const BOUNTY_MAX        = 5000;
-    const BOUNTY_MULTIPLIER = 1;
-    const BOUNTY_MIN        = 25;
-    const KILLPOINTS_MIN    = 1;
+    public const BOUNTY_MAX        = 5000;
+    public const BOUNTY_MULTIPLIER = 1;
+    public const BOUNTY_MIN        = 25;
+    public const KILLPOINTS_MIN    = 1;
 
     /**
      * Take an attacker and target, and return the killpoints
@@ -66,8 +67,8 @@ class Combat {
     /**
      * Based on the percent damage done, determine the damage class.
      */
-    public static function determineDamageClass(int $damage, int $current_health): string{
-        if($damage === 0){
+    public static function determineDamageClass(int $damage, int $current_health): string {
+        if ($damage === 0) {
             return 'miss';
         }
         $damage_tiers = [
@@ -78,8 +79,8 @@ class Combat {
             'nick'=>0,
         ];
         $percent = floor($damage/$current_health * 100);
-        foreach($damage_tiers as $class=>$tier){
-            if($percent >= $tier){
+        foreach ($damage_tiers as $class=>$tier) {
+            if ($percent >= $tier) {
                 return $class;
             }
         }

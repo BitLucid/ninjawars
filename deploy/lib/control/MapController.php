@@ -1,4 +1,5 @@
 <?php
+
 namespace NinjaWars\core\control;
 
 use Pimple\Container;
@@ -6,22 +7,22 @@ use NinjaWars\core\control\AbstractController;
 use NinjaWars\core\extensions\StreamedViewResponse;
 
 class MapController extends AbstractController {
-    const PRIV  = false;
-    const ALIVE = false;
+    public const PRIV  = false;
+    public const ALIVE = false;
     public $nodes = [];
 
     /**
      * Get the nodes and assign them to current.
      * This will just be a standin for the database for now
      */
-    public function __construct(){
+    public function __construct() {
         $this->setNodes();
     }
 
-    private function setNodes($nodes=null){
+    private function setNodes($nodes=null) {
         // Here is where the node locations are defined, and their order is allocated.
         $static_nodes = include(ROOT.'lib/data/raw/nodes.php'); // Mocking database data for later
-        $this->nodes = $nodes !== null? $nodes : $static_nodes;
+        $this->nodes = $nodes !== null ? $nodes : $static_nodes;
     }
 
     /**

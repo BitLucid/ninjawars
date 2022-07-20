@@ -1,4 +1,5 @@
 <?php
+
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use NinjaWars\core\environment\RequestWrapper;
@@ -11,15 +12,15 @@ use NinjaWars\core\data\Player;
 class AttackControllerTest extends NWTest {
     private $controller;
 
-	public function setUp():void {
+    public function setUp(): void {
         parent::setUp();
         $this->controller = new AttackController();
-		SessionFactory::init(new MockArraySessionStorage());
+        SessionFactory::init(new MockArraySessionStorage());
         $char_id = TestAccountCreateAndDestroy::create_testing_account();
-		SessionFactory::getSession()->set('player_id', $char_id);
+        SessionFactory::getSession()->set('player_id', $char_id);
     }
 
-	public function tearDown():void {
+    public function tearDown(): void {
         RequestWrapper::destroy();
         TestAccountCreateAndDestroy::purge_test_accounts();
         $session = SessionFactory::getSession();
@@ -33,7 +34,7 @@ class AttackControllerTest extends NWTest {
 
         $response = $this->controller->index($this->m_dependencies);
         $this->assertInstanceOf(StreamedViewResponse::class, $response);
-        
+
         $reflection = new \ReflectionProperty(get_class($response), 'data');
         $reflection->setAccessible(true);
         $response_data = $reflection->getValue($response);

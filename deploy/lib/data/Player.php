@@ -1,4 +1,5 @@
 <?php
+
 namespace NinjaWars\core\data;
 
 use NinjaWars\core\data\Clan;
@@ -9,8 +10,8 @@ use NinjaWars\core\data\GameLog;
 use NinjaWars\core\data\Account;
 use NinjaWars\core\data\Event;
 use NinjaWars\core\extensions\SessionFactory;
-use \model\Status;
-use \PDO;
+use model\Status;
+use PDO;
 
 /**
  * Ninja (actually character) behavior object.
@@ -51,11 +52,11 @@ use \PDO;
  * @property int status
  */
 class Player implements Character {
-    const HEALTH_PER_STAMINA = 2;
-	public $ip;
-	public $avatar_url;
+    public const HEALTH_PER_STAMINA = 2;
+    public $ip;
+    public $avatar_url;
     private $data;
-	private $vo;
+    private $vo;
 
     /**
      * Creates a new level 1 player object
@@ -142,9 +143,9 @@ class Player implements Character {
     /**
      * @return int
      */
-	public function id(): ?int {
-		return $this->vo->player_id;
-	}
+    public function id(): ?int {
+        return $this->vo->player_id;
+    }
 
     /**
      * Adds a defined numeric status constant to the binary string of statuses
@@ -179,16 +180,16 @@ class Player implements Character {
     /**
      * Resets the binary status info to 0/none
      */
-	public function resetStatus(): void {
-		$this->status = 0;
-	}
+    public function resetStatus(): void {
+        $this->status = 0;
+    }
 
     /**
      * Determine whether a pc is effected by a certain status
      * @param string|int $p_status
      * @return boolean
      */
-	public function hasStatus(int $p_status): bool {
+    public function hasStatus(int $p_status): bool {
         $status = self::validStatus($p_status);
 
         return ((bool)$status && (bool)($this->status & $status));
@@ -199,10 +200,10 @@ class Player implements Character {
      * @param string|int $p_status
      * @return boolean
      */
-	public function hasTextStatus(string $p_status): bool {
+    public function hasTextStatus(string $p_status): bool {
         return (bool) Status::queryStatusEffect($p_status, $this);
     }
-    
+
     /**
      * Add a string status to a character
      * @return int|bool
@@ -215,144 +216,144 @@ class Player implements Character {
      * Standard damage output from 1 to max
      * @return int
      */
-	public function damage(Character $enemy=null): int {
-		return rand(1, $this->maxDamage($enemy));
-	}
+    public function damage(Character $enemy=null): int {
+        return rand(1, $this->maxDamage($enemy));
+    }
 
     /**
      * Max damage capability of a character
      *
      * @return int
      */
-	public function maxDamage(Character $enemy=null): int {
+    public function maxDamage(Character $enemy=null): int {
         return (int) ($this->getStrength() * 5 + $this->getSpeed());
     }
 
     /**
      * @return int
      */
-	public function getStrength(): int {
+    public function getStrength(): int {
         $str = NEW_PLAYER_INITIAL_STATS + (($this->level-1) * LEVEL_UP_STAT_RAISE);
-        if($this->hasStatus(STALKING)){
+        if ($this->hasStatus(STALKING)) {
             $str = (int) max(1, floor($str*1.4));
         }
         if ($this->hasStatus(STEALTH)) {
             $str = (int) max(1, floor($str*0.7));
         }
-		if ($this->hasStatus(WEAKENED)) {
-			return (int) max(1, $str-(ceil($str*.25))); // 75%
-		} elseif ($this->hasStatus(STR_UP2)) {
-			return (int) ($str+(ceil($str*.50))); // 150%
-		} elseif ($this->hasStatus(STR_UP1)) {
-			return (int) ($str+(ceil($str*.25))); //125%
-		} else {
-			return (int) $str;
-		}
-	}
+        if ($this->hasStatus(WEAKENED)) {
+            return (int) max(1, $str-(ceil($str*.25))); // 75%
+        } elseif ($this->hasStatus(STR_UP2)) {
+            return (int) ($str+(ceil($str*.50))); // 150%
+        } elseif ($this->hasStatus(STR_UP1)) {
+            return (int) ($str+(ceil($str*.25))); //125%
+        } else {
+            return (int) $str;
+        }
+    }
 
-	public function setStrength(int $str): int {
-		if($str < 0){
-			throw new \InvalidArgumentException('Strength cannot be set as a negative.');
-		}
-		return $this->vo->strength = $str;
-	}
+    public function setStrength(int $str): int {
+        if ($str < 0) {
+            throw new \InvalidArgumentException('Strength cannot be set as a negative.');
+        }
+        return $this->vo->strength = $str;
+    }
 
     /**
      * @return int
      */
-	public function getSpeed(): int {
+    public function getSpeed(): int {
         $speed = NEW_PLAYER_INITIAL_STATS + (($this->level -1) * LEVEL_UP_STAT_RAISE);
-        if($this->hasStatus(STALKING)){
+        if ($this->hasStatus(STALKING)) {
             $speed = (int) max(1, floor($speed*0.7));
         }
         if ($this->hasStatus(STEALTH)) {
             $speed = (int) max(1, ceil($speed*1.3));
         }
-		if ($this->hasStatus(SLOW)) {
-			return (int) ($speed-(ceil($speed*.25)));
-		} else {
-			return (int) $speed;
-		}
-	}
+        if ($this->hasStatus(SLOW)) {
+            return (int) ($speed-(ceil($speed*.25)));
+        } else {
+            return (int) $speed;
+        }
+    }
 
-	public function setSpeed(int $speed): int{
-		if($speed < 0){
-			throw new \InvalidArgumentException('Speed cannot be set as a negative.');
-		}
-		return $this->vo->speed = $speed;
-	}
+    public function setSpeed(int $speed): int {
+        if ($speed < 0) {
+            throw new \InvalidArgumentException('Speed cannot be set as a negative.');
+        }
+        return $this->vo->speed = $speed;
+    }
 
     /**
      * @return int
      */
-	public function getStamina(): int {
-		$stam = NEW_PLAYER_INITIAL_STATS + (($this->level -1) * LEVEL_UP_STAT_RAISE);
-        if($this->hasStatus(STALKING)){
+    public function getStamina(): int {
+        $stam = NEW_PLAYER_INITIAL_STATS + (($this->level -1) * LEVEL_UP_STAT_RAISE);
+        if ($this->hasStatus(STALKING)) {
             $stam = (int) max(1, floor($stam*0.9));
         }
         if ($this->hasStatus(STEALTH)) {
             $stam = (int) max(1, ceil($stam*1.3));
         }
-		if ($this->hasStatus(POISON)) {
-			return (int) ($stam-(ceil($stam*.25)));
-		} else {
-			return (int) $stam;
-		}
-	}
+        if ($this->hasStatus(POISON)) {
+            return (int) ($stam-(ceil($stam*.25)));
+        } else {
+            return (int) $stam;
+        }
+    }
 
-	public function setStamina(int $stamina): int {
-		if($stamina < 0){
-			throw new \InvalidArgumentException('Stamina cannot be set as a negative.');
-		}
-		return $this->vo->stamina = $stamina;
-	}
-
-    /**
-     * @return int
-     */
-	public function setKi($ki): int {
-		if($ki < 0){
-			throw new \InvalidArgumentException('Ki cannot be negative.');
-		}
-		return $this->vo->ki = $ki;
-	}
+    public function setStamina(int $stamina): int {
+        if ($stamina < 0) {
+            throw new \InvalidArgumentException('Stamina cannot be set as a negative.');
+        }
+        return $this->vo->stamina = $stamina;
+    }
 
     /**
      * @return int
      */
-	public function setGold($gold): int {
-		if ($gold < 0) {
-			throw new \InvalidArgumentException('Gold cannot be made negative.');
-		}
-
-		if (is_numeric($gold) && (int) $gold != $gold) {
-			throw new \InvalidArgumentException('Gold must be a whole number [not '.(string)$gold.'].');
-		}
-
-		return $this->vo->gold = $gold;
-	}
+    public function setKi($ki): int {
+        if ($ki < 0) {
+            throw new \InvalidArgumentException('Ki cannot be negative.');
+        }
+        return $this->vo->ki = $ki;
+    }
 
     /**
      * @return int
      */
-	public function setBounty($bounty): int {
-		if($bounty < 0){
-			throw new \InvalidArgumentException('Bounty cannot be made negative ['.(string)$bounty.'].');
-		}
-		if((int) $bounty != $bounty){
-			throw new \InvalidArgumentException('Bounty must be a whole number [not '.(string)$bounty.'].');
-		}
-		return $this->vo->bounty = $bounty;
-	}
+    public function setGold($gold): int {
+        if ($gold < 0) {
+            throw new \InvalidArgumentException('Gold cannot be made negative.');
+        }
 
-	/**
-	 * Checks whether the character is still active.
+        if (is_numeric($gold) && (int) $gold != $gold) {
+            throw new \InvalidArgumentException('Gold must be a whole number [not '.(string)$gold.'].');
+        }
+
+        return $this->vo->gold = $gold;
+    }
+
+    /**
+     * @return int
+     */
+    public function setBounty($bounty): int {
+        if ($bounty < 0) {
+            throw new \InvalidArgumentException('Bounty cannot be made negative ['.(string)$bounty.'].');
+        }
+        if ((int) $bounty != $bounty) {
+            throw new \InvalidArgumentException('Bounty must be a whole number [not '.(string)$bounty.'].');
+        }
+        return $this->vo->bounty = $bounty;
+    }
+
+    /**
+     * Checks whether the character is still active.
      *
      * @return boolean
-	 */
-	public function isActive(): bool {
-		return (bool) $this->vo->active;
-	}
+     */
+    public function isActive(): bool {
+        return (bool) $this->vo->active;
+    }
 
     /**
      * Specially updates last_started_attack
@@ -370,14 +371,14 @@ class Player implements Character {
      * hardcoded hack at the moment
      * @note To be replaced by an in-database account toggle eventually
      */
-	public function isAdmin(): bool {
+    public function isAdmin(): bool {
         $name = strtolower($this->name() ?? '');
-		if ($name == 'tchalvak' || $name == 'beagle') {
-			return true;
-		}
+        if ($name == 'tchalvak' || $name == 'beagle') {
+            return true;
+        }
 
-		return false;
-	}
+        return false;
+    }
 
     /**
      * Cleanup player to death state
@@ -386,11 +387,11 @@ class Player implements Character {
      * @note
      * This method writes the player object to the database
      */
-	public function death(): void {
-		$this->resetStatus();
+    public function death(): void {
+        $this->resetStatus();
         $this->setHealth(0);
         $this->save();
-	}
+    }
 
     /**
      * Changes the turns property of the player object
@@ -412,8 +413,7 @@ class Player implements Character {
      *
      * @return int The number of turns the player object now has
      */
-    public function getTurns(): int
-    {
+    public function getTurns(): int {
         return $this->vo->turns;
     }
 
@@ -424,8 +424,7 @@ class Player implements Character {
      * @return int The number of turns the player object now has
      * @throws InvalidArgumentException $turns cannot be negative
      */
-    public function subtractTurns($turns): int
-    {
+    public function subtractTurns($turns): int {
         if ($turns < 0) {
             throw new \InvalidArgumentException('Cannot subtract negative turns.');
         }
@@ -440,14 +439,13 @@ class Player implements Character {
      * @return int The number of turns the player object now has
      * @throws InvalidArgumentException $turns cannot be negative
      */
-    public function addTurns($turns): int
-    {
+    public function addTurns($turns): int {
         if ($turns < 0) {
             throw new \InvalidArgumentException('Cannot add negative turns.');
         }
 
         return $this->vo->turns += $turns;
-    }   
+    }
 
     /**
      * @return integer
@@ -462,7 +460,7 @@ class Player implements Character {
      * @return array
      */
     public function data(): array {
-		if (!$this->data) {
+        if (!$this->data) {
             $clan = $this->id() ? $this->getClan() : null;
             $this->data = (array) $this->vo;
             $this->data['next_level']    = $this->killsRequiredForNextLevel();
@@ -506,83 +504,83 @@ class Player implements Character {
         return Clan::findByMember($this);
     }
 
-	/**
-	 * Heal the char with in the limits of their max
+    /**
+     * Heal the char with in the limits of their max
      *
      * @return int
-	 */
-	public function heal($amount): int {
-		// do not heal above max health
+     */
+    public function heal($amount): int {
+        // do not heal above max health
         $heal = min($this->is_hurt_by(), $amount);
         return $this->setHealth($this->health + $heal);
-	}
+    }
 
-	/**
-	 * Do some damage to the character
+    /**
+     * Do some damage to the character
      *
      * @param int $damage
      * @return int
-	 */
-	public function harm($damage): int {
-		// Do not allow negative health
-		$actual_damage = min($this->health, (int) $damage);
-		return $this->setHealth($this->health - $actual_damage);
-	}
+     */
+    public function harm($damage): int {
+        // Do not allow negative health
+        $actual_damage = min($this->health, (int) $damage);
+        return $this->setHealth($this->health - $actual_damage);
+    }
 
     /**
      * @return int
      */
-	public function getHealth(): int {
+    public function getHealth(): int {
         return $this->health;
-	}
+    }
 
     /**
      * @return int
      */
-	public function setHealth($health): int {
-		if ($health < 0) {
-			throw new \InvalidArgumentException('Health cannot be made negative.');
-		}
+    public function setHealth($health): int {
+        if ($health < 0) {
+            throw new \InvalidArgumentException('Health cannot be made negative.');
+        }
 
-		if ((int) $health != $health) {
-			throw new \InvalidArgumentException('Health must be a whole number.');
-		}
+        if ((int) $health != $health) {
+            throw new \InvalidArgumentException('Health must be a whole number.');
+        }
 
-		return $this->vo->health = (int) max(0, $health);
-	}
+        return $this->vo->health = (int) max(0, $health);
+    }
 
-	/**
-	 * Return the amount below the max health (or zero).
-	 * @return int
-	 */
-	public function is_hurt_by(): int {
-		return max(
+    /**
+     * Return the amount below the max health (or zero).
+     * @return int
+     */
+    public function is_hurt_by(): int {
+        return max(
             0,
-			(int) ($this->getMaxHealth() - $this->health)
-		);
-	}
+            (int) ($this->getMaxHealth() - $this->health)
+        );
+    }
 
     /**
      * Return the current percentage of the maximum health that a character could have.
      * @return int
      */
-	public function health_percent(): int {
+    public function health_percent(): int {
         return min(100, round(($this->health/$this->getMaxHealth())*100));
-	}
+    }
 
     /**
      * @return int difficulty rating
      */
-	public function difficulty(): int{
-		return (int) ( 10 + $this->getStrength() * 2 + $this->maxDamage());
-	}
+    public function difficulty(): int {
+        return (int) (10 + $this->getStrength() * 2 + $this->maxDamage());
+    }
 
     /**
      * @return int random private number unique to character
      */
-	public function getVerificationNumber(): int{
-		return $this->vo->verification_number;
-	}
+    public function getVerificationNumber(): int {
+        return $this->vo->verification_number;
+    }
 
     /**
      * @return string url for the gravatar of pc
@@ -619,24 +617,24 @@ class Player implements Character {
 
             return $res;
         }
-	}
+    }
 
-	/**
-	 * Persist object to database
+    /**
+     * Persist object to database
      *
-	 * @return Player
-	 */
-	public function save(): Player {
-		$factory = new PlayerDAO();
-		$factory->save($this->vo);
-
-		return $this;
-	}
-
-     /**
-     * Check whether the player is the leader of their clan.
-     * @return boolean
+     * @return Player
      */
+    public function save(): Player {
+        $factory = new PlayerDAO();
+        $factory->save($this->vo);
+
+        return $this;
+    }
+
+    /**
+    * Check whether the player is the leader of their clan.
+    * @return boolean
+    */
     public function isClanLeader(): bool {
         return (($clan = Clan::findByMember($this)) && $this->id() == $clan->getLeaderID());
     }
@@ -647,11 +645,11 @@ class Player implements Character {
      * @param string $class_identity
      * @return array of class data
      */
-    private function obtainSingleClassData(string $class_identity): array{
-            return query_row(
-                'select class_id, identity, class_name, theme, class_note, class_tier, class_desc, class_icon from class where class.identity = :class',
-                [':class' => $class_identity]
-            );
+    private function obtainSingleClassData(string $class_identity): array {
+        return query_row(
+            'select class_id, identity, class_name, theme, class_note, class_tier, class_desc, class_icon from class where class.identity = :class',
+            [':class' => $class_identity]
+        );
     }
 
     /**
@@ -660,7 +658,7 @@ class Player implements Character {
      */
     public function setClass(string $new_class): ?string {
         $class_data = $this->obtainSingleClassData(strtolower($new_class));
-        if($class_data === false || $class_data === null){
+        if ($class_data === false || $class_data === null) {
             return "That class was not an option to change into.";
         } else {
             // Update the only place in the database where a players class is determined
@@ -694,7 +692,7 @@ class Player implements Character {
      * @return int
      */
     public function killsRequiredForNextLevel(): int {
-       return $this->level*5;
+        return $this->level*5;
     }
 
     /**
@@ -802,31 +800,31 @@ class Player implements Character {
         }
     }
 
-	/**
-	 * Find a player by primary key
+    /**
+     * Find a player by primary key
      * @param int|string|null $id
-	 * @return Player|null
-	 */
-	public static function find($id): ?Player {
-		if(!is_numeric($id) || !(int) $id){
-			return null;
-		}
-		$id = (int) $id;
-		$dao = new PlayerDAO();
-		$data = $dao->get($id);
-		if(!isset($data->player_id) || !$data->player_id){
-			return null;
-		}
-		$player = new Player();
-		$player->vo = $data;
-		return $player;
+     * @return Player|null
+     */
+    public static function find($id): ?Player {
+        if (!is_numeric($id) || !(int) $id) {
+            return null;
+        }
+        $id = (int) $id;
+        $dao = new PlayerDAO();
+        $data = $dao->get($id);
+        if (!isset($data->player_id) || !$data->player_id) {
+            return null;
+        }
+        $player = new Player();
+        $player->vo = $data;
+        return $player;
     }
-    
+
     /**
      * Find player by name
      * @return Player|null
      */
-    public static function findByName(string $name): ?Player{
+    public static function findByName(string $name): ?Player {
         $id = query_item('select player_id from players where lower(uname) = lower(:name) limit 1', [':name'=>$name]);
         return self::find($id);
     }
@@ -836,7 +834,7 @@ class Player implements Character {
      * @param int|null $account_id
      * @return Player|null
      */
-    public static function findPlayable(?int $account_id): ?Player{
+    public static function findPlayable(?int $account_id): ?Player {
         // Two db calls for now
         $pid = query_item('select player_id from players p 
             join account_players ap on p.player_id = ap._player_id
@@ -854,7 +852,7 @@ class Player implements Character {
     public static function findActive(int $limit=5, bool $alive_only=true): array {
         $where_cond = ($alive_only ? ' AND health > 0' : '');
         $sel = "SELECT uname, player_id FROM players WHERE active = 1 AND last_started_attack is not null $where_cond ORDER BY last_started_attack DESC LIMIT :limit";
-        $active_ninjas = query_array($sel, array(':limit'=>array($limit, PDO::PARAM_INT)));
+        $active_ninjas = query_array($sel, [':limit'=>[$limit, PDO::PARAM_INT]]);
         return $active_ninjas;
     }
 
@@ -887,7 +885,7 @@ class Player implements Character {
      *
      */
     public static function getStatusList(?int $target=null): array {
-        $states = array();
+        $states = [];
         $target = (isset($target) && (int)$target == $target ? $target : SessionFactory::getSession()->get('player_id'));
 
         // Default to showing own status.
@@ -903,12 +901,24 @@ class Player implements Character {
             }
 
             // The visibly viewable statuses.
-            if ($target->hasStatus(STEALTH)) { $states[] = 'Stealthed'; }
-            if ($target->hasStatus(POISON)) { $states[] = 'Poisoned'; }
-            if ($target->hasStatus(WEAKENED)) { $states[] = 'Weakened'; }
-            if ($target->hasStatus(FROZEN)) { $states[] = 'Frozen'; }
-            if ($target->hasStatus(STR_UP1)) { $states[] = 'Buff'; }
-            if ($target->hasStatus(STR_UP2)) { $states[] = 'Strength+'; }
+            if ($target->hasStatus(STEALTH)) {
+                $states[] = 'Stealthed';
+            }
+            if ($target->hasStatus(POISON)) {
+                $states[] = 'Poisoned';
+            }
+            if ($target->hasStatus(WEAKENED)) {
+                $states[] = 'Weakened';
+            }
+            if ($target->hasStatus(FROZEN)) {
+                $states[] = 'Frozen';
+            }
+            if ($target->hasStatus(STR_UP1)) {
+                $states[] = 'Buff';
+            }
+            if ($target->hasStatus(STR_UP2)) {
+                $states[] = 'Strength+';
+            }
 
             // If any of the shield skills are up, show a single status state for any.
             if ($target->hasStatus(FIRE_RESISTING) || $target->hasStatus(INSULATED) || $target->hasStatus(GROUNDED)

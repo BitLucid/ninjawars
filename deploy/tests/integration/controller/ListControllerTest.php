@@ -1,4 +1,5 @@
 <?php
+
 use Pimple\Container;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
@@ -10,15 +11,15 @@ use NinjaWars\core\control\ListController;
 class ListControllerTest extends NWTest {
     private $controller;
 
-	public function setUp():void {
+    public function setUp(): void {
         parent::setUp();
         $this->controller = new ListController();
-		SessionFactory::init(new MockArraySessionStorage());
+        SessionFactory::init(new MockArraySessionStorage());
         $char_id = TestAccountCreateAndDestroy::create_testing_account();
-		SessionFactory::getSession()->set('player_id', $char_id);
+        SessionFactory::getSession()->set('player_id', $char_id);
     }
 
-	public function tearDown():void {
+    public function tearDown(): void {
         RequestWrapper::destroy();
         $session = SessionFactory::getSession();
         $session->invalidate();

@@ -1,4 +1,5 @@
 <?php
+
 namespace NinjaWars\core\control;
 
 use Pimple\Container;
@@ -13,10 +14,10 @@ use NinjaWars\core\data\Clan;
  * display the standard homepage, and maybe eventually the splash page
  */
 class HomepageController extends AbstractController {
-    const PRIV      = false;
-    const ALIVE     = false;
+    public const PRIV      = false;
+    public const ALIVE     = false;
     private $loggedIn = false;
-    const NW_VERSION = 'v1.12.2 2021.06.12';
+    public const NW_VERSION = 'v1.12.2 2021.06.12';
 
     /**
      * Stores logged-in status of user in member variable for use later
@@ -42,8 +43,8 @@ class HomepageController extends AbstractController {
     private function game(Container $p_dependencies) {
         // Get the actual values of the vars.
         $ninja = $p_dependencies['current_player'] ?? new Player();
-        $playerInfo = $ninja? $ninja->data() : [];
-        $clan = $ninja? Clan::findByMember($ninja) : null;
+        $playerInfo = $ninja ? $ninja->data() : [];
+        $clan = $ninja ? Clan::findByMember($ninja) : null;
 
         $unreadCount = Message::where([
             'send_to' => $ninja->id(),

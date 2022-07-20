@@ -1,4 +1,5 @@
 <?php
+
 namespace NinjaWars\core\control;
 
 use NinjaWars\core\control\AbstractController;
@@ -17,8 +18,8 @@ use NinjaWars\core\environment\RequestWrapper;
 use Pimple\Container;
 
 class PlayerController extends AbstractController {
-    const PRIV  = false;
-    const ALIVE = false;
+    public const PRIV  = false;
+    public const ALIVE = false;
 
     public function index(Container $p_dependencies): StreamedViewResponse {
         $request   = RequestWrapper::$request;
@@ -28,13 +29,13 @@ class PlayerController extends AbstractController {
         if ($target_id) {
             $target_player_obj = Player::find($target_id);
         } else {
-            $target_player_obj = $target !== null? Player::findByName($target) : null;
+            $target_player_obj = $target !== null ? Player::findByName($target) : null;
         }
 
         if ($target_player_obj === null) {
             $template              = 'no-player.tpl';
             $viewed_name_for_title = null;
-            $parts                 = array();
+            $parts                 = [];
         } else {
             $attack_error          = 'You must become a ninja first.';
             $clan                  = Clan::findByMember($target_player_obj);
@@ -82,7 +83,7 @@ class PlayerController extends AbstractController {
                         $combat_skills   = $skillDAO->all('combat');
                         $targeted_skills = $skillDAO->all('targeted');
                     }
-                    if($combat_skills instanceof \PDOStatement){
+                    if ($combat_skills instanceof \PDOStatement) {
                         // Unwrap combat skills
                         $combat_skills = $combat_skills->fetchAll(\PDO::FETCH_ASSOC);
                     }
@@ -98,7 +99,7 @@ class PlayerController extends AbstractController {
                 'viewing_player_obj'   => $viewing_player_obj,
                 'target_player_obj'    => $target_player_obj,
                 'combat_skills'        => $combat_skills,
-                'json_combat_skills'   => !empty($combat_skills)? json_encode($combat_skills) : [],
+                'json_combat_skills'   => !empty($combat_skills) ? json_encode($combat_skills) : [],
                 'targeted_skills'      => $targeted_skills,
                 'self'                 => $self,
                 'rank_spot'            => $rank_spot,
@@ -132,7 +133,7 @@ class PlayerController extends AbstractController {
         $target = $request->get('target_id');
         $item_in = $request->get('item');
         $give = $request->get('give');
-        $method = $give? 'give' : 'use';
+        $method = $give ? 'give' : 'use';
         $url = 'item/'.rawurlencode($method).'/'.rawurlencode($item_in).'/'.rawurlencode($target);
         // TODO: Need to double check that this doesn't allow for redirect injection
         return new RedirectResponse(WEB_ROOT.$url);

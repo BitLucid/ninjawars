@@ -1,13 +1,14 @@
 <?php
+
 use NinjaWars\core\data\Account;
 use NinjaWars\core\data\Player;
 
 /** SEE ALSO AccountConfTest */
 
 class AccountTest extends NWTest {
-    var $testAccountId;
+    public $testAccountId;
 
-    public function setUp():void {
+    public function setUp(): void {
         parent::setUp();
         TestAccountCreateAndDestroy::destroy();
         $this->extra_char_name = 'some_extra_test_char';
@@ -24,31 +25,27 @@ class AccountTest extends NWTest {
         $this->testAccountId = query_item("SELECT account_id FROM accounts WHERE account_identity = :email", [':email' => $this->test_email]);
     }
 
-    public function tearDown():void {
+    public function tearDown(): void {
         TestAccountCreateAndDestroy::destroy();
         TestAccountCreateAndDestroy::destroy($this->extra_char_name);
         parent::tearDown();
     }
 
-    public function testCanObtainPreExistingAccountById()
-    {
+    public function testCanObtainPreExistingAccountById() {
         $account = Account::findById($this->testAccountId);
         $this->assertNotNull($account, 'Account::findById() failed to find pre-existing account');
         $this->assertEquals($this->testAccountId, $account->id());
     }
 
 
-    public function testCanObtainPreExistingAccountByCharacter()
-    {
-
+    public function testCanObtainPreExistingAccountByCharacter() {
         $account = Account::findByChar($this->char);
         $this->assertNotEmpty(Player::find($this->char->id()), 'Player::find failed to find pre-existing account');
         $this->assertNotNull($account, 'Account::findByCharacter() failed to find pre-existing account');
     }
 
 
-    public function testAccountOperationalHasValue()
-    {
+    public function testAccountOperationalHasValue() {
         $account_id = $this->testAccountId;
         $account = Account::findById($account_id);
         $this->assertNotEmpty($account, 'No initial account was created');
@@ -56,8 +53,7 @@ class AccountTest extends NWTest {
         $this->assertTrue($account->isOperational(), 'Account::operational() returned false');
     }
 
-    public function testAccountSetOperationalCanChange()
-    {
+    public function testAccountSetOperationalCanChange() {
         $account = Account::findById($this->testAccountId);
         $this->assertNotEmpty($account, 'No initial account was created');
         $account->setOperational(false);
@@ -66,8 +62,7 @@ class AccountTest extends NWTest {
         $this->assertFalse($final_account->isOperational(), 'Account::setOperational() failed to change operational status');
     }
 
-    public function testAccountDeactivate()
-    {
+    public function testAccountDeactivate() {
         $account = Account::findById($this->testAccountId);
         $this->assertNotEmpty($account, 'No initial account was created');
         Account::deactivate($account);
@@ -76,8 +71,7 @@ class AccountTest extends NWTest {
         $this->assertFalse($account_f->isOperational(), 'Account::setOperational() failed to change operational status');
     }
 
-    public function testAccountReactivate()
-    {
+    public function testAccountReactivate() {
         $account = Account::findById($this->testAccountId);
         Account::deactivate($account);
         $this->assertFalse((Account::findById($this->testAccountId))->isOperational(), 'Account::deactivate() failed to change operational status');
@@ -90,7 +84,7 @@ class AccountTest extends NWTest {
     public function testCreatingAnAccount() {
         $account_id = $this->testAccountId;
         $acc = Account::findById($account_id);
-        $this->assertTrue($acc instanceof Account); 
+        $this->assertTrue($acc instanceof Account);
         $this->assertNotEmpty($acc->getIdentity());
     }
 
@@ -133,7 +127,7 @@ class AccountTest extends NWTest {
         $this->assertEquals($oauth_id, $account->getOauthId());
     }
 
-    public function testSetAndGetOauthProvider(){
+    public function testSetAndGetOauthProvider() {
         $account = new Account();
         $account->setOauthProvider('facebook');
         $this->assertEquals('facebook', $account->getOauthProvider());
@@ -182,26 +176,25 @@ class AccountTest extends NWTest {
     }
 
 
-    public function testThanAccountCanBeSetAsDifferentType(){
+    public function testThanAccountCanBeSetAsDifferentType() {
         $account = new Account();
         $account->setType(2);
         $this->assertEquals(2, $account->type);
     }
 
-    public function testAuthenticationOfAccountWithNoDatabaseAnalogFails(){
+    public function testAuthenticationOfAccountWithNoDatabaseAnalogFails() {
         $account = new Account();
         $this->assertFalse($account->authenticate('an invalid password'));
     }
 
-    public function testAccountCanHavePlayers(){
+    public function testAccountCanHavePlayers() {
         $account = Account::findByNinjaName($this->test_ninja_name);
         $pcs = $account->getCharacters();
         $this->assertNotEmpty($pcs);
         $this->assertInstanceOf(Player::class, reset($pcs));
     }
 
-    public function testAccountPlayerCanBeDeactivated()
-    {
+    public function testAccountPlayerCanBeDeactivated() {
         $account = Account::findByNinjaName($this->test_ninja_name);
         $pcs = $account->getCharacters();
         $pc = reset($pcs);
@@ -210,8 +203,7 @@ class AccountTest extends NWTest {
         $this->assertFalse($updated_pc->isActive());
     }
 
-    public function testAccountPlayerCanBeReactivated()
-    {
+    public function testAccountPlayerCanBeReactivated() {
         $account = Account::findByNinjaName($this->test_ninja_name);
         $pcs = $account->getCharacters();
         $pc = reset($pcs);
@@ -222,5 +214,4 @@ class AccountTest extends NWTest {
         $updated_pc = Player::find($pc->id());
         $this->assertTrue($updated_pc->isActive());
     }
-
 }

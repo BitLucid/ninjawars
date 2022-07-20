@@ -1,4 +1,5 @@
 <?php
+
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use NinjaWars\core\environment\RequestWrapper;
@@ -12,16 +13,16 @@ class ClanControllerTest extends NWTest {
     private $controller;
     private $clan;
 
-	public function setUp():void {
+    public function setUp(): void {
         parent::setUp();
         $this->controller = new ClanController();
-		SessionFactory::init(new MockArraySessionStorage());
+        SessionFactory::init(new MockArraySessionStorage());
         $char_id = TestAccountCreateAndDestroy::create_testing_account();
-		SessionFactory::getSession()->set('player_id', $char_id);
+        SessionFactory::getSession()->set('player_id', $char_id);
         $this->clan = Clan::create(Player::find($char_id), 'phpunit_test_clan');
     }
 
-	public function tearDown():void {
+    public function tearDown(): void {
         $this->deleteClan($this->clan->id);
         RequestWrapper::destroy();
         TestAccountCreateAndDestroy::purge_test_accounts();
@@ -95,7 +96,7 @@ class ClanControllerTest extends NWTest {
         $char_id_2 = TestAccountCreateAndDestroy::char_id_2();
 
         // switch session to new character
-		$this->m_dependencies['session']->set('player_id', $char_id_2);
+        $this->m_dependencies['session']->set('player_id', $char_id_2);
 
         $request = Request::create('/clan/view', 'GET', []);
         RequestWrapper::inject($request);
@@ -112,7 +113,7 @@ class ClanControllerTest extends NWTest {
         $this->clan->addMember(Player::find($char_id_2), $this->m_dependencies['current_player']);
 
         // switch session to new character
-		$this->m_dependencies['session']->set('player_id', $char_id_2);
+        $this->m_dependencies['session']->set('player_id', $char_id_2);
 
         // view default clan
         $request = Request::create('/clan/view', 'GET', []);
@@ -147,7 +148,7 @@ class ClanControllerTest extends NWTest {
         $char_id_2 = TestAccountCreateAndDestroy::char_id_2();
 
         // switch session to new character
-		$this->m_dependencies['session']->set('player_id', $char_id_2);
+        $this->m_dependencies['session']->set('player_id', $char_id_2);
 
         // try to invite
         $request = Request::create('/clan/invite', 'GET', []);
@@ -203,7 +204,7 @@ class ClanControllerTest extends NWTest {
         $this->clan->addMember(Player::find($char_id_2), $this->m_dependencies['current_player']);
 
         // switch session to new character
-		$this->m_dependencies['session']->set('player_id', $char_id_2);
+        $this->m_dependencies['session']->set('player_id', $char_id_2);
 
 
 
@@ -259,7 +260,7 @@ class ClanControllerTest extends NWTest {
         $this->clan->addMember(Player::find($char_id_2), $this->m_dependencies['current_player']);
 
         // switch session to new character
-		$this->m_dependencies['session']->set('player_id', $char_id_2);
+        $this->m_dependencies['session']->set('player_id', $char_id_2);
 
         // try to disband
         $request = Request::create('/clan/disband', 'GET', []);
@@ -298,7 +299,7 @@ class ClanControllerTest extends NWTest {
         $this->clan->addMember(Player::find($char_id_2), Player::find($char_id_1));
 
         // switch session to new character
-		$this->m_dependencies['session']->set('player_id', $char_id_2);
+        $this->m_dependencies['session']->set('player_id', $char_id_2);
 
         // try to kick
         $request = Request::create('/clan/kick', 'GET', ['kicked'=>$char_id_1]);

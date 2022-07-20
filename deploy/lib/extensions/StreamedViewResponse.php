@@ -1,4 +1,5 @@
 <?php
+
 namespace NinjaWars\core\extensions;
 
 use NinjaWars\core\extensions\NWTemplate;
@@ -19,7 +20,7 @@ class StreamedViewResponse extends StreamedResponse {
         $this->data     = $data;
         $this->options  = $options;
 
-        $this->setCallback(function() use ($title, $template, $data, $options) {
+        $this->setCallback(function () use ($title, $template, $data, $options) {
             $view = new NWTemplate();
             $view->displayPage($template, $title, $data, $options);
         });

@@ -1,7 +1,8 @@
 <?php
+
 namespace NinjaWars\core;
 
-use \RuntimeException;
+use RuntimeException;
 
-class RouteNotFoundException extends RuntimeException{
+class RouteNotFoundException extends RuntimeException {
 }
