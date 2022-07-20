@@ -358,8 +358,7 @@ class Player implements Character {
     /**
      * Specially updates last_started_attack
      */
-    public function updateLastStartedAttack()
-    {
+    public function updateLastStartedAttack() {
         update_query('update players set last_started_attack = now() where player_id = :pid', [':pid' => $this->id()]);
         $this->last_started_attack = query_item('select last_started_attack from players where player_id = :pid', [':pid' => $this->id()]);
         return $this->last_started_attack;

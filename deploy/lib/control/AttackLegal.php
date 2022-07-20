@@ -104,8 +104,7 @@ class AttackLegal {
      *
      * @return bool
      */
-    private function isNotHittingRateLimit(Player $attacker): bool
-    {
+    private function isNotHittingRateLimit(Player $attacker): bool {
         $attackIntervalLimit = '.25'; // Originally .2
         $lastAttackQuery = "SELECT player_id FROM players
             WHERE player_id = :char_id
@@ -128,8 +127,7 @@ class AttackLegal {
     /**
      * Update the last attack datetime to be able to rate limit check next time
      */
-    public function updateLastAttack(Player $attacker): bool
-    {
+    public function updateLastAttack(Player $attacker): bool {
         // updates the timestamp of the last_attacked column to slow excessive attacks.
         $query = "UPDATE players SET last_started_attack = now() WHERE player_id = :char_id";
         $updated = !!update_query($query, [':char_id' => intval($attacker->id())]);
