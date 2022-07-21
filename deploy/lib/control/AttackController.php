@@ -242,7 +242,9 @@ class AttackController extends AbstractController {
         }
 
         $target->save();
+
         $attacker->save();
+        $attacker->updateLastStartedAttack(); // Saving times can lead to time differences
 
         return new StreamedViewResponse('Battle Status', 'attack_mod.tpl', get_defined_vars(), ['quickstat' => 'player' ]);
     }
