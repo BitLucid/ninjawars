@@ -104,7 +104,7 @@ class AttackLegal {
      *
      * @return bool
      */
-    private function isOverTimeLimit(): bool {
+    private function isNotHittingRateLimit(Player $attacker): bool {
         $attackIntervalLimit = '.25'; // Originally .2
         $lastAttackQuery = "SELECT player_id FROM players
             WHERE player_id = :char_id
@@ -113,24 +113,25 @@ class AttackLegal {
                 OR last_started_attack is null 
             ) LIMIT 1";
 
-        // *** Returns a player id if the enough time has passed, or else or false/null. ***
-        return (bool) query_item(
+        // *** Returns a player id to cast if the enough time has passed, or else or false/null. ***
+        $res = query_item(
             $lastAttackQuery,
             [
-                ':char_id'  => intval($this->attacker->id()),
+                ':char_id'  => intval($attacker->id()),
                 ':interval' => $attackIntervalLimit.' second',
             ]
         );
+        return !(null === $res || false === $res);
     }
 
     /**
-     * Just update the last attack attempt of a player in the database.
+     * Update the last attack datetime to be able to rate limit check next time
      */
-    private function updateLastAttack(Player $attacker): bool {
+    public function updateLastAttack(Player $attacker): bool {
         // updates the timestamp of the last_attacked column to slow excessive attacks.
-        $update_last_attacked = "UPDATE players SET last_started_attack = now() WHERE player_id = :pid";
-        $updated = update_query($update_last_attacked, [':pid'=>$attacker->id()]);
-        return (bool) $updated;
+        $query = "UPDATE players SET last_started_attack = now() WHERE player_id = :char_id";
+        $updated = !!update_query($query, [':char_id' => intval($attacker->id())]);
+        return $updated;
     }
 
     /**
@@ -163,14 +164,8 @@ class AttackLegal {
             return false;
         }
 
-        $timing_allowed = $this->isOverTimeLimit();
-
-        if ($timing_allowed && $update_timer) {
-            $this->updateLastAttack($attacker);
-        }
-
         //  *** START OF ILLEGAL ATTACK ERROR LIST  ***
-        if (!$timing_allowed && $update_timer) {
+        if (!$this->isNotHittingRateLimit($attacker)) {
             $this->error = 'Even the fastest ninja cannot act more than four times a second.';
         } elseif (empty($target->uname)) {
             $this->error = 'Your target does not exist.';
