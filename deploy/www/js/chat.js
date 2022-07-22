@@ -18,7 +18,7 @@ var Chat = window && typeof window.Chat !== 'undefined' ? window.Chat : {};
 (function jQueryShakePluginAttach($) {
   // Add shake plugin to jQuery
   // eslint-disable-next-line no-param-reassign
-  $.fn.shake = function fn7(options) {
+  $.fn.shake = function fnShake(options) {
     // defaults
     const settings = {
       shakes: 2,
@@ -34,7 +34,7 @@ var Chat = window && typeof window.Chat !== 'undefined' ? window.Chat : {};
     // make it so
     let pos;
 
-    return this.each(function fn8() {
+    return this.each(function fnChangePosit() {
       const $this = $(this);
 
       // position if necessary
@@ -90,8 +90,7 @@ Chat.getExistingChatMessages = function fnCh() {
   const since = '1424019122';
 
   $.getJSON(
-    `/api?type=new_chats&since=${encodeURIComponent(since)
-    }&jsoncallback=?`,
+    `/api?type=new_chats&since=${encodeURIComponent(since)}&jsoncallback=?`,
     (data) => {
       logger.info('Existing chats data found:', data);
       window.storeChats = data;
@@ -110,7 +109,7 @@ Chat.getExistingChatMessages = function fnCh() {
 };
 
 // Display at least the messages area when there are some messages in it.
-Chat.displayMessages = function () {
+Chat.displayMessages = function fnDisMsg() {
   $('#mini-chat-display').show();
 };
 
@@ -121,7 +120,7 @@ Chat.displayMessages = function () {
  *              'date':Date.now(),
  *              'sender_id':'128274'});
  */
-Chat.renderChatMessage = function (p_data) {
+Chat.renderChatMessage = function fnRendChat(p_data) {
   if (!p_data.message) {
     logger.error(
       'Error: Bad data sent in to renderChatMessage to be rendered',
@@ -167,8 +166,9 @@ Chat.sendChatContents = function fnChSendCont(p_form) {
     const message = p_form.message.value;
     // Send a new chat.  // ASYNC
     $.getJSON(
-      `/api?type=send_chat&msg=${encodeURIComponent(message)
-      }&jsoncallback=?`,
+      `/api?type=send_chat&msg=${encodeURIComponent(
+        message,
+      )}&jsoncallback=?`,
       (echoed) => {
         if (!echoed) {
           Chat.rejected();
@@ -342,11 +342,15 @@ $(() => {
 function refreshpagechat() {
   const messageInput = $('#message');
   // Refresh only if text not being written.
-  if (!messageInput.length || messageInput.val() === false || messageInput.val() === '') {
+  if (
+    !messageInput.length
+        || messageInput.val() === false
+        || messageInput.val() === ''
+  ) {
     if (
       window.parent
-      && window.parent.main
-      && window.parent.main.location
+            && window.parent.main
+            && window.parent.main.location
     ) {
       window.parent.main.location.reload();
     } else {

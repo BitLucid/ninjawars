@@ -6,9 +6,14 @@ $(() => {
   //  Pull var as defined in external template
   // eslint-disable-next-line camelcase
   const attackable = typeof attacking_possible !== 'undefined' ? attacking_possible : false;
-  console.info(attackable ? 'Attacking enabled.' : 'No attacking this target');
+  console.info(
+    attackable ? 'Attacking enabled.' : 'No attacking this target',
+  );
   // eslint-disable-next-line no-alert
-  $('#kick_form').submit(() => window && window.confirm('Are you sure you want to kick this player?'));
+  $('#kick_form').submit(
+    () => window
+            && window.confirm('Are you sure you want to kick this player?'),
+  );
 
   /*
        because some browsers store all values as strings, we need to store

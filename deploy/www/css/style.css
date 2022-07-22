@@ -1943,7 +1943,7 @@ a#skip-to-bottom {
 }
 #footer-authors .author {
     display: inline-block;
-    text-align:left;
+    text-align: left;
     width: 300px;
     min-height: 80px;
     margin-left: 10%;
@@ -3195,7 +3195,7 @@ select option #blue-class-select {
     font-size: 1.3rem;
     padding-top: 1.5rem;
     padding-left: 1rem;
-    font-size:larger;
+    font-size: larger;
 }
 .return-to-location,
 .player-ranking-linkback {
@@ -3289,7 +3289,7 @@ select option #blue-class-select {
 }
 
 #nw-catchphrases {
-    display:inline-block;
+    display: inline-block;
 }
 
 #nw-catchphrases span {
@@ -4788,9 +4788,9 @@ input[type='button'].btn-block {
     }
 
     #nw-catchphrases {
-        display:block;
+        display: block;
     }
-    
+
     #main-column {
         width: 100%;
         left: 0;
@@ -4836,8 +4836,8 @@ input[type='button'].btn-block {
         line-height: 2em;
     }
     #ninjawars-title-image {
-        width:60px;
-        height:60px;
+        width: 60px;
+        height: 60px;
     }
 }
 

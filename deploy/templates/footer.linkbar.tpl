@@ -27,7 +27,7 @@
 						</span>
 					</div>
 				</div>
-
+			</span>
         	<!-- Will load commit info to the page -->
         	<script type='text/javascript' src="{cachebust file="/js/repo.js"}"></script>
 		</div>
