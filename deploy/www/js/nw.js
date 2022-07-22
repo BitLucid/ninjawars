@@ -36,12 +36,12 @@ if (window.console === undefined) {
 if (
   typeof window.parent !== 'undefined'
   && window.parent.window !== window
-  && parent.NW
+  && window.parent.NW
 ) {
   console.info('Reusing existing parent NW object in new page');
   // If the interior page of an iframe, use the already-defined globals from the index.
   // $ = parent.$;
-  NW = parent.NW;
+  NW = window.parent.NW;
 } else {
   console.info('Creating new NW object');
   // If the page is standalone, define the objects as needed.
@@ -531,7 +531,7 @@ $(selector).keyup(function () {
 
 if (g_isIndex || g_isRoot) {
   // This has to be outside of domready for some reason.
-  if (parent.frames.length !== 0) {
+  if (window && window.parent && window.parent.frames && window.parent.frames.length !== 0) {
     // If there is a double-nested index...
     if (window) {
       window.location.href = '/intro'; // ...Display the main page instead.

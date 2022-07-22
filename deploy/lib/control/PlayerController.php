@@ -63,7 +63,7 @@ class PlayerController extends AbstractController {
                 $self           = ($viewing_player_obj->id() === $target_player_obj->id());
                 $params         = ['required_turns'=>0, 'ignores_stealth'=>true];
                 $AttackLegal    = new AttackLegal($viewing_player_obj, $target_player_obj, $params);
-                $AttackLegal->check(false);
+                $AttackLegal->check(false); // Just for display only check, so don't update rate limiter
                 $i_am_dead = $AttackLegal->iAmDead();
                 $attack_error   = $AttackLegal->getError();
 

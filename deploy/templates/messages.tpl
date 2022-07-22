@@ -66,7 +66,7 @@ id='send-to' name='to' value='{$to|escape}' required='required'></em>
 <script>
 // Set the need to refocus on the messaging areas if necessary.
 var refocus = {if $individual_or_clan}true{else}false{/if};
-var focus = '{$message_to}';
+var focusArea = '{$message_to}';
 </script>
 <!-- Confirmation requirements and refocus setup -->
 <script src='{cachebust file="/js/talk.js"}'></script>
