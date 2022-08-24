@@ -16,11 +16,13 @@ class TestRouting:
         the methods with test_ in their names will be run automatically.
     '''
 
-    def root(self):
+    @staticmethod
+    def root():
         '''Hack to get the root url initially'''
         return config.get('nw-config', 'DOMAIN')
 
-    def status_code(self, url):
+    @staticmethod
+    def status_code(url):
         ''' Gets http status codes of pages/urls '''
         try:
             r = requests.head(url, verify=False)
@@ -28,7 +30,8 @@ class TestRouting:
         except requests.ConnectionError:
             return None
 
-    def page_title(self, url):
+    @staticmethod
+    def page_title(url):
         ''' Get the lexed title from the html '''
         try:
             r = requests.get(url, verify=False)
