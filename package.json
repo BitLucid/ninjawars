@@ -58,7 +58,7 @@
     "karma-requirejs": "^1.1.0",
     "karma-sinon": "^1.0.5",
     "prettier": "2.7.1",
-    "puppeteer": "^15.4.0",
+    "puppeteer": "^16.0.0",
     "requirejs": "^2.3.6",
     "sinon": "^14.0.0"
   },
