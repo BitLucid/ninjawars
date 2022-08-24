@@ -14,7 +14,8 @@ class TestRatchets:
     plus_minus = 6
     ''' Rough file counts in pertinent directories '''
 
-    def deploy_dir(self):
+    @staticmethod
+    def deploy_dir():
         '''Hack to obtain the web directory path for now '''
         dirname, filename = os.path.split(os.path.abspath(__file__))
         return os.path.realpath(dirname + '/../../') + '/'
@@ -23,7 +24,8 @@ class TestRatchets:
         ''' The publically viewable web directory, these will be conf later'''
         return self.deploy_dir() + 'www/'
 
-    def count_php_in_dir(self, dir):
+    @staticmethod
+    def count_php_in_dir(dir):
         ''' Only php extension files in a dir '''
         return len(fnmatch.filter(os.listdir(dir), '*.php'))
 
@@ -49,7 +51,8 @@ class TestRatchets:
             self.count_php_in_dir(control_dir)
         )
 
-    def parse_lines(self, path):
+    @staticmethod
+    def parse_lines(path):
         ''' Return the lines of code in a directory or file result '''
         out = subprocess.check_output(['wc', '-l', path])
         matches = re.findall('\d+', str(out))
