@@ -1,5 +1,8 @@
 version = 1
 
+[analyzers.meta]
+  environment = ["jest", "jquery"]
+
 [[analyzers]]
 name = "secrets"
 enabled = true
