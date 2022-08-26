@@ -1,8 +1,5 @@
 version = 1
 
-[analyzers.meta]
-  environment = ["jest", "jquery"]
-
 [[analyzers]]
 name = "secrets"
 enabled = true
@@ -10,6 +7,12 @@ enabled = true
 [[analyzers]]
 name = "javascript"
 enabled = true
+
+  [analyzers.meta]
+  environment = [
+    "jquery",
+    "jest"
+  ]
 
 [[analyzers]]
 name = "sql"
