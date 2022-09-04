@@ -76,7 +76,6 @@ NpcFactory::$data = [
         'strength'  => 30,
         'speed'     => 50,
         'stamina'   => 40,
-        'img'       => 'nureonna',
         'race'      => 'yokai',
         'img'       => 'nureonna.jpg',
         'status'    => POISON,

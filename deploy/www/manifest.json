@@ -1,0 +1,15 @@
+{
+    "short_name": "NinjaWars",
+    "name": "NinjaWars: Live By The Shuriken",
+    "icons": [
+        {
+            "src": "favicon.ico",
+            "sizes": "64x64 32x32 24x24 16x16",
+            "type": "image/x-icon"
+        }
+    ],
+    "start_url": ".",
+    "display": "standalone",
+    "theme_color": "#008B8B",
+    "background_color": "#000000"
+}
