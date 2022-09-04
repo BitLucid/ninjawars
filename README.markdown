@@ -61,24 +61,24 @@ _See ./docs/INSTALL if you need more._
 Ninjwars is deployed helpfully via Deploybot https://ninjawars.deploybot.com/
 Triggered by pull request merges.
 
--   Vetted by continuous integration here:
--   https://app.codeship.com/home
--   It gets deployed currently to the aws servers here:
--   https://console.aws.amazon.com/ec2/v2/home?region=us-east-1#Instances:instanceState=running
--   Loadbalanced behind balancers here:
--   https://console.aws.amazon.com/ec2/v2/home?region=us-east-1#LoadBalancers:sort=loadBalancerName
--   With additional frontends here:
--   http://www.ninjawars.net
--   https://splash.ninjawars.net
--   https://nwave.ninjawars.net
--   https://shell.ninjawars.net/
--   https://console.aws.amazon.com/cloudfront/home?region=us-east-1
+- Vetted by continuous integration here:
+- https://app.codeship.com/home
+- It gets deployed currently to the aws servers here:
+- https://console.aws.amazon.com/ec2/v2/home?region=us-east-1#Instances:instanceState=running
+- Loadbalanced behind balancers here:
+- https://console.aws.amazon.com/ec2/v2/home?region=us-east-1#LoadBalancers:sort=loadBalancerName
+- With additional frontends here:
+- http://www.ninjawars.net
+- https://splash.ninjawars.net
+- https://nwave.ninjawars.net
+- https://shell.ninjawars.net/
+- https://console.aws.amazon.com/cloudfront/home?region=us-east-1
 
 ## Run the Docker
 
--   Init tagged image: `docker build -t nw-server .`
--   Run it: `docker run --rm -it -p 7654:7654 nw-server`
--   Stop the container: `docker stop nw-server`
+- Init tagged image: `docker build -t nw-server .`
+- Run it: `docker run --rm -it -p 7654:7654 nw-server`
+- Stop the container: `docker stop nw-server`
 
 ## To Contribute
 

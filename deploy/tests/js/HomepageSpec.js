@@ -2,14 +2,14 @@
 /* global describe, beforeEach, afterEach, it, expect, presence */
 
 describe('homepage', () => {
-    describe('Introductory homepage script testing context', () => {
-        beforeEach(() => {});
+  describe('Introductory homepage script testing context', () => {
+    beforeEach(() => {});
 
-        afterEach(() => {});
+    afterEach(() => {});
 
-        it('should have initialized the homepage functionality', () => {
-            // Running the file should work without error
-            expect(presence.homepage).toBeDefined();
-        });
+    it('should have initialized the homepage functionality', () => {
+      // Running the file should work without error
+      expect(presence.homepage).toBeDefined();
     });
+  });
 });

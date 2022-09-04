@@ -22,12 +22,12 @@ export const canDebug = () => {
   }
   return (
     (typeof process !== 'undefined'
-            && typeof process.env !== 'undefined'
-            && process.env.NODE_ENV === 'development')
-        || urlDebug
-        || (typeof window !== 'undefined'
-            && typeof window.NW !== 'undefined'
-            && window.NW.debug)
+      && typeof process.env !== 'undefined'
+      && process.env.NODE_ENV === 'development')
+    || urlDebug
+    || (typeof window !== 'undefined'
+      && typeof window.NW !== 'undefined'
+      && window.NW.debug)
   );
 };
 

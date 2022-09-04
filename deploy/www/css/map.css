@@ -1,132 +1,132 @@
 #map .map-grid {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    grid-template-rows: repeat(5, 1fr);
-    grid-gap: 0;
-    width: 85vh;
-    min-width: 60rem;
-    height: 85vh;
-    min-height: 60rem;
-    margin: auto;
-    background-color: #807f6f;
-    color: rgb(155, 155, 155);
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(5, 1fr);
+  grid-gap: 0;
+  width: 85vh;
+  min-width: 60rem;
+  height: 85vh;
+  min-height: 60rem;
+  margin: auto;
+  background-color: #807f6f;
+  color: rgb(155, 155, 155);
 }
 
 #map .details {
-    width: 90%;
-    text-align: center;
-    min-height: 1.2rem;
-    font-size: 1.5rem;
-    background-color: black;
-    background-color: rgba(0, 0, 0, 0.8);
-    margin-left: 5%;
-    margin-top: 20%;
-    border-radius: 0.6rem;
-    padding: 0.1rem 0.1rem;
+  width: 90%;
+  text-align: center;
+  min-height: 1.2rem;
+  font-size: 1.5rem;
+  background-color: black;
+  background-color: rgba(0, 0, 0, 0.8);
+  margin-left: 5%;
+  margin-top: 20%;
+  border-radius: 0.6rem;
+  padding: 0.1rem 0.1rem;
 }
 
 @media only screen and (min-width: 768px) {
-    /* Tablets */
-    #map .details {
-        font-size: 2.1rem;
-    }
+  /* Tablets */
+  #map .details {
+    font-size: 2.1rem;
+  }
 }
 
 @media only screen and (min-width: 1224px) {
-    /* Desktops and Laptops */
-    #map .details {
-        width: 66%;
-        margin-left: 17%;
-        margin-top: 25%;
-        font-size: 2.1rem;
-    }
+  /* Desktops and Laptops */
+  #map .details {
+    width: 66%;
+    margin-left: 17%;
+    margin-top: 25%;
+    font-size: 2.1rem;
+  }
 }
 
 #map .point {
-    width: 20%;
-    height: 20%;
-    margin: 0;
-    padding: 0;
-    background-color: #807f6f;
+  width: 20%;
+  height: 20%;
+  margin: 0;
+  padding: 0;
+  background-color: #807f6f;
 }
 
 #map .node.building {
-    background-color: #753700;
+  background-color: #753700;
 }
 
 #map .node.doshin {
-    background-repeat: no-repeat;
-    background-color: #6e4623;
+  background-repeat: no-repeat;
+  background-color: #6e4623;
 }
 
 #map .node.dojo {
-    background-repeat: no-repeat;
-    background-color: rgb(58, 26, 4);
+  background-repeat: no-repeat;
+  background-color: rgb(58, 26, 4);
 }
 
 #map .node.shrine {
-    background-repeat: no-repeat;
-    background-color: #085e5e;
+  background-repeat: no-repeat;
+  background-color: #085e5e;
 }
 
 #map .node.grass {
-    background-color: rgb(27, 43, 31);
-    background-image: url(/images/nodes/grass.jpg);
-    background-size: 100% 100%;
+  background-color: rgb(27, 43, 31);
+  background-image: url(/images/nodes/grass.jpg);
+  background-size: 100% 100%;
 }
 
 #map .node.dirt {
-    background-color: rgb(90, 77, 34);
-    background-image: url(/images/nodes/lightdirt.jpg);
-    background-size: 100% 100%;
+  background-color: rgb(90, 77, 34);
+  background-image: url(/images/nodes/lightdirt.jpg);
+  background-size: 100% 100%;
 }
 
 #map .node.rice-field {
-    background-color: rgb(27, 43, 31);
-    /*background-image: url(/images/nodes/lightdirt.jpg);*/
-    background-image: url(/images/nodes/grass.jpg);
-    background-size: 100% 100%;
+  background-color: rgb(27, 43, 31);
+  /*background-image: url(/images/nodes/lightdirt.jpg);*/
+  background-image: url(/images/nodes/grass.jpg);
+  background-size: 100% 100%;
 }
 
 #map .node.casino {
-    background-repeat: no-repeat;
-    background-color: rgb(181, 157, 85);
+  background-repeat: no-repeat;
+  background-color: rgb(181, 157, 85);
 }
 
 #map .node.weapons-shop {
-    background-repeat: no-repeat;
-    background-color: #753700;
+  background-repeat: no-repeat;
+  background-color: #753700;
 }
 
 #map .node.forest {
-    background-color: hsl(91.2, 15%, 32.7%);
+  background-color: hsl(91.2, 15%, 32.7%);
 }
 
 #map .node.north-south-road {
-    background-color: rgb(55, 55, 55);
-    background-image: url(/images/nodes/darkgranite.jpg);
-    background-size: 100% 100%;
+  background-color: rgb(55, 55, 55);
+  background-image: url(/images/nodes/darkgranite.jpg);
+  background-size: 100% 100%;
 }
 
 #map .node.west-east-road,
 #map .node.east-west-road {
-    background-color: rgb(65, 65, 65);
-    background-image: url(/images/nodes/darkgranite.jpg);
-    background-size: 100% 100%;
+  background-color: rgb(65, 65, 65);
+  background-image: url(/images/nodes/darkgranite.jpg);
+  background-size: 100% 100%;
 }
 
 #map .node.bath-house {
-    background-color: #800040;
+  background-color: #800040;
 }
 
 #map .node.village-square {
-    background-color: #dd164f;
+  background-color: #dd164f;
 }
 
 #map .area-name {
-    background-color: rgb(55, 10, 10);
-    font-size: 1.3em;
-    text-align: center;
-    text-transform: uppercase;
-    padding: 0.7em;
+  background-color: rgb(55, 10, 10);
+  font-size: 1.3em;
+  text-align: center;
+  text-transform: uppercase;
+  padding: 0.7em;
 }

@@ -1,6 +1,4 @@
-// Strict checking.
-/* global describe, beforeEach, afterEach, it, expect, */
-/* global g_isIndex, g_isRoot, g_isSubpage, NW, environment */
+/* global g_isIndex, g_isRoot, g_isSubpage, NW */
 
 /* require(['jquery'], function($) {
     $('body').css('background-color', 'green');
@@ -15,38 +13,35 @@
 }); */
 
 describe('NW', () => {
-  describe('NW App testing context', () => {
-    const app = NW;
-    const env = environment;
-    beforeEach(() => { });
+    describe('NW App testing context', () => {
+        const app = NW;
+        const env = window && window.nwEnvironment;
 
-    afterEach(() => { });
-
-    it('should be able to see var defined in nw.js', () => {
-      expect(env).toBeDefined();
-      expect(env).toMatch(/NW.+context/);
+        it('should be able to see var defined in nw.js', () => {
+            expect(env).toBeDefined();
+            expect(env).toMatch(/NW.+context/);
+        });
+        it('should be able to get the NW object', () => {
+            expect(app).toBeDefined();
+        });
+        it('should have access to the location checks', () => {
+            expect(g_isIndex).toBeDefined();
+            expect(g_isRoot).toBeDefined();
+            expect(g_isSubpage).toBeDefined();
+        });
+        describe('NW app method calls', () => {
+            it('should call the update function without error', () => {
+                const data = {
+                    player: true,
+                    inventory: true,
+                    message: true,
+                    member_counts: true,
+                    event: true,
+                    unread_messages_count: true,
+                };
+                expect(NW.checkAPI_callback).toBeDefined();
+                expect(NW.checkAPI_callback(data)).toBe(false);
+            });
+        });
     });
-    it('should be able to get the NW object', () => {
-      expect(app).toBeDefined();
-    });
-    it('should have access to the location checks', () => {
-      expect(g_isIndex).toBeDefined();
-      expect(g_isRoot).toBeDefined();
-      expect(g_isSubpage).toBeDefined();
-    });
-    describe('NW app method calls', () => {
-      it('should call the update function without error', () => {
-        const data = {
-          player: true,
-          inventory: true,
-          message: true,
-          member_counts: true,
-          event: true,
-          unread_messages_count: true,
-        };
-        expect(NW.checkAPI_callback).toBeDefined();
-        expect(NW.checkAPI_callback(data)).toBe(false);
-      });
-    });
-  });
 });

@@ -1,6 +1,5 @@
 /* Assist in clan operations (currently only clan leave) */
-/* jshint browser: true, white: true, plusplus: true */
-/* global $ */
+// jquery vars are globally available
 
 const clan = {
   leave: () => {

@@ -1,15 +1,26 @@
 /* eslint-disable camelcase */
 /* Manipulate chats to and from the api, run websockets server by sudo make run-chat */
 /* jshint browser: true, white: true, plusplus: true */
-/* global $, NW, Chat, jQuery, window.conn, window.parent, window.WebSocket, window.Chat */
+/* global NW, Chat, window.conn, window.parent, window.WebSocket, window.Chat */
 
 // eslint-disable-next-line no-var
-var logger = window.logger || console || {
-  log: () => { /* noop */ },
-  error: () => { /* noop */ },
-  info: () => { /* noop */ },
-  warn: () => { /* noop */ },
-  dir: () => { /* noop */ },
+var logger = window.logger
+    || console || {
+  log: () => {
+    /* noop */
+  },
+  error: () => {
+    /* noop */
+  },
+  info: () => {
+    /* noop */
+  },
+  warn: () => {
+    /* noop */
+  },
+  dir: () => {
+    /* noop */
+  },
 };
 
 // eslint-disable-next-line no-var
@@ -56,10 +67,7 @@ var Chat = window && typeof window.Chat !== 'undefined' ? window.Chat : {};
             { left: settings.distance },
             settings.duration / settings.shakes / 2,
           )
-          .animate(
-            { left: 0 },
-            settings.duration / settings.shakes / 4,
-          );
+          .animate({ left: 0 }, settings.duration / settings.shakes / 4);
       }
     });
   };
@@ -138,7 +146,9 @@ Chat.renderChatMessage = function fnRendChat(p_data) {
   const messageArea = list.find('.chat-message.template').clone();
   list.end();
 
-  const missingArea = (!list.length && 'list') || (!authorArea.length && 'authorArea') || (!messageArea.length && 'messageArea');
+  const missingArea = (!list.length && 'list')
+        || (!authorArea.length && 'authorArea')
+        || (!messageArea.length && 'messageArea');
 
   if (missingArea) {
     logger.error(`Chat ${missingArea} not found to place chats in!`);
@@ -166,9 +176,7 @@ Chat.sendChatContents = function fnChSendCont(p_form) {
     const message = p_form.message.value;
     // Send a new chat.  // ASYNC
     $.getJSON(
-      `/api?type=send_chat&msg=${encodeURIComponent(
-        message,
-      )}&jsoncallback=?`,
+      `/api?type=send_chat&msg=${encodeURIComponent(message)}&jsoncallback=?`,
       (echoed) => {
         if (!echoed) {
           Chat.rejected();
@@ -236,7 +244,9 @@ Chat.chatReady = function fnCCR() {
   Chat.displayMessages(); // Will display the whole messages area.
   const $submitter = Chat.submissionArea();
   if (!$submitter.length) {
-    logger.error('Error: Chat submission area not found. Continung to try operations, however.');
+    logger.error(
+      'Error: Chat submission area not found. Continung to try operations, however.',
+    );
   }
 
   if (Chat.canSend()) {
@@ -344,14 +354,10 @@ function refreshpagechat() {
   // Refresh only if text not being written.
   if (
     !messageInput.length
-        || messageInput.val() === false
-        || messageInput.val() === ''
+      || messageInput.val() === false
+      || messageInput.val() === ''
   ) {
-    if (
-      window.parent
-            && window.parent.main
-            && window.parent.main.location
-    ) {
+    if (window.parent && window.parent.main && window.parent.main.location) {
       window.parent.main.location.reload();
     } else {
       window.location.reload();

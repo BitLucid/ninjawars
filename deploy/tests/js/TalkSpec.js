@@ -1,5 +1,5 @@
 // Strict checking.
-/* global describe, beforeEach, afterEach, it, expect, performTalk */
+/* global performTalk */
 
 describe('talk', () => {
   describe('Introductory talk script testing context', () => {

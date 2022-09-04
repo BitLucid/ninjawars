@@ -19,10 +19,7 @@ function loadLastCommitMessage() {
     }
     const { message, author } = data.data.commit;
     const mess = message
-            && message.replace(
-              /Merge pull request #....{1,2} from BitLucid\//g,
-              '',
-            );
+      && message.replace(/Merge pull request #....{1,2} from BitLucid\//g, '');
     // Load latest commit message.
     $('#latest-commit-section')
       .find('#latest-commit')

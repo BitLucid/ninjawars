@@ -2,15 +2,15 @@
 /* global describe, beforeEach, afterEach, it, expect, presence */
 
 describe('shop', () => {
-    describe('Introductory script testing context', () => {
-        beforeEach(() => {});
+  describe('Introductory script testing context', () => {
+    beforeEach(() => {});
 
-        afterEach(() => {});
+    afterEach(() => {});
 
-        it('should have initialized the shop functionality', () => {
-            // Running the file should work without error
-            expect(presence).toBeDefined();
-            expect(presence.shop).toBeDefined();
-        });
+    it('should have initialized the shop functionality', () => {
+      // Running the file should work without error
+      expect(presence).toBeDefined();
+      expect(presence.shop).toBeDefined();
     });
+  });
 });

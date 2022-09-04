@@ -1,13 +1,8 @@
 /* Assist sending of messages to clan or individuals */
-/* jshint browser: true, white: true, plusplus: true */
-/* global $, NW, refocus, focusArea */
+/* global NW, refocus, focusArea */
+// also jQuery globals are available
 
-// eslint-disable-next-line no-var
-// var presence = window.presence || {};
-// presence.talk = true;
-
-// eslint-disable-next-line no-var
-var logger = console || {
+const logger = console || {
   log: () => {
     /* no-op */
   },
@@ -32,7 +27,7 @@ function performTalk() {
   // If a refocus is requested, because a message was just sent, then refocus on the area.
   if (
     typeof refocus !== 'undefined'
-        && refocus
+    && refocus
     && typeof focusArea !== 'undefined'
     && focusArea
   ) {
