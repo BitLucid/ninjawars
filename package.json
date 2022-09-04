@@ -8,13 +8,13 @@
   },
   "scripts": {
     "lint": "eslint --ext .jsx,.js deploy/www/js",
+    "lint:fix": "eslint --ext .jsx,.js deploy/www/js --fix",
     "prepare-unit-test-ci": "echo 'no-op for now'",
     "start": "yarn time && make build && yarn time",
     "post-deploy": "php deploy/deployed_scripts/resetcache.php",
     "watch": "livereload ./deploy/* ./deploy/www/* ./deploy/templates/* ./deploy/lib/control/* --debug",
     "security-check": "yarn audit",
     "time": "node -e \"console.log( new Date().toISOString() );\"",
-    "prettier": "npx prettier --write .",
     "browse": "xdg-open https://localhost:8765",
     "browse:epics": "xdg-open https://localhost:8765/epics",
     "browse:repo": "xdg-open https://github.com/BitLucid/ninjawars/",
@@ -57,7 +57,6 @@
     "karma-jasmine": "^5.1.0",
     "karma-requirejs": "^1.1.0",
     "karma-sinon": "^1.0.5",
-    "prettier": "2.7.1",
     "puppeteer": "^17.1.3",
     "requirejs": "^2.3.6",
     "sinon": "^14.0.1"
