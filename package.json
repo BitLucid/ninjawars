@@ -62,5 +62,5 @@
     "requirejs": "^2.3.6",
     "sinon": "^14.0.0"
   },
-  "packageManager": "yarn@3.2.1"
+  "packageManager": "yarn@3.2.3"
 }
