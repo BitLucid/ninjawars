@@ -125,6 +125,8 @@ start-chat:
 browse:
 	xdg-open https://localhost:8765
 
+browse-repo:
+	xdg-open https://github.com/BitLucid/ninjawars/pulls
 
 all: build test-unit db python-build test
 

@@ -8,6 +8,12 @@ enabled = true
 name = "javascript"
 enabled = true
 
+  [analyzers.meta]
+  environment = [
+    "jquery",
+    "jest"
+  ]
+
 [[analyzers]]
 name = "sql"
 enabled = true

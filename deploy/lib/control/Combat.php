@@ -84,5 +84,6 @@ class Combat {
                 return $class;
             }
         }
+        return 'nick';
     }
 }

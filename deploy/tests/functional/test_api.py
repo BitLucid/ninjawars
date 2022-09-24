@@ -17,11 +17,13 @@ class TestApi:
         like json comes back.
     '''
 
-    def root(self):
+    @staticmethod
+    def root():
         '''Get the root url from the config'''
         return config.get('nw-config', 'DOMAIN')
 
-    def status_code(self, url):
+    @staticmethod
+    def status_code(url):
         ''' Gets http status codes of pages/urls '''
         try:
             r = requests.head(url, verify=False)
@@ -29,7 +31,8 @@ class TestApi:
         except requests.ConnectionError:
             return None
 
-    def pull_json(self, url, endpoint):
+    @staticmethod
+    def pull_json(url, endpoint):
         ''' Get a page to parse as json, for the api 
             there may be better ways to do this later'''
         params = dict(
