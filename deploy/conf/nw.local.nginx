@@ -39,6 +39,10 @@ server {
 		try_files $uri =404;
 	}
 
+	location = /intro{
+		try_files $uri.html =500;
+	}
+
 	location / {
 		#default fallback of everything else block
 		try_files $uri @php;
