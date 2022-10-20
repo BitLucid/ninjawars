@@ -107,7 +107,7 @@
 	 </section>
 	 <section>
 	  <div class='inline-block'>
-	  	<strong>Ninja Color &amp; Expertise:</strong>
+	  	<strong>Ninja Animal Style &amp; Expertise:</strong>
 	  </div>
 	  <div class='inline-block'>
   	{foreach from=$classes item='class' key='identity'}
