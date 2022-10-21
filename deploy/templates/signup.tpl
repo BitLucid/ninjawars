@@ -39,7 +39,7 @@
 		{if $confirmed}
 		  <p>Account with the login email "{$signupRequest->enteredEmail|escape}" is now confirmed!</p>
 		  <div>
-		  	<strong>You can <a class='btn btn-primary btn-lg' href='/login'>LOGIN NOW!</a></strong>
+		  	You can <a href='/login'><button class='btn btn-primary btn-lg btn-block'>LOGIN NOW!</button></a>
 		  </div>
 		{else}
 		  Phase 5: When you receive an email from ninjawars ({$smarty.const.SYSTEM_EMAIL}), click the confirmation link to activate your account.
