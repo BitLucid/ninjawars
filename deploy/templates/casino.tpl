@@ -53,7 +53,7 @@
 
 	<div class='glassbox'>
 		<div class="description">
-			<p>You walk down the alley towards a shadowed door on a low, squat building with golden gilt peeling off of the entranceway. As you enter the small casino, <a href='/npc/attack/guard'>a guard</a> eyes you with caution.</p>
+			<p>You walk down the alley towards a shadowed door on a low stone building with gilt peeling off around it's door. As you enter the small casino, <a href='/npc/attack/guard'>a guard</a> eyes you with caution.</p>
 			<p>No-one else is in the casino.  You walk towards the only table with a wizened old man, missing most of his teeth, behind it. He shows you a shiny coin.</p>
 			<p> The old man says <span class='speech'>Welcome to the Casino, {if $player && $player->name()}{$player->name()|escape}{else}Stranger{/if}!</span>
 
