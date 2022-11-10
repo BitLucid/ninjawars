@@ -31,7 +31,7 @@ class ListController extends AbstractController {
         $hide_setting = (!$searched && $session->has('hide_dead') ? $session->get('hide_dead') : 'dead'); // Defaults to hiding dead via session
         $hide         = ($searched ? 'none' : $request->get('hide', $hide_setting)); // search override > get setting > session setting
         $alive_only   = ($hide == 'dead');
-        $page         = $request->get('page');
+        $page         = in_array($request->get('page'), ['searched']) ? $request->get('page') : (int) $request->get('page');
         $record_limit = 20; // The number of players that gets shown per page
 
         if (!$searched && $hide_setting != $hide) { // Save the toggled state for later
@@ -72,7 +72,7 @@ class ListController extends AbstractController {
         if ($searched && $list_by_rank && $rank_search = (int) substr($searched, 1)) {
             $page = ceil($rank_search / $record_limit);
         } elseif ($page == "searched") {
-            $page = $request->get('page', 1);
+            $page = (int) $request->get('page', 1);
         } else {
             $page = ($page < 1 ? 1 : $page); // Prevent the page number from going negative
         }
