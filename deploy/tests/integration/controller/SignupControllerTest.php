@@ -192,10 +192,12 @@ class SignupControllerTest extends NWTest {
      * Test that the error message is correct
      */
     public function testDupeNameFailsCorrectly() {
+        // Change name of test user to a known expected username
         $player = Player::find($this->char_id);
         $player->uname = 'KnownGood';
-        $player->save();
+        $player->save(); // Save with that new username
 
+        // Now try to sign up as the same new username
         RequestWrapper::inject(new Request([
             'key'        => 'password1',
             'cpass'      => 'password1',
@@ -208,6 +210,7 @@ class SignupControllerTest extends NWTest {
         $reflection = new \ReflectionProperty(get_class($response), 'data');
         $reflection->setAccessible(true);
         $response_data = $reflection->getValue($response);
+        TestAccountCreateAndDestroy::destroy('KnownGood');
         $this->assertNotEmpty($response_data['error']);
         $this->assertStringContainsString('already in use', $response_data['error']);
     }
@@ -229,7 +232,8 @@ class SignupControllerTest extends NWTest {
         $reflection->setAccessible(true);
         $response_data = $reflection->getValue($response);
         $this->assertNotEmpty($response_data['error']);
-        $this->assertStringContainsString('already in use', $response_data['error']);
+        $this->assertStringContainsString('already', $response_data['error']);
+        $this->assertStringContainsString('alreadyzzzz', $response_data['error']);
     }
 
     public function testInvalidClassFailsCorrectly() {
@@ -237,7 +241,7 @@ class SignupControllerTest extends NWTest {
             'key'        => 'password1',
             'cpass'      => 'password1',
             'send_email' => $this->fake_email,
-            'send_name'  => 'KnownGood',
+            'send_name'  => 'KnownClassGood',
             'send_class' => 'KnownBad',
         ]));
 
@@ -267,8 +271,8 @@ class SignupControllerTest extends NWTest {
         $account = Account::findByEmail($email);
         $player = Player::findByName($uname);
 
-        $this->assertNotNull($player);
-        $this->assertNotNull($account);
+        $this->assertNotNull($player, 'Player not found after successful signup');
+        $this->assertNotNull($account, 'Account not found after successful signup.');
 
         $query_relationship = 'SELECT count(*) FROM account_players WHERE _account_id = :id1 AND _player_id = :id2';
 

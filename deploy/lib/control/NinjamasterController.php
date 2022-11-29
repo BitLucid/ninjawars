@@ -66,7 +66,7 @@ class NinjamasterController extends AbstractController {
         $char_ids  = $initial_char_ids ? preg_split("/[,\s]+/", $initial_char_ids) : null;
         $char_name = trim($request->get('char_name'));
 
-        if ($char_name) { // View a target non-self character
+        if ($char_name) { // View a target character
             $first_char = Player::findByName($char_name);
             if (null !== $first_char && null !== $first_char->id()) {
                 $char_ids  = [$first_char->id()];
