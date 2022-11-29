@@ -126,6 +126,6 @@ class PasswordResetTest extends NWTest {
         PasswordResetRequest::generate($account, $this->nonce='77warkwark', false);
         PasswordResetRequest::reset($account, 'new_pass34532');
         $req = PasswordResetRequest::match($this->nonce);
-        $this->assertEmpty($req, "Password Reset Request shouldn't match because it should already be marked as used from resetting."); // 
+        $this->assertEmpty($req, "Password Reset Request shouldn't match because it should already be marked as used from resetting."); //
     }
 }
