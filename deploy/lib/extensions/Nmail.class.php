@@ -5,16 +5,13 @@ use Symfony\Component\Mailer\Transport;
 use Symfony\Component\Mailer\Mailer;
 use Symfony\Component\Mime\Email;
 
-
-
 /**
  * Wrapper class for nw to send out mail
  *
  * @category Mail
  * @subpackage mail
  */
-class Nmail
-{
+class Nmail {
     /**
      * The to is a simple email address or an array of emails or a mixed array of email-indexed formal names and/or simple email values.
      * For example: 'bob@gmail.com' or array('bob@gmail.com')
@@ -48,8 +45,7 @@ class Nmail
      * @param $from string or array of email-indexed from addresses
      * @access public
      */
-    public function __construct($to = null, $subject = null, $body = null, $from = null)
-    {
+    public function __construct($to = null, $subject = null, $body = null, $from = null) {
         $this->to      = $to;
         $this->subject = $subject;
         $this->body    = $body;
@@ -61,8 +57,7 @@ class Nmail
      *
      * @return void
      */
-    public function replace($to = null, $subject = null, $body = null, $from = null)
-    {
+    public function replace($to = null, $subject = null, $body = null, $from = null) {
         $this->__construct($to, $subject, $body, $from);
         // *** Replace the current Nmail parameters with a new mailing.
     }
@@ -71,16 +66,14 @@ class Nmail
      * Run checks to make sure that the mail is ready to be sent out.
      * @return boolean
      */
-    public function valid()
-    {
+    public function valid() {
         return !($this->to == null || $this->subject == null || $this->body == null || $this->from == null);
     }
 
     /**
      * Direct mapping to allow the setting of the reply to address.
      */
-    public function setReplyTo($email_or_array)
-    {
+    public function setReplyTo($email_or_array) {
         $this->reply_to = $email_or_array;
     }
 
@@ -89,8 +82,7 @@ class Nmail
      *
      * @return boolean whether the mail function accepted the inputs.
      */
-    public function send()
-    {
+    public function send() {
         // Create the Transport
         if (null === self::$transport) {
             self::$transport = Transport::fromDsn(MAILER_DSN);
