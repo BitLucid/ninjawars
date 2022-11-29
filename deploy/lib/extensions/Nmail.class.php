@@ -1,7 +1,14 @@
 <?php
 
+
+use Symfony\Component\Mailer\Transport;
+use Symfony\Component\Mailer\Mailer;
+use Symfony\Component\Mime\Email;
+
+
+
 /**
- * Wrapper class for nw to send out mail, currently wraps the swiftmail mail library.
+ * Wrapper class for nw to send out mail
  *
  * @category Mail
  * @subpackage mail
@@ -28,9 +35,11 @@ class Nmail
      */
     public $from;
 
-    public $message = null;  // Swiftmail sending mechanism.
-
+    /**
+     * Mechanism like ses, sendmail, etc configuration
+     */
     public static $transport = null;
+
 
     /**
      * Constructor
@@ -84,43 +93,32 @@ class Nmail
     {
         // Create the Transport
         if (null === self::$transport) {
-            self::$transport = new Swift_SendmailTransport();
+            self::$transport = Transport::fromDsn(MAILER_DSN);
         }
 
-        $mailer = new Swift_Mailer(self::$transport);
 
-        $this->message = new Swift_Message();
-        $this->message
+        $mailer = new Mailer(self::$transport);
+        $email = (new Email())
+            ->from($this->from)
+            ->to($this->to)
+            //->cc('cc@example.com')
+            //->bcc('bcc@example.com')
+            //->replyTo('fabien@example.com')
+            //->priority(Email::PRIORITY_HIGH)
+            ->subject($this->subject)
+            ->text($this->body)
+            ->html('<p>' . $this->body . '</p>');
 
-            //Give the message a subject
-            ->setSubject($this->subject)
-
-            //Set the From address with an associative array
-            ->setFrom($this->from)
-
-            //Set the To addresses with an associative array
-            ->setTo($this->to)
-
-            //Give it a body
-            ->setBody($this->body)
-
-            //And optionally an alternative/html body
-            ->addPart('<p>' . $this->body . '</p>', 'text/html')
-
-            //Optionally add any attachments
-            //  ->attach(Swift_Attachment::fromPath('my-document.pdf'))
-        ;
 
         if ($this->reply_to) {
-            $this->message->setReplyTo($this->reply_to);
-            $this->message->setSender($this->from); // Have to set sender when there's a different reply-to.
+            $email->setReplyTo($this->reply_to);
+            $email->setSender($this->from); // Have to set sender when there's a different reply-to.
         }
 
         if (defined('DEBUG') && DEBUG) {
-            error_log($this->message . PHP_EOL, 3, LOGS . "emails.log");
+            error_log($this->body . PHP_EOL, 3, LOGS . "emails.log");
         }
 
-        // Send the message along.
-        return (bool) $mailer->send($this->message);
+        return (bool) $mailer->send($email);
     }
 }

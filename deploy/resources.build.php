@@ -24,6 +24,7 @@ define('SYSTEM_MESSENGER_EMAIL', "noreply@ninjawars.net");
 define('SYSTEM_EMAIL_NAME', "Automated Ninjawars Messenger");
 define('SYSTEM_MESSENGER_NAME', SYSTEM_EMAIL_NAME);
 define('ALERTS_EMAIL', SUPPORT_EMAIL);
+define('MAILER_DSN', 'ses+smtp://USERNAME:PASSWORD@default');
 
 define('FACEBOOK_APP_ID', '30479872633'); // Non-confidential id for the facebook app
 define('FACEBOOK_APP_SECRET', 'mooMooIAmACow'); // Secret! string for facebook login auth stuff.

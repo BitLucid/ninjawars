@@ -24,6 +24,7 @@ define('SYSTEM_EMAIL_NAME', __SYSTEM_EMAIL_NAME__);
 define('SYSTEM_MESSENGER_EMAIL', __SYSTEM_EMAIL__);
 define('SYSTEM_MESSENGER_NAME', SYSTEM_EMAIL_NAME);
 define('ALERTS_EMAIL', __ALERTS_EMAIL__);
+define('MAILER_DSN', __MAILER_DSN__);
 
 define('FACEBOOK_APP_ID', __FACEBOOK_APP_ID__); // Non-confidential id for the facebook app
 define('FACEBOOK_APP_SECRET', __FACEBOOK_APP_SECRET__); // Secret string for facebook login auth stuff.
