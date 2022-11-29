@@ -11,17 +11,24 @@ use NinjaWars\core\environment\RequestWrapper;
 class SignupControllerTest extends NWTest {
     private $char_id;
     private $fake_email = 'new@local.host';
+    private $fake_email_alt = 'new2@example.host';
     private $fake_user = 'signup-test-user';
+    private $known_good_user = 'KnownGood';
 
     public function setUp(): void {
         parent::setUp();
         SessionFactory::init(new MockArraySessionStorage());
+        TestAccountCreateAndDestroy::destroy(null, $this->fake_email_alt);
+        TestAccountCreateAndDestroy::destroy(null, $this->fake_email);
+        TestAccountCreateAndDestroy::destroy($this->fake_user);
+        TestAccountCreateAndDestroy::destroy($this->known_good_user);
         $this->char_id = TestAccountCreateAndDestroy::create_testing_account($this->fake_user);
         SessionFactory::getSession()->set('player_id', $this->char_id);
     }
 
     public function tearDown(): void {
         TestAccountCreateAndDestroy::destroy($this->fake_user);
+        TestAccountCreateAndDestroy::destroy($this->fake_email_alt);
         $session = SessionFactory::getSession();
         $session->invalidate();
         parent::tearDown();
@@ -127,7 +134,7 @@ class SignupControllerTest extends NWTest {
             'key'        => 'p',
             'cpass'      => 'p',
             'send_email' => $this->fake_email,
-            'send_name'  => 'KnownGood',
+            'send_name'  => $this->known_good_user,
         ]));
 
         $controller = new SignupController();
@@ -152,7 +159,7 @@ class SignupControllerTest extends NWTest {
             'key'        => 'password1',
             'cpass'      => 'password1',
             'send_email' => $this->fake_email,
-            'send_name'  => 'KnownGood',
+            'send_name'  => $this->known_good_user,
         ]));
 
         $controller = new SignupController();
@@ -176,7 +183,7 @@ class SignupControllerTest extends NWTest {
             'key'        => 'password1',
             'cpass'      => 'password1',
             'send_email' => 'new email',
-            'send_name'  => 'KnownGood',
+            'send_name'  => $this->known_good_user,
         ]));
 
         $controller = new SignupController();
@@ -194,7 +201,7 @@ class SignupControllerTest extends NWTest {
     public function testDupeNameFailsCorrectly() {
         // Change name of test user to a known expected username
         $player = Player::find($this->char_id);
-        $player->uname = 'KnownGood';
+        $player->uname = $this->known_good_user;
         $player->save(); // Save with that new username
 
         // Now try to sign up as the same new username
@@ -202,7 +209,7 @@ class SignupControllerTest extends NWTest {
             'key'        => 'password1',
             'cpass'      => 'password1',
             'send_email' => $this->fake_email,
-            'send_name'  => 'KnownGood',
+            'send_name'  => $this->known_good_user,
         ]));
 
         $controller = new SignupController();
@@ -210,7 +217,7 @@ class SignupControllerTest extends NWTest {
         $reflection = new \ReflectionProperty(get_class($response), 'data');
         $reflection->setAccessible(true);
         $response_data = $reflection->getValue($response);
-        TestAccountCreateAndDestroy::destroy('KnownGood');
+        TestAccountCreateAndDestroy::destroy($this->known_good_user);
         $this->assertNotEmpty($response_data['error']);
         $this->assertStringContainsString('already in use', $response_data['error']);
     }
@@ -222,7 +229,7 @@ class SignupControllerTest extends NWTest {
         RequestWrapper::inject(new Request([
             'key'        => 'password1',
             'cpass'      => 'password1',
-            'send_email' => $this->fake_email,
+            'send_email' => $this->fake_email_alt,
             'send_name'  => 'SysMsg',
         ]));
 
@@ -233,7 +240,6 @@ class SignupControllerTest extends NWTest {
         $response_data = $reflection->getValue($response);
         $this->assertNotEmpty($response_data['error']);
         $this->assertStringContainsString('already', $response_data['error']);
-        $this->assertStringContainsString('alreadyzzzz', $response_data['error']);
     }
 
     public function testInvalidClassFailsCorrectly() {
@@ -255,7 +261,7 @@ class SignupControllerTest extends NWTest {
     }
 
     public function testSuccessfulSignup() {
-        $uname = 'KnownGood';
+        $uname = 'TestAllowedSignup';
         $email = $this->fake_email;
 
         RequestWrapper::inject(new Request([
@@ -298,7 +304,7 @@ class SignupControllerTest extends NWTest {
     }
 
     public function testSuccessfulSignupResultsInNoConfirmation() {
-        $uname = 'KnownGood';
+        $uname = $this->known_good_user;
         $email = 'thisshouldnevergotoarealperson77748348@hotmail.com';
         // Due to the nature of hotmail, hotmail emails are listed
         // such that they will not be preconfirmed.  This leaves an account needing confirmation.
@@ -342,6 +348,6 @@ class SignupControllerTest extends NWTest {
         $response_data = $reflection->getValue($response);
         $this->assertTrue($response_data['submit_successful'], 'Signup() returned error: '.$response_data['error']);
         $this->assertEquals($relationship_count, 1);
-        $this->assertTrue($account_unconfirmed);
+        $this->assertTrue($account_unconfirmed, 'Account was not found to be unconfirmed after signup...');
     }
 }

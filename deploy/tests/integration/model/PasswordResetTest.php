@@ -96,7 +96,7 @@ class PasswordResetTest extends NWTest {
 
     public function testResetOfPasswordWhenCorrectDataGivenWithAlternatePasswordUsage() {
         PasswordResetRequest::generate($this->account, $this->nonce = '776543777');
-        $this->assertTrue(PasswordResetRequest::reset($this->account, 'SDGAERHQEW$$%Y$%', false));
+        $this->assertTrue(PasswordResetRequest::reset($this->account, 'SDGAERHQEW$$%Y$%', false), 'Alternate password with symbols was rejected unnecessarily');
     }
 
     public function testMatchingARequestGetsYouAMatchingEmail() {
@@ -117,7 +117,7 @@ class PasswordResetTest extends NWTest {
         $final_account = $req->account();
         $this->assertNotEmpty($final_account->getActiveEmail());
         $sent = PasswordResetRequest::sendResetNotification($final_account->getActiveEmail(), false);
-        $this->assertTrue($sent);
+        $this->assertTrue($sent, 'Assert Failed: Password reset email was not sent');
     }
 
     public function testPerformingAResetInvalidatesUsedRequest() {
@@ -126,6 +126,6 @@ class PasswordResetTest extends NWTest {
         PasswordResetRequest::generate($account, $this->nonce='77warkwark', false);
         PasswordResetRequest::reset($account, 'new_pass34532');
         $req = PasswordResetRequest::match($this->nonce);
-        $this->assertEmpty($req); // Request shouldn't match because it should already be used.
+        $this->assertEmpty($req, "Password Reset Request shouldn't match because it should already be marked as used from resetting."); // 
     }
 }

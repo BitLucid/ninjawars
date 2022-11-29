@@ -4,6 +4,7 @@
 use Symfony\Component\Mailer\Transport;
 use Symfony\Component\Mailer\Mailer;
 use Symfony\Component\Mime\Email;
+use Symfony\Component\Mime\Address;
 
 /**
  * Wrapper class for nw to send out mail
@@ -97,14 +98,14 @@ class Nmail {
             //->bcc('bcc@example.com')
             //->replyTo('fabien@example.com')
             //->priority(Email::PRIORITY_HIGH)
+            // ->from(Address::create('Fabien Potencier <fabien@example.com>'))
             ->subject($this->subject)
             ->text($this->body)
             ->html('<p>' . $this->body . '</p>');
 
 
         if ($this->reply_to) {
-            $email->setReplyTo($this->reply_to);
-            $email->setSender($this->from); // Have to set sender when there's a different reply-to.
+            $email->replyTo($this->reply_to);
         }
 
         if (defined('DEBUG') && DEBUG) {

@@ -30,9 +30,10 @@ class TestAccountCreateAndDestroy {
      * or account_identity='testphpunit@example.com';
      * @param string $test_ninja_nm Newly created ninja name to delete from
      */
-    public static function purge_test_accounts($test_ninja_nm = null) {
+    public static function purge_test_accounts($test_ninja_nm = null, $test_email = null)
+    {
         $test_ninja_name = $test_ninja_nm ? $test_ninja_nm : self::$test_ninja_name;
-        $active_email = self::$test_email;
+        $active_email = $test_email ?? self::$test_email;
         $alt_active_email = self::$alt_test_email;
 
         query(
