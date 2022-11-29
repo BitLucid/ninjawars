@@ -22,13 +22,13 @@ class SignupControllerTest extends NWTest {
         TestAccountCreateAndDestroy::destroy(null, $this->fake_email);
         TestAccountCreateAndDestroy::destroy($this->fake_user);
         TestAccountCreateAndDestroy::destroy($this->known_good_user);
-        $this->char_id = TestAccountCreateAndDestroy::create_testing_account($this->fake_user);
+        $this->char_id = TestAccountCreateAndDestroy::create_testing_account(false, ['name' => $this->fake_user]);
         SessionFactory::getSession()->set('player_id', $this->char_id);
     }
 
     public function tearDown(): void {
         TestAccountCreateAndDestroy::destroy($this->fake_user);
-        TestAccountCreateAndDestroy::destroy($this->fake_email_alt);
+        TestAccountCreateAndDestroy::destroy(null, $this->fake_email_alt);
         $session = SessionFactory::getSession();
         $session->invalidate();
         parent::tearDown();

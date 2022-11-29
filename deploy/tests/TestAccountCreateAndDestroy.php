@@ -86,12 +86,19 @@ class TestAccountCreateAndDestroy {
     /**
      * More memorable wrapper to the purge_test_accounts functionality.
      */
-    public static function destroy($test = null) {
-        static::purge_test_accounts($test);
+    public static function destroy($test_name = null, $test_email = null)
+    {
+        if ($test_name !== null && str_contains($test_name, '@')) {
+            throw new InvalidArgumentException('Test user teardown (destroy) function takes a username as the first argument, not an email with an @ symbol in it, you passed [' . $test_name . ']');
+        }
+        if ($test_email !== null && !str_contains($test_email, '@')) {
+            throw new InvalidArgumentException('Test user teardown (destroy) function takes a username as the first argument and a password as a second, you passed a second argument of [' . $test_email . ']');
+        }
+        static::purge_test_accounts($test_name, $test_email);
     }
 
     /**
-     * Create a testing account
+     * Use to create a temporary account
      */
     public static function create_testing_account($confirm = false, $overrides = null) {
         self::purge_test_accounts();
