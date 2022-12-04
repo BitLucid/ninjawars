@@ -1,6 +1,6 @@
 /* Store the shop settings */
 /* jshint browser: true, white: true, plusplus: true */
-/* global $, NW, loggedIn */
+/* global NW, loggedIn */
 
 // eslint-disable-next-line no-var
 var presence = window.presence || {};

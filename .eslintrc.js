@@ -23,13 +23,10 @@ module.exports = {
       'error',
       { allow: ['info', 'warn', 'error', 'debug', 'dir'] },
     ],
+    'no-unreachable': 'error',
     'complexity': [
       'error',
-      { max: 25 },
-    ],
-    'max-len': [
-      'error',
-      150,
+      10,
     ],
     'max-lines': [
       'error',
@@ -37,11 +34,11 @@ module.exports = {
     ],
     'max-lines-per-function': [
       'error',
-      70,
+      60,
     ],
     'max-statements': [
       'error',
-      50,
+      20,
     ],
   },
 };
