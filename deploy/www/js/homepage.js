@@ -1,6 +1,7 @@
 /* eslint-disable func-names */
 /* eslint-disable prefer-arrow-callback */
-/* global $ */
+
+// @ts-check
 
 // eslint-disable-next-line no-var
 var presence = window.presence || {};

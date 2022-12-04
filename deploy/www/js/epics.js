@@ -1,7 +1,6 @@
 // @ts-check
 /* eslint-disable indent */
 /* eslint-disable semi */
-/* global jQuery, $ */
 
 // eslint-disable-next-line no-var
 var presence = window.presence || {};

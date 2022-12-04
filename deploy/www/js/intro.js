@@ -1,8 +1,8 @@
 /* eslint-disable prefer-arrow-callback */
 /* eslint-disable func-names */
 /* Accent certain areas of the intro page in animated ways */
-/* jshint browser: true, white: true, plusplus: true */
-/* global $, NW */
+
+// @ts-check
 
 // eslint-disable-next-line no-var
 var presence = window.presence || {};

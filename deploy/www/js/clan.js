@@ -1,11 +1,12 @@
 /* Assist in clan operations (currently only clan leave) */
-/* jshint browser: true, white: true, plusplus: true */
-/* global $ */
+
+// @ts-check
 
 const clan = {
   leave: () => {
+    const navig = window && window.location && window.location.href ? (url) => { window.location.href = url; } : (url) => { console.info('Unable to navigate to url:', url); };
     if (window && window.confirm('Do you really want to exit the clan?')) {
-      window.location = '/clan/leave';
+      navig('/clan/leave');
     }
 
     return false;
