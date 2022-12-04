@@ -18,8 +18,7 @@ class Inventory implements IteratorAggregate {
         $this->char = $char;
     }
 
-    public function getIterator(): Traversable
-    {
+    public function getIterator(): Traversable {
         return new ArrayIterator(self::of($this->char));
     }
 
