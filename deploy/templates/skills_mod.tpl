@@ -1,4 +1,4 @@
-
+{* older skills_mod.php template, now using SkillController.php *}
 {assign var="charName" value=$targetObj->name()|escape}
 {assign var="charName" value="<strong class=\"char-name\">$charName</strong>"}
 
