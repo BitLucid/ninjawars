@@ -12,11 +12,12 @@
   <ul class='thin'>
     <li>You are a <span class="class-name {$player->theme|escape}">{$player->getClassName()|escape}</span> ninja.</li>
     <li>Your status is {include file="status_section.tpl" statuses=$status_list}</li>
-    {if !$starting_turns}
-    <li>You <span class='ninja-notice'>do not have any</span> turns.</li>
-    {else}
-    <li>You have <span class='turns-count'>{$starting_turns|number_format:0|escape}{/if} turn{if $starting_turns > 1}s</span></li>
-    {/if}
+    <li>You {if !$starting_turns}
+      <span class='ninja-notice'>do not have any</span>
+      {else}
+      have <span class='turns-count'>{$starting_turns|number_format:0|escape}
+      {/if} turn{if $starting_turns > 1}s{/if}.
+    </li>
     {if !$starting_ki}
     <li>You <span class='ninja-notice'>do not have any</span> ki.</li>
     {else}
