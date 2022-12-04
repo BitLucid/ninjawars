@@ -34,11 +34,11 @@ module.exports = {
     ],
     'max-lines-per-function': [
       'error',
-      60,
+      50,
     ],
     'max-statements': [
       'error',
-      20,
+      17,
     ],
   },
 };
