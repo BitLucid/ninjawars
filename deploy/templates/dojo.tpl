@@ -16,10 +16,6 @@ table .char-title td{
 .white-robed-monk{
 	font-weight:bold;color:#F8F9CF;
 }
-.d-padded{
-  padding-left: 2rem;
-  padding-right: 2rem;
-}
 /** Training requirements in dojo.scroll.tpl as well **/
 </style>
 {/literal}
@@ -44,7 +40,7 @@ table .char-title td{
 </div>
 {/if}
 
-<section class='p-3 px-2 d-padded'>
+<section class='glassbox'>
 {foreach from=$dojoSections item="section"}
     {include file="dojo.$section.tpl"}
 {/foreach}
