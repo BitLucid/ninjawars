@@ -5,6 +5,7 @@
 
 /* eslint max-statements: "Warn" */
 /* eslint max-lines: "Warn" */
+/* eslint max-lines-per-function: "Warn" */
 
 $(() => {
   //  Pull var as defined in external template

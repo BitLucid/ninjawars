@@ -1,6 +1,8 @@
+/* Accent certain areas of the intro page in animated ways */
+/* global NW */
+
 /* eslint-disable prefer-arrow-callback */
 /* eslint-disable func-names */
-/* Accent certain areas of the intro page in animated ways */
 
 // @ts-check
 
@@ -15,7 +17,7 @@ $(function introManipulations() {
   const faqsArea = $('#faqs');
 
   if (NW && NW.loggedIn) {
-    // Depended on this script being called after NW.loggedIn gets set
+    // Depends on this script being called after NW.loggedIn gets set
     $('.not-user').hide();
   }
   if (!showFaqs) {
@@ -24,7 +26,7 @@ $(function introManipulations() {
     showfaqsLink.hide();
     faqsArea.show();
   }
-  showfaqsLink.click(function (event) {
+  showfaqsLink.on('click', function (event) {
     event.preventDefault();
     faqsArea.slideToggle('slow');
     $(event.target).toggle();
