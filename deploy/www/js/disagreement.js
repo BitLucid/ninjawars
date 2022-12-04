@@ -40,7 +40,7 @@ $(() => {
   //  Pull var as defined in external template
   // @ts-ignore
   // eslint-disable-next-line camelcase
-  const attackable = attacking_possible || false;
+  const attackable = typeof attacking_possible !== 'undefined' ? attacking_possible : false;
   console.info(
     attackable ? 'Attacking enabled.' : 'No attacking this target',
   );
