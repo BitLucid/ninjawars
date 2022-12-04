@@ -194,11 +194,6 @@
             {include file="error.tpl"}
         </section>
 
-        <section id='about-section'>
-            <h2>About</h2>
-            {include file="about.tpl"}
-        </section>
-
         {*
         404 bleeds it's page body, so can't have that currently
         <section id='404-section'>
@@ -324,7 +319,16 @@
 
         <section id='ninjamaster-section'>
             <h2>Ninjamaster</h2>
+            <p>Currently commented out</p>
             {* {include file="ninjamaster.tpl"} *}
+        </section>
+
+        <section id='about-section'>
+        
+            <h2>About</h2>
+            <p>Special case to avoid the base tag used in about</p>
+            <iframe frameborder='0' id='epics-iframe' name='epics-iframe' src='/about'>
+            </iframe>
         </section>
 
         <footer style='border-top:thick dashed white;margin-top:3rem;'>
@@ -334,4 +338,6 @@
     {* js script at the top to prevent breaking from templates *}
 
 </main>
+
+
 

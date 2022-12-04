@@ -6,6 +6,9 @@
 
 // Sections are, in order: SETTINGS | FUNCTIONS | READY
 
+/* eslint max-statements: "Warn" */
+/* eslint max-lines: "Warn" */
+
 // eslint-disable-next-line no-var
 var NW = (window && window.NW) ? window.NW : {};
 
