@@ -78,7 +78,7 @@ class WorkController extends AbstractController {
             'work_multiplier'     => self::WORK_MULTIPLIER,
             'authenticated'       => $authenticated,
             'gold_display'        => number_format($char->gold),
-            'earned_gold'         => number_format(null),
+            'earned_gold'         => null,
             'char'                => $char,
             'worked'              => null,
             'not_enough_energy'   => null,

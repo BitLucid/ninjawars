@@ -191,14 +191,15 @@ class SignupController extends AbstractController {
      */
     private function buildSignupRequest($p_request) {
         $signupRequest                    = new \stdClass();
-        $signupRequest->enteredName       = Filter::toSimple(trim($p_request->get('send_name')));
-        $signupRequest->enteredEmail      = Filter::toSimple(trim($p_request->get('send_email')));
-        $signupRequest->enteredClass      = strtolower(trim($p_request->get('send_class')));
-        $signupRequest->enteredReferral   = trim($p_request->get('referred_by', $p_request->get('referrer')));
-        $signupRequest->enteredPass       = Filter::toSimple($p_request->get('key'));
-        $signupRequest->enteredCPass      = Filter::toSimple($p_request->get('cpass'));
+        $signupRequest->enteredName       = Filter::toSimple(trim($p_request->get('send_name') ?? ''));
+        $signupRequest->enteredEmail      = Filter::toSimple(trim($p_request->get('send_email') ?? ''));
+        $signupRequest->enteredClass      = strtolower(trim($p_request->get('send_class') ?? ''));
+        $signupRequest->enteredReferral   = trim($p_request->get('referred_by', $p_request->get('referrer')) ?? '');
+        $signupRequest->enteredPass       = Filter::toSimple($p_request->get('key') ?? '');
+        $signupRequest->enteredCPass      = Filter::toSimple($p_request->get('cpass') ?? '');
         $signupRequest->clientIP          = $p_request->getClientIp();
 
+        // Fallback to key for class
         if (!$signupRequest->enteredClass) {
             $signupRequest->enteredClass = key($this->classes);
         }

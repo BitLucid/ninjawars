@@ -1,7 +1,5 @@
 /* Simple defaults for the casino page */
-/* jshint browser: true, white: true, plusplus: true */
-/* jslint browser: true, white: true, plusplus: true */
-/* global $, NW */
+/* global NW */
 
 // eslint-disable-next-line no-var
 var presence = window.presence || {};

@@ -2,9 +2,11 @@
 /* The main javascript functionality of the site, apart from very page specific behaviors */
 /* jshint browser: true, white: true, plusplus: true */
 /* jslint browser: true, white: true, plusplus: true */
-/* global $, jQuery */
 
 // Sections are, in order: SETTINGS | FUNCTIONS | READY
+
+/* eslint max-statements: "Warn" */
+/* eslint max-lines: "Warn" */
 
 // eslint-disable-next-line no-var
 var NW = (window && window.NW) ? window.NW : {};

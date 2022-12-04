@@ -1,6 +1,4 @@
 /* Show current character limits on profile text */
-/* jshint browser: true, white: true, plusplus: true */
-/* global $ */
 function charSuggest(textareaid, limit, infoid) {
   $(`#${textareaid}`).keyup(() => {
     const textlength = $(`#${textareaid}`).val().length;

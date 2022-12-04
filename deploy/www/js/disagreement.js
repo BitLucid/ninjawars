@@ -1,7 +1,12 @@
 /* Simple defaults for the casino page, attacking_possible (boolean)
  * and combatSkillsList (json array) are rendered by the server and passed in */
 /* jshint browser: true, white: true, plusplus: true */
-/* global $, NW, attacking_possible, combatSkillsList */
+/* global NW, attacking_possible, combatSkillsList */
+
+/* eslint max-statements: "Warn" */
+/* eslint max-lines: "Warn" */
+/* eslint max-lines-per-function: "Warn" */
+
 $(() => {
   //  Pull var as defined in external template
   // eslint-disable-next-line camelcase
