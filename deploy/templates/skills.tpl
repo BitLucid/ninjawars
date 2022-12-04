@@ -131,6 +131,8 @@
   </div>
 {/if}
 
+<h3 class="text-3xl font-bold mb-8">Passive skills</h3>
+
 <!-- Skills not described elsewhere -->
 
 {if $chi}
