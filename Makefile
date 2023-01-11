@@ -77,8 +77,8 @@ install-system:
 	apt-get -y install python3 python3-dev python3-venv python3-pip python3-lxml unzip
 	# PHP!
 	echo "Installing php cli"
-	apt-get -y install php8.1-cli
-	apt-get -y install php8.1-fpm php8.1-xml php8.1-pgsql php8.1-curl php8.1-mbstring
+	apt-get -y install php8.2-cli
+	apt-get -y install php8.2-fpm php8.2-xml php8.2-pgsql php8.2-curl php8.2-mbstring
 	phpenmod xml pgsql curl mbstring
 	# Note that xml is what installs the ext-dom
 	apt install curl 
