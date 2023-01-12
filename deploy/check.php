@@ -7,8 +7,7 @@ require_once(realpath(__DIR__) . '/checkbase.php');
 $connected = (bool) query_item('select 1 from players limit 1');
 $is_superuser = (bool) query_item('select usesuper from pg_user where usename = CURRENT_USER;') === true;
 
-function passfailB($passed, $pass, $fail)
-{
+function passfailB($passed, $pass, $fail) {
     $messaging = ($passed ? '[PASSING]: Reason ' . $pass : '[FAILING]: Reason ' . $fail);
     echo "$messaging\n";
     return $passed;
