@@ -201,6 +201,10 @@ dist-clean: clean
 	@echo "Done"
 	@echo "You'll have to dropdb $(DBNAME) yourself."
 
+
+clear-vendor:
+	cd deploy && rm -rf vendor/* && mkdir -p vendor && cd ..
+
 clear-cache:
 	php ./deploy/lib/control/util/clear_cache.php
 
