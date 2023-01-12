@@ -1,4 +1,4 @@
-
+{* older skills_mod.php template, now using SkillController.php *}
 {assign var="charName" value=$targetObj->name()|escape}
 {assign var="charName" value="<strong class=\"char-name\">$charName</strong>"}
 
@@ -97,7 +97,7 @@
 			Use {$act} again
 		</a>
 	{/if}
-		<a href='/enemies' class='return-to-location'>
+		<a href='/enemies' class='btn btn-default return-to-location'>
 			Return to the Fight
 		</a>
 	</nav>

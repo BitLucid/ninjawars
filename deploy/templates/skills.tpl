@@ -12,11 +12,12 @@
   <ul class='thin'>
     <li>You are a <span class="class-name {$player->theme|escape}">{$player->getClassName()|escape}</span> ninja.</li>
     <li>Your status is {include file="status_section.tpl" statuses=$status_list}</li>
-    {if !$starting_turns}
-    <li>You <span class='ninja-notice'>do not have any</span> turns.</li>
-    {else}
-    <li>You have <span class='turns-count'>{$starting_turns|number_format:0|escape}{/if} turn{if $starting_turns > 1}s</span></li>
-    {/if}
+    <li>You {if !$starting_turns}
+      <span class='ninja-notice'>do not have any</span>
+      {else}
+      have <span class='turns-count'>{$starting_turns|number_format:0|escape}
+      {/if} turn{if $starting_turns > 1}s{/if}.
+    </li>
     {if !$starting_ki}
     <li>You <span class='ninja-notice'>do not have any</span> ki.</li>
     {else}
@@ -130,6 +131,23 @@
   </div>
 {/if}
 
+<h3 class="text-3xl font-bold mb-8">Dueling Combat Skills</h3>
+
+
+{if $blaze}
+  <p id='blaze-skill' class='skill-description'><strong>Blaze:</strong> Actively use when dueling to do more damage at a cost of additional turns.</p>
+{/if}
+
+{if $deflect}
+  <p id='deflect-skill' class='skill-description'><strong>Deflect:</strong> Actively use when dueling to take less damage at a cost of additional turns.</p>
+{/if}
+
+{if $evasion}
+  <p id='evasion-skill' class='skill-description'><strong>Evasion:</strong> Actively use when dueling to get a chance to escape combat before dying at a cost of additional turns.</p>
+{/if}
+
+<h3 class="text-3xl font-bold mb-8">Passive Skills</h3>
+
 <!-- Skills not described elsewhere -->
 
 {if $chi}
@@ -150,18 +168,6 @@
 
 {if $hidden_resurrect}
     <p id='hidden-resurrect-skill' class='skill-description'><strong>Hidden Resurrect:</strong> When you are resurrected you will return already hidden and stealthed.</p>
-{/if}
-
-{if $blaze}
-    <p id='blaze-skill' class='skill-description'><strong>Blaze:</strong> Actively use when dueling to do more damage at a cost of additional turns.</p>
-{/if}
-
-{if $deflect}
-    <p id='deflect-skill' class='skill-description'><strong>Deflect:</strong> Actively use when dueling to take less damage at a cost of additional turns.</p>
-{/if}
-
-{if $evasion}
-    <p id='evasion-skill' class='skill-description'><strong>Evasion:</strong> Actively use when dueling to get a chance to escape combat before dying at a cost of additional turns.</p>
 {/if}
 
 {if $wrath}

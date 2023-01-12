@@ -2,7 +2,7 @@ Mako==1.1.6
 MarkupSafe==2.0.1
 atomicwrites==1.4.0
 attrs==22.1.0
-certifi==2022.6.15
+certifi==2022.12.7
 chardet==4.0.0
 idna==3.2
 lxml==4.9.1
@@ -13,5 +13,5 @@ testresources==2.0.1
 pytest==6.2.5
 requests==2.27.0
 six==1.16.0
-urllib3==1.26.12
+urllib3==1.26.13
 wcwidth==0.2.5

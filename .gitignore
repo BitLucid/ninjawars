@@ -98,3 +98,5 @@ deploy/.env
 karma.conf.js
 .phpunit.result.cache
 .php-cs-fixer.cache
+deploy/www/index.html
+deploy/www/intro.html

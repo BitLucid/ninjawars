@@ -6,6 +6,7 @@ use NinjaWars\core\data\Player;
 use PDO;
 use IteratorAggregate;
 use ArrayIterator;
+use Traversable;
 
 /**
  * Inventory for characters
@@ -17,7 +18,7 @@ class Inventory implements IteratorAggregate {
         $this->char = $char;
     }
 
-    public function getIterator() {
+    public function getIterator(): Traversable {
         return new ArrayIterator(self::of($this->char));
     }
 
