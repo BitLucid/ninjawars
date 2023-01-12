@@ -81,7 +81,7 @@ You do not have {$article|escape} {$item->getName()|escape}
       </a>
       <br>
       {/if}
-      <a href='/enemies' class='return-to-location'>Return to the Fight</a>
+      <a href='/enemies' class='btn btn-default return-to-location'>Return to the Fight</a>
   </nav>
   </div>
 {/if}
