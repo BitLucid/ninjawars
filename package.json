@@ -7,12 +7,13 @@
     "doc": "docs"
   },
   "scripts": {
-    "init-project": "echo 'no-op for now'",
+    "init-project": "make install",
     "lint": "eslint --ext .jsx,.js deploy/www/js",
     "prepare-unit-test-ci": "echo 'no-op for now'",
     "start": "yarn time && make build && yarn time",
     "build": "yarn time && make build && yarn time",
     "post-deploy": "php deploy/deployed_scripts/resetcache.php",
+    "serve": "yarn dlx serve deploy/www/ -p 7474",
     "watch": "livereload ./deploy/* ./deploy/www/* ./deploy/templates/* ./deploy/lib/control/* --debug",
     "security-check": "yarn audit",
     "time": "node -e \"console.log( new Date().toISOString() );\"",
