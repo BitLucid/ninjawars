@@ -27,12 +27,21 @@ endif
 
 build: dep
 	mkdir -p $(JS)
+	@echo "Don't forget to update nginx configs as necessary."
+	@echo "Including updating the php to retain login sessions longer."
+	cp -pn ./deploy/resources.build.php ./deploy/resources.php || true
+	echo "Note that this does not overwrite existing resources.php"
+	echo "Check that the webserver user has permissions to the script!"
 	@ln -sf "$(RELATIVE_COMPONENTS)jquery/jquery.min.js" "$(JS)"
 	@ln -sf "$(RELATIVE_COMPONENTS)jquery/jquery.min.map" "$(JS)"
 	@ln -sf "$(RELATIVE_COMPONENTS)jquery-timeago/jquery.timeago.js" "$(JS)"
 	@ln -sf "$(RELATIVE_COMPONENTS)jquery-linkify/jquery.linkify.js" "$(JS)"
 	@ln -sf "$(RELATIVE_VENDOR)twbs/bootstrap/dist/css/bootstrap.min.css" "$(CSS)"
 	@ln -sf "$(RELATIVE_VENDOR)twbs/bootstrap/dist/js/bootstrap.min.js" "$(JS)"
+	make check-base
+	php deploy/www/intro-controller.php > deploy/www/intro.html
+	php deploy/www/front-controller.php > deploy/www/index.html
+	@echo "Built front controller to static deploy/www/index.html file and deploy/www/intro.html file"
 	rm -rf ./deploy/templates/compiled/* ./deploy/templates/cache/*
 	mkdir -p ./deploy/templates/compiled ./deploy/templates/cache ./deploy/resources/logs/
 	chmod -R ugo+rwX ./deploy/templates/compiled ./deploy/templates/cache
@@ -44,6 +53,9 @@ dep:
 
 
 check: pre-test
+
+check-base:
+	php deploy/checkbase.php
 
 js-deps:
 	node -v
@@ -142,7 +154,6 @@ check-for-syntax-errors:
 	@find "./deploy/www/" -name "*.php" -exec php -l {} \;|grep -v "No syntax errors" || true
 
 test-unit: check-for-syntax-errors
-
 	@$(TEST_RUNNER) $(CC_FLAG) --testsuite Unit
 
 test-quick: check-for-syntax-errors

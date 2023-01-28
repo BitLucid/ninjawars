@@ -100,3 +100,5 @@ karma.conf.js
 .php-cs-fixer.cache
 deploy/www/index.html
 deploy/www/intro.html
+deploy/www/login.html
+deploy/www/signup.html

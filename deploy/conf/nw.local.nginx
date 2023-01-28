@@ -39,15 +39,15 @@ server {
 		try_files $uri =404;
 	}
 
-	location = /intro {
-		add_header X-Frame-Options SAMEORIGIN;
-		try_files intro.html =404;
-	}
+	#location = /intro {
+	#	add_header X-Frame-Options SAMEORIGIN;
+	#	try_files intro.html =404;
+	#}
 
-	location = / {
-		add_header X-Frame-Options SAMEORIGIN;
-		try_files index.html =404;
-	}
+	#location = / {
+	#	add_header X-Frame-Options SAMEORIGIN;
+	#	try_files index.html =404;
+	#}
 
 	location / {
 		#default fallback of everything else block
