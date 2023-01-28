@@ -29,7 +29,7 @@ build: dep
 	mkdir -p $(JS)
 	@echo "Don't forget to update nginx configs as necessary."
 	@echo "Including updating the php to retain login sessions longer."
-	cp -upn ./deploy/resources.build.php ./deploy/resources.php
+	cp -pn ./deploy/resources.build.php ./deploy/resources.php || true
 	echo "Note that this does not overwrite existing resources.php"
 	echo "Check that the webserver user has permissions to the script!"
 	@ln -sf "$(RELATIVE_COMPONENTS)jquery/jquery.min.js" "$(JS)"
