@@ -26,12 +26,13 @@ ifndef TESTFILE
 endif
 
 build: dep create-structure link-deps
+	cp -u -p -n ./deploy/resources.build.php ./deploy/resources.php || true
+	echo "Note that this does not overwrite existing resources.php"
 
 create-structure:
 	mkdir -p $(JS)
 	rm -rf ./deploy/templates/compiled/* ./deploy/templates/cache/*
 	mkdir -p ./deploy/templates/compiled ./deploy/templates/cache ./deploy/resources/logs/
-	chmod -R ugo+rwX ./deploy/templates/compiled ./deploy/templates/cache
 	touch ./deploy/resources/logs/deity.log
 	touch ./deploy/resources/logs/emails.log
 
@@ -62,8 +63,6 @@ js-deps:
 install: build start-chat writable
 	@echo "Don't forget to update webserver configs as necessary."
 	@echo "Including updating the php to retain login sessions longer."
-	cp -u -p ./deploy/resources.build.php ./deploy/resources.php
-	echo "Note that this does not overwrite existing resources.php"
 	php ./deploy/check.php
 	echo "Check that the webserver user has permissions to the script!"
 
