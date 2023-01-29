@@ -48,7 +48,8 @@ link-deps:
 
 
 dep:
-	@$(COMPOSER) install
+	@$(COMPOSER) config -g github-oauth.github.com $(GITHUB_ACCESS_TOKEN)
+	@$(COMPOSER) install --prefer-dist --no-interaction
 
 
 check: pre-test
@@ -98,12 +99,6 @@ install-node:
 	nvm install
 
 install-python: python-install
-
-install-webserver:
-	apt install nginx
-
-restart-webserver:
-	service nginx restart
 
 install-database-client:
 	apt install postgresql-client
@@ -270,8 +265,12 @@ web-reload:
 	sleep 0.5
 	ps waux | grep nginx
 
+install-webserver:
+	apt install nginx
+
 restart-webserver:
-	sudo service nginx reload
+	echo "For already sudo user"
+	service nginx restart
 	sleep 0.5
 	ps waux | grep nginx
 
