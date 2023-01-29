@@ -160,7 +160,7 @@ class SignupController extends AbstractController {
             throw new \RuntimeException('Phase 1 Incomplete: You did not correctly fill out all the necessary information.', 0);
         }
 
-        if ($p_request->enteredPass !== Filter::toSimple($p_request->enteredPass)) {
+        if ($p_request->enteredPass !== Filter::stripHighUtf8($p_request->enteredPass)) {
             throw new \RuntimeException("Sorry, there seem to be some very special non-standard characters in your password that we don't allow.");
         }
 
@@ -191,12 +191,12 @@ class SignupController extends AbstractController {
      */
     private function buildSignupRequest($p_request) {
         $signupRequest                    = new \stdClass();
-        $signupRequest->enteredName       = Filter::toSimple(trim($p_request->get('send_name') ?? ''));
-        $signupRequest->enteredEmail      = Filter::toSimple(trim($p_request->get('send_email') ?? ''));
+        $signupRequest->enteredName       = Filter::toAllowableUsername(trim($p_request->get('send_name') ?? ''));
+        $signupRequest->enteredEmail      = Filter::toEmail(trim($p_request->get('send_email') ?? ''));
         $signupRequest->enteredClass      = strtolower(trim($p_request->get('send_class') ?? ''));
         $signupRequest->enteredReferral   = trim($p_request->get('referred_by', $p_request->get('referrer')) ?? '');
-        $signupRequest->enteredPass       = Filter::toSimple($p_request->get('key') ?? '');
-        $signupRequest->enteredCPass      = Filter::toSimple($p_request->get('cpass') ?? '');
+        $signupRequest->enteredPass       = Filter::stripHighUtf8($p_request->get('key') ?? '');
+        $signupRequest->enteredCPass      = Filter::stripHighUtf8($p_request->get('cpass') ?? '');
         $signupRequest->clientIP          = $p_request->getClientIp();
 
         // Fallback to key for class
