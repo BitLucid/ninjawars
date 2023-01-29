@@ -28,7 +28,7 @@ endif
 build: dep create-structure link-deps
 	cp -u -p -n ./deploy/resources.build.php ./deploy/resources.php || true
 	echo "Note that this does not overwrite existing resources.php"
-	php ./deploy/check.php
+	php ./deploy/check_without_db.php
 
 create-structure:
 	mkdir -p $(JS)
@@ -60,7 +60,7 @@ js-deps:
 	yarn -v
 	yarn install --immutable
 
-install: create-directories writable start-chat writable
+install: build create-directories writable start-chat writable
 	@echo "Don't forget to update nginx configs as necessary."
 	@echo "Including updating the php to retain login sessions longer."
 	php ./deploy/check.php
