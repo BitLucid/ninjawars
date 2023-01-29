@@ -212,7 +212,7 @@ clean:
 	@rm -f "$(JS)jquery.linkify.js"
 	@rm -f "$(JS)jquery-linkify.min.js"
 	@rm -f "/tmp/nw"
-	@cd ./deploy/templates/cache && rm -v ./(".gitkeep") && cd -
+	@rm -rf ./deploy/templates/cache/* && touch ./deploy/templates/cache/.gitkeep
 	@rm -rf ./deploy/templates/compiled ./deploy/resources/logs/deity.log ./deploy/resources/logs/emails.log
 	@rm -rf ./deploy/www/index.html ./deploy/www/intro.html ./deploy/www/login.html ./deploy/www/signup.html
 	@echo "Cleaned up"
