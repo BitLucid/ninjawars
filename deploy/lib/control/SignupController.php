@@ -239,12 +239,12 @@ class SignupController extends AbstractController {
     private function class_choices() {
         // If there is not database connection
         if (!db_check_connection()) {
-            // return the classes
+            // return static class data 
             return [
-                'viper'  => ['class_name' => 'Viper', 'expertise' => 'Poison'],
-                'crane'  => ['class_name' => 'Crane', 'expertise' => 'Speed'],
-                'dragon' => ['class_name' => 'Dragon', 'expertise' => 'Healing'],
-                'tiger'  => ['class_name' => 'Tiger', 'expertise' => 'Strength'],
+                'viper'  => ['name' => 'Viper', 'expertise' => 'Poison'],
+                'crane'  => ['name' => 'Crane', 'expertise' => 'Speed'],
+                'dragon' => ['name' => 'Dragon', 'expertise' => 'Healing'],
+                'tiger'  => ['name' => 'Tiger', 'expertise' => 'Strength'],
             ];
         }
         $activeClasses = query_array('SELECT identity, class_name, class_note AS expertise FROM class WHERE class_active');
