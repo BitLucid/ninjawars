@@ -7,9 +7,7 @@
 
 use NinjaWars\core\data\DatabaseConnection;
 
-
-function db_check_connection(): bool
-{
+function db_check_connection(): bool {
     try {
         DatabaseConnection::getInstance();
         return true;

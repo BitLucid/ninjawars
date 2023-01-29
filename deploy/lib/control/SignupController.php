@@ -239,7 +239,7 @@ class SignupController extends AbstractController {
     private function class_choices() {
         // If there is not database connection
         if (!db_check_connection()) {
-            // return static class data 
+            // return static class data
             return [
                 'viper'  => ['name' => 'Viper', 'expertise' => 'Poison'],
                 'crane'  => ['name' => 'Crane', 'expertise' => 'Speed'],
