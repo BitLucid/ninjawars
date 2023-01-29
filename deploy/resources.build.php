@@ -6,12 +6,13 @@
 define('DATABASE_USE_PASSWORD', false); // *** Whether to specify password to pdo at all. Generally true only on live
 define('DATABASE_USE_PORT', false); // *** Whether to specify port to pdo at all. Generally true only on live
 define('DATABASE_USE_HOST', false); // *** Whether to specify HOST to pdo at all. Generally true only on live
-define('DATABASE_HOST', "localhost");		// *** The host to connect to for the database, localhost by default
-define('DATABASE_PORT', "5432");		// *** The port number to connect on.
-define('DATABASE_USER', "postgres");		// *** The user that should connect to the database
-define('DATABASE_PASSWORD', "unused_in_build");		// *** The password for the database connection, trust on dev
-define('DATABASE_NAME', "nw");		// *** The name of the database to connect to, nw on dev
-define('OFFLINE', false);				// *** Controls if remote or local resources are used
+define('DATABASE_HOST', "localhost");        // *** The host to connect to for the database, localhost by default
+define('DATABASE_PORT', "5432");        // *** The port number to connect on.
+define('DATABASE_USER', "postgres");        // *** The user that should connect to the database
+define('DATABASE_PASSWORD', "unused_in_build");        // *** The password for the database connection, trust on dev
+define('DATABASE_NAME', "nw");        // *** The name of the database to connect to, nw on dev
+define('OFFLINE', true);                // *** Controls if remote or local resources are used
+define('HASH_ASSET_PATHS', false);            // *** Controls if cachebusting hash strings for assets like images are used
 define('DEBUG', true);					// *** Shorter debugging constant name, set as false on live.
 define('SERVER_ROOT', realpath(__DIR__).'/');		// *** The root deployment directory of the game
 // Generally for the install purposes the SERVER_ROOT should correspond to /srv/ninjawars/deploy/
@@ -28,7 +29,7 @@ define('ALERTS_EMAIL', SUPPORT_EMAIL);
 define('FACEBOOK_APP_ID', '30479872633'); // Non-confidential id for the facebook app
 define('FACEBOOK_APP_SECRET', 'mooMooIAmACow'); // Secret! string for facebook login auth stuff.
 
-define('TRAP_ERRORS', true); // Whether to use the global error handler & oops page, true on live.
+define('TRAP_ERRORS', false); // Whether to use the global error handler & oops page, true on live.
 
 define('TEMPLATE_LIBRARY_PATH', SERVER_ROOT.'vendor/smarty/smarty/libs/Smarty.class.php'); // Path to Smarty 3
 
