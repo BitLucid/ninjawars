@@ -9,9 +9,13 @@ function smarty_function_cachebust($p_params) {
     $file = ROOT."/www/$p_params[file]";
 
     if (is_file($file)) {
-        $mtime = filemtime($file);
-        $pathParts = pathinfo($p_params['file']);
-        return $pathParts['dirname'].'/'.$pathParts['filename'].".$mtime.".$pathParts['extension'];
+        if (HASH_ASSET_PATHS) {
+            $mtime = filemtime($file);
+            $pathParts = pathinfo($p_params['file']);
+            return $pathParts['dirname'] . '/' . $pathParts['filename'] . ".$mtime." . $pathParts['extension'];
+        } else {
+            return $file;
+        }
     } else {
         return $p_params['file'];
     }
