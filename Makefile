@@ -25,19 +25,25 @@ ifndef TESTFILE
 	TESTFILE=
 endif
 
-build: dep
+build: dep create-structure link-deps
+
+create-structure:
 	mkdir -p $(JS)
+	rm -rf ./deploy/templates/compiled/* ./deploy/templates/cache/*
+	mkdir -p ./deploy/templates/compiled ./deploy/templates/cache ./deploy/resources/logs/
+	chmod -R ugo+rwX ./deploy/templates/compiled ./deploy/templates/cache
+	touch ./deploy/resources/logs/deity.log
+	touch ./deploy/resources/logs/emails.log
+
+
+link-deps:
 	@ln -sf "$(RELATIVE_COMPONENTS)jquery/jquery.min.js" "$(JS)"
 	@ln -sf "$(RELATIVE_COMPONENTS)jquery/jquery.min.map" "$(JS)"
 	@ln -sf "$(RELATIVE_COMPONENTS)jquery-timeago/jquery.timeago.js" "$(JS)"
 	@ln -sf "$(RELATIVE_COMPONENTS)jquery-linkify/jquery.linkify.js" "$(JS)"
 	@ln -sf "$(RELATIVE_VENDOR)twbs/bootstrap/dist/css/bootstrap.min.css" "$(CSS)"
 	@ln -sf "$(RELATIVE_VENDOR)twbs/bootstrap/dist/js/bootstrap.min.js" "$(JS)"
-	rm -rf ./deploy/templates/compiled/* ./deploy/templates/cache/*
-	mkdir -p ./deploy/templates/compiled ./deploy/templates/cache ./deploy/resources/logs/
-	chmod -R ugo+rwX ./deploy/templates/compiled ./deploy/templates/cache
-	touch ./deploy/resources/logs/deity.log
-	touch ./deploy/resources/logs/emails.log
+
 
 dep:
 	@$(COMPOSER) install
@@ -256,6 +262,11 @@ web-stop:
 	# server may be stopped now
 
 web-reload:
+	sudo service nginx reload
+	sleep 0.5
+	ps waux | grep nginx
+
+restart-webserver:
 	sudo service nginx reload
 	sleep 0.5
 	ps waux | grep nginx
