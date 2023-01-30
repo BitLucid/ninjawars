@@ -32,14 +32,12 @@ create-directories:
 	touch ./deploy/resources/logs/deity.log
 	touch ./deploy/resources/logs/emails.log
 
-configure:
+conf-resources:
 	cp -upn ./deploy/resources.build.php ./deploy/resources.php || true
 	echo "Note that this does not overwrite existing resources.php"
 
-build: configure dep
-	@echo "Don't forget to update nginx configs as necessary."
-	@echo "Including updating the php to retain login sessions longer."
-	echo "Check that the webserver user has permissions to the script!"
+build: conf-resources dep
+	@echo "Running build"
 	@ln -sf "$(RELATIVE_COMPONENTS)jquery/jquery.min.js" "$(JS)"
 	@ln -sf "$(RELATIVE_COMPONENTS)jquery/jquery.min.map" "$(JS)"
 	@ln -sf "$(RELATIVE_COMPONENTS)jquery-timeago/jquery.timeago.js" "$(JS)"
@@ -52,6 +50,7 @@ build: configure dep
 	php deploy/www/login-controller.php > deploy/www/login.html
 	php deploy/www/signup-controller.php > deploy/www/signup.html
 	@echo "Built front controller to static deploy/www/index.html file, as well as intro.html, login.html, and signup.html"
+	@echo "This is not a full install, just the build, so check make install and make note-system"
 
 dep:
 	@$(COMPOSER) install
@@ -69,7 +68,7 @@ js-deps:
 	yarn -v
 	yarn install --immutable
 
-preconfig: 	
+preconfig:
 	cp -u -p ./deploy/resources.build.php ./deploy/resources.php
 
 postcheck:
