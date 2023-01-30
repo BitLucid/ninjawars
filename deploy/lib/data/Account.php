@@ -27,6 +27,7 @@ use PDO;
  * @property-read string oauth_provider
  * @property-read int oauth_id
  */
+#[\AllowDynamicProperties]
 class Account {
     public static $fields = [
         'account_id',
