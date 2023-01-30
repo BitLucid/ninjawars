@@ -32,11 +32,13 @@ create-directories:
 	touch ./deploy/resources/logs/deity.log
 	touch ./deploy/resources/logs/emails.log
 
-build: dep
-	@echo "Don't forget to update nginx configs as necessary."
-	@echo "Including updating the php to retain login sessions longer."
+configure:
 	cp -upn ./deploy/resources.build.php ./deploy/resources.php || true
 	echo "Note that this does not overwrite existing resources.php"
+
+build: configure dep
+	@echo "Don't forget to update nginx configs as necessary."
+	@echo "Including updating the php to retain login sessions longer."
 	echo "Check that the webserver user has permissions to the script!"
 	@ln -sf "$(RELATIVE_COMPONENTS)jquery/jquery.min.js" "$(JS)"
 	@ln -sf "$(RELATIVE_COMPONENTS)jquery/jquery.min.map" "$(JS)"
