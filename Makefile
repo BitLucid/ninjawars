@@ -119,9 +119,6 @@ install-python: python-install
 install-webserver:
 	apt install nginx
 
-restart-webserver:
-	service nginx restart
-
 install-database-client:
 	apt install postgresql-client
 
@@ -287,14 +284,14 @@ web-reload:
 	ps waux | grep nginx
 
 restart-webserver:
-	sudo service nginx reload
+	sudo service nginx restart
 	sleep 0.5
 	ps waux | grep nginx
 
 ci-pre-configure:
 	# Set php version
 	# Versions available: https://documentation.codeship.com/basic/languages-frameworks/php/#versions-and-setup
-	phpenv local 8.0
+	phpenv local 8.2
 	@echo "Removing xdebug on CI, by default."
 	rm -f /home/rof/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini
 	ln -s `pwd` /tmp/root
