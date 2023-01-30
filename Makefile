@@ -37,7 +37,8 @@ conf-resources:
 	echo "Note that this does not overwrite existing resources.php"
 
 build: conf-resources dep
-	@echo "Running build"
+	@echo " ====== Continuing app-specific parts of the build ===="
+    @echo "Building the deps, linking the components, and building static .html"
 	@ln -sf "$(RELATIVE_COMPONENTS)jquery/jquery.min.js" "$(JS)"
 	@ln -sf "$(RELATIVE_COMPONENTS)jquery/jquery.min.map" "$(JS)"
 	@ln -sf "$(RELATIVE_COMPONENTS)jquery-timeago/jquery.timeago.js" "$(JS)"
