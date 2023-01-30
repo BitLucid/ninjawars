@@ -45,7 +45,9 @@ jobs:
 
     - name: Install dependencies
       if: steps.composer-cache.outputs.cache-hit != 'true'
-      run: ./composer.phar install --prefer-dist --no-progress --no-suggest
+      run: |
+        ./composer.phar install --prefer-dist --no-progress
+        echo "todo put github access token in here"
 
     - name: Create autoload file if necessary
       if: steps.composer-cache.outputs.cache-hit == 'true'
