@@ -40,10 +40,11 @@
   "bugs": {
     "url": "https://github.com/BitLucid/ninjawars/issues"
   },
-  "engines": {
-    "node": ">=16.0.0"
-  },
   "homepage": "https://github.com/BitLucid/ninjawars#readme",
+  "dependencies": {
+    "@sentry/browser": "^7.34.0",
+    "@sentry/tracing": "^7.34.0"
+  },
   "devDependencies": {
     "@types/eslint": "^8.4.6",
     "@types/jquery": "^3.5.14",
@@ -65,5 +66,8 @@
     "requirejs": "^2.3.6",
     "sinon": "^15.0.0"
   },
-  "packageManager": "yarn@3.2.4"
+  "packageManager": "yarn@3.2.4",
+  "engines": {
+    "node": ">=16.0.0"
+  }
 }
