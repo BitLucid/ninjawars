@@ -36,16 +36,15 @@ conf-resources:
 	cp -upn ./deploy/resources.build.php ./deploy/resources.php || true
 	echo "Note that this does not overwrite existing resources.php"
 
-build: conf-resources dep
+build: conf-resources dep check-base
 	@echo " ====== Continuing app-specific parts of the build ===="
-    @echo "Building the deps, linking the components, and building static .html"
+	@echo "Building the deps, linking the components, and building static .html"
 	@ln -sf "$(RELATIVE_COMPONENTS)jquery/jquery.min.js" "$(JS)"
 	@ln -sf "$(RELATIVE_COMPONENTS)jquery/jquery.min.map" "$(JS)"
 	@ln -sf "$(RELATIVE_COMPONENTS)jquery-timeago/jquery.timeago.js" "$(JS)"
 	@ln -sf "$(RELATIVE_COMPONENTS)jquery-linkify/jquery.linkify.js" "$(JS)"
 	@ln -sf "$(RELATIVE_VENDOR)twbs/bootstrap/dist/css/bootstrap.min.css" "$(CSS)"
 	@ln -sf "$(RELATIVE_VENDOR)twbs/bootstrap/dist/js/bootstrap.min.js" "$(JS)"
-	make check-base
 	php deploy/www/intro-controller.php > deploy/www/intro.html
 	php deploy/www/front-controller.php > deploy/www/index.html
 	php deploy/www/login-controller.php > deploy/www/login.html
@@ -79,7 +78,7 @@ postcheck:
 	php ./deploy/check.php
 	echo "Check that the webserver user has permissions to the script!"
 
-install: preconfig create-directories build postcheck
+install: conf-resources preconfig create-directories build postcheck
 
 install-admin: preconfig build start-chat writable postcheck
 
