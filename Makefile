@@ -26,12 +26,14 @@ ifndef TESTFILE
 endif
 
 build: dep create-structure link-deps
+	cp -u -p -n ./deploy/resources.build.php ./deploy/resources.php || true
+	echo "Note that this does not overwrite existing resources.php"
+	php ./deploy/check_without_db.php
 
 create-structure:
 	mkdir -p $(JS)
 	rm -rf ./deploy/templates/compiled/* ./deploy/templates/cache/*
 	mkdir -p ./deploy/templates/compiled ./deploy/templates/cache ./deploy/resources/logs/
-	chmod -R ugo+rwX ./deploy/templates/compiled ./deploy/templates/cache
 	touch ./deploy/resources/logs/deity.log
 	touch ./deploy/resources/logs/emails.log
 
@@ -46,7 +48,8 @@ link-deps:
 
 
 dep:
-	@$(COMPOSER) install
+	@$(COMPOSER) config -g github-oauth.github.com $(GITHUB_ACCESS_TOKEN)
+	@$(COMPOSER) install --prefer-dist --no-interaction
 
 
 check: pre-test
@@ -56,18 +59,16 @@ js-deps:
 	corepack enable
 	echo "corepack enable DONE. Totally sidesteps having to install a yarn version"
 	yarn -v
-	corepack enable
 	yarn install --immutable
 
-install: build start-chat writable
-	@echo "Don't forget to update webserver configs as necessary."
+install: build create-directories writable start-chat writable
+	@echo "Don't forget to update nginx configs as necessary."
 	@echo "Including updating the php to retain login sessions longer."
-	cp -u -p ./deploy/resources.build.php ./deploy/resources.php
-	echo "Note that this does not overwrite existing resources.php"
 	php ./deploy/check.php
 	echo "Check that the webserver user has permissions to the script!"
 
 writable:
+	chmod -R ugo+rwX ./deploy/templates/compiled ./deploy/templates/cache ./deploy/resources/logs/
 	chown ${WEBUSER} ./deploy/resources/logs/*
 	mkdir -p ./deploy/templates/compiled ./deploy/templates/cache ./deploy/resources/logs/
 	chown ${WEBUSER} ./deploy/resources/logs/*
@@ -99,15 +100,13 @@ install-node:
 
 install-python: python-install
 
-install-webserver:
-	apt install nginx
-
 install-database-client:
 	apt install postgresql-client
 
 start-chat:
 	touch ./deploy/resources/logs/ninjawars.chat-server.log
 	chown ${WEBUSER} ./deploy/resources/logs/ninjawars.chat-server.log
+	chmod ugo+w ./deploy/resources/logs/ninjawars.chat-server.log
 	nohup php bin/chat-server.php > ./deploy/resources/logs/ninjawars.chat-server.log 2>&1 &
 
 browse:
@@ -194,7 +193,7 @@ clean:
 	@rm -f "$(JS)jquery.linkify.js"
 	@rm -f "$(JS)jquery-linkify.min.js"
 	@rm -f "/tmp/nw"
-	@cd ./deploy/templates/cache && rm -v ./(".gitkeep") && cd -
+	@rm -f ./deploy/templates/cache/* && touch ./deploy/templates/cache/.gitkeep
 	@rm -rf ./deploy/templates/compiled ./deploy/resources/logs/deity.log ./deploy/resources/logs/emails.log
 	@rm -rf ./deploy/www/index.html ./deploy/www/intro.html ./deploy/www/login.html ./deploy/www/signup.html
 	@echo "Cleaned up"
@@ -266,8 +265,12 @@ web-reload:
 	sleep 0.5
 	ps waux | grep nginx
 
+install-webserver:
+	apt install nginx
+
 restart-webserver:
-	sudo service nginx reload
+	echo "For already sudo user"
+	service nginx restart
 	sleep 0.5
 	ps waux | grep nginx
 

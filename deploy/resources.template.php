@@ -9,9 +9,10 @@ define('DATABASE_USE_HOST', false); // *** Whether to specify HOST to pdo at all
 define('DATABASE_HOST', __DB_HOST__);		// *** The host to connect to for the database
 define('DATABASE_PORT', __DB_PORT__);		// *** The port number to connect on.
 define('DATABASE_USER', __DB_USER__);		// *** The user that should connect to the database
-define('DATABASE_NAME', __DB_NAME__);		// *** The name of the database to connect to
-define('DATABASE_PASSWORD', __DB_PASS__);		// *** The password for the database connection
-define('OFFLINE', __OFFLINE__);				// *** Controls if remote or local resources are used
+define('DATABASE_NAME', __DB_NAME__);        // *** The name of the database to connect to
+define('DATABASE_PASSWORD', __DB_PASS__);        // *** The password for the database connection
+define('OFFLINE', __OFFLINE__);
+define('HASH_ASSET_PATHS', true);     			// *** Controls if remote or local resources are used
 define('DEBUG', __DEBUG__);					// *** Shorter debugging constant name, set as false on live.
 define('SERVER_ROOT', __SERVER_ROOT__);		// *** The root deployment directory of the game
 // Generally for the install purposes the SERVER_ROOT should correspond to /srv/ninjawars/deploy/
