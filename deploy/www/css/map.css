@@ -17,8 +17,15 @@
     text-align: center;
     min-height: 1.2rem;
     font-size: 1.5rem;
+    /*
     background-color: black;
     background-color: rgba(0, 0, 0, 0.8);
+    */
+    text-shadow:
+        0.07em 0 black,
+        0 0.07em black,
+        -0.07em 0 black,
+        0 -0.07em black;
     margin-left: 5%;
     margin-top: 20%;
     border-radius: 0.6rem;
@@ -26,6 +33,7 @@
 }
 
 @media only screen and (min-width: 768px) {
+
     /* Tablets */
     #map .details {
         font-size: 2.1rem;
@@ -33,6 +41,7 @@
 }
 
 @media only screen and (min-width: 1224px) {
+
     /* Desktops and Laptops */
     #map .details {
         width: 66%;
@@ -50,6 +59,11 @@
     background-color: #807f6f;
 }
 
+#map .node {
+    background-repeat: no-repeat;
+    background-size: auto;
+}
+
 #map .node.building {
     background-color: #753700;
 }
@@ -62,10 +76,14 @@
 #map .node.dojo {
     background-repeat: no-repeat;
     background-color: rgb(58, 26, 4);
+    background-image: url(/images/nodes/dojo.png);
+    background-size: 100% 100%;
 }
 
 #map .node.shrine {
     background-repeat: no-repeat;
+    background-image: url(/images/nodes/shrine_short.png);
+    background-size: 100% 100%;
     background-color: #085e5e;
 }
 
@@ -91,6 +109,8 @@
 #map .node.casino {
     background-repeat: no-repeat;
     background-color: rgb(181, 157, 85);
+    background-image: url(/images/nodes/casino.png);
+    background-size: 100% 100%;
 }
 
 #map .node.weapons-shop {
@@ -116,11 +136,15 @@
 }
 
 #map .node.bath-house {
-    background-color: #800040;
+    background-color: #fca4d0;
+    background-image: url(/images/nodes/bath-house.png);
+    background-size: 100% 100%;
 }
 
 #map .node.village-square {
     background-color: #dd164f;
+    background-image: url(/images/nodes/village-square.png);
+    background-size: 100% 100%;
 }
 
 #map .area-name {
