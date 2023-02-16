@@ -99,5 +99,12 @@
                 }
             }
         }
-    ]
+    ],
+    "config": {
+        "allow-plugins": {
+            "composer/installers": true,
+            "kylekatarnls/update-helper": true,
+            "oomphinc/composer-installers-extender": true
+        }
+    }
 }
