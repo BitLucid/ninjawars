@@ -116,10 +116,14 @@
 #map .node.weapons-shop {
     background-repeat: no-repeat;
     background-color: #753700;
+    background-image: url(/images/nodes/shop.png);
+    background-size: 100% 100%;
 }
 
 #map .node.forest {
     background-color: hsl(91.2, 15%, 32.7%);
+    background-image: url(/images/nodes/forest.png);
+    background-size: 100% 100%;
 }
 
 #map .node.north-south-road {
