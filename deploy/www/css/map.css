@@ -70,12 +70,14 @@
 
 #map .node.doshin {
     background-repeat: no-repeat;
-    background-color: #6e4623;
+    background-color: #223a18;
+    background-image: url(/images/nodes/doshin.png);
+    background-size: 100% 100%;
 }
 
 #map .node.dojo {
     background-repeat: no-repeat;
-    background-color: rgb(58, 26, 4);
+    background-color: #223a18;
     background-image: url(/images/nodes/dojo.png);
     background-size: 100% 100%;
 }
@@ -84,31 +86,36 @@
     background-repeat: no-repeat;
     background-image: url(/images/nodes/shrine_short.png);
     background-size: 100% 100%;
-    background-color: #085e5e;
+    background-color: #223a18;
 }
 
 #map .node.grass {
-    background-color: rgb(27, 43, 31);
+    background-color: #223a18;
     background-image: url(/images/nodes/grass.jpg);
     background-size: 100% 100%;
 }
 
 #map .node.dirt {
-    background-color: rgb(90, 77, 34);
+    background-color: #223a18;
     background-image: url(/images/nodes/lightdirt.jpg);
     background-size: 100% 100%;
 }
 
 #map .node.rice-field {
-    background-color: rgb(27, 43, 31);
-    /*background-image: url(/images/nodes/lightdirt.jpg);*/
-    background-image: url(/images/nodes/grass.jpg);
+    background-color: #223a18;
+    background-image: url(/images/nodes/rice-field.png);
+    background-size: 100% 100%;
+}
+
+#map .node.wheat-field {
+    background-color: #223a18;
+    background-image: url(/images/nodes/wheat-field.png);
     background-size: 100% 100%;
 }
 
 #map .node.casino {
     background-repeat: no-repeat;
-    background-color: rgb(181, 157, 85);
+    background-color: #223a18;
     background-image: url(/images/nodes/casino.png);
     background-size: 100% 100%;
 }
@@ -127,8 +134,8 @@
 }
 
 #map .node.north-south-road {
-    background-color: rgb(55, 55, 55);
-    background-image: url(/images/nodes/darkgranite.jpg);
+    background-color: #223a18;
+    background-image: url(/images/nodes/north-south-road.png);
     background-size: 100% 100%;
 }
 
