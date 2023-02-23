@@ -128,7 +128,7 @@
 }
 
 #map .node.forest {
-    background-color: hsl(91.2, 15%, 32.7%);
+    background-color: #223a18;
     background-image: url(/images/nodes/forest.png);
     background-size: 100% 100%;
 }
@@ -141,19 +141,19 @@
 
 #map .node.west-east-road,
 #map .node.east-west-road {
-    background-color: rgb(65, 65, 65);
-    background-image: url(/images/nodes/darkgranite.jpg);
+    background-color: #223a18;
+    background-image: url(/images/nodes/east-west-road.png);
     background-size: 100% 100%;
 }
 
 #map .node.bath-house {
-    background-color: #fca4d0;
+    background-color: #223a18;
     background-image: url(/images/nodes/bath-house.png);
     background-size: 100% 100%;
 }
 
 #map .node.village-square {
-    background-color: #dd164f;
+    background-color: #906845;
     background-image: url(/images/nodes/village-square.png);
     background-size: 100% 100%;
 }
