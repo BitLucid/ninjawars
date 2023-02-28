@@ -9,6 +9,7 @@
   "scripts": {
     "lint": "eslint --ext .jsx,.js deploy/www/js",
     "prepare-unit-test-ci": "echo 'no-op for now'",
+    "build": "yarn time && make build && yarn time",
     "start": "yarn time && make build && yarn time",
     "post-deploy": "php deploy/deployed_scripts/resetcache.php",
     "watch": "livereload ./deploy/* ./deploy/www/* ./deploy/templates/* ./deploy/lib/control/* --debug",
