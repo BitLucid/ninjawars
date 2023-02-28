@@ -17,8 +17,9 @@ blocks:
   - name: Test
     task:
       jobs:
-        - name: test
+        - name: test and build
           commands:
+            - checkout
             - cache restore
-            - yarn install
+            - yarn instal
             - yarn build
