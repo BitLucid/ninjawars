@@ -1,6 +1,6 @@
 {
   "name": "ninjawars",
-  "version": "1.15.1",
+  "version": "1.18.0",
   "description": "The Ninja Game at ninjawars.net",
   "main": "deploy/www/js/nw.js",
   "directories": {
@@ -60,10 +60,10 @@
     "karma-jasmine": "^5.1.0",
     "karma-requirejs": "^1.1.0",
     "karma-sinon": "^1.0.5",
-    "prettier": "2.7.1",
+    "prettier": "2.8.4",
     "puppeteer": "^17.1.3",
     "requirejs": "^2.3.6",
     "sinon": "^15.0.1"
   },
-  "packageManager": "yarn@3.2.4"
+  "packageManager": "yarn@3.3.1"
 }
