@@ -1,7 +1,7 @@
 /**
  * General behaviors for the stats page.
  */
-/* global $ */
+// @ts-check
 
 // eslint-disable-next-line import/extensions
 import { debounce, logger } from './utils.js';

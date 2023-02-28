@@ -1,0 +1,25 @@
+version: v1.0
+name: Initial Pipeline
+agent:
+  machine:
+    type: e1-standard-2
+    os_image: ubuntu2004
+blocks:
+  - name: Setup
+    task:
+      jobs:
+        - name: Install and Cache
+          commands:
+            - checkout
+            - cache restore
+            - yarn install
+            - cache store
+  - name: Test
+    task:
+      jobs:
+        - name: test and build
+          commands:
+            - checkout
+            - cache restore
+            - yarn install
+            - '# yarn test'

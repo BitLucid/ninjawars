@@ -35,14 +35,17 @@ class TestAccountCreateAndDestroy {
         $active_email = $test_email ?? self::$test_email;
         $alt_active_email = self::$alt_test_email;
 
+
+        // TODO: Throw exceptions on invalid arguments
+
         query(
-            'delete from players where player_id in '.
-            '(select player_id from players '.
-            'left join account_players on _player_id = player_id '.
-            'left join accounts on _account_id = account_id '.
-            'where active_email = :active_email or account_identity= :ae2 '.
+            'delete from players where player_id in ' .
+                '(select player_id from players ' .
+                'left join account_players on _player_id = player_id ' .
+                'left join accounts on _account_id = account_id ' .
+                'where active_email = :active_email or account_identity= :ae2 ' .
                 'or players.uname = :uname or active_email = :alt_active_email ' .
-            'or account_identity = :alt_active_email2)',
+                'or account_identity = :alt_active_email2)',
             [
                 ':active_email'      => $active_email,
                 ':ae2'               => $active_email,
@@ -53,11 +56,11 @@ class TestAccountCreateAndDestroy {
         ); // Delete the players
 
         query(
-            'delete from account_players where _account_id in '.
-            '(select account_id from accounts '.
-            'where active_email = :active_email or account_identity= :ae2 '.
-            'or active_email = :alt_active_email '.
-            'or account_identity = :alt_active_email2)',
+            'delete from account_players where _account_id in ' .
+                '(select account_id from accounts ' .
+                'where active_email = :active_email or account_identity= :ae2 ' .
+                'or active_email = :alt_active_email ' .
+                'or account_identity = :alt_active_email2)',
             [
                 ':active_email'      => $active_email,
                 ':ae2'               => $active_email,
@@ -67,10 +70,10 @@ class TestAccountCreateAndDestroy {
         ); // Delete the account_players linkage.
 
         $query = query(
-            'delete from accounts '.
-            'where active_email = :active_email or account_identity= :ae2 '.
-            'or active_email = :alt_active_email '.
-            'or account_identity = :alt_active_email2',
+            'delete from accounts ' .
+                'where active_email = :active_email or account_identity= :ae2 ' .
+                'or active_email = :alt_active_email ' .
+                'or account_identity = :alt_active_email2',
             [
                 ':active_email'      => $active_email,
                 ':ae2'               => $active_email,
@@ -124,7 +127,7 @@ class TestAccountCreateAndDestroy {
 
         $class_id = query_item(
             'SELECT class_id FROM class WHERE identity = :class_identity',
-            [ ':class_identity' => $class_identity ]
+            [':class_identity' => $class_identity]
         );
 
         $ninja = new Player();

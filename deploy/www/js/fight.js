@@ -1,8 +1,6 @@
 /* eslint-disable camelcase */
 /* eslint-disable max-len */
 /* eslint-disable import/extensions */
-/* eslint-disable indent */
-/* global $ */
 
 import api from './api.js';
 import { logger, urlParam } from './utils.js';

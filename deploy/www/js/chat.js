@@ -1,7 +1,10 @@
 /* eslint-disable camelcase */
 /* Manipulate chats to and from the api, run websockets server by sudo make run-chat */
 /* jshint browser: true, white: true, plusplus: true */
-/* global $, NW, Chat, jQuery, window.conn, window.parent, window.WebSocket, window.Chat */
+/* global NW, Chat, window.conn, window.parent, window.WebSocket, window.Chat */
+
+/* eslint max-statements: "Warn" */
+/* eslint max-lines: "Warn" */
 
 // eslint-disable-next-line no-var
 var logger = window.logger || console || {

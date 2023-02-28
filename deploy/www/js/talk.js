@@ -1,6 +1,5 @@
 /* Assist sending of messages to clan or individuals */
-/* jshint browser: true, white: true, plusplus: true */
-/* global $, NW, refocus, focusArea */
+/* global NW, refocus, focusArea */
 
 // eslint-disable-next-line no-var
 // var presence = window.presence || {};

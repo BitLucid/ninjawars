@@ -51,6 +51,6 @@
 				<a href="/attack?attacked=1&amp;target={$target->id()|escape:'url'}" class='attack-again thick btn btn-primary'>Attack Again?</a>
 {/if}
 		{/if}
-<a href='/enemies' class='return-to-location'><i class='fa fa-bolt' aria-hidden="true"></i> Return to the Fight</a>
+<a href='/enemies' class='btn btn-default return-to-location'><i class='fa fa-bolt' aria-hidden="true"></i> Return to the Fight</a>
 	</nav>
 </section>

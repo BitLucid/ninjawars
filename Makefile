@@ -25,19 +25,25 @@ ifndef TESTFILE
 	TESTFILE=
 endif
 
-build: dep
+build: dep create-structure link-deps
+
+create-structure:
 	mkdir -p $(JS)
+	rm -rf ./deploy/templates/compiled/* ./deploy/templates/cache/*
+	mkdir -p ./deploy/templates/compiled ./deploy/templates/cache ./deploy/resources/logs/
+	chmod -R ugo+rwX ./deploy/templates/compiled ./deploy/templates/cache
+	touch ./deploy/resources/logs/deity.log
+	touch ./deploy/resources/logs/emails.log
+
+
+link-deps:
 	@ln -sf "$(RELATIVE_COMPONENTS)jquery/jquery.min.js" "$(JS)"
 	@ln -sf "$(RELATIVE_COMPONENTS)jquery/jquery.min.map" "$(JS)"
 	@ln -sf "$(RELATIVE_COMPONENTS)jquery-timeago/jquery.timeago.js" "$(JS)"
 	@ln -sf "$(RELATIVE_COMPONENTS)jquery-linkify/jquery.linkify.js" "$(JS)"
 	@ln -sf "$(RELATIVE_VENDOR)twbs/bootstrap/dist/css/bootstrap.min.css" "$(CSS)"
 	@ln -sf "$(RELATIVE_VENDOR)twbs/bootstrap/dist/js/bootstrap.min.js" "$(JS)"
-	rm -rf ./deploy/templates/compiled/* ./deploy/templates/cache/*
-	mkdir -p ./deploy/templates/compiled ./deploy/templates/cache ./deploy/resources/logs/
-	chmod -R ugo+rwX ./deploy/templates/compiled ./deploy/templates/cache
-	touch ./deploy/resources/logs/deity.log
-	touch ./deploy/resources/logs/emails.log
+
 
 dep:
 	@$(COMPOSER) install
@@ -78,17 +84,19 @@ install-system:
 	apt-get -y install python3 python3-dev python3-venv python3-pip python3-lxml unzip
 	# PHP!
 	echo "Installing php cli"
-	apt-get -y install php8.0-cli
-	apt-get -y install php8.0-fpm php8.0-xml php8.0-pgsql php8.0-curl php8.0-mbstring
+	apt-get -y install php8.2-cli
+	apt-get -y install php8.2-fpm php8.2-xml php8.2-pgsql php8.2-curl php8.2-mbstring
 	phpenmod xml pgsql curl mbstring
 	# Note that xml is what installs the ext-dom
 	apt install curl 
 	curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash 
-	#apt install nvm
-	nvm install
-	corepack enable
+	echo "Also run: make install-node"
 	echo "Configure your webserver and postgresql yourself, we recommend nginx ^1.14.0 and postresql ^10.0"
 	echo "If you want ssl with the nginx site, use: https://www.digitalocean.com/community/tutorials/how-to-create-a-self-signed-ssl-certificate-for-nginx-in-ubuntu-16-04"
+
+install-node:
+	corepack enable
+	nvm install
 
 install-python: python-install
 
@@ -200,6 +208,10 @@ dist-clean: clean
 	@echo "Done"
 	@echo "You'll have to dropdb $(DBNAME) yourself."
 
+
+clear-vendor:
+	cd deploy && rm -rf vendor/* && mkdir -p vendor && cd ..
+
 clear-cache:
 	php ./deploy/lib/control/util/clear_cache.php
 
@@ -251,6 +263,11 @@ web-stop:
 	# server may be stopped now
 
 web-reload:
+	sudo service nginx reload
+	sleep 0.5
+	ps waux | grep nginx
+
+restart-webserver:
 	sudo service nginx reload
 	sleep 0.5
 	ps waux | grep nginx

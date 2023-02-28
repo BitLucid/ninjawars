@@ -29,7 +29,7 @@ class ApiController extends AbstractController {
         $data = $request->get('data');
 
         // Reject if non alphanumeric and _ chars
-        $jsoncallback = (!preg_match('/[^a-z_0-9]/i', $dirty_jsoncallback) ? $dirty_jsoncallback : null);
+        $jsoncallback = (!preg_match('/[^a-z_0-9]/i', $dirty_jsoncallback ?? '') ? $dirty_jsoncallback : null);
         if ($jsoncallback !== $dirty_jsoncallback) {
             return new Response(json_encode(['error' => 'Invalid callback']), 400, ['Content-type' => 'text/javascript; charset=utf8']);
         }
