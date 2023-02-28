@@ -14,3 +14,11 @@ blocks:
             - cache restore
             - yarn install
             - cache store
+  - name: Test
+    task:
+      jobs:
+        - name: test
+          commands:
+            - cache restore
+            - yarn install
+            - yarn build
