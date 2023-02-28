@@ -1,8 +1,6 @@
 /* eslint-disable func-names */
 /* eslint-disable prefer-arrow-callback */
 /* Functions for ninjamaster */
-/* jshint browser: true, white: true, plusplus: true */
-/* global $ */
 
 // eslint-disable-next-line import/extensions
 import api from './api.js';

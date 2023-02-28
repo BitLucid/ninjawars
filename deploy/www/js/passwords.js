@@ -1,6 +1,4 @@
 /* Simply check that submitted passwords match. */
-/* jshint browser: true, white: true, plusplus: true */
-/* global $ */
 
 // eslint-disable-next-line no-var
 var presence = window.presence || {};

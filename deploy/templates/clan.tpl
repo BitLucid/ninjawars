@@ -1,6 +1,6 @@
 <h1 id='clan-page-title'>Clan Panel</h1>
 
-<section id='clan-page-section' class='clan'>
+<section id='clan-page-section' class='clan' style='margin-top:2rem;margin-bottom:2rem;'>
 
 	<nav class="navigation" rel="nav">
 	<ul class="menu">

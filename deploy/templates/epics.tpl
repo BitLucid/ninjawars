@@ -45,7 +45,10 @@
                 <a class='btn btn-info' href='#events-section'>Events</a>
                 <a class='btn btn-info' href='#single-event-section'>Single Event</a>
                 <a class='btn btn-info' href='#dojo-section'>Dojo</a>
-<a class='btn btn-info' href='#dojo-scroll-section'>Dojo.Scroll</a>
+                <a class='btn btn-info' href='#dojo-scroll-section'>Dojo.Scroll</a>
+                <a class='btn btn-info' href='#casino-section'>Casino</a>
+                <a class='btn btn-info' href='#bath-house-section'>Bath House</a>
+                <a class='btn btn-info' href='#field-section'>Field</a>
                 <a class='btn btn-info' href='#shop-section'>Shop</a>
                 <a class='btn btn-info' href='#shop-items-section'>Shop.Items</a>
                 <a class='btn btn-info' href='#shop-buy-section'>Shop.Buy</a>
@@ -53,7 +56,6 @@
                 <a class='btn btn-info' href='#map-section'>Map</a>
                 <a class='btn btn-info' href='#nodes-section'>Nodes</a>
                 <a class='btn btn-info' href='#list-section'>List</a>
-                <a class='btn btn-info' href='#field-section'>Field</a>
                 <a class='btn btn-info' href='#wip-fight-section'>WIP Fight</a>
                 <a class='btn btn-info' href='#footer'>Footer</a>
                 <a class='btn btn-info' href='#ninjamaster-section'>Ninjamaster</a>
@@ -192,11 +194,6 @@
             {include file="error.tpl"}
         </section>
 
-        <section id='about-section'>
-            <h2>About</h2>
-            {include file="about.tpl"}
-        </section>
-
         {*
         404 bleeds it's page body, so can't have that currently
         <section id='404-section'>
@@ -259,7 +256,32 @@
             {assign var="player" value=$char}
             {assign var="error" value="Some error string for dojo"}
             {include file="dojo.scroll.tpl"}
-</section>
+        </section>
+
+
+        <section id='casino-section'>
+            <h2>Casino</h2>
+            {assign var="player" value=$char}
+            {assign var="error" value="Some error string for casino"}
+            {include file="casino.tpl"}
+        </section>
+
+        {* Field is below *}
+
+        <section id='bath-house-section'>
+            <h2>Bath House</h2>
+            {assign var="player" value=$char}
+            {assign var="error" value="Some error string for bath house/duel"}
+            {include file="duel.tpl"}
+        </section>
+
+        <section id='work-section'>
+            <h2>Work</h2>
+            {assign var="player" value=$char}
+            {assign var="error" value="Some error string for work"}
+            {include file="work.tpl"}
+        </section>
+
         <section id='map-section'>
             <h2>Map</h2>
             {* Nodes assigned in controller *}
@@ -297,7 +319,16 @@
 
         <section id='ninjamaster-section'>
             <h2>Ninjamaster</h2>
+            <p>Currently commented out</p>
             {* {include file="ninjamaster.tpl"} *}
+        </section>
+
+        <section id='about-section'>
+        
+            <h2>About</h2>
+            <p>Special case to avoid the base tag used in about</p>
+            <iframe frameborder='0' id='epics-iframe' name='epics-iframe' src='/about'>
+            </iframe>
         </section>
 
         <footer style='border-top:thick dashed white;margin-top:3rem;'>
@@ -307,4 +338,6 @@
     {* js script at the top to prevent breaking from templates *}
 
 </main>
+
+
 

@@ -1,6 +1,5 @@
 /* Display last repo commit. */
-/* jshint browser: true, white: true, plusplus: true */
-/* global $ */
+// @ts-check
 function loadLastCommitMessage() {
   const logger = console || {
     warn: () => {

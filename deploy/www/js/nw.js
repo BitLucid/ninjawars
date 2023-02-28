@@ -2,9 +2,11 @@
 /* The main javascript functionality of the site, apart from very page specific behaviors */
 /* jshint browser: true, white: true, plusplus: true */
 /* jslint browser: true, white: true, plusplus: true */
-/* global $, jQuery */
 
 // Sections are, in order: SETTINGS | FUNCTIONS | READY
+
+/* eslint max-statements: "Warn" */
+/* eslint max-lines: "Off" */
 
 // eslint-disable-next-line no-var
 var NW = (window && window.NW) ? window.NW : {};
@@ -127,6 +129,7 @@ $(selector).keyup(function () {
     $('#barstats').show();
   };
 
+  // eslint-disable-next-line max-statements
   NW.refreshStats = function (playerInfo) {
     // Pull health, turns, and kills.
     let updated = false;
@@ -218,6 +221,7 @@ $(selector).keyup(function () {
   };
 
   // Pull the event from the data store and request it be displayed.
+  // eslint-disable-next-line max-statements
   NW.updateLatestEvent = function () {
     const hideEventsAfter = 10;
     let feedback = false;
@@ -539,6 +543,7 @@ if (g_isIndex || g_isRoot) {
   }
 }
 
+// eslint-disable-next-line max-statements
 $(() => {
   $('html').removeClass('no-js'); // Remove no-js class when js present.
   if (jQuery.timeago) {

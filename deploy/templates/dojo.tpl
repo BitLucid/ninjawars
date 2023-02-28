@@ -40,6 +40,8 @@ table .char-title td{
 </div>
 {/if}
 
+<section class='glassbox'>
 {foreach from=$dojoSections item="section"}
     {include file="dojo.$section.tpl"}
 {/foreach}
+</section>
