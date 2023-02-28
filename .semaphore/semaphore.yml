@@ -22,4 +22,4 @@ blocks:
             - checkout
             - cache restore
             - yarn install
-            - yarn build
+            - yarn test
