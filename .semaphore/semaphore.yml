@@ -69,8 +69,14 @@ blocks:
 =======
         - name: PHP
           commands:
-            - sudo apt install php-8.2-cli
+            - checkout
             - ./composer.phar install --prefer-dist
             - ./composer.phar test
             - make build
+<<<<<<< HEAD
 >>>>>>> 529857c1 (Update Semaphore configuration)
+=======
+      prologue:
+        commands:
+          - sem-version php 8.2
+>>>>>>> 841ed05c (Update Semaphore configuration)
