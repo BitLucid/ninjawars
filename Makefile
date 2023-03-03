@@ -59,13 +59,20 @@ js-deps:
 	corepack enable
 	yarn install --immutable
 
-install: build start-chat writable
+preconfig: 	
+	cp -u -p ./deploy/resources.build.php ./deploy/resources.php
+
+postcheck:
 	@echo "Don't forget to update webserver configs as necessary."
 	@echo "Including updating the php to retain login sessions longer."
-	cp -u -p ./deploy/resources.build.php ./deploy/resources.php
 	echo "Note that this does not overwrite existing resources.php"
 	php ./deploy/check.php
 	echo "Check that the webserver user has permissions to the script!"
+
+install: preconfig build postcheck
+
+install-admin: preconfig build start-chat writable postcheck
+
 
 writable:
 	chown ${WEBUSER} ./deploy/resources/logs/*
