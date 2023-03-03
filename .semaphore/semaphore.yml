@@ -22,6 +22,7 @@ blocks:
           commands:
             - '# Setup steps in the prologue'
             - '# yarn test'
+<<<<<<< HEAD
       prologue:
         commands:
           - checkout
@@ -31,6 +32,8 @@ blocks:
           - corepack enable
           - yarn install --immutable
           - cache store
+=======
+>>>>>>> 529857c1 (Update Semaphore configuration)
     dependencies:
       - Setup
   - name: PHP test and build
@@ -39,11 +42,15 @@ blocks:
     task:
       secrets:
         - name: Tchalvak AWS
+<<<<<<< HEAD
         - name: Tchalvak Github Token
+=======
+>>>>>>> 529857c1 (Update Semaphore configuration)
       env_vars:
         - name: AWS_PROFILE
           value: tchalvak
       jobs:
+<<<<<<< HEAD
         - name: PHP unit-tests
           commands:
             - echo "install happens in the prologue step"
@@ -59,3 +66,11 @@ blocks:
           - ./composer.phar config -g github-oauth.github.com $GITHUB_ACCESS_TOKEN
           - ./composer.phar install --prefer-dist --no-interaction
           - cache store
+=======
+        - name: PHP
+          commands:
+            - sudo apt install php-8.2-cli
+            - ./composer.phar install --prefer-dist
+            - ./composer.phar test
+            - make build
+>>>>>>> 529857c1 (Update Semaphore configuration)
