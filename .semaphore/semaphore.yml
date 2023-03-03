@@ -34,6 +34,8 @@ blocks:
           - cache store
     dependencies:
       - Setup
+    run:
+      when: change_in('/deploy/www/js/')
   - name: PHP test and build
     dependencies:
       - Setup
@@ -60,3 +62,5 @@ blocks:
           - ./composer.phar config -g github-oauth.github.com $GITHUB_ACCESS_TOKEN
           - ./composer.phar install --prefer-dist --no-interaction
           - cache store
+    run:
+      when: change_in('/deploy')
