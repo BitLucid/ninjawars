@@ -27,7 +27,9 @@ class NpcControllerTest extends NWTest {
         SessionFactory::init(new MockArraySessionStorage());
         SessionFactory::getSession()->set('player_id', $this->char->id());
         $this->controller = new NpcController([
-            'randomness' => function () {return 0;}
+            'randomness' => function () {
+                return 0;
+            }
         ]);
     }
 
@@ -51,7 +53,9 @@ class NpcControllerTest extends NWTest {
     public function testControllerGetRandomnessDoesntError() {
         $this->controller = new NpcController([
             'char_id'    => ($this->char->id()),
-            'randomness' => function () {return 0;}
+            'randomness' => function () {
+                return 0;
+            }
         ]);
 
         $response = $this->controller->index($this->m_dependencies);
@@ -173,7 +177,9 @@ class NpcControllerTest extends NWTest {
 
     public function testRandomEncounter() {
         $this->controller = new NpcController([
-            'randomness' => function () { return 1; }
+            'randomness' => function () {
+                return 1;
+            }
         ]);
 
         RequestWrapper::inject(Request::create('/npc/attack/peasant'));
