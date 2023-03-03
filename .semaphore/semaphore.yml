@@ -20,10 +20,17 @@ blocks:
       jobs:
         - name: test and build
           commands:
-            - checkout
-            - cache restore
-            - yarn install
+            - '# Setup steps in the prologue'
             - '# yarn test'
+      prologue:
+        commands:
+          - checkout
+          - cache restore
+          - nvm install
+          - nvm use
+          - corepack enable
+          - yarn install --immutable
+          - cache store
     dependencies:
       - Setup
   - name: PHP test and build
@@ -36,7 +43,7 @@ blocks:
         - name: AWS_PROFILE
           value: tchalvak
         - name: GITHUB_ACCESS_TOKEN
-          value: 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
+          value: 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
       jobs:
         - name: PHP
           commands:
