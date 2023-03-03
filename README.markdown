@@ -5,6 +5,7 @@ The source code dojo for the [Ninja Game](http://www.ninjawars.net) @ http://nin
 [Codeship Continuous Integration build](https://www.codeship.io/projects/41292)
 
 ![Codeship Status for BitLucid/ninjawars](https://codeship.com/projects/7c7b3800-3608-0132-36b5-4e1d56e5e814/status)
+[![Deployment status from DeployBot](https://ninjawars.deploybot.com/badge/02267417970828/83400.svg)](https://deploybot.com)
 
 ## Install
 
