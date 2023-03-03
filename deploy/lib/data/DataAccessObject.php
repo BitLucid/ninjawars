@@ -20,8 +20,7 @@ abstract class DataAccessObject extends \stdClass {
     /*
      * Assigns and holds the connection to the db.
      */
-    public function __construct()
-    {
+    public function __construct() {
         $this->m_dbconn = DatabaseConnection::getInstance();
     }
 
@@ -29,8 +28,7 @@ abstract class DataAccessObject extends \stdClass {
     /*
      * Save the changes made to the data to the database.
      */
-    public function save(ValueObject $vo)
-    {
+    public function save(ValueObject $vo) {
         // *** Check the ID of the value object to see whether it was pre-existing.
         if ($vo->{$this->_id_field} === null) {
             $outcome = $this->_insert($vo);
@@ -42,8 +40,7 @@ abstract class DataAccessObject extends \stdClass {
         return $outcome;
     }
 
-    public function get($id)
-    {
+    public function get($id) {
         if (!is_numeric($id)) {
             return false;
         }
@@ -70,8 +67,7 @@ abstract class DataAccessObject extends \stdClass {
         return $vo;
     }
 
-    public function delete(ValueObject $vo)
-    {
+    public function delete(ValueObject $vo) {
         $statement = DatabaseConnection::$pdo->prepare("DELETE FROM " . $this->_table . " WHERE " . $this->_id_field . " = :id");
         $statement->bindValue(':id', intval($vo->{$this->_id_field}));
 
@@ -84,16 +80,14 @@ abstract class DataAccessObject extends \stdClass {
 
     // *** private functions
 
-    private function _getFromResult($vo, $data)
-    {
+    private function _getFromResult($vo, $data) {
         // fill vo from the database result set
         foreach ($this->_vo_fields as $loopField) { // *** use fields dynamically from list.
             $vo->$loopField = $data[$loopField];
         }
     }
 
-    private function _update($vo)
-    {
+    private function _update($vo) {
         // execute update statement here
         $up = "UPDATE " . $this->_table_for_saving . " SET ";
 
@@ -114,8 +108,7 @@ abstract class DataAccessObject extends \stdClass {
         return $statement->rowCount();
     }
 
-    private function _insert($vo)
-    {
+    private function _insert($vo) {
         // generate id using sequence
         $new_id = $this->m_dbconn->nextSequenceValue($this->_id_field, $this->_table_for_saving);
         assert(is_numeric($new_id));
@@ -151,8 +144,7 @@ abstract class DataAccessObject extends \stdClass {
     /**
      * @param String[]
      */
-    protected function setReadOnlyFields($p_fields)
-    {
+    protected function setReadOnlyFields($p_fields) {
         $this->_readonly_fields = $p_fields;
         $this->_writable_fields = null;
     }
@@ -160,8 +152,7 @@ abstract class DataAccessObject extends \stdClass {
     /**
      * @return String[]
      */
-    protected function getWritableFields()
-    {
+    protected function getWritableFields() {
         if (null === $this->_writable_fields) {
             $this->_writable_fields = array_diff($this->_vo_fields, $this->_readonly_fields);
         }
