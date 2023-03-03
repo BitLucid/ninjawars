@@ -196,10 +196,10 @@ clean:
 	@rm -f "$(JS)jquery.linkify.js"
 	@rm -f "$(JS)jquery-linkify.min.js"
 	@rm -f "/tmp/nw"
-	@cd ./deploy/templates/cache && rm -v ./(".gitkeep") && cd -
-	@rm -rf ./deploy/templates/compiled ./deploy/resources/logs/deity.log ./deploy/resources/logs/emails.log
+	@rm -rf ./deploy/templates/cache/* && touch ./deploy/templates/cache/.gitkeep
+	@rm -rf ./deploy/templates/compiled/* ./deploy/resources/logs/deity.log ./deploy/resources/logs/emails.log
 	@rm -rf ./deploy/www/index.html ./deploy/www/intro.html ./deploy/www/login.html ./deploy/www/signup.html
-	@echo "Cleaned up"
+	@echo "Cleaned up, you will want to re: make build to get the js files back"
 
 dist-clean: clean
 	@rm -rf "$(VENDOR)"*
