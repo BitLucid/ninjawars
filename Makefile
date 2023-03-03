@@ -30,9 +30,7 @@ build: dep create-structure link-deps
 create-structure:
 	mkdir -p $(JS)
 	rm -rf ./deploy/templates/compiled/* ./deploy/templates/cache/*
-	mkdir -p ./deploy/templates/compiled ./deploy/templates/cache ./deploy/resources/logs/
-	chmod -R ugo+rwX ./deploy/templates/compiled ./deploy/templates/cache
-	touch ./deploy/resources/logs/deity.log
+	mkdir -p ./deploy/templates/compiled ./deploy/templates/cache ./deploy/resources/logs/ /tmp/game_logs/
 	touch ./deploy/resources/logs/emails.log
 
 
@@ -75,9 +73,7 @@ install-admin: preconfig build start-chat writable postcheck
 
 
 writable:
-	chown ${WEBUSER} ./deploy/resources/logs/*
 	mkdir -p ./deploy/templates/compiled ./deploy/templates/cache ./deploy/resources/logs/
-	chown ${WEBUSER} ./deploy/resources/logs/*
 	chmod -R ugo+rw ./deploy/templates/compiled ./deploy/templates/cache ./deploy/resources/logs/*
 
 
@@ -113,9 +109,8 @@ install-database-client:
 	apt install postgresql-client
 
 start-chat:
-	touch ./deploy/resources/logs/ninjawars.chat-server.log
-	chown ${WEBUSER} ./deploy/resources/logs/ninjawars.chat-server.log
-	nohup php bin/chat-server.php > ./deploy/resources/logs/ninjawars.chat-server.log 2>&1 &
+	touch /tmp/game_logs/ninjawars.chat-server.log
+	nohup php bin/chat-server.php > /tmp/game_logs//ninjawars.chat-server.log 2>&1 &
 
 browse:
 	xdg-open https://localhost:8765
