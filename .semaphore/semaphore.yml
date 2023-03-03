@@ -12,14 +12,50 @@ blocks:
           commands:
             - checkout
             - cache restore
-            - yarn install
+            - yarn install --immutable
             - cache store
+    dependencies: []
   - name: Test
     task:
       jobs:
         - name: test and build
           commands:
-            - checkout
-            - cache restore
-            - yarn install
+            - '# Setup steps in the prologue'
             - '# yarn test'
+      prologue:
+        commands:
+          - checkout
+          - cache restore
+          - nvm install
+          - nvm use
+          - corepack enable
+          - yarn install --immutable
+          - cache store
+    dependencies:
+      - Setup
+  - name: PHP test and build
+    dependencies:
+      - Setup
+    task:
+      secrets:
+        - name: Tchalvak AWS
+        - name: Tchalvak Github Token
+      env_vars:
+        - name: AWS_PROFILE
+          value: tchalvak
+      jobs:
+        - name: PHP unit-tests
+          commands:
+            - echo "install happens in the prologue step"
+            - php --version
+            - make build
+            - ./composer.phar unit-test
+      prologue:
+        commands:
+          - checkout
+          - cp -upn ./deploy/resources.build.php ./deploy/resources.php
+          - sem-version php 8.2.2
+          - cache restore
+          - ./composer.phar config -g github-oauth.github.com $GITHUB_ACCESS_TOKEN
+          - ./composer.phar install --prefer-dist --no-interaction
+          - cache store
