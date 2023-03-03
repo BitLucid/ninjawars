@@ -35,13 +35,16 @@ blocks:
       env_vars:
         - name: AWS_PROFILE
           value: tchalvak
+        - name: GITHUB_ACCESS_TOKEN
+          value: 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
       jobs:
         - name: PHP
           commands:
             - checkout
+            - ./composer.phar config -g github-oauth.github.com $GITHUB_ACCESS_TOKEN
             - ./composer.phar install --prefer-dist
-            - ./composer.phar test
             - make build
+            - ./composer.phar test
       prologue:
         commands:
           - sem-version php 8.2.2
