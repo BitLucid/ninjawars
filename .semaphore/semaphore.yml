@@ -42,8 +42,6 @@ blocks:
       env_vars:
         - name: AWS_PROFILE
           value: tchalvak
-        - name: GITHUB_ACCESS_TOKEN
-          value: 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
       jobs:
         - name: PHP
           commands:
@@ -54,6 +52,7 @@ blocks:
       prologue:
         commands:
           - checkout
+          - cp -upn ./deploy/resources.build.php ./deploy/resources.php
           - sem-version php 8.2.2
           - cache restore
           - ./composer.phar config -g github-oauth.github.com $GITHUB_ACCESS_TOKEN
