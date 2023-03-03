@@ -5,7 +5,7 @@ namespace NinjaWars\core\data;
 use NinjaWars\core\data\DatabaseConnection;
 use NinjaWars\core\data\ValueObject;
 
-abstract class DataAccessObject {
+abstract class DataAccessObject extends \stdClass {
     protected $m_dbconn; // *** DatabaseConnection object.
 
     protected $_vo_obj_name;
@@ -20,7 +20,8 @@ abstract class DataAccessObject {
     /*
      * Assigns and holds the connection to the db.
      */
-    public function __construct() {
+    public function __construct()
+    {
         $this->m_dbconn = DatabaseConnection::getInstance();
     }
 
@@ -28,7 +29,8 @@ abstract class DataAccessObject {
     /*
      * Save the changes made to the data to the database.
      */
-    public function save(ValueObject $vo) {
+    public function save(ValueObject $vo)
+    {
         // *** Check the ID of the value object to see whether it was pre-existing.
         if ($vo->{$this->_id_field} === null) {
             $outcome = $this->_insert($vo);
@@ -40,24 +42,25 @@ abstract class DataAccessObject {
         return $outcome;
     }
 
-    public function get($id) {
+    public function get($id)
+    {
         if (!is_numeric($id)) {
             return false;
         }
 
         // execute select statement
-        $sel = "SELECT ".implode(", ", $this->_vo_fields)." FROM ".$this->_table." WHERE ".$this->_id_field." = :id";
+        $sel = "SELECT " . implode(", ", $this->_vo_fields) . " FROM " . $this->_table . " WHERE " . $this->_id_field . " = :id";
 
         $statement = DatabaseConnection::$pdo->prepare($sel);
         $statement->bindValue(':id', intval($id));
         $statement->execute();
 
-        if (! ($data = $statement->fetch())) {
+        if (!($data = $statement->fetch())) {
             return null;
         }
 
         // create new vo and call getFromResult
-        $classname = 'NinjaWars\core\data\\'.$this->_vo_obj_name;
+        $classname = 'NinjaWars\core\data\\' . $this->_vo_obj_name;
         $vo = new $classname();
         assert(isset($vo));
 
@@ -67,8 +70,9 @@ abstract class DataAccessObject {
         return $vo;
     }
 
-    public function delete(ValueObject $vo) {
-        $statement = DatabaseConnection::$pdo->prepare("DELETE FROM ".$this->_table." WHERE ".$this->_id_field." = :id");
+    public function delete(ValueObject $vo)
+    {
+        $statement = DatabaseConnection::$pdo->prepare("DELETE FROM " . $this->_table . " WHERE " . $this->_id_field . " = :id");
         $statement->bindValue(':id', intval($vo->{$this->_id_field}));
 
         // execute delete statement
@@ -80,23 +84,25 @@ abstract class DataAccessObject {
 
     // *** private functions
 
-    private function _getFromResult($vo, $data) {
+    private function _getFromResult($vo, $data)
+    {
         // fill vo from the database result set
         foreach ($this->_vo_fields as $loopField) { // *** use fields dynamically from list.
             $vo->$loopField = $data[$loopField];
         }
     }
 
-    private function _update($vo) {
+    private function _update($vo)
+    {
         // execute update statement here
-        $up = "UPDATE ".$this->_table_for_saving." SET ";
+        $up = "UPDATE " . $this->_table_for_saving . " SET ";
 
         foreach ($this->getWritableFields() as $loopField) { // Put in values from vo.
             $up .= "$loopField = :$loopField, ";
         }
 
         $up = rtrim($up, ', '); // *** Remove that final comma.
-        $up .= " WHERE ".$this->_id_field." = :id";
+        $up .= " WHERE " . $this->_id_field . " = :id";
 
         $statement = DatabaseConnection::$pdo->prepare($up);
         foreach ($this->getWritableFields() as $loopField) { // Put in values from vo.
@@ -108,13 +114,14 @@ abstract class DataAccessObject {
         return $statement->rowCount();
     }
 
-    private function _insert($vo) {
+    private function _insert($vo)
+    {
         // generate id using sequence
         $new_id = $this->m_dbconn->nextSequenceValue($this->_id_field, $this->_table_for_saving);
         assert(is_numeric($new_id));
 
         // *** Make insert statement.
-        $in = "INSERT INTO ".$this->_table_for_saving." (".implode(", ", $this->getWritableFields()).") VALUES (";
+        $in = "INSERT INTO " . $this->_table_for_saving . " (" . implode(", ", $this->getWritableFields()) . ") VALUES (";
 
         foreach ($this->getWritableFields() as $loopField) {
             $in .= " :$loopField,";
@@ -144,7 +151,8 @@ abstract class DataAccessObject {
     /**
      * @param String[]
      */
-    protected function setReadOnlyFields($p_fields) {
+    protected function setReadOnlyFields($p_fields)
+    {
         $this->_readonly_fields = $p_fields;
         $this->_writable_fields = null;
     }
@@ -152,7 +160,8 @@ abstract class DataAccessObject {
     /**
      * @return String[]
      */
-    protected function getWritableFields() {
+    protected function getWritableFields()
+    {
         if (null === $this->_writable_fields) {
             $this->_writable_fields = array_diff($this->_vo_fields, $this->_readonly_fields);
         }

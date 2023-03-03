@@ -30,10 +30,8 @@ build: dep create-structure link-deps
 create-structure:
 	mkdir -p $(JS)
 	rm -rf ./deploy/templates/compiled/* ./deploy/templates/cache/*
-	mkdir -p ./deploy/templates/compiled ./deploy/templates/cache /tmp/game_logs/
-	chmod -R ugo+rwX ./deploy/templates/compiled ./deploy/templates/cache
-	touch ./deploy/resources/logs/deity.log
-	touch ./deploy/resources/logs/emails.log
+	mkdir -p ./deploy/templates/compiled ./deploy/templates/cache ./deploy/resources/logs/ /tmp/game_logs/
+	chmod -R ugo+rwX ./deploy/templates/compiled ./deploy/templates/cache /tmp/game_logs/
 
 
 link-deps:
@@ -75,7 +73,7 @@ install-admin: preconfig build start-chat writable postcheck
 
 
 writable:
-	mkdir -p ./deploy/templates/compiled ./deploy/templates/cache /tmp/game_logs/
+	mkdir -p ./deploy/templates/compiled ./deploy/templates/cache /tmp/game_logs/ ./deploy/resources/logs/
 	chmod -R ugo+rw ./deploy/templates/compiled ./deploy/templates/cache /tmp/game_logs/
 
 

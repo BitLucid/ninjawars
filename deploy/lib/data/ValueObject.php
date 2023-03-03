@@ -2,5 +2,5 @@
 
 namespace NinjaWars\core\data;
 
-abstract class ValueObject {
+abstract class ValueObject extends \stdClass {
 }
