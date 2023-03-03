@@ -15,13 +15,13 @@ blocks:
             - yarn install --immutable
             - cache store
     dependencies: []
-  - name: Test
+  - name: JS Tests
     task:
       jobs:
         - name: test and build
           commands:
             - '# Setup steps in the prologue'
-            - '# yarn test'
+            - yarn test
       prologue:
         commands:
           - checkout
@@ -30,6 +30,7 @@ blocks:
           - nvm use
           - corepack enable
           - yarn install --immutable
+          - make js-deps
           - cache store
     dependencies:
       - Setup
