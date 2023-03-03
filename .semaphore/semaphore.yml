@@ -12,7 +12,7 @@ blocks:
           commands:
             - checkout
             - cache restore
-            - yarn install
+            - yarn install --immutable
             - cache store
     dependencies: []
   - name: Test
@@ -39,6 +39,7 @@ blocks:
     task:
       secrets:
         - name: Tchalvak AWS
+        - name: Tchalvak Github Token
       env_vars:
         - name: AWS_PROFILE
           value: tchalvak
