@@ -14,6 +14,7 @@ blocks:
             - cache restore
             - yarn install
             - cache store
+    dependencies: []
   - name: Test
     task:
       jobs:
@@ -23,3 +24,24 @@ blocks:
             - cache restore
             - yarn install
             - '# yarn test'
+    dependencies:
+      - Setup
+  - name: PHP test and build
+    dependencies:
+      - Setup
+    task:
+      secrets:
+        - name: Tchalvak AWS
+      env_vars:
+        - name: AWS_PROFILE
+          value: tchalvak
+      jobs:
+        - name: PHP
+          commands:
+            - checkout
+            - ./composer.phar install --prefer-dist
+            - ./composer.phar test
+            - make build
+      prologue:
+        commands:
+          - sem-version php 8.2.2
