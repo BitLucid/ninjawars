@@ -7,6 +7,16 @@
 
 use NinjaWars\core\data\DatabaseConnection;
 
+function db_check_connection(): bool {
+    try {
+        DatabaseConnection::getInstance();
+        return true;
+    } catch (PDOException $e) {
+        return false;
+    }
+}
+
+
 /**
  * Run bound queries on the database.
  *

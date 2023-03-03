@@ -12,6 +12,7 @@ use NinjaWars\core\UnableToSaveException;
  * Creates the player value objects.
  * Essentially it acts as the model (creator) if Model-View-Controller were in play.
  */
+#[\AllowDynamicProperties]
 class PlayerDAO extends DataAccessObject {
     /**
      * Assigns and holds the connection to the db.

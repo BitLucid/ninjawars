@@ -25,25 +25,32 @@ ifndef TESTFILE
 	TESTFILE=
 endif
 
-build: dep create-structure link-deps
-
-create-structure:
+create-directories:
+	@echo "Do this with sudo due to permissions"
 	mkdir -p $(JS)
-	rm -rf ./deploy/templates/compiled/* ./deploy/templates/cache/*
 	mkdir -p ./deploy/templates/compiled ./deploy/templates/cache ./deploy/resources/logs/
-	chmod -R ugo+rwX ./deploy/templates/compiled ./deploy/templates/cache
 	touch ./deploy/resources/logs/deity.log
 	touch ./deploy/resources/logs/emails.log
 
+conf-resources:
+	cp -upn ./deploy/resources.build.php ./deploy/resources.php || true
+	echo "Note that this does not overwrite existing resources.php"
 
-link-deps:
+build: conf-resources dep check-base
+	@echo " ====== Continuing app-specific parts of the build ===="
+	@echo "Building the deps, linking the components, and building static .html"
 	@ln -sf "$(RELATIVE_COMPONENTS)jquery/jquery.min.js" "$(JS)"
 	@ln -sf "$(RELATIVE_COMPONENTS)jquery/jquery.min.map" "$(JS)"
 	@ln -sf "$(RELATIVE_COMPONENTS)jquery-timeago/jquery.timeago.js" "$(JS)"
 	@ln -sf "$(RELATIVE_COMPONENTS)jquery-linkify/jquery.linkify.js" "$(JS)"
 	@ln -sf "$(RELATIVE_VENDOR)twbs/bootstrap/dist/css/bootstrap.min.css" "$(CSS)"
 	@ln -sf "$(RELATIVE_VENDOR)twbs/bootstrap/dist/js/bootstrap.min.js" "$(JS)"
-
+	php deploy/www/intro-controller.php > deploy/www/intro.html
+	php deploy/www/front-controller.php > deploy/www/index.html
+	php deploy/www/login-controller.php > deploy/www/login.html
+	php deploy/www/signup-controller.php > deploy/www/signup.html
+	@echo "Built front controller to static deploy/www/index.html file, as well as intro.html, login.html, and signup.html"
+	@echo "This is not a full install, just the build, so check make install and make note-system"
 
 dep:
 	@$(COMPOSER) install
@@ -51,15 +58,17 @@ dep:
 
 check: pre-test
 
+check-base:
+	php deploy/checkbase.php
+
 js-deps:
 	node -v
 	corepack enable
 	echo "corepack enable DONE. Totally sidesteps having to install a yarn version"
 	yarn -v
-	corepack enable
 	yarn install --immutable
 
-preconfig: 	
+preconfig:
 	cp -u -p ./deploy/resources.build.php ./deploy/resources.php
 
 postcheck:
@@ -69,7 +78,7 @@ postcheck:
 	php ./deploy/check.php
 	echo "Check that the webserver user has permissions to the script!"
 
-install: preconfig build postcheck
+install: conf-resources preconfig create-directories build postcheck
 
 install-admin: preconfig build start-chat writable postcheck
 
@@ -115,6 +124,7 @@ install-database-client:
 start-chat:
 	touch ./deploy/resources/logs/ninjawars.chat-server.log
 	chown ${WEBUSER} ./deploy/resources/logs/ninjawars.chat-server.log
+	chmod ugo+w ./deploy/resources/logs/ninjawars.chat-server.log
 	nohup php bin/chat-server.php > ./deploy/resources/logs/ninjawars.chat-server.log 2>&1 &
 
 browse:
@@ -155,7 +165,6 @@ check-for-syntax-errors:
 	@find "./deploy/www/" -name "*.php" -exec php -l {} \;|grep -v "No syntax errors" || true
 
 test-unit: check-for-syntax-errors
-
 	@$(TEST_RUNNER) $(CC_FLAG) --testsuite Unit
 
 test-quick: check-for-syntax-errors
@@ -201,7 +210,7 @@ clean:
 	@rm -f "$(JS)jquery.linkify.js"
 	@rm -f "$(JS)jquery-linkify.min.js"
 	@rm -f "/tmp/nw"
-	@cd ./deploy/templates/cache && rm -v ./(".gitkeep") && cd -
+	@rm -rf ./deploy/templates/cache/* && touch ./deploy/templates/cache/.gitkeep
 	@rm -rf ./deploy/templates/compiled ./deploy/resources/logs/deity.log ./deploy/resources/logs/emails.log
 	@rm -rf ./deploy/www/index.html ./deploy/www/intro.html ./deploy/www/login.html ./deploy/www/signup.html
 	@echo "Cleaned up"
@@ -274,14 +283,14 @@ web-reload:
 	ps waux | grep nginx
 
 restart-webserver:
-	sudo service nginx reload
+	sudo service nginx restart
 	sleep 0.5
 	ps waux | grep nginx
 
 ci-pre-configure:
 	# Set php version
 	# Versions available: https://documentation.codeship.com/basic/languages-frameworks/php/#versions-and-setup
-	phpenv local 8.0
+	phpenv local 8.2
 	@echo "Removing xdebug on CI, by default."
 	rm -f /home/rof/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini
 	ln -s `pwd` /tmp/root

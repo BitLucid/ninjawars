@@ -7,9 +7,11 @@
     "doc": "docs"
   },
   "scripts": {
+    "init-project": "echo 'todo for config'",
     "lint": "eslint --ext .jsx,.js deploy/www/js",
     "prepare-unit-test-ci": "echo 'no-op for now'",
     "build": "yarn time && make build && yarn time",
+    "serve": "yarn dlx serve deploy/www/ -p 7474",
     "start": "yarn time && make build && yarn time",
     "post-deploy": "php deploy/deployed_scripts/resetcache.php",
     "watch": "livereload ./deploy/* ./deploy/www/* ./deploy/templates/* ./deploy/lib/control/* --debug",
@@ -42,7 +44,7 @@
     "url": "https://github.com/BitLucid/ninjawars/issues"
   },
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=16.13.0"
   },
   "homepage": "https://github.com/BitLucid/ninjawars#readme",
   "devDependencies": {

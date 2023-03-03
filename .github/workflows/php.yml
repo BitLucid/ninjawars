@@ -45,7 +45,9 @@ jobs:
 
     - name: Install dependencies
       if: steps.composer-cache.outputs.cache-hit != 'true'
-      run: ./composer.phar install --prefer-dist --no-progress --no-suggest
+      run: |
+        ./composer.phar install --prefer-dist --no-progress
+        echo "todo put github access token in here"
 
     - name: Create autoload file if necessary
       if: steps.composer-cache.outputs.cache-hit == 'true'
@@ -56,7 +58,11 @@ jobs:
     # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
     # Docs: https://getcomposer.org/doc/articles/scripts.md
 
-    - name: Run test suite
+    - name: Run build
       run: |
         ln -s ./resources.build.php ./deploy/resources.php
+        make build
+
+    - name: Run test suite
+      run: |
         ./composer.phar run-script unit-test

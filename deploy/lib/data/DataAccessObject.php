@@ -5,6 +5,7 @@ namespace NinjaWars\core\data;
 use NinjaWars\core\data\DatabaseConnection;
 use NinjaWars\core\data\ValueObject;
 
+#[\AllowDynamicProperties]
 abstract class DataAccessObject {
     protected $m_dbconn; // *** DatabaseConnection object.
 

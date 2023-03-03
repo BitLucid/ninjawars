@@ -14,6 +14,12 @@ deploy/model/orm/*
 !deploy/model/orm/.gitkeep
 !deploy/sql/.gitkeep
 
+# Static build result files
+deploy/www/index.html
+deploy/www/intro.html
+deploy/www/signup.html
+deploy/www/login.html
+
 #ignore developer specific GNU make configuration for this project
 CONFIG
 

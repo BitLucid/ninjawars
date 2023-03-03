@@ -25,14 +25,19 @@ class Filter {
         // Cast anything that can be non-destructively cast.
     }
 
-    /**
-     * Strip low and high ascii characters, leave standard keyboard characters
-     */
-    public static function toSimple($dirty) {
-        return filter_var(
-            str_replace(['"', '\''], '', $dirty),
-            FILTER_SANITIZE_STRING,
-            FILTER_FLAG_STRIP_LOW | FILTER_FLAG_STRIP_HIGH
-        );
+    public static function toAlphaNumeric($dirty) {
+        return preg_replace('/[^a-zA-Z0-9]/', '', $dirty);
+    }
+
+    public static function toAllowableUsername($dirty) {
+        return preg_replace('/[^a-zA-Z0-9_-]/', '', $dirty);
+    }
+
+    public static function toEmail($dirty) {
+        return filter_var($dirty, FILTER_SANITIZE_EMAIL);
+    }
+
+    public static function stripHighUtf8($dirty) {
+        return filter_var($dirty, FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_HIGH | FILTER_FLAG_STRIP_LOW);
     }
 }
