@@ -42,7 +42,7 @@ class InventoryController extends AbstractController {
 
         foreach ($inv as $item) {
             // Special format for display and looping
-            $item['display']  = $item['item_display_name'].$item['plural'];
+            $item['display']  = $item['item_display_name'] . $item['plural'];
             $item['self_use'] = (bool) $item['self_use'];
             $inventory[$item['item_id']] = $item;
         }
@@ -75,7 +75,7 @@ class InventoryController extends AbstractController {
             $item    = $this->findItem($slugs['item_in']);
             $article = self::getIndefiniteArticle($item->getName());
         } catch (\InvalidArgumentException $e) {
-            return new RedirectResponse(WEB_ROOT.'inventory?error=noitem');
+            return new RedirectResponse(WEB_ROOT . 'inventory?error=noitem');
         }
 
         $display_message = null;
@@ -86,7 +86,7 @@ class InventoryController extends AbstractController {
             $error = 3;
         } else {
             $error = 0;
-            $display_message = "__TARGET__ will receive your ".$item->getName().".";
+            $display_message = "__TARGET__ will receive your " . $item->getName() . ".";
             $mail_message    = "You have been given $article $item by $player.";
 
             $this->transferOwnership($player, $target, $item, self::GIVE_QUANTITY);
@@ -132,7 +132,7 @@ class InventoryController extends AbstractController {
             $item = $this->findItem($slugs['item_in']);
             $article = self::getIndefiniteArticle($item->getName());
         } catch (\InvalidArgumentException $e) {
-            return new RedirectResponse(WEB_ROOT.'inventory?error=noitem');
+            return new RedirectResponse(WEB_ROOT . 'inventory?error=noitem');
         }
 
         if ($this->itemCount($player, $item) < 1) {
@@ -215,7 +215,7 @@ class InventoryController extends AbstractController {
             $item    = $this->findItem($slugs['item_in']);
             $article = $item ? self::getIndefiniteArticle($item->getName()) : '';
         } catch (\InvalidArgumentException $e) {
-            return new RedirectResponse(WEB_ROOT.'inventory?error=noitem');
+            return new RedirectResponse(WEB_ROOT . 'inventory?error=noitem');
         }
 
         if (empty($target)) {
@@ -242,7 +242,7 @@ class InventoryController extends AbstractController {
                 $result = $this->applyItemEffects($player, $target, $item);
 
                 if ($result['success']) {
-                    $message_to_target = "$attacker_label has used $article ".$item->getName()." on you$result[notice]";
+                    $message_to_target = "$attacker_label has used $article " . $item->getName() . " on you$result[notice]";
                     Event::create($player->id(), $target->id(), str_replace('  ', ' ', $message_to_target));
                     $inventory->remove($item->identity(), 1);
 
@@ -359,12 +359,12 @@ class InventoryController extends AbstractController {
         }
 
         if ($item->hasEffect('slow')) {
-            $item->setTurnChange(-1*$this->caltropTurnLoss($target, $bonus));
+            $item->setTurnChange(-1 * $this->caltropTurnLoss($target, $bonus));
             $turns_change = $item->getTurnChange();
 
             if ($target->hasStatus(SLOW)) {
                 // If the effect is already in play, it will have a decreased effect.
-                $turns_change = ceil($turns_change*0.3);
+                $turns_change = ceil($turns_change * 0.3);
                 $extra_message = "__TARGET__ is already moving slowly.";
             } elseif ($target->hasStatus(FAST)) {
                 $target->subtractStatus(FAST);
@@ -378,7 +378,7 @@ class InventoryController extends AbstractController {
                 $extra_message .= " You fail to take any turns from __TARGET__.";
             }
 
-            $notice = " lose ".abs($turns_change)." turns.";
+            $notice = " lose " . abs($turns_change) . " turns.";
             $target->subtractTurns(-1 * $turns_change);
         } elseif ($item->hasEffect('speed')) {
             $item->setTurnChange($item->getMaxTurnChange());
@@ -386,7 +386,7 @@ class InventoryController extends AbstractController {
 
             if ($target->hasStatus(FAST)) {
                 // If the effect is already in play, it will have a decreased effect.
-                $turns_change = ceil($turns_change*0.5);
+                $turns_change = ceil($turns_change * 0.5);
                 $extra_message = "__TARGET__ is already moving quickly.";
             } elseif ($target->hasStatus(SLOW)) {
                 $target->subtractStatus(SLOW);
@@ -401,16 +401,16 @@ class InventoryController extends AbstractController {
         }
 
         if ($item->getTargetDamage() > 0) { // HP Altering
-            $extra_message .= " __TARGET__ takes ".$item->getTargetDamage()." damage.";
+            $extra_message .= " __TARGET__ takes " . $item->getTargetDamage() . " damage.";
 
             if ($user->id() === $target->id()) {
-                $message .= "You take ".$item->getTargetDamage()." damage!";
+                $message .= "You take " . $item->getTargetDamage() . " damage!";
             } else {
                 if (strlen($notice) > 0) {
                     $notice .= " You also"; // Join multiple targetResult messages.
                 }
 
-                $notice .= " take ".$item->getTargetDamage()." damage!";
+                $notice .= " take " . $item->getTargetDamage() . " damage!";
             }
 
             $target->harm($item->getTargetDamage());
@@ -424,7 +424,7 @@ class InventoryController extends AbstractController {
                 if ($turns_change === 0) {
                     $message .= "__TARGET__ did not lose any turns!";
                 } else {
-                    $message .= "__TARGET__ has lost ".abs($turns_change)." turns!";
+                    $message .= "__TARGET__ has lost " . abs($turns_change) . " turns!";
                 }
 
                 if ($target->turns <= 0) {
@@ -485,7 +485,7 @@ class InventoryController extends AbstractController {
         $target_email_msg = "You have been killed by $attacker_label with $article $item and lost $loot gold.";
         Event::create(($attacker->name() === $attacker_label ? $attacker->id() : 0), $target->id(), $target_email_msg);
 
-        $user_email_msg = "You have killed ".$target->name()." with $article $item and received $loot gold.";
+        $user_email_msg = "You have killed " . $target->name() . " with $article $item and received $loot gold.";
         Event::create($target->id(), $attacker->id(), $user_email_msg);
     }
 
@@ -604,6 +604,7 @@ class InventoryController extends AbstractController {
      * Get the language pluralization of an item's word
      */
     public static function getIndefiniteArticle($p_noun): string {
-        return str_replace(' '.$p_noun, '', shell_exec('perl '.LIB_ROOT.'third-party/lingua-a.pl "'.escapeshellcmd($p_noun).'"'));
+        $word = preg_replace("/[^[:alnum:]]/u", '', $p_noun);
+        return str_replace(' ' . $word, '', shell_exec('perl ' . LIB_ROOT . 'third-party/lingua-a.pl "' . escapeshellcmd($word) . '"'));
     }
 }

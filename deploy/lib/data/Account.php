@@ -27,7 +27,7 @@ use PDO;
  * @property-read string oauth_provider
  * @property-read int oauth_id
  */
-class Account {
+class Account extends \stdClass {
     public static $fields = [
         'account_id',
         'account_identity',
@@ -83,7 +83,7 @@ class Account {
     public static function findByIdentity($email_identity): ?Account {
         $account_info = query_row(
             "select account_id from accounts where account_identity = :identity_email",
-            [':identity_email'=>$email_identity]
+            [':identity_email' => $email_identity]
         );
 
         return self::findById($account_info['account_id']);
@@ -160,7 +160,7 @@ class Account {
             JOIN players ON player_id = _player_id
             WHERE lower(uname) = lower(:ninja_name) LIMIT 1';
 
-        return self::findById(query_item($query, [':ninja_name'=>$ninja_name]));
+        return self::findById(query_item($query, [':ninja_name' => $ninja_name]));
     }
 
     /**
@@ -175,8 +175,8 @@ class Account {
             WHERE lower(uname) = :login2';
 
         $params = [
-            ':login1'=>strtolower($username),
-            ':login2'=>strtolower($username),
+            ':login1' => strtolower($username),
+            ':login2' => strtolower($username),
         ];
 
         return self::findById(query_item($query, $params));
@@ -191,7 +191,7 @@ class Account {
     public static function accountInfo($account_id): array | bool {
         return query_row(
             "SELECT *, date_part('epoch', now() - coalesce(last_login_failure, '1999-01-01')) AS login_failure_interval FROM accounts WHERE account_id = :account_id",
-            [':account_id'=>[$account_id, PDO::PARAM_INT]]
+            [':account_id' => [$account_id, PDO::PARAM_INT]]
         );
     }
 
@@ -233,7 +233,7 @@ class Account {
             JOIN accounts ON _account_id = account_id
             WHERE account_id = :acc_id ORDER BY level DESC LIMIT 1';
 
-        $verify_ninja_id = query_item($sel_ninja_id, [':acc_id'=>[$newID, PDO::PARAM_INT]]);
+        $verify_ninja_id = query_item($sel_ninja_id, [':acc_id' => [$newID, PDO::PARAM_INT]]);
 
         return ($verify_ninja_id != $ninja_id ? false : $newID);
     }
@@ -571,7 +571,7 @@ class Account {
             join account_players ap on ap._player_id = p.player_id
             join accounts a on a.account_id = ap._account_id
             where a.account_id = :aid',
-            [':aid'=>[$this->account_id, PDO::PARAM_INT]]
+            [':aid' => [$this->account_id, PDO::PARAM_INT]]
         );
         $ninjas = [];
         foreach ($pcs as $pc) {
