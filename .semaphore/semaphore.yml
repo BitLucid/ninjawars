@@ -56,6 +56,6 @@ blocks:
           - cp -upn ./deploy/resources.build.php ./deploy/resources.php
           - sem-version php 8.2.2
           - cache restore
-          - ./composer.phar config -g github-oauth.github.com $(GITHUB_ACCESS_TOKEN)
+          - ./composer.phar config -g github-oauth.github.com $GITHUB_ACCESS_TOKEN
           - ./composer.phar install --prefer-dist --no-interaction
           - cache store
