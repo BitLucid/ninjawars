@@ -253,23 +253,23 @@ backup-live-db:
 
 web-start:
 	#permission error is normal and recoverable
-	sudo service nginx reload
+	service nginx reload
 	sleep 0.5
 	ps waux | grep nginx
 
 web-stop:
-	sudo service nginx reload
+	service nginx reload
 	sleep 0.5
 	ps waux | grep nginx
 	# server may be stopped now
 
 web-reload:
-	sudo service nginx reload
+	service nginx reload
 	sleep 0.5
 	ps waux | grep nginx
 
 restart-webserver:
-	sudo service nginx reload
+	service nginx reload
 	sleep 0.5
 	ps waux | grep nginx
 
