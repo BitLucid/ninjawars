@@ -91,13 +91,13 @@
 
 #map .node.grass {
     background-color: #223a18;
-    background-image: url(/images/nodes/grass.jpg);
+    background-image: url(/images/nodes/grass.png);
     background-size: 100% 100%;
 }
 
 #map .node.dirt {
     background-color: #223a18;
-    background-image: url(/images/nodes/lightdirt.jpg);
+    background-image: url(/images/nodes/dirt.png);
     background-size: 100% 100%;
 }
 
