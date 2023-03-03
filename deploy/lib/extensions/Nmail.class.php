@@ -102,7 +102,7 @@ class Nmail {
 
             //Optionally add any attachments
             //  ->attach(Swift_Attachment::fromPath('my-document.pdf'))
-            ;
+        ;
 
         if ($this->reply_to) {
             $this->message->setReplyTo($this->reply_to);
