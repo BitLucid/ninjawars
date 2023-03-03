@@ -20,10 +20,10 @@ class GameLog {
      * @param string $log_message
      * @param int    $priority    Simple priority level, higher is more important
      */
-    public function log($log_message, $priority=0) {
+    public function log($log_message, $priority = 0) {
         $priority = (int) $priority; // Prevent non-int priority levels
-        $log_file = LOGS.'game.log';
-        $final_message = date('Y-m-d h:i:sa').' '.($priority>0 ? "[PRIORITY ".$priority."]" : '').$log_message;
+        $log_file = GAME_LOGS . 'game.log';
+        $final_message = date('Y-m-d h:i:sa') . ' ' . ($priority > 0 ? "[PRIORITY " . $priority . "]" : '') . $log_message;
         return (bool) file_put_contents($log_file, $final_message, FILE_APPEND);
     }
 
@@ -46,7 +46,7 @@ class GameLog {
             $statement = DatabaseConnection::$pdo->prepare("UPDATE levelling_log SET levelling=levelling + :amount WHERE _player_id = :player AND killsdate=now() LIMIT 1");
             $statement->bindValue(':amount', $amount);
             $statement->bindValue(':player', $who);
-        } else {	// if no prior record exists, create a new one.
+        } else {    // if no prior record exists, create a new one.
             $statement = DatabaseConnection::$pdo->prepare("INSERT INTO levelling_log (_player_id, killpoints, levelling, killsdate) VALUES (:player, '0', :amount, now())");  //inserts all except the autoincrement ones
             $statement->bindValue(':amount', $amount);
             $statement->bindValue(':player', $who);
