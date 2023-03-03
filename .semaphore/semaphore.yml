@@ -40,11 +40,14 @@ blocks:
       jobs:
         - name: PHP
           commands:
-            - checkout
-            - ./composer.phar config -g github-oauth.github.com $GITHUB_ACCESS_TOKEN
-            - ./composer.phar install --prefer-dist
+            - echo "install happens in the prologue step"
             - make build
             - ./composer.phar test
       prologue:
         commands:
+          - checkout
           - sem-version php 8.2.2
+          - cache restore
+          - ./composer.phar config -g github-oauth.github.com $GITHUB_ACCESS_TOKEN
+          - ./composer.phar install --prefer-dist
+          - cache store
