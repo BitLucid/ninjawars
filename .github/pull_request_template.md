@@ -9,6 +9,8 @@
 
 ## After
 
+## For Non-Hotfixes:
+
 ## _Attached Screenshot of my change:_
 
 ## _Things that make review take longer:_
