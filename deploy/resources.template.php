@@ -36,6 +36,7 @@ define('TEMPLATE_LIBRARY_PATH', SERVER_ROOT.'vendor/smarty/smarty/libs/Smarty.cl
 define('COMPILED_TEMPLATE_PATH', SERVER_ROOT.'templates/compiled/'); // *** This folder must have write permissions.
 define('TEMPLATE_CACHING_PATH', SERVER_ROOT.'templates/cache/'); // *** This folder must have write permissions.
 define('LOGS', SERVER_ROOT.'resources/logs/'); // *** For all custom logging
+define('GAME_LOGS', '/tmp/game_logs/'); // For simple semi-public game log messages
 define('CONNECTION_STRING', 'pgsql:'.(DATABASE_USE_HOST ? 'host='.DATABASE_HOST : '').';dbname='.DATABASE_NAME.';user='.DATABASE_USER.
     (DATABASE_USE_PORT ? ';port='.DATABASE_PORT : '').(DATABASE_USE_PASSWORD ? ';password='.DATABASE_PASSWORD : ''));
 
