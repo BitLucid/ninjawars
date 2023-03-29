@@ -4,13 +4,11 @@ use NinjaWars\core\data\Player;
 use NinjaWars\core\Filter;
 use NinjaWars\core\data\Account;
 
-class CharacterTest extends NWTest
-{
+class CharacterTest extends NWTest {
     private $previous_server_ip = '';
     private $char_id;
 
-    public function setUp(): void
-    {
+    public function setUp(): void {
         parent::setUp();
         $this->previous_server_ip = @$_SERVER['REMOTE_ADDR'];
         $this->test_email = TestAccountCreateAndDestroy::$test_email; // Something@example.com
@@ -21,29 +19,25 @@ class CharacterTest extends NWTest
         $this->char_id = $char_id;
     }
 
-    public function tearDown(): void
-    {
+    public function tearDown(): void {
         // Delete test user.
         TestAccountCreateAndDestroy::purge_test_accounts($this->test_ninja_name);
         $_SERVER['REMOTE_ADDR'] = $this->previous_server_ip; // Reset remote addr to whatever it was before, just in case.
         parent::tearDown();
     }
 
-    public function testCreatePlayerObject()
-    {
+    public function testCreatePlayerObject() {
         $char = Player::find($this->char_id);
         $this->assertTrue((bool)Filter::toNonNegativeInt($char->id()));
     }
 
-    public function testPlayerCanBeFoundStatically()
-    {
+    public function testPlayerCanBeFoundStatically() {
         $char = Player::find($this->char_id);
         $this->assertTrue((bool)Filter::toNonNegativeInt($char->id()));
         $this->assertTrue((bool)$char->name());
     }
 
-    public function testFindPlayable()
-    {
+    public function testFindPlayable() {
         $pcs_data = Player::findActive(1, false);
         $pc_data = reset($pcs_data);
         $pc = Player::find($pc_data['player_id']);
@@ -52,36 +46,31 @@ class CharacterTest extends NWTest
         $this->assertEquals($pc->id(), $pc2->id());
     }
 
-    public function testFindPlayableFromInitialChar()
-    {
+    public function testFindPlayableFromInitialChar() {
         $pc = Player::find($this->char_id);
         $acc = Account::findByChar($pc);
         $pc2 = Player::findPlayable($acc->id());
         $this->assertEquals($pc->id(), $pc2->id());
     }
 
-    public function testFindByNamePositive()
-    {
+    public function testFindByNamePositive() {
         $char = Player::findByName($this->test_ninja_name);
         $this->assertNotNull($char);
     }
 
-    public function testFindByNameNegative()
-    {
+    public function testFindByNameNegative() {
         $char = Player::findByName('BANANA_IS_FAKE$$$NOTREAL=;m"');
         $this->assertNull($char);
     }
 
-    public function testNonexistentPlayerReturnsNullViaStaticFind()
-    {
+    public function testNonexistentPlayerReturnsNullViaStaticFind() {
         $id = query_item('select max(player_id) from players');
         $bad_id = $id + 100;
         $char = Player::find($bad_id);
         $this->assertEquals(null, $char);
     }
 
-    public function testCreatePlayerObjectHasUsefulInfo()
-    {
+    public function testCreatePlayerObjectHasUsefulInfo() {
         $char = Player::find($this->char_id);
         $this->assertTrue((bool)Filter::toNonNegativeInt($char->health));
         $this->assertTrue((bool)Filter::toNonNegativeInt($char->getSpeed()));
@@ -92,8 +81,7 @@ class CharacterTest extends NWTest
         $this->assertTrue((bool)Filter::toNonNegativeInt($char->damage()));
     }
 
-    public function testPCHasVariousAttributesAndCanSetSome()
-    {
+    public function testPCHasVariousAttributesAndCanSetSome() {
         $char = Player::find($this->char_id);
         $this->assertTrue(is_int($char->gold));
         $this->assertTrue(is_int($char->turns));
@@ -107,20 +95,17 @@ class CharacterTest extends NWTest
         $this->assertEquals(45, $char_dup->gold);
     }
 
-    public function testCharacterHasADifficultyRating()
-    {
+    public function testCharacterHasADifficultyRating() {
         $char = Player::find($this->char_id);
         $this->assertGreaterThan(0, $char->difficulty());
     }
 
-    public function testCharacterHasAVerificationNumber()
-    {
+    public function testCharacterHasAVerificationNumber() {
         $char = Player::find($this->char_id);
         $this->assertGreaterThan(0, $char->getVerificationNumber());
     }
 
-    public function testPlayerStatusesChangeStatCalcs()
-    {
+    public function testPlayerStatusesChangeStatCalcs() {
         $char = Player::find($this->char_id);
         $str = $char->getStrength();
         $speed = $char->getSpeed();
@@ -140,8 +125,7 @@ class CharacterTest extends NWTest
         $this->assertTrue($char->getStrength() > $str);
     }
 
-    public function testRemoveStatus()
-    {
+    public function testRemoveStatus() {
         $char = Player::find($this->char_id);
         $char->resetStatus();
         $this->assertFalse($char->hasStatus(SLOW));
@@ -151,8 +135,7 @@ class CharacterTest extends NWTest
         $this->assertFalse($char->hasStatus(SLOW));
     }
 
-    public function testPlayerObjectCanSaveDetails()
-    {
+    public function testPlayerObjectCanSaveDetails() {
         $bel = 'Believes in the mirror goddess.';
         $traits = 'Weird,Blue';
         $desc = 'Some description for testing';
@@ -176,85 +159,73 @@ class CharacterTest extends NWTest
         $this->assertEquals($ooc, $char->messages);
     }
 
-    public function testNegativeKiRejected()
-    {
+    public function testNegativeKiRejected() {
         $this->expectException('InvalidArgumentException');
         $char = Player::find($this->char_id);
         $char->setKi(-643);
     }
 
-    public function testNegativeTurnsRejected()
-    {
+    public function testNegativeTurnsRejected() {
         $this->expectException('InvalidArgumentException');
         $char = Player::find($this->char_id);
         $char->setTurns(-345);
     }
 
-    public function testNegativeStrengthRejected()
-    {
+    public function testNegativeStrengthRejected() {
         $this->expectException('InvalidArgumentException');
         $char = Player::find($this->char_id);
         $char->setStrength(-6);
     }
 
-    public function testNegativeSpeedRejected()
-    {
+    public function testNegativeSpeedRejected() {
         $this->expectException('InvalidArgumentException');
         $char = Player::find($this->char_id);
         $char->setSpeed(-556);
     }
 
-    public function testNegativeStaminaRejected()
-    {
+    public function testNegativeStaminaRejected() {
         $this->expectException('InvalidArgumentException');
         $char = Player::find($this->char_id);
         $char->setStamina(-34);
     }
 
-    public function testNegativeHealthRejected()
-    {
+    public function testNegativeHealthRejected() {
         $this->expectException('InvalidArgumentException');
         $char = Player::find($this->char_id);
         $char->setHealth(-6);
     }
 
-    public function testFractionalHealthRejected()
-    {
+    public function testFractionalHealthRejected() {
         $this->expectException('InvalidArgumentException');
         $char = Player::find($this->char_id);
         $char->setHealth(6.45);
     }
 
-    public function testNegativeGoldRejected()
-    {
+    public function testNegativeGoldRejected() {
         $this->expectException('InvalidArgumentException');
         $char = Player::find($this->char_id);
         $char->setGold(-45);
     }
 
-    public function testFractionalGoldRejected()
-    {
+    public function testFractionalGoldRejected() {
         $this->expectException('InvalidArgumentException');
         $char = Player::find($this->char_id);
         $char->setGold(45.23);
     }
 
-    public function testNegativeBountyRejected()
-    {
+    public function testNegativeBountyRejected() {
         $this->expectException('InvalidArgumentException');
         $char = Player::find($this->char_id);
         $char->setBounty(-45);
     }
 
-    public function testFractionalBountyRejected()
-    {
+    public function testFractionalBountyRejected() {
         $this->expectException('InvalidArgumentException');
         $char = Player::find($this->char_id);
         $char->setBounty(45.43);
     }
 
-    public function testPlayerHealChangesHealth()
-    {
+    public function testPlayerHealChangesHealth() {
         $char = Player::find($this->char_id);
         $half_health = $char->setHealth(floor($char->health / 2));
         $char->save();
@@ -270,15 +241,13 @@ class CharacterTest extends NWTest
         $this->assertEquals($char->health, $char->getMaxHealth());
     }
 
-    public function testPCCanObtainAGravatarUrl()
-    {
+    public function testPCCanObtainAGravatarUrl() {
         $char = Player::find($this->char_id);
         $this->assertNotEmpty($char->avatarUrl());
         $this->assertTrue(strpos($char->avatarUrl(), 'avatar') !== false);
     }
 
-    public function testGravatarURLWithoutAvatarType()
-    {
+    public function testGravatarURLWithoutAvatarType() {
         $char = Player::find($this->char_id);
         $char->avatar_type = null;
         $avatarUrl = $char->avatarUrl();
@@ -286,8 +255,7 @@ class CharacterTest extends NWTest
         $this->assertTrue($avatarUrl === '' || strpos($avatarUrl, 'localhost') !== false);
     }
 
-    public function testCreatePlayerObjectCanSaveChanges()
-    {
+    public function testCreatePlayerObjectCanSaveChanges() {
         $char = Player::find($this->char_id);
         $ki = $char->ki;
         $char->setKi($ki + 55);
@@ -298,14 +266,12 @@ class CharacterTest extends NWTest
         $this->assertEquals($char_copy->gold, 343);
     }
 
-    public function testPlayerMaxHealthShouldMatchInitialHealthForTestPlayer()
-    {
+    public function testPlayerMaxHealthShouldMatchInitialHealthForTestPlayer() {
         $char = Player::find($this->char_id);
         $this->assertEquals($char->health, $char->getMaxHealth(), 'Test character created with an invalid max health!');
     }
 
-    public function testPlayerObjectReportDamageCorrectly()
-    {
+    public function testPlayerObjectReportDamageCorrectly() {
         $char = Player::find($this->char_id);
         $damage = floor($char->health / 2);
         $char->setHealth($char->health - $damage);
@@ -314,8 +280,7 @@ class CharacterTest extends NWTest
         $this->assertEquals($damage, $char->is_hurt_by());
     }
 
-    public function testPlayerObjectHarmWorksCorrectly()
-    {
+    public function testPlayerObjectHarmWorksCorrectly() {
         $char = Player::find($this->char_id);
         $damage = floor($char->health / 2);
         $char->harm($damage);
@@ -324,22 +289,19 @@ class CharacterTest extends NWTest
         $this->assertEquals($damage, $char->is_hurt_by());
     }
 
-    public function testKillCharByHarmingWithTheirFullHealth()
-    {
+    public function testKillCharByHarmingWithTheirFullHealth() {
         $char = Player::find($this->char_id);
         $char->harm($char->health);
         $this->assertEquals(0, $char->health);
     }
 
-    public function testCauseDeath()
-    {
+    public function testCauseDeath() {
         $char = Player::find($this->char_id);
         $char->death();
         $this->assertEquals(0, $char->health);
     }
 
-    public function testNewPlayerSave()
-    {
+    public function testNewPlayerSave() {
         $player = new Player();
 
         try {
@@ -353,8 +315,7 @@ class CharacterTest extends NWTest
     /**
      * test that levelUp fails if not enough kills
      */
-    public function testLevelUpKillsFail()
-    {
+    public function testLevelUpKillsFail() {
         $char = Player::find($this->char_id);
         $char->kills = 0;
         $char->save();
@@ -365,8 +326,7 @@ class CharacterTest extends NWTest
     /**
      * test that levelUp succeeds if enough kills
      */
-    public function testLevelUpSucceeds()
-    {
+    public function testLevelUpSucceeds() {
         $char = Player::find($this->char_id);
         $char->kills = 100;
         $char->save();
@@ -377,8 +337,7 @@ class CharacterTest extends NWTest
     /**
      * test that levelUp changes player stats
      */
-    public function testLevelUpChangesStats()
-    {
+    public function testLevelUpChangesStats() {
         $original_char = Player::find($this->char_id);
         $original_char->kills = 100;
         $original_char->save();
@@ -400,8 +359,7 @@ class CharacterTest extends NWTest
     /**
      * test that levelUp removes kill
      */
-    public function testLevelUpRemovesKills()
-    {
+    public function testLevelUpRemovesKills() {
         $original_char = Player::find($this->char_id);
         $original_char->kills = 100;
         $original_char->save();
@@ -413,8 +371,7 @@ class CharacterTest extends NWTest
         $this->assertLessThan($original_char->kills, $char->kills);
     }
 
-    public function testSetClassAndSave()
-    {
+    public function testSetClassAndSave() {
         $char = Player::find($this->char_id);
 
         if (!in_array($char->identity, ['viper', 'dragon', 'crane'])) {
@@ -431,42 +388,36 @@ class CharacterTest extends NWTest
         $this->assertEquals($char->identity, $updated_char->identity, 'The class identities pre/post update were not identical.');
     }
 
-    public function testSetClassNegative()
-    {
+    public function testSetClassNegative() {
         $this->expectException(\TypeError::class);
         $char = Player::find($this->char_id);
         $class = $char->getClassName();
         $char->setClass('BANANA');
     }
 
-    public function testSetClassChangesCurrentPCClass()
-    {
+    public function testSetClassChangesCurrentPCClass() {
         $char = Player::find($this->char_id);
         $class = $char->getClassName();
         $char->setClass('Viper');
         $this->assertEquals('Viper', $char->getClassName());
     }
 
-    public function testClassStringValidationPositive()
-    {
+    public function testClassStringValidationPositive() {
         $return = Player::validStatus('STEALTH');
         $this->assertIsInt($return);
     }
 
-    public function testClassStringValidationInvalidValue()
-    {
+    public function testClassStringValidationInvalidValue() {
         $return = Player::validStatus('BANANA_IS_FAKE');
         $this->assertEquals(0, $return);
     }
 
-    public function testClassStringValidationInvalidType()
-    {
+    public function testClassStringValidationInvalidType() {
         $return = Player::validStatus([]);
         $this->assertNull($return);
     }
 
-    public function testFindActive()
-    {
+    public function testFindActive() {
         $result = Player::findActive(5, false);
         $active = true;
         $count = 0;
