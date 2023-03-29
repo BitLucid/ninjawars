@@ -10,6 +10,7 @@ blocks:
       jobs:
         - name: Install and Cache
           commands:
+            - '# php version set in the prologue step'
             - checkout
             - '# Get the resources.php file'
             - 'make preconfig '
