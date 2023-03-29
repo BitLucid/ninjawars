@@ -14,6 +14,7 @@ blocks:
             - cache restore
             - yarn install --immutable
             - cache store
+            - make build
     dependencies: []
   - name: JS Tests
     task:
