@@ -2,61 +2,60 @@ name: PHP Composer
 
 on:
   push:
-    branches: [ master ]
+    branches: [master]
   pull_request:
-    branches: [ master ]
+    branches: [master]
 
 jobs:
   build:
-
     runs-on: ubuntu-22.04
 
     steps:
-    - uses: actions/checkout@v3
-    
-    - name: Setup PHP
-      uses: shivammathur/setup-php@2.25.0
-      with:
-        php-version: '8.2'
-        extensions: mbstring, intl, pgsql, xml
-        ini-values: post_max_size=256M, max_execution_time=180
-        coverage: xdebug    
-        tools: php-cs-fixer, phpunit
+      - uses: actions/checkout@v3
 
-    - name: Setup problem matchers for PHP
-      run: echo "::add-matcher::${{ runner.tool_cache }}/php.json"
+      - name: Setup PHP
+        uses: shivammathur/setup-php@2.25.0
+        with:
+          php-version: "8.2"
+          extensions: mbstring, intl, pgsql, xml
+          ini-values: post_max_size=256M, max_execution_time=180
+          coverage: xdebug
+          tools: php-cs-fixer, phpunit
 
-    - name: Setup problem matchers for PHPUnit
-      run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
+      - name: Setup problem matchers for PHP
+        run: echo "::add-matcher::${{ runner.tool_cache }}/php.json"
 
-    - name: Validate composer.json and composer.lock
-      run: ./composer.phar validate
+      - name: Setup problem matchers for PHPUnit
+        run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
 
-    - name: Get composer cache directory
-      id: composer-cache
-      run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+      - name: Validate composer.json and composer.lock
+        run: ./composer.phar validate
 
-    - name: Cache dependencies
-      uses: actions/cache@v3
-      with:
-        path: ${{ steps.composer-cache.outputs.dir }}
-        key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-        restore-keys: ${{ runner.os }}-composer-
+      - name: Get composer cache directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
 
-    - name: Install dependencies
-      if: steps.composer-cache.outputs.cache-hit != 'true'
-      run: ./composer.phar install --prefer-dist --no-progress --no-suggest
+      - name: Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
 
-    - name: Create autoload file if necessary
-      if: steps.composer-cache.outputs.cache-hit == 'true'
-      run: |
-        ls -halt ./vendor/
-        ./composer.phar dump-autoload
+      - name: Install dependencies
+        if: steps.composer-cache.outputs.cache-hit != 'true'
+        run: ./composer.phar install --prefer-dist --no-progress
 
-    # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
-    # Docs: https://getcomposer.org/doc/articles/scripts.md
+      - name: Create autoload file if necessary
+        if: steps.composer-cache.outputs.cache-hit == 'true'
+        run: |
+          ls -halt ./vendor/
+          ./composer.phar dump-autoload
 
-    - name: Run test suite
-      run: |
-        ln -s ./resources.build.php ./deploy/resources.php
-        ./composer.phar run-script unit-test
+      # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
+      # Docs: https://getcomposer.org/doc/articles/scripts.md
+
+      - name: Run test suite
+        run: |
+          ln -s ./resources.build.php ./deploy/resources.php
+          ./composer.phar run-script unit-test
