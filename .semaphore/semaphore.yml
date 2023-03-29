@@ -11,6 +11,8 @@ blocks:
         - name: Install and Cache
           commands:
             - checkout
+            - '# Get the resources.php file'
+            - 'make preconfig '
             - cache restore
             - yarn install --immutable
             - cache store
