@@ -1069,7 +1069,8 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/ninjawars/jquery-linkify/archive/master.zip"
+                "url": "https://github.com/ninjawars/jquery-linkify/archive/master.zip",
+                "reference": "master"
             },
             "require": {
                 "oomphinc/composer-installers-extender": "*"
@@ -2075,7 +2076,8 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/rmm5t/jquery-timeago/archive/v1.4.3.zip"
+                "url": "https://github.com/rmm5t/jquery-timeago/archive/v1.4.3.zip",
+                "reference": "v1.4.3"
             },
             "require": {
                 "oomphinc/composer-installers-extender": "*"
