@@ -17,6 +17,9 @@ blocks:
             - yarn install --immutable
             - cache store
             - make build
+      prologue:
+        commands:
+          - sem-version php 8.2
     dependencies: []
   - name: JS Tests
     task:
