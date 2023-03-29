@@ -16,8 +16,8 @@
 
 describe('NW', () => {
   describe('NW App testing context', () => {
-    const app = NW;
-    const env = environment;
+    const app = typeof NW !== 'undefined' ? NW : undefined;
+    const env = typeof environment !== 'undefined' ? environment : undefined;
     beforeEach(() => { });
 
     afterEach(() => { });

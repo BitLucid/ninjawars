@@ -58,6 +58,7 @@ js-deps:
 	yarn install --immutable
 
 preconfig: 	
+	@$(COMPOSER) config -g github-oauth.github.com $(GITHUB_ACCESS_TOKEN)
 	cp -u -p ./deploy/resources.build.php ./deploy/resources.php
 
 postcheck:
