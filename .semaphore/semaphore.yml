@@ -21,6 +21,8 @@ blocks:
       prologue:
         commands:
           - sem-version php 8.2
+      secrets:
+        - name: Tchalvak Github Ratelimit Avoidance Token Readonly
     dependencies: []
   - name: JS Tests
     task:
@@ -39,6 +41,8 @@ blocks:
           - yarn install --immutable
           - make js-deps
           - cache store
+      secrets:
+        - name: Tchalvak Github Ratelimit Avoidance Token Readonly
     dependencies:
       - Setup
     run:
@@ -49,6 +53,7 @@ blocks:
     task:
       secrets:
         - name: Tchalvak AWS
+        - name: Tchalvak Github Ratelimit Avoidance Token Readonly
         - name: Tchalvak Github Token
       env_vars:
         - name: AWS_PROFILE
