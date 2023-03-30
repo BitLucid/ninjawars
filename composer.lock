@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cb241a3b53360f83fc5a534891972edb",
+    "content-hash": "f377073c22ac56c5e33d045758f073bd",
     "packages": [
         {
             "name": "cboden/ratchet",
