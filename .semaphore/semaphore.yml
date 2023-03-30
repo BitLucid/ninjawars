@@ -20,7 +20,7 @@ blocks:
             - make build
       prologue:
         commands:
-          - sem-version php 8.2
+          - sem-version php 8.0
       secrets:
         - name: Tchalvak Github Ratelimit Avoidance Token Readonly
     dependencies: []
