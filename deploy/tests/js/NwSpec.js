@@ -18,9 +18,9 @@ describe('NW', () => {
   describe('NW App testing context', () => {
     const app = typeof NW !== 'undefined' ? NW : undefined;
     const env = typeof environment !== 'undefined' ? environment : undefined;
-    beforeEach(() => { });
+    //beforeEach(() => { });
 
-    afterEach(() => { });
+    //afterEach(() => { });
 
     it('should be able to see var defined in nw.js', () => {
       expect(env).toBeDefined();
