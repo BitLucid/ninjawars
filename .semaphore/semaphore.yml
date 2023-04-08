@@ -35,8 +35,8 @@ blocks:
         commands:
           - checkout
           - cache restore
-          - nvm install
-          - nvm use
+          - nvm install --lts carbon
+          - sem-version node --lts carbon
           - corepack enable
           - yarn install --immutable
           - make js-deps
