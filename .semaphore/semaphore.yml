@@ -20,7 +20,10 @@ blocks:
             - make build
       prologue:
         commands:
-          - sem-version php 8.0
+          - sem-version php 8.2.2
+          - nvm install --lts
+          - sem-version node --lts
+          - corepack enable
       secrets:
         - name: Tchalvak Github Ratelimit Avoidance Token Readonly
     dependencies: []
@@ -35,14 +38,13 @@ blocks:
         commands:
           - checkout
           - cache restore
-          - sem-version php 8.0
+          - sem-version php 8.2.2
           - nvm install --lts
           - sem-version node --lts
           - corepack enable
           - yarn install --immutable
           - make js-deps
           - make build
-          - cache store
       secrets:
         - name: Tchalvak Github Ratelimit Avoidance Token Readonly
     dependencies:
