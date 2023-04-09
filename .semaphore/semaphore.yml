@@ -1,5 +1,5 @@
 version: v1.0
-name: Initial Pipeline
+name: Run All Parts
 agent:
   machine:
     type: e1-standard-2
@@ -10,35 +10,54 @@ blocks:
       jobs:
         - name: Install and Cache
           commands:
+            - '# php version set in the prologue step'
             - checkout
+            - '# Get the resources.php file'
+            - 'make preconfig '
             - cache restore
             - yarn install --immutable
             - cache store
+            - make build
+      prologue:
+        commands:
+          - sem-version php 8.2.2
+          - nvm install --lts
+          - sem-version node --lts
+          - corepack enable
+      secrets:
+        - name: Tchalvak Github Ratelimit Avoidance Token Readonly
     dependencies: []
-  - name: Test
+  - name: JS Tests
     task:
       jobs:
         - name: test and build
           commands:
             - '# Setup steps in the prologue'
-            - '# yarn test'
+            - yarn test
       prologue:
         commands:
           - checkout
           - cache restore
-          - nvm install
-          - nvm use
+          - sem-version php 8.2.2
+          - nvm install --lts
+          - sem-version node --lts
           - corepack enable
           - yarn install --immutable
-          - cache store
+          - make js-deps
+          - make build
+      secrets:
+        - name: Tchalvak Github Ratelimit Avoidance Token Readonly
     dependencies:
       - Setup
+    run:
+      when: change_in('/deploy/www/js/')
   - name: PHP test and build
     dependencies:
       - Setup
     task:
       secrets:
         - name: Tchalvak AWS
+        - name: Tchalvak Github Ratelimit Avoidance Token Readonly
         - name: Tchalvak Github Token
       env_vars:
         - name: AWS_PROFILE
@@ -59,3 +78,5 @@ blocks:
           - ./composer.phar config -g github-oauth.github.com $GITHUB_ACCESS_TOKEN
           - ./composer.phar install --prefer-dist --no-interaction
           - cache store
+    run:
+      when: change_in('/deploy')
