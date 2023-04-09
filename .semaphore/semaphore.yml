@@ -16,6 +16,7 @@ blocks:
             - 'make preconfig '
             - cache restore
             - yarn install --immutable
+            - ./composer.phar install
             - cache store
             - make build
       prologue:
