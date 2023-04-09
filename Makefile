@@ -277,7 +277,7 @@ restart-webserver:
 ci-pre-configure:
 	# Set php version
 	# Versions available: https://documentation.codeship.com/basic/languages-frameworks/php/#versions-and-setup
-	phpenv local 8.0
+	sem-version php 8.0
 	@echo "Removing xdebug on CI, by default."
 	rm -f /home/rof/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini
 	ln -s `pwd` /tmp/root
