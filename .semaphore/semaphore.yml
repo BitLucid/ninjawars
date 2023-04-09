@@ -14,12 +14,12 @@ blocks:
             - checkout
             - '# Get the resources.php file'
             - 'make preconfig '
-            - cache restore
             - yarn install --immutable
             - cache store
             - make build
       prologue:
         commands:
+          - cache restore
           - sem-version php 8.2.2
           - nvm install --lts
           - sem-version node --lts
