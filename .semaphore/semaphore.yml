@@ -40,6 +40,7 @@ blocks:
           - corepack enable
           - yarn install --immutable
           - make js-deps
+          - make build
           - cache store
       secrets:
         - name: Tchalvak Github Ratelimit Avoidance Token Readonly
