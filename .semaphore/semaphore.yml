@@ -35,8 +35,8 @@ blocks:
         commands:
           - checkout
           - cache restore
-          - nvm install --lts gallium
-          - sem-version node --lts gallium
+          - nvm install --lts
+          - sem-version node --lts
           - corepack enable
           - yarn install --immutable
           - make js-deps
