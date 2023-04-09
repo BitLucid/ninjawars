@@ -16,7 +16,6 @@ blocks:
             - 'make preconfig '
             - cache restore
             - yarn install --immutable
-            - ./composer.phar install
             - cache store
             - make build
       prologue:
@@ -36,6 +35,7 @@ blocks:
         commands:
           - checkout
           - cache restore
+          - sem-version php 8.0
           - nvm install --lts
           - sem-version node --lts
           - corepack enable
