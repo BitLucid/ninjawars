@@ -11,26 +11,27 @@ blocks:
         - name: Install and Cache
           commands:
             - '# php version set in the prologue step'
-            - checkout
             - '# Get the resources.php file'
             - 'make preconfig '
             - yarn install --immutable
-            - cache store
             - make build
+            - cache store
       prologue:
         commands:
+          - checkout
           - cache restore
           - sem-version php 8.2.2
           - nvm install --lts
           - sem-version node --lts
           - corepack enable
+          - ./composer.phar config -g github-oauth.github.com $GITHUB_ACCESS_TOKEN
       secrets:
         - name: Tchalvak Github Ratelimit Avoidance Token Readonly
     dependencies: []
   - name: JS Tests
     task:
       jobs:
-        - name: test and build
+        - name: test after build
           commands:
             - '# Setup steps in the prologue'
             - yarn test
@@ -72,11 +73,9 @@ blocks:
       prologue:
         commands:
           - checkout
+          - cache restore
           - cp -upn ./deploy/resources.build.php ./deploy/resources.php
           - sem-version php 8.2.2
-          - cache restore
-          - ./composer.phar config -g github-oauth.github.com $GITHUB_ACCESS_TOKEN
           - ./composer.phar install --prefer-dist --no-interaction
-          - cache store
     run:
       when: change_in('/deploy')
