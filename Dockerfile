@@ -1,5 +1,5 @@
 
-FROM richarvey/nginx-php-fpm:3.1.0
+FROM richarvey/nginx-php-fpm:3.1.4
 # Comes with alpine linux 3.6
 
 ARG username=nw
