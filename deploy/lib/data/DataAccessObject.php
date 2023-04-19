@@ -4,8 +4,9 @@ namespace NinjaWars\core\data;
 
 use NinjaWars\core\data\DatabaseConnection;
 use NinjaWars\core\data\ValueObject;
+use stdClass;
 
-abstract class DataAccessObject extends \stdClass {
+abstract class DataAccessObject extends stdClass {
     protected $m_dbconn; // *** DatabaseConnection object.
 
     protected $_vo_obj_name;

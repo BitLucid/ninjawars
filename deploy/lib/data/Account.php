@@ -6,6 +6,7 @@ use NinjaWars\core\data\DatabaseConnection;
 use NinjaWars\core\Filter;
 use NinjaWars\core\data\Player;
 use PDO;
+use stdClass;
 
 /**
  * Player accounts and their info
@@ -27,7 +28,7 @@ use PDO;
  * @property-read string oauth_provider
  * @property-read int oauth_id
  */
-class Account extends \stdClass {
+class Account extends stdClass {
     public static $fields = [
         'account_id',
         'account_identity',
