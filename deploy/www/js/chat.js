@@ -14,6 +14,8 @@
 /* eslint max-lines: "Off" */
 
 const standardChatApi = 'chatapi.ninjawars.net';
+const standardChatPort = '8080';
+const liveChat = (localStorage && localStorage.getItem('liveChat')) || false;
 
 // eslint-disable-next-line no-var
 var logger = window.logger || console || {
@@ -272,6 +274,10 @@ Chat.canSend = function fnCCanSend() {
 
 // Get the dev domain if on .local, fallback to live chat
 Chat.domain = function fnChDomain(url) {
+  if (liveChat) {
+    console.info('Using live chat api');
+    return standardChatApi;
+  }
   logger.info(`Finding chat api for url: ${url}`);
 
   if (url && (url.includes('.localurl') || url.includes('localhost'))) {
@@ -282,7 +288,7 @@ Chat.domain = function fnChDomain(url) {
     const { hostname } = new URL(url);
     return `chatapi.${hostname}`;
   }
-  return standardChatApi;
+  return standardChatApi; // Fallback default configured
 };
 
 // Add a typewatch IIFE
@@ -310,7 +316,7 @@ Chat.setConfig = (initialUrl, port) => ({
 // eslint-disable-next-line max-statements
 $(() => {
   // Set up initial config.
-  Chat.config = Chat.setConfig(window && window.location.href, '8080');
+  Chat.config = Chat.setConfig(window && window.location.href, standardChatPort);
   if (window.WebSocket !== undefined) {
     // Browser is compatible.
     const connectionString = `${Chat.config.protocol}://${Chat.config.server}:${Chat.config.port}`;
