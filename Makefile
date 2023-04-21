@@ -283,7 +283,7 @@ ci-pre-configure:
 	#ln -s `pwd` /tmp/root
 	#precache composer for ci
 	@$(COMPOSER) config -g github-oauth.github.com $(GITHUB_ACCESS_TOKEN)
-	@$(COMPOSER) install --prefer-dist --no-interaction
+	@$(COMPOSER) install --verbose --prefer-dist --no-progress --no-interaction --no-dev --optimize-autoloader
 	# Set up the resources file, replacing first occurance of strings with their build values
 	sed -i "0,/postgres/{s/postgres/${DBUSER}/}" deploy/resources.build.php
 	sed -i "s|/srv/ninjawars/|../..|g" deploy/tests/karma.conf.js

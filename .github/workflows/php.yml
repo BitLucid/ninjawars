@@ -45,10 +45,10 @@ jobs:
       - name: Install dependencies and create autoload
         if: steps.composer-cache.outputs.cache-hit != 'true'
         run: |
-          ./composer.phar install --prefer-dist --no-progress
+          ./composer.phar install --verbose --prefer-dist --no-progress --no-interaction --no-dev --optimize-autoloader
           ./composer.phar dump-autoload
 
-# Future: ./composer.phar install --prefer-dist --no-progress --verbose --prefer-dist --no-progress --no-interaction --no-dev --optimize-autoloader
+# Future: ./composer.phar install --verbose --prefer-dist --no-progress --no-interaction --no-dev --optimize-autoloader
 
       # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
       # Docs: https://getcomposer.org/doc/articles/scripts.md
