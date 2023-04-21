@@ -42,15 +42,13 @@ jobs:
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
           restore-keys: ${{ runner.os }}-composer-
 
-      - name: Install dependencies
+      - name: Install dependencies and create autoload
         if: steps.composer-cache.outputs.cache-hit != 'true'
-        run: ./composer.phar install --prefer-dist --no-progress
-
-      - name: Create autoload file if necessary
-        if: steps.composer-cache.outputs.cache-hit == 'true'
         run: |
-          ls -halt ./vendor/
+          ./composer.phar install --prefer-dist --no-progress
           ./composer.phar dump-autoload
+
+# Future: ./composer.phar install --prefer-dist --no-progress --verbose --prefer-dist --no-progress --no-interaction --no-dev --optimize-autoloader
 
       # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
       # Docs: https://getcomposer.org/doc/articles/scripts.md
