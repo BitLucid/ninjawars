@@ -152,7 +152,6 @@ check-for-syntax-errors:
 	@find "./deploy/www/" -name "*.php" -exec php -l {} \;|grep -v "No syntax errors" || true
 
 test-unit: check-for-syntax-errors
-
 	@$(TEST_RUNNER) $(CC_FLAG) --testsuite Unit
 
 test-quick: check-for-syntax-errors
