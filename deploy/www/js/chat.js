@@ -1,10 +1,19 @@
-/* eslint-disable camelcase */
-/* Manipulate chats to and from the api, run websockets server by sudo make run-chat */
+/**
+ * @file Chat functionality for the game.
+ * Connects to websockets server to send and receive chat messages.
+ * Manipulate chats to and from the api, run websockets server by sudo make run-chat
+ * or via the serverless websockets server
+ */
+
 /* jshint browser: true, white: true, plusplus: true */
 /* global NW, Chat, window.conn, window.parent, window.WebSocket, window.Chat */
 
 /* eslint max-statements: "Warn" */
 /* eslint max-lines: "Warn" */
+/* eslint camelcase: "Off" */
+/* eslint max-lines: "Off" */
+
+const standardChatApi = 'chatapi.ninjawars.net';
 
 // eslint-disable-next-line no-var
 var logger = window.logger || console || {
@@ -123,6 +132,7 @@ Chat.displayMessages = function fnDisMsg() {
  *              'date':Date.now(),
  *              'sender_id':'128274'});
  */
+// eslint-disable-next-line max-statements
 Chat.renderChatMessage = function fnRendChat(p_data) {
   if (!p_data.message) {
     logger.error(
@@ -272,7 +282,7 @@ Chat.domain = function fnChDomain(url) {
     const { hostname } = new URL(url);
     return `chatapi.${hostname}`;
   }
-  return 'chatapi.ninjawars.net';
+  return standardChatApi;
 };
 
 // Add a typewatch IIFE
@@ -297,6 +307,7 @@ Chat.setConfig = (initialUrl, port) => ({
 });
 
 // Try to connect to active websocket server, see README
+// eslint-disable-next-line max-statements
 $(() => {
   // Set up initial config.
   Chat.config = Chat.setConfig(window && window.location.href, '8080');

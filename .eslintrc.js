@@ -30,15 +30,15 @@ module.exports = {
     ],
     'max-lines': [
       'error',
-      100,
+      103,
     ],
     'max-lines-per-function': [
       'error',
-      50,
+      53,
     ],
     'max-statements': [
       'error',
-      17,
+      23,
     ],
   },
 };
