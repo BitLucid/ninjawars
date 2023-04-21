@@ -57,7 +57,9 @@ js-deps:
 	corepack enable
 	yarn install --immutable
 
-preconfig: 	
+preconfig:
+	@echo "Setting up composer github access token to avoid ratelimit."
+	@$(COMPOSER) --version
 	@$(COMPOSER) config -g github-oauth.github.com $(GITHUB_ACCESS_TOKEN)
 	cp -u -p ./deploy/resources.build.php ./deploy/resources.php
 
@@ -273,6 +275,9 @@ restart-webserver:
 	service nginx reload
 	sleep 0.5
 	ps waux | grep nginx
+
+link-vendor:
+	ln -s `pwd`/vendor ./deploy/vendor
 
 ci-pre-configure:
 	# Set php version

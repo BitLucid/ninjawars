@@ -33,7 +33,7 @@ jobs:
 
       - name: Get composer cache directory
         id: composer-cache
-        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+        run: echo "{dir}={$(composer config cache-files-dir)}"
 
       - name: Cache dependencies
         uses: actions/cache@v3
@@ -47,9 +47,6 @@ jobs:
         run: |
           make preconfig
           ./composer.phar install --verbose --prefer-dist --no-progress --no-interaction --no-dev --optimize-autoloader
-#          ./composer.phar dump-autoload
-
-# Future: ./composer.phar install --verbose --prefer-dist --no-progress --no-interaction --no-dev --optimize-autoloader
 
       # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
       # Docs: https://getcomposer.org/doc/articles/scripts.md
