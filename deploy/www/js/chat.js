@@ -306,17 +306,21 @@ Chat.typewatch = (function fnChTypewatch() {
  * @param {*} port
  * @returns
  */
-Chat.setConfig = (initialUrl, port) => ({
+Chat.setConfig = (initialUrl, port, { useSecure }) => ({
   server: Chat.domain(initialUrl),
   port,
-  protocol: initialUrl.includes('http://') ? 'ws' : 'wss',
+  protocol: initialUrl.includes('http://') && initialUrl.includes('local') && !useSecure ? 'ws' : 'wss',
 });
 
 // Try to connect to active websocket server, see README
 // eslint-disable-next-line max-statements
 $(() => {
   // Set up initial config.
-  Chat.config = Chat.setConfig(window && window.location.href, standardChatPort);
+  Chat.config = Chat.setConfig(
+    window && window.location.href,
+    standardChatPort,
+    { useSecure: liveChat },
+  );
   if (window.WebSocket !== undefined) {
     // Browser is compatible.
     const connectionString = `${Chat.config.protocol}://${Chat.config.server}:${Chat.config.port}`;
@@ -364,13 +368,13 @@ function refreshpagechat() {
   // Refresh only if text not being written.
   if (
     !messageInput.length
-        || messageInput.val() === false
-        || messageInput.val() === ''
+    || messageInput.val() === false
+    || messageInput.val() === ''
   ) {
     if (
       window.parent
-            && window.parent.main
-            && window.parent.main.location
+      && window.parent.main
+      && window.parent.main.location
     ) {
       window.parent.main.location.reload();
     } else {
