@@ -12,6 +12,7 @@ blocks:
           commands:
             - '# php version set in the prologue step'
             - '# Get the resources.php file'
+            - ./configure
             - 'make preconfig '
             - yarn install --immutable
             - make build
