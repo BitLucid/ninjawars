@@ -284,7 +284,7 @@ restart-webserver:
 	ps waux | grep nginx
 
 link-vendor:
-	ln -s `pwd`/vendor ./deploy/vendor
+	ln -sf `pwd`/vendor ./deploy/vendor
 
 ci-pre-configure:
 	# Set php version

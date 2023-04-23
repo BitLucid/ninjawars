@@ -278,6 +278,7 @@ Chat.canSend = function fnCCanSend() {
 };
 
 // Get the dev domain if on .local, fallback to live chat
+// eslint-disable-next-line max-statements
 Chat.domain = function fnChDomain(url) {
   if (liveChat) {
     console.info('Using live chat api');
