@@ -58,7 +58,7 @@ js-deps:
 	yarn install --immutable
 
 preconfig:
-	@echo "Setting up composer github access token to avoid ratelimit."
+	@echo "NW step: Setting up composer github access token to avoid ratelimit."
 	@$(COMPOSER) --version
 	@$(COMPOSER) config -g github-oauth.github.com $(GITHUB_ACCESS_TOKEN)
 	cp -u -p ./deploy/resources.build.php ./deploy/resources.php
