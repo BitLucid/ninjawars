@@ -58,9 +58,9 @@ jobs:
 
       - name: Run test suite
         run: |
-          ln -s ./resources.build.php ./deploy/resources.php
+          ln -sf ./resources.build.php ./deploy/resources.php
           ./composer.phar run-script unit-test
       - name: Run test suite
         run: |
-          ln -s ./resources.build.php ./deploy/resources.php
+          ln -sf ./resources.build.php ./deploy/resources.php
           ./composer.phar run-script test-check
