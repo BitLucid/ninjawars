@@ -106,6 +106,9 @@
       "composer/installers": true,
       "kylekatarnls/update-helper": true,
       "oomphinc/composer-installers-extender": true
+    },
+    "github-oauth": {
+      "github.com": "placeholder"
     }
   }
 }
