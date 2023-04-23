@@ -12,7 +12,6 @@ blocks:
           commands:
             - '# php version set in the prologue step'
             - '# Get the resources.php file'
-            - ./configure
             - 'make preconfig '
             - yarn install --immutable
             - make build
@@ -25,6 +24,7 @@ blocks:
           - nvm install --lts
           - sem-version node --lts
           - corepack enable
+          - ./configure
           - ./composer.phar config -g github-oauth.github.com $GITHUB_ACCESS_TOKEN
       secrets:
         - name: Tchalvak Github Ratelimit Avoidance Token Readonly
@@ -45,6 +45,8 @@ blocks:
           - sem-version node --lts
           - corepack enable
           - yarn install --immutable
+          - ./configure
+          - make preconfigure
           - make js-deps
           - make build
       secrets:
@@ -76,6 +78,8 @@ blocks:
           - checkout
           - cache restore
           - cp -upn ./deploy/resources.build.php ./deploy/resources.php
+          - ./configure
+          - make preconfigure
           - sem-version php 8.2.2
           - ./composer.phar install --prefer-dist --no-interaction
     run:
