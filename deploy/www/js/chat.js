@@ -311,10 +311,10 @@ Chat.typewatch = (function fnChTypewatch() {
  * @param {*} port
  * @returns
  */
-Chat.setConfig = (initialUrl, port, { useSecure }) => ({
+Chat.setConfig = (initialUrl, port, { useSecure } = {}) => ({
   server: Chat.domain(initialUrl),
   port,
-  protocol: initialUrl.includes('http://') && initialUrl.includes('local') && !useSecure ? 'ws' : 'wss',
+  protocol: (initialUrl.includes('http://') || initialUrl.includes('local')) && !useSecure ? 'ws' : 'wss',
 });
 
 // Try to connect to active websocket server, see README
