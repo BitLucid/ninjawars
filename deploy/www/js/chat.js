@@ -284,16 +284,18 @@ Chat.domain = function fnChDomain(url) {
     console.info('Using live chat api');
     return standardChatApi;
   }
-  logger.info(`Finding chat api for url: ${url}`);
 
   if (url && (url.includes('.localurl') || url.includes('localhost'))) {
     const { hostname } = url ? new URL(url) : {};
+    logger.info('Chat api url found was :', hostname);
     return hostname;
   }
   if (url && url.includes('.local')) {
     const { hostname } = new URL(url);
+    logger.info('Chat api url found was :', hostname);
     return `chatapi.${hostname}`;
   }
+  logger.info('Chat api url found was :', standardChatApi);
   return standardChatApi; // Fallback default configured
 };
 
