@@ -45,6 +45,8 @@ jobs:
       - name: Install dependencies and create autoload
         if: steps.composer-cache.outputs.cache-hit != 'true'
         run: |
+          chmod ug+x ./configure
+          ./configure
           make preconfig
           ./composer.phar install --verbose --prefer-dist --no-progress --no-interaction --no-dev --optimize-autoloader
 
