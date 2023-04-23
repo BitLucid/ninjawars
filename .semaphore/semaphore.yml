@@ -46,7 +46,7 @@ blocks:
           - corepack enable
           - yarn install --immutable
           - ./configure
-          - make preconfigure
+          - make preconfig
           - make js-deps
           - make build
       secrets:
@@ -79,7 +79,7 @@ blocks:
           - cache restore
           - cp -upn ./deploy/resources.build.php ./deploy/resources.php
           - ./configure
-          - make preconfigure
+          - make preconfig
           - sem-version php 8.2.2
           - ./composer.phar install --prefer-dist --no-interaction
     run:
