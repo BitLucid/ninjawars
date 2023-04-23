@@ -14,6 +14,7 @@ COMPONENTS=$(WWW)components/
 JS=$(WWW)js/
 CSS=$(WWW)css/
 DBROLE=developers
+GITHUB_ACCESS_TOKEN=
 
 -include CONFIG
 
@@ -59,6 +60,12 @@ js-deps:
 
 preconfig:
 	@echo "NW step: Setting up composer github access token to avoid ratelimit."
+ifndef COMPOSER
+$(error COMPOSER is not set)
+endif
+ifndef GITHUB_ACCESS_TOKEN
+$(error GITHUB_ACCESS_TOKEN is not set)
+endif
 	@$(COMPOSER) --version
 	@$(COMPOSER) config -g github-oauth.github.com $(GITHUB_ACCESS_TOKEN)
 	cp -u -p ./deploy/resources.build.php ./deploy/resources.php

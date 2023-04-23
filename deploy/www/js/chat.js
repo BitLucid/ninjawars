@@ -3,6 +3,11 @@
  * Connects to websockets server to send and receive chat messages.
  * Manipulate chats to and from the api, run websockets server by sudo make run-chat
  * or via the serverless websockets server
+ *
+ * Install wscat and
+ * use wscat -c wss://chatapi.ninjawars.net:443 to connect to the chat server.
+ * or see the ws-chat repo below
+ * @link https://github.com/NinjaWars/ws-chat
  */
 
 /* jshint browser: true, white: true, plusplus: true */
@@ -14,7 +19,7 @@
 /* eslint max-lines: "Off" */
 
 const standardChatApi = 'chatapi.ninjawars.net';
-const standardChatPort = '8080';
+const standardChatPort = '443';
 const liveChat = (localStorage && localStorage.getItem('liveChat')) || false;
 
 // eslint-disable-next-line no-var

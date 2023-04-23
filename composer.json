@@ -28,7 +28,7 @@
     "twbs/bootstrap": "~3.3",
     "pimple/pimple": "~3.0",
     "oomphinc/composer-installers-extender": "^2.0",
-    "illuminate/database": "^5.5"
+    "illuminate/database": "^10.8"
   },
   "require-dev": {
     "phpunit/phpunit": "9.5.26",
@@ -107,8 +107,6 @@
       "kylekatarnls/update-helper": true,
       "oomphinc/composer-installers-extender": true
     },
-    "github-oauth": {
-      "github.com": "placeholder"
-    }
+    "github-oauth": {}
   }
 }
