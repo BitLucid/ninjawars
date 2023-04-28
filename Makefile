@@ -28,8 +28,12 @@ endif
 
 build: dep create-structure link-deps
 
+# Note that the vendor creation in the below is not the same
+# as the RELATIVE_VENDOR env var, which is pathing related
 create-structure:
 	mkdir -p $(JS)
+	mkdir -p $(VENDOR)
+	cd deploy/ && ln -sf ../vendor/ vendor && cd ..
 	rm -rf ./deploy/templates/compiled/* ./deploy/templates/cache/*
 	mkdir -p ./deploy/templates/compiled ./deploy/templates/cache ./deploy/resources/logs/ /tmp/game_logs/
 	chmod -R ugo+rwX ./deploy/templates/compiled ./deploy/templates/cache /tmp/game_logs/
