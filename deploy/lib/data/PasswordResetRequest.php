@@ -14,8 +14,7 @@ use Nmail as Nmail;
  * @property $_account_id
  * @property $used
  */
-class PasswordResetRequest extends Model
-{
+class PasswordResetRequest extends Model {
     protected $primaryKey = 'request_id';
     protected $table = 'password_reset_requests';
     public $timestamps = false;
@@ -26,8 +25,7 @@ class PasswordResetRequest extends Model
     /**
      * Custom initialization of `created_at` field, since this model only keeps one
      */
-    public static function boot()
-    {
+    public static function boot() {
         static::creating(function ($model) {
             $model->created_at = $model->freshTimestamp();
         });
@@ -36,16 +34,14 @@ class PasswordResetRequest extends Model
     /**
      * Special case method to get the id regardless of what it's actually called in the database
      */
-    public function id()
-    {
+    public function id() {
         return $this->request_id;
     }
 
     /**
      * Get the account in a reliable manner.
      */
-    public function account()
-    {
+    public function account() {
         assert($this->_account_id);
         return Account::findById($this->_account_id);
     }
@@ -53,8 +49,7 @@ class PasswordResetRequest extends Model
     /**
      * Compare whether the entity is current set to active.
      */
-    public function isActive()
-    {
+    public function isActive() {
         // Used to use $fourHours = Carbon::now()->subHour(4);
         $datetime = new \DateTime('-4 hours'); // create a DateTime object from the string
         $fourHours = $datetime->format('Y-m-d H:i:s.uP');
@@ -72,8 +67,7 @@ class PasswordResetRequest extends Model
      *
      * @return boolean
      */
-    public static function reset(Account $account, $new_pass)
-    {
+    public static function reset(Account $account, $new_pass) {
         if (!$account->id() || !$account->isOperational() || $new_pass === null || $new_pass === '') {
             return false;
         }
@@ -96,8 +90,7 @@ class PasswordResetRequest extends Model
      *
      * @return boolean
      */
-    public static function sendResetNotification($email)
-    {
+    public static function sendResetNotification($email) {
         $body = '
             Your password on ninjawars.net was reset.  
             Please contact ' . SUPPORT_EMAIL_NAME . ' via ' . SUPPORT_EMAIL . ' if this was an error.
@@ -113,8 +106,7 @@ class PasswordResetRequest extends Model
      *
      * @return PasswordResetRequest
      */
-    public static function match($token)
-    {
+    public static function match($token) {
         $request = self::where('nonce', $token)
             ->where('used', false)
             ->first();
@@ -132,8 +124,7 @@ class PasswordResetRequest extends Model
      * @param Account $account
      * @return PasswordResetRequest
      */
-    public static function generate(Account $account, $nonce = null)
-    {
+    public static function generate(Account $account, $nonce = null) {
         $nonce = ($nonce !== null ? $nonce : Crypto::nonce());
         return self::create(['_account_id' => $account->id(), 'nonce' => $nonce]);
     }
