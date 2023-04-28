@@ -23,7 +23,6 @@
     "ninjawars/jquery-linkify": "^2.1",
     "swiftmailer/swiftmailer": "~6.3.0",
     "smarty/smarty": "^4.0",
-    "cboden/ratchet": "^0.4.1",
     "symfony/http-foundation": "^4.1",
     "twbs/bootstrap": "~3.3",
     "pimple/pimple": "~3.0",
