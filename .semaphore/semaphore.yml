@@ -20,7 +20,7 @@ blocks:
         commands:
           - checkout
           - cache restore
-          - sem-version php 8.2.2
+          - sem-version php 8.2.5
           - nvm install --lts
           - sem-version node --lts
           - corepack enable
@@ -40,7 +40,7 @@ blocks:
         commands:
           - checkout
           - cache restore
-          - sem-version php 8.2.2
+          - sem-version php 8.2.5
           - nvm install --lts
           - sem-version node --lts
           - corepack enable
@@ -80,7 +80,7 @@ blocks:
           - cp -upn ./deploy/resources.build.php ./deploy/resources.php
           - ./configure
           - make preconfig
-          - sem-version php 8.2.2
+          - sem-version php 8.2.5
           - ./composer.phar install --prefer-dist --no-interaction
     run:
       when: change_in('/deploy')
