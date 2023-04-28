@@ -143,13 +143,14 @@ class Clan {
         return $leaders;
     }
 
-    private function sendMessage(string $message, int $type = 0, int $from, int $to): array|\PDOStatement {
+    private function sendMessage(string $message, int $type, int $from, int $to): array|\PDOStatement
+    {
         // Add a message to the messages table using insert_query
         return insert_query('insert into messages (send_from, send_to, message, type) values (:send_from, :send_to, :message, :type)', [
             'send_from' => $from,
             'send_to'   => $to,
             'message'   => $message,
-            'type'      => 0,
+            'type'      => $type ?? 0,
         ]);
     }
 
