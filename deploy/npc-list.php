@@ -217,6 +217,7 @@ NpcFactory::$data = [
             'prayerwheel' => '.2',
         ],
         'traits'    => [
+            'villager',
             'deflection',
             'defensive',
             'self_heal',
@@ -238,9 +239,9 @@ NpcFactory::$data = [
             'tessen' => '.01',
         ],
         'traits'    => [
+            'villager',
             'packdynamic',
             'guarded',
-            'villager',
         ],
     ],
     'koi'           => [
