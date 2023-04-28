@@ -268,7 +268,8 @@ NpcFactory::$data = [
             'flying',
         ],
     ],
-] + (!defined('DEBUG') || !DEBUG ? [] :
+] + (
+    !defined('DEBUG') || !DEBUG ? [] :
     [
         'bees'          => [
             'name'     => 'Swarm of Bees',
