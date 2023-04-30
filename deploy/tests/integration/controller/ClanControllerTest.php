@@ -9,11 +9,13 @@ use NinjaWars\core\control\ClanController;
 use NinjaWars\core\data\Clan;
 use NinjaWars\core\data\Player;
 
-class ClanControllerTest extends NWTest {
+class ClanControllerTest extends NWTest
+{
     private $controller;
     private $clan;
 
-    public function setUp(): void {
+    public function setUp(): void
+    {
         parent::setUp();
         $this->controller = new ClanController();
         SessionFactory::init(new MockArraySessionStorage());
@@ -22,7 +24,8 @@ class ClanControllerTest extends NWTest {
         $this->clan = Clan::create(Player::find($char_id), 'phpunit_test_clan');
     }
 
-    public function tearDown(): void {
+    public function tearDown(): void
+    {
         $this->deleteClan($this->clan->id);
         RequestWrapper::destroy();
         TestAccountCreateAndDestroy::purge_test_accounts();
@@ -31,24 +34,28 @@ class ClanControllerTest extends NWTest {
         parent::tearDown();
     }
 
-    private function deleteClan($clan_id) {
+    private function deleteClan($clan_id)
+    {
         query('delete from clan where clan_id = :id', [':id' => $clan_id]);
         query('delete from clan_player where _clan_id = :id', [':id' => $clan_id]);
     }
 
-    public function testIndex() {
+    public function testIndex()
+    {
         $response = $this->controller->listClans($this->m_dependencies);
 
         $this->assertInstanceOf(StreamedViewResponse::class, $response);
     }
 
-    public function testIndexRendersEvenIfLoggedOut() {
+    public function testIndexRendersEvenIfLoggedOut()
+    {
         $response = $this->controller->listClans($this->mockLogout());
 
         $this->assertInstanceOf(StreamedViewResponse::class, $response);
     }
 
-    public function testViewMyClan() {
+    public function testViewMyClan()
+    {
         $request = Request::create(
             '/clan/view',
             'GET',
@@ -60,7 +67,8 @@ class ClanControllerTest extends NWTest {
         $this->assertInstanceOf(StreamedViewResponse::class, $response);
     }
 
-    public function testViewAnotherClan() {
+    public function testViewAnotherClan()
+    {
         // create new character to lead the new clan
         $char_id_2 = TestAccountCreateAndDestroy::char_id_2();
 
@@ -78,7 +86,8 @@ class ClanControllerTest extends NWTest {
         $this->assertInstanceOf(StreamedViewResponse::class, $response);
     }
 
-    public function testViewNonexistentClan() {
+    public function testViewNonexistentClan()
+    {
         $bad_id = query_item('SELECT max(clan_id)+1 AS bad_id FROM clan');
         $request = Request::create('/clan/view', 'GET', ['clan_id' => $bad_id]);
         RequestWrapper::inject($request);
@@ -87,7 +96,8 @@ class ClanControllerTest extends NWTest {
         $this->assertInstanceOf(StreamedViewResponse::class, $response);
     }
 
-    public function testViewNoArgsWithClan() {
+    public function testViewNoArgsWithClan()
+    {
         $request = Request::create('/clan/view', 'GET', []);
         RequestWrapper::inject($request);
         $response = $this->controller->view($this->m_dependencies);
@@ -95,7 +105,8 @@ class ClanControllerTest extends NWTest {
         $this->assertInstanceOf(StreamedViewResponse::class, $response);
     }
 
-    public function testViewNoArgsWithoutClan() {
+    public function testViewNoArgsWithoutClan()
+    {
         // create new character, won't have a clan
         $char_id_2 = TestAccountCreateAndDestroy::char_id_2();
 
@@ -109,7 +120,8 @@ class ClanControllerTest extends NWTest {
         $this->assertInstanceOf(StreamedViewResponse::class, $response);
     }
 
-    public function testViewMyClanWithoutLeadership() {
+    public function testViewMyClanWithoutLeadership()
+    {
         // create new character
         $char_id_2 = TestAccountCreateAndDestroy::char_id_2();
 
@@ -130,7 +142,8 @@ class ClanControllerTest extends NWTest {
         $this->assertInstanceOf(StreamedViewResponse::class, $response);
     }
 
-    public function testInviteAsNotLeader() {
+    public function testInviteAsNotLeader()
+    {
         $this->expectException(\RuntimeException::class);
 
         // create new character
@@ -151,7 +164,8 @@ class ClanControllerTest extends NWTest {
         $response = $this->controller->invite($this->m_dependencies);
     }
 
-    public function testInviteWithoutClan() {
+    public function testInviteWithoutClan()
+    {
         $this->expectException(\RuntimeException::class);
 
         // create new character
@@ -166,7 +180,8 @@ class ClanControllerTest extends NWTest {
         $response = $this->controller->invite($this->m_dependencies);
     }
 
-    public function testInviteAsLeader() {
+    public function testInviteAsLeader()
+    {
         // create new character
         $char_id_2 = TestAccountCreateAndDestroy::char_id_2();
 
@@ -182,7 +197,8 @@ class ClanControllerTest extends NWTest {
         $this->assertInstanceOf(StreamedViewResponse::class, $response);
     }
 
-    public function testInviteNonexistentTarget() {
+    public function testInviteNonexistentTarget()
+    {
         // try to invite
         $request = Request::create('/clan/invite', 'GET', ['person_invited' => -123]);
         RequestWrapper::inject($request);
@@ -195,7 +211,8 @@ class ClanControllerTest extends NWTest {
         $this->assertEquals($response_data['error'], 'Sorry, unable to find a ninja to invite by that name.');
     }
 
-    public function testJoin() {
+    public function testJoin()
+    {
         // create new character
         $char_id_2 = TestAccountCreateAndDestroy::char_id_2();
 
@@ -214,7 +231,8 @@ class ClanControllerTest extends NWTest {
         $this->assertInstanceOf(StreamedViewResponse::class, $response);
     }
 
-    public function testLeave() {
+    public function testLeave()
+    {
         // create new character
         $char_id_2 = TestAccountCreateAndDestroy::char_id_2();
 
@@ -237,7 +255,8 @@ class ClanControllerTest extends NWTest {
         $this->assertInstanceOf(StreamedViewResponse::class, $response);
     }
 
-    public function testLeaveAsLeader() {
+    public function testLeaveAsLeader()
+    {
         $this->expectException(\RuntimeException::class);
 
         // try to leave
@@ -246,7 +265,8 @@ class ClanControllerTest extends NWTest {
         $response = $this->controller->leave($this->m_dependencies);
     }
 
-    public function testDisbandAsLeaderWithoutConfirm() {
+    public function testDisbandAsLeaderWithoutConfirm()
+    {
         // try to disband
         $request = Request::create('/clan/disband', 'GET', []);
         RequestWrapper::inject($request);
@@ -258,7 +278,8 @@ class ClanControllerTest extends NWTest {
         $this->assertEquals($response_title, 'Confirm disbanding of your clan');
     }
 
-    public function testDisbandAsLeaderWithConfirm() {
+    public function testDisbandAsLeaderWithConfirm()
+    {
         // try to disband
         $request = Request::create('/clan/disband', 'GET', ['sure' => 'yes']);
         RequestWrapper::inject($request);
@@ -271,7 +292,8 @@ class ClanControllerTest extends NWTest {
         $this->assertNotEquals($response_title, 'Confirm disbanding of your clan');
     }
 
-    public function testDisbandAsMember() {
+    public function testDisbandAsMember()
+    {
         $this->expectException(\RuntimeException::class);
 
         // create new character
@@ -292,7 +314,8 @@ class ClanControllerTest extends NWTest {
         $response = $this->controller->disband($this->m_dependencies);
     }
 
-    public function testKickAsLeader() {
+    public function testKickAsLeader()
+    {
         // create new character
         $char_id_2 = TestAccountCreateAndDestroy::char_id_2();
 
@@ -314,7 +337,8 @@ class ClanControllerTest extends NWTest {
         $this->assertNotEquals($response_title, 'Confirm disbanding of your clan');
     }
 
-    public function testKickAsMember() {
+    public function testKickAsMember()
+    {
         $this->expectException(\RuntimeException::class);
 
         $char_id_1 = $this->m_dependencies['session']->get('player_id');

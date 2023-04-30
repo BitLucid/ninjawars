@@ -8,8 +8,10 @@ use Smarty;
 /**
  * Wrap smarty and do a little bit more
  */
-class NWTemplate extends Smarty {
-    public function __construct() {
+class NWTemplate extends Smarty
+{
+    public function __construct()
+    {
         parent::__construct();
         $this->caching = 0;
 
@@ -24,7 +26,8 @@ class NWTemplate extends Smarty {
     /**
      * Displays a template wrapped in the header and footer as needed.
      */
-    public function displayPage($template, $title=null, $local_vars=[], $options=null) {
+    public function displayPage($template, $title=null, $local_vars=[], $options=null)
+    {
         // Updates the quickstat via javascript if requested.
         $quickstat        = isset($options['quickstat']) ? $options['quickstat'] : null;
         $quickstat        = ($quickstat ? $quickstat : (isset($local_vars['quickstat']) ? $local_vars['quickstat'] : null));

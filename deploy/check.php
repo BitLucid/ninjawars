@@ -23,7 +23,8 @@ require_once(VENDOR_ROOT.'autoload.php');
 $connected = (bool) query_item('select 1 from players limit 1');
 $is_superuser = (bool) query_item('select usesuper from pg_user where usename = CURRENT_USER;') === true;
 
-function passfail($passed, $pass, $fail) {
+function passfail($passed, $pass, $fail)
+{
     $messaging = ($passed ? '[PASSING]: Reason '.$pass : '[FAILING]: Reason '.$fail);
     echo "$messaging\n";
     return $passed;

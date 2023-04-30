@@ -10,11 +10,13 @@ use NinjaWars\core\data\SkillVO;
  * Creates the skill value objects.
  * Essentially it acts as the model (creator) if Model-View-Controller were in play.
  */
-class SkillDAO extends DataAccessObject {
+class SkillDAO extends DataAccessObject
+{
     /*
      * Assigns and holds the connection to the db.
      */
-    public function __construct() {
+    public function __construct()
+    {
         $this->m_dbconn = DatabaseConnection::getInstance();
         $this->_vo_obj_name = 'SkillVO';
         $this->_vo_fields = [];
@@ -34,7 +36,8 @@ class SkillDAO extends DataAccessObject {
      * @param int $p_classID the integer representing the class with skills
      * @param int $p_level   The level of the user to check fulfillment of level requirements
      */
-    public function getSkillsByClass($p_classID, $p_level = 0) {
+    public function getSkillsByClass($p_classID, $p_level = 0)
+    {
         $query = 'SELECT skill_id, skill_display_name, skill_internal_name, skill_type FROM skill LEFT JOIN class_skill ON skill_id = _skill_id WHERE COALESCE(_class_id, :classID1) = :classID2 AND skill_is_active ';
 
         if ($p_level > 0) {
@@ -61,7 +64,8 @@ class SkillDAO extends DataAccessObject {
      * @param int    $p_classID the integer representing the class with skills
      * @param int    $p_level   The level of the user to check fulfillment of level requirements
      */
-    public function getSkillsByTypeAndClass($p_classID, $p_type, $p_level=0) {
+    public function getSkillsByTypeAndClass($p_classID, $p_type, $p_level=0)
+    {
         $query = 'SELECT skill_id, skill_display_name, skill_internal_name, skill_type FROM skill LEFT JOIN class_skill ON skill_id = _skill_id WHERE COALESCE(_class_id, :classID1) = :classID2 AND skill_is_active AND skill_type = :type ';
 
         if ($p_level > 0) {
@@ -85,7 +89,8 @@ class SkillDAO extends DataAccessObject {
     /**
      * Get all skills for a listing
      */
-    public function all($type=null) {
+    public function all($type=null)
+    {
         $params = [];
         $type_where = '';
         if ($type !== null) {

@@ -10,8 +10,10 @@ use NinjaWars\tests\MockNpc;
 /**
  * Actually npc combat test
  */
-class CombatTest extends NWTest {
-    public function testKillPointCalculation() {
+class CombatTest extends NWTest
+{
+    public function testKillPointCalculation()
+    {
         $char = new MockPlayer();
 
         $this->assertIsInt(
@@ -22,14 +24,16 @@ class CombatTest extends NWTest {
         );
     }
 
-    public function testKillPointsForLowerDiffIsJustOne() {
+    public function testKillPointsForLowerDiffIsJustOne()
+    {
         $char = new MockPlayer();
         $other = new MockPlayer();
         $kp = Combat::killPointsFromDueling($char, $other);
         $this->assertEquals(1, $kp);
     }
 
-    public function testBountyExchangeWithBountyLessEqualPcs() {
+    public function testBountyExchangeWithBountyLessEqualPcs()
+    {
         $pc = new MockPlayer();
         $pc->difficulty = 1;
         $pc->level = 1;
@@ -47,7 +51,8 @@ class CombatTest extends NWTest {
         $this->assertEquals('', $bounty_mess);
     }
 
-    public function testBountyExchangeWithSomeBountyOnDefender() {
+    public function testBountyExchangeWithSomeBountyOnDefender()
+    {
         $pc = new MockPlayer();
         $pc->difficulty = 1;
         $pc->level = 1;
@@ -65,7 +70,8 @@ class CombatTest extends NWTest {
         $this->assertNotEquals('', $bounty_mess);
     }
 
-    public function testBountyExchangeWithInequalPcs() {
+    public function testBountyExchangeWithInequalPcs()
+    {
         $pc = new MockPlayer();
         $pc->difficulty = 100;
         $pc->level = 100;
@@ -83,7 +89,8 @@ class CombatTest extends NWTest {
         //$this->assertGreaterThan(0, $pc->bounty);
     }
 
-    public function testBountyExchangeWithPowerfulPCWeakNpc() {
+    public function testBountyExchangeWithPowerfulPCWeakNpc()
+    {
         $pc = new MockPlayer();
         $pc->difficulty = 30;
         $pc->level = 30;
@@ -95,7 +102,8 @@ class CombatTest extends NWTest {
         $this->assertNotEquals('', $bounty_mess);
     }
 
-    public function testBountyDoesntGrowOutOfBounds() {
+    public function testBountyDoesntGrowOutOfBounds()
+    {
         $pc = new MockPlayer();
         $pc->difficulty = 2345;
         $pc->bounty = 5000;
@@ -109,7 +117,8 @@ class CombatTest extends NWTest {
     }
 
 
-    public function testBountyAtLeastMoreThanBountyModFromNpcs() {
+    public function testBountyAtLeastMoreThanBountyModFromNpcs()
+    {
         $pc = new MockPlayer();
         $pc->difficulty = 0;
         $pc->level = 1;

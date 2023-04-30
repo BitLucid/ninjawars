@@ -20,8 +20,10 @@ use NWTest;
  *
  *
  */
-class NpcControllerTest extends NWTest {
-    public function setUp(): void {
+class NpcControllerTest extends NWTest
+{
+    public function setUp(): void
+    {
         parent::setUp();
         $this->char = TestAccountCreateAndDestroy::char();
         SessionFactory::init(new MockArraySessionStorage());
@@ -33,24 +35,28 @@ class NpcControllerTest extends NWTest {
         ]);
     }
 
-    public function tearDown(): void {
+    public function tearDown(): void
+    {
         TestAccountCreateAndDestroy::destroy();
         $session = SessionFactory::getSession();
         $session->invalidate();
         parent::tearDown();
     }
 
-    public function testControllerIndexDoesntError() {
+    public function testControllerIndexDoesntError()
+    {
         $response = $this->controller->index($this->m_dependencies);
         $this->assertNotEmpty($response);
     }
 
-    public function testControllerIndexDoesntErrorEvenIfLoggedOut() {
+    public function testControllerIndexDoesntErrorEvenIfLoggedOut()
+    {
         $response = $this->controller->index($this->mockLogout());
         $this->assertNotEmpty($response);
     }
 
-    public function testControllerGetRandomnessDoesntError() {
+    public function testControllerGetRandomnessDoesntError()
+    {
         $this->controller = new NpcController([
             'char_id'    => ($this->char->id()),
             'randomness' => function () {
@@ -62,7 +68,8 @@ class NpcControllerTest extends NWTest {
         $this->assertNotEmpty($response);
     }
 
-    public function testControllerAttackAsIfAgainstAPeasant() {
+    public function testControllerAttackAsIfAgainstAPeasant()
+    {
         RequestWrapper::inject(Request::create('/npc/attack/peasant'));
         $response = $this->controller->attack($this->m_dependencies);
         $this->assertNotEmpty($response);
@@ -72,7 +79,8 @@ class NpcControllerTest extends NWTest {
         $this->assertEquals('peasant', $response_data['victim']);
     }
 
-    public function testAttackPeasantWithABountableHighLevelCharacter() {
+    public function testAttackPeasantWithABountableHighLevelCharacter()
+    {
         RequestWrapper::inject(Request::create('/npc/attack/peasant'));
         // Bump the test player's level for bounty purposes.
         $this->char->level = 20;
@@ -83,7 +91,8 @@ class NpcControllerTest extends NWTest {
         $this->assertGreaterThan(0, $final_char->bounty);
     }
 
-    public function testControllerAttackAsIfAgainstAPeasant2() {
+    public function testControllerAttackAsIfAgainstAPeasant2()
+    {
         RequestWrapper::inject(Request::create('/npc/attack/peasant2'));
         $response = $this->controller->attack($this->m_dependencies);
         $final_char = Player::find($this->char->id());
@@ -95,7 +104,8 @@ class NpcControllerTest extends NWTest {
         $this->assertGreaterThan(0, $final_char->health);
     }
 
-    public function testControllerAttackAsIfAgainstAMerchant() {
+    public function testControllerAttackAsIfAgainstAMerchant()
+    {
         RequestWrapper::inject(Request::create('/npc/attack/merchant'));
         $response = $this->controller->attack($this->m_dependencies);
         $reflection = new \ReflectionProperty(get_class($response), 'data');
@@ -104,7 +114,8 @@ class NpcControllerTest extends NWTest {
         $this->assertEquals('merchant', $response_data['victim']);
     }
 
-    public function testControllerAttackAsIfAgainstAMerchant2() {
+    public function testControllerAttackAsIfAgainstAMerchant2()
+    {
         $this->markTestSkipped('Merchants are unreliable to test for now.');
         RequestWrapper::inject(Request::create('/npc/attack/merchant2'));
         $this->char->strength = 9999;
@@ -122,7 +133,8 @@ class NpcControllerTest extends NWTest {
         $this->assertGreaterThan($init_gold, $final_char->gold);
     }
 
-    public function testControllerAttackAsIfAgainstAGuard() {
+    public function testControllerAttackAsIfAgainstAGuard()
+    {
         RequestWrapper::inject(Request::create('/npc/attack/guard'));
         $response = $this->controller->attack($this->m_dependencies);
         $this->assertNotEmpty($response);
@@ -132,7 +144,8 @@ class NpcControllerTest extends NWTest {
         $this->assertEquals('guard', $response_data['victim']);
     }
 
-    public function testControllerAttackAsIfAgainstAGuard2() {
+    public function testControllerAttackAsIfAgainstAGuard2()
+    {
         RequestWrapper::inject(Request::create('/npc/attack/guard2'));
         $response = $this->controller->attack($this->m_dependencies);
         $this->assertNotEmpty($response);
@@ -142,7 +155,8 @@ class NpcControllerTest extends NWTest {
         $this->assertEquals('guard2', $response_data['victim']);
     }
 
-    public function testControllerAttackAsIfAgainstAThief() {
+    public function testControllerAttackAsIfAgainstAThief()
+    {
         RequestWrapper::inject(Request::create('/npc/attack/thief'));
         $response = $this->controller->attack($this->m_dependencies);
         $reflection = new \ReflectionProperty(get_class($response), 'data');
@@ -151,7 +165,8 @@ class NpcControllerTest extends NWTest {
         $this->assertEquals('thief', $response_data['victim']);
     }
 
-    public function testControllerAttackAgainstSamurai() {
+    public function testControllerAttackAgainstSamurai()
+    {
         $this->char->kills = 40;
         $this->char->level = 5;
         $this->char->strength = 25;
@@ -166,7 +181,8 @@ class NpcControllerTest extends NWTest {
         $this->assertEquals('samurai', $response_data['victim']);
     }
 
-    public function testControllerFailedAttackAgainstSamurai() {
+    public function testControllerFailedAttackAgainstSamurai()
+    {
         RequestWrapper::inject(Request::create('/npc/attack/samurai'));
         $response = $this->controller->attack($this->m_dependencies);
         $reflection = new \ReflectionProperty(get_class($response), 'data');
@@ -175,7 +191,8 @@ class NpcControllerTest extends NWTest {
         $this->assertEquals('samurai', $response_data['victim']);
     }
 
-    public function testRandomEncounter() {
+    public function testRandomEncounter()
+    {
         $this->controller = new NpcController([
             'randomness' => function () {
                 return 1;

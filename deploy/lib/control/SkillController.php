@@ -22,29 +22,34 @@ use Pimple\Container;
 /**
  * Handles both skill listing and displaying, and their usage
  */
-class SkillController extends AbstractController {
+class SkillController extends AbstractController
+{
     public const ALIVE = true;
     public const PRIV  = true;
     public $update_timer;
 
     public const MIN_POISON_TOUCH = 1;
 
-    protected function maxPoisonTouch() {
+    protected function maxPoisonTouch()
+    {
         return (int)floor(2/3*Player::maxHealthByLevel(1));
     }
 
-    protected function fireBoltBaseDamage(Player $pc) {
+    protected function fireBoltBaseDamage(Player $pc)
+    {
         return (int) (floor(Player::maxHealthByLevel($pc->level) / 3));
     }
 
     /**
      * Technically max -additional damage off the base
      */
-    protected function fireBoltMaxDamage(Player $pc) {
+    protected function fireBoltMaxDamage(Player $pc)
+    {
         return (int) $pc->getStrength();
     }
 
-    protected function maxHarmonize(Player $pc) {
+    protected function maxHarmonize(Player $pc)
+    {
         return $pc->getMaxHealth();
     }
 
@@ -53,7 +58,8 @@ class SkillController extends AbstractController {
      *
      * @return StreamedViewResponse
      */
-    public function index(Container $p_dependencies) {
+    public function index(Container $p_dependencies)
+    {
         $error = RequestWrapper::getPostOrGet('error');
         $skillsListObj = new Skill();
 
@@ -125,7 +131,8 @@ class SkillController extends AbstractController {
      * Take the skill form elements and translate the post into the equivalent get requests.
      *
      */
-    public function postUse(Container $p_dependencies) {
+    public function postUse(Container $p_dependencies)
+    {
         $request = RequestWrapper::$request;
         $target = $request->get('target');
         $target2 = $request->get('target2');
@@ -137,7 +144,8 @@ class SkillController extends AbstractController {
     /**
      * Translate the self-use requests into their get equivalent
      */
-    public function postSelfUse(Container $p_dependencies) {
+    public function postSelfUse(Container $p_dependencies)
+    {
         $act = RequestWrapper::getPost('act');
         $url = 'skill/self_use/'.rawurlencode($act).'/';
         return new RedirectResponse(WEB_ROOT.$url); // default 302 redirect
@@ -146,7 +154,8 @@ class SkillController extends AbstractController {
     /**
      * Get the slugs from the path, eventually should be a controller standard.
      */
-    private function parseSlugs($path) {
+    private function parseSlugs($path)
+    {
         $slugs = explode('/', trim(urldecode($path), '/'));
         array_unshift($slugs, $path); // First element is full path
         return $slugs;
@@ -155,7 +164,8 @@ class SkillController extends AbstractController {
     /**
      * Use an item only on self
      */
-    public function selfUse(Container $p_dependencies) {
+    public function selfUse(Container $p_dependencies)
+    {
         return $this->useSkill($p_dependencies, true);
     }
 
@@ -163,7 +173,8 @@ class SkillController extends AbstractController {
      * Attempt to resolve a target from a string slug
      * @return Player|null
      */
-    private function findTarget($dirty_target) {
+    private function findTarget($dirty_target)
+    {
         // If the target is a string instead of an id already, see if it can be translated into a ninja
         $targetObj = null;
         $filtered_id = Filter::toNonNegativeInt($dirty_target);
@@ -186,7 +197,8 @@ class SkillController extends AbstractController {
      * http://nw.local/skill/self_use/Heal/
      * @todo Refactor: Extract these individual skills into individual skill classes
      */
-    public function useSkill(Container $p_dependencies, $self_use=false) {
+    public function useSkill(Container $p_dependencies, $self_use=false)
+    {
         // Template vars.
         $display_sight_table = $generic_skill_result_message = $generic_state_change = $killed_target =
             $loot = $added_bounty = $bounty = $suicided = $destealthed = null;
@@ -568,7 +580,8 @@ class SkillController extends AbstractController {
      * @param Player|string|int|null $search
      * @return Player|null
      */
-    private function searchForChar($search) {
+    private function searchForChar($search)
+    {
         if ($search instanceof Player && (0 < $search->id())) {
             return $search; // Already a player object, so return fast
         }
@@ -586,7 +599,8 @@ class SkillController extends AbstractController {
      * @param Player|string|int|null $search1
      * @param Player|string|int|null $search2
      */
-    private function prepareCloneKill(Player $self_char, $search1, $search2) {
+    private function prepareCloneKill(Player $self_char, $search1, $search2)
+    {
         // Consider moving these error conditions in to CloneKill itself.
 
         $clone1 = $this->searchForChar($search1);
@@ -619,7 +633,8 @@ class SkillController extends AbstractController {
     /**
      * Pull a stripped down set of player data to display to the skill user.
      */
-    private function pullSightData(Player $target) {
+    private function pullSightData(Player $target)
+    {
         $data = $target->data();
         // Strip all fields but those allowed.
         $allowed = [
@@ -646,7 +661,8 @@ class SkillController extends AbstractController {
     /**
      * Use up some ki to heal yourself.
      */
-    private function harmonizeChakra(Player $char) {
+    private function harmonizeChakra(Player $char)
+    {
         // Heal at most 100 or ki available or hurt by AND at least 0
         $heal_for = (int) max(0, min($this->maxHarmonize($char), $char->is_hurt_by(), $char->ki));
         if ($heal_for > 0) {

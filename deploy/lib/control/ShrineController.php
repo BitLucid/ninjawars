@@ -13,7 +13,8 @@ use NinjaWars\core\environment\RequestWrapper;
 /**
  * Controller for actions taken in the Healing Shrine
  */
-class ShrineController extends AbstractController {
+class ShrineController extends AbstractController
+{
     public const ALIVE                = false;
     public const PRIV                 = true;
     public const FREE_RES_LEVEL_LIMIT = 6;
@@ -39,7 +40,8 @@ class ShrineController extends AbstractController {
      * @return Response
      * @see servicesNeeded
      */
-    public function index(Container $p_dependencies) {
+    public function index(Container $p_dependencies)
+    {
         $player = $p_dependencies['current_player'];
 
         $shrineSections = $this->servicesNeeded($player);
@@ -61,7 +63,8 @@ class ShrineController extends AbstractController {
      * @see _heal
      * @see _resurrect
      */
-    public function healAndResurrect(Container $p_dependencies) {
+    public function healAndResurrect(Container $p_dependencies)
+    {
         $skillController = new Skill();
 
         $player = $p_dependencies['current_player'];
@@ -112,7 +115,8 @@ class ShrineController extends AbstractController {
      * @return Response
      * @see _resurrect
      */
-    public function resurrect(Container $p_dependencies) {
+    public function resurrect(Container $p_dependencies)
+    {
         $player = $p_dependencies['current_player'];
 
         try {
@@ -147,7 +151,8 @@ class ShrineController extends AbstractController {
      * @return Response
      * @see _heal
      */
-    public function heal(Container $p_dependencies) {
+    public function heal(Container $p_dependencies)
+    {
         $skillController = new Skill();
 
         $player = $p_dependencies['current_player'];
@@ -187,7 +192,8 @@ class ShrineController extends AbstractController {
      * On success, status attribute of $p_player is modified in memory and database
      * On success, gold attribute of $p_player is modified in memory and database
      */
-    public function cure(Container $p_dependencies) {
+    public function cure(Container $p_dependencies)
+    {
         $player = $p_dependencies['current_player'];
 
         if ($player->health <= 0) {
@@ -221,7 +227,8 @@ class ShrineController extends AbstractController {
      * An empty array denotes that no services are needed.
      * Currently being reminded that you have max HP is a service
      */
-    private function servicesNeeded($p_player) {
+    private function servicesNeeded($p_player)
+    {
         $services = [];
 
         if ($p_player) {
@@ -269,7 +276,8 @@ class ShrineController extends AbstractController {
      *
      * @see enhancedResurrect
      */
-    private function _resurrect($p_player) {
+    private function _resurrect($p_player)
+    {
         if ($p_player->health <= 0) {
             $costType = $this->calculateResurrectionCost($p_player);
 
@@ -305,7 +313,8 @@ class ShrineController extends AbstractController {
      * The Chi skill triples base health after resurrection
      * The Hidden Resurrect skill stealths player after non-free resurrection
      */
-    private function enhancedResurrect($p_player) {
+    private function enhancedResurrect($p_player)
+    {
         $p_player->death();
 
         $skillController = new Skill(); // Instantiate Skill interrogator
@@ -327,7 +336,8 @@ class ShrineController extends AbstractController {
      * @param p_player Player The player object to interrogate
      * @return int
      */
-    private function calculateResurrectionHP($p_player) {
+    private function calculateResurrectionHP($p_player)
+    {
         $skillController = new Skill(); // Instantiate Skill interrogator
 
 
@@ -357,7 +367,8 @@ class ShrineController extends AbstractController {
      * @throws RuntimeException When no appropriate cost can be found
      * @see _resurrect
      */
-    private function calculateResurrectionCost($p_player) {
+    private function calculateResurrectionCost($p_player)
+    {
         if ($this->isResurrectFree($p_player)) {
             return self::RES_COST_TYPE_FREE;
         } elseif ($p_player->kills > 0) {
@@ -378,7 +389,8 @@ class ShrineController extends AbstractController {
      * @return boolean
      * @see _resurrect
      */
-    private function isResurrectFree($p_player) {
+    private function isResurrectFree($p_player)
+    {
         return (
             $p_player->level < self::FREE_RES_LEVEL_LIMIT
             &&
@@ -408,7 +420,8 @@ class ShrineController extends AbstractController {
      *
      * @see calculateHealCost
      */
-    private function _heal($p_player, $p_amount) {
+    private function _heal($p_player, $p_amount)
+    {
         if ($p_amount < 1) {
             throw new \InvalidArgumentException('Invalid input for heal amount.');
         } elseif ($p_player->health <= 0) {
@@ -437,7 +450,8 @@ class ShrineController extends AbstractController {
      *
      * @see calculateHealCost
      */
-    private function calculateMaxHeal($p_player) {
+    private function calculateMaxHeal($p_player)
+    {
         return (int)((2*$p_player->gold)/(2*$this->calculateHealCost($p_player)));
     }
 
@@ -447,7 +461,8 @@ class ShrineController extends AbstractController {
      * @param p_player Player The player object to interrogate
      * @return int
      */
-    private function calculateHealCost($p_player) {
+    private function calculateHealCost($p_player)
+    {
         // Chi reduces the cost of healing by half, rounded up
         $skillController = new Skill();
 
@@ -466,7 +481,8 @@ class ShrineController extends AbstractController {
      * @param p_parts Array Hash of values to be added to the default
      * @return StreamedViewResponse
      */
-    private function render($p_parts) {
+    private function render($p_parts)
+    {
         $parts = array_merge(
             [
                 'action_message' => null,
@@ -487,7 +503,8 @@ class ShrineController extends AbstractController {
      * @param p_player Player The player object to pass to the view for rendering
      * @return StreamedViewResponse
      */
-    private function renderError($p_message, Player $p_player) {
+    private function renderError($p_message, Player $p_player)
+    {
         $shrineSections = $this->servicesNeeded($p_player);
         array_unshift($shrineSections, 'entrance');
 

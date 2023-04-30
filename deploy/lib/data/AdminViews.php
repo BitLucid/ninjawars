@@ -10,11 +10,13 @@ use RuntimeException;
 /**
  * Sets of admin info
  */
-class AdminViews {
+class AdminViews
+{
     /**
      * Get a sense of who was online recently.
      */
-    public static function recentUsage($limit=30): array {
+    public static function recentUsage($limit=30): array
+    {
         $data = [];
         $data['recent'] = query_array(
             "select player_id, uname, accounts.last_login from players left join account_players on player_id = _player_id left join accounts on _account_id = account_id where active = 1 and accounts.last_login is not null order by accounts.last_login desc limit :limit",
@@ -32,7 +34,8 @@ class AdminViews {
     /**
      * Get a list of leaders in an arbitrary column stat on the player table
      */
-    public static function statLeaders($stat, $limit=10): array {
+    public static function statLeaders($stat, $limit=10): array
+    {
         if (!ctype_alpha($stat)) {
             throw new RuntimeException('Invalid ninjamaster stat to check:[ '.(string)$stat.' ]');
         }
@@ -45,7 +48,8 @@ class AdminViews {
     /**
      * Characters with high kills or turns or gold and the like.
      */
-    public static function highRollers(): array {
+    public static function highRollers(): array
+    {
         // Select first few max kills from players.
         // Max turns.
         // Max gold.
@@ -72,7 +76,8 @@ class AdminViews {
     /**
      * Players at duplicate ips.
      */
-    public static function dupedIps() {
+    public static function dupedIps()
+    {
         $host= gethostname();
         $server_ip = gethostbyname($host);
         // Get name, id, and ip from players, grouped by ip matches
@@ -96,7 +101,8 @@ class AdminViews {
      * @return Array
      * @param $ids int|array
      */
-    public static function charInfos($ids) {
+    public static function charInfos($ids)
+    {
         $res = [];
 
         if (is_numeric($ids)) {
@@ -123,7 +129,8 @@ class AdminViews {
     /**
      * Check the inventory for a character.
      */
-    public static function charInventory(Player $char) {
+    public static function charInventory(Player $char)
+    {
         $inventory = new Inventory($char);
 
         return $inventory->counts();

@@ -4,8 +4,10 @@ use NinjaWars\core\data\PasswordResetRequest;
 use NinjaWars\core\data\Account;
 use NinjaWars\core\data\Crypto;
 
-class PasswordResetTest extends NWTest {
-    public function setUp(): void {
+class PasswordResetTest extends NWTest
+{
+    public function setUp(): void
+    {
         parent::setUp();
         TestAccountCreateAndDestroy::purge_test_accounts();
         $this->account_id = TestAccountCreateAndDestroy::account_id();
@@ -13,7 +15,8 @@ class PasswordResetTest extends NWTest {
         $this->nonce = null;
     }
 
-    public function tearDown(): void {
+    public function tearDown(): void
+    {
         // Don't use naked queries outside of a model layer elsewhere.
         query(
             "delete from password_reset_requests where nonce = '777777' or nonce = '77778877' or nonce = '7777777' or nonce = :nonce or _account_id = :id",
@@ -30,7 +33,8 @@ class PasswordResetTest extends NWTest {
     /**
      * @group first
      */
-    public function testModelCreateARequestWithTheRawModelFunctionality() {
+    public function testModelCreateARequestWithTheRawModelFunctionality()
+    {
         $req = PasswordResetRequest::create(['_account_id' => $this->account_id, 'nonce' => '777666888']);
         $this->assertInstanceOf('NinjaWars\core\data\PasswordResetRequest', $req);
         $this->assertGreaterThan(0, (int) $req->nonce);
@@ -41,7 +45,8 @@ class PasswordResetTest extends NWTest {
      *
      * @group early
      */
-    public function testCreatePasswordResetEntry() {
+    public function testCreatePasswordResetEntry()
+    {
         $request = PasswordResetRequest::generate($this->account);
         $this->assertTrue((bool)$request->nonce);
     }
@@ -51,7 +56,8 @@ class PasswordResetTest extends NWTest {
      *
      * @group early
      */
-    public function testRetrieveCreatedPasswordReset() {
+    public function testRetrieveCreatedPasswordReset()
+    {
         $account_id = query_item('select account_id from accounts limit 1');
         $this->assertGreaterThan(0, $account_id);
         $this->nonce = '777777';
@@ -61,7 +67,8 @@ class PasswordResetTest extends NWTest {
         $this->assertEquals($this->nonce, $req->nonce);
     }
 
-    public function testGeneratedResetCanBeFoundByAccount() {
+    public function testGeneratedResetCanBeFoundByAccount()
+    {
         $req = PasswordResetRequest::generate($this->account);
         $req_dup = PasswordResetRequest::where('_account_id', '=', $this->account->id())->first();
         $this->assertEquals($req->id(), $req_dup->id());
@@ -72,7 +79,8 @@ class PasswordResetTest extends NWTest {
      *
      * @group early
      */
-    public function testRejectionOfResetsThatDontHaveANewPassword() {
+    public function testRejectionOfResetsThatDontHaveANewPassword()
+    {
         $this->assertFalse(PasswordResetRequest::reset($this->account, null));
     }
 
@@ -81,7 +89,8 @@ class PasswordResetTest extends NWTest {
      *
      * @group early
      */
-    public function testRejectionOfResetsThatDontHaveAValidAccountId() {
+    public function testRejectionOfResetsThatDontHaveAValidAccountId()
+    {
         $account = new Account([]);
         $this->assertFalse(PasswordResetRequest::reset($account, 'some_valid_password', false));
     }
@@ -89,17 +98,20 @@ class PasswordResetTest extends NWTest {
     /**
      * @group early
      */
-    public function testResetOfPasswordWhenCorrectDataGiven() {
+    public function testResetOfPasswordWhenCorrectDataGiven()
+    {
         PasswordResetRequest::generate($this->account, $this->nonce = '77766557777');
         $this->assertTrue(PasswordResetRequest::reset($this->account, 'some_password%##$@#', false));
     }
 
-    public function testResetOfPasswordWhenCorrectDataGivenWithAlternatePasswordUsage() {
+    public function testResetOfPasswordWhenCorrectDataGivenWithAlternatePasswordUsage()
+    {
         PasswordResetRequest::generate($this->account, $this->nonce = '776543777');
         $this->assertTrue(PasswordResetRequest::reset($this->account, 'SDGAERHQEW$$%Y$%', false));
     }
 
-    public function testMatchingARequestGetsYouAMatchingEmail() {
+    public function testMatchingARequestGetsYouAMatchingEmail()
+    {
         $account_id = TestAccountCreateAndDestroy::account_id();
         $account = Account::findById($account_id);
         PasswordResetRequest::generate($account, $this->nonce = '7778987777', false);
@@ -109,7 +121,8 @@ class PasswordResetTest extends NWTest {
         $this->assertEquals($account->getActiveEmail(), $final_account->getActiveEmail());
     }
 
-    public function testSendingOfANotificationAfterResetOccurrs() {
+    public function testSendingOfANotificationAfterResetOccurrs()
+    {
         $account_id = TestAccountCreateAndDestroy::account_id();
         $account = Account::findById($account_id);
         PasswordResetRequest::generate($account, $this->nonce = '7778987777', false);
@@ -120,7 +133,8 @@ class PasswordResetTest extends NWTest {
         $this->assertTrue($sent);
     }
 
-    public function testPerformingAResetInvalidatesUsedRequest() {
+    public function testPerformingAResetInvalidatesUsedRequest()
+    {
         $account_id = TestAccountCreateAndDestroy::account_id();
         $account = Account::findById($account_id);
         PasswordResetRequest::generate($account, $this->nonce = '77warkwark', false);

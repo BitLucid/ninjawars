@@ -7,11 +7,13 @@ use NinjaWars\core\control\DojoController;
 use NinjaWars\core\data\Player;
 use NinjaWars\core\extensions\SessionFactory;
 
-class DojoControllerTest extends NWTest {
+class DojoControllerTest extends NWTest
+{
     private $controller;
     private $char_id;
 
-    public function setUp(): void {
+    public function setUp(): void
+    {
         parent::setUp();
         $this->controller = new DojoController();
         // Mock the post request.
@@ -25,7 +27,8 @@ class DojoControllerTest extends NWTest {
 
     /**
      */
-    public function tearDown(): void {
+    public function tearDown(): void
+    {
         RequestWrapper::inject(new Request([]));
         $session = SessionFactory::getSession();
         $session->invalidate();
@@ -34,31 +37,36 @@ class DojoControllerTest extends NWTest {
 
     /**
      */
-    public function testDojoControllerCanBeInstantiatedWithoutError() {
+    public function testDojoControllerCanBeInstantiatedWithoutError()
+    {
         $this->assertInstanceOf(DojoController::class, $this->controller);
     }
 
     /**
      */
-    public function testDojoIndexDoesNotError() {
+    public function testDojoIndexDoesNotError()
+    {
         $this->assertNotEmpty($this->controller->index($this->m_dependencies));
     }
 
     /**
      */
-    public function testDojoIndexCanRenderEvenLoggedOut() {
+    public function testDojoIndexCanRenderEvenLoggedOut()
+    {
         $this->assertNotEmpty($this->controller->index($this->mockLogout()));
     }
 
     /**
      */
-    public function testDojoBuyDimMakDoesNotError() {
+    public function testDojoBuyDimMakDoesNotError()
+    {
         $this->assertNotEmpty($this->controller->buyDimMak($this->m_dependencies));
     }
 
     /**
      */
-    public function testDojoBuyDimMakWithPostDoesNotError() {
+    public function testDojoBuyDimMakWithPostDoesNotError()
+    {
         $request = Request::create('/', 'POST');
         RequestWrapper::inject($request);
         $this->assertNotEmpty($this->controller->buyDimMak($this->m_dependencies));
@@ -66,7 +74,8 @@ class DojoControllerTest extends NWTest {
 
     /**
      */
-    public function testDojoBuyDimMakLowTurnsDoesNotError() {
+    public function testDojoBuyDimMakLowTurnsDoesNotError()
+    {
         $request = Request::create('/', 'POST');
         RequestWrapper::inject($request);
         $char = Player::find($this->char_id);
@@ -78,7 +87,8 @@ class DojoControllerTest extends NWTest {
     }
     /**
      */
-    public function testDojoBuyDimMakSuccessDoesNotError() {
+    public function testDojoBuyDimMakSuccessDoesNotError()
+    {
         $request = Request::create('/', 'POST');
         RequestWrapper::inject($request);
         $char = Player::find($this->char_id);
@@ -91,7 +101,8 @@ class DojoControllerTest extends NWTest {
 
     /**
      */
-    public function testDojoBuyDimMakNotLoggedInDoesNotError() {
+    public function testDojoBuyDimMakNotLoggedInDoesNotError()
+    {
         $session = SessionFactory::getSession();
         $session->invalidate();
         $this->assertNotEmpty($this->controller->buyDimMak($this->m_dependencies));
@@ -99,12 +110,14 @@ class DojoControllerTest extends NWTest {
 
     /**
      */
-    public function testDojoChangeClassDoesNotError() {
+    public function testDojoChangeClassDoesNotError()
+    {
         $this->assertNotEmpty($this->controller->changeClass($this->m_dependencies));
     }
     /**
      */
-    public function testDojoChangeClassWithBadClassDoesNotError() {
+    public function testDojoChangeClassWithBadClassDoesNotError()
+    {
         $request = Request::create('/', 'GET', ['requested_identity'=>'stupid']);
         RequestWrapper::inject($request);
         $this->assertNotEmpty($this->controller->changeClass($this->m_dependencies));
@@ -112,7 +125,8 @@ class DojoControllerTest extends NWTest {
 
     /**
      */
-    public function testDojoChangeClassWithGoodClassDoesNotError() {
+    public function testDojoChangeClassWithGoodClassDoesNotError()
+    {
         $request = Request::create('/', 'GET', ['requested_identity'=>'crane']);
         RequestWrapper::inject($request);
         $this->assertNotEmpty($this->controller->changeClass($this->m_dependencies));
@@ -120,7 +134,8 @@ class DojoControllerTest extends NWTest {
 
     /**
      */
-    public function testDojoChangeClassLowTurnsDoesNotError() {
+    public function testDojoChangeClassLowTurnsDoesNotError()
+    {
         $request = Request::create('/', 'GET', ['requested_identity'=>'crane']);
         RequestWrapper::inject($request);
         $char = Player::find($this->char_id);
@@ -132,7 +147,8 @@ class DojoControllerTest extends NWTest {
 
     /**
      */
-    public function testDojoChangeClassNotLoggedInDoesNotError() {
+    public function testDojoChangeClassNotLoggedInDoesNotError()
+    {
         $session = SessionFactory::getSession();
         $session->invalidate();
         $this->assertNotEmpty($this->controller->changeClass($this->m_dependencies));

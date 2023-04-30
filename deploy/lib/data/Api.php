@@ -12,11 +12,13 @@ use PDO;
 /**
  * Api calls
  */
-class Api {
+class Api
+{
     /**
      * Find the next enemy target for the player.
      */
-    public function nextTarget($data) {
+    public function nextTarget($data)
+    {
         $offset = $data;
         $char = Player::find(SessionFactory::getSession()->get('player_id'));
         $target = $char ? Enemies::nextTarget($char, (int) $offset) : null;
@@ -27,7 +29,8 @@ class Api {
      * Deactivate a player character and account with a matching id
      * @note Admin only
      */
-    public function deactivateChar($data, $auth_override = false) {
+    public function deactivateChar($data, $auth_override = false)
+    {
         $accounts_deactivated = 0;
         $chars_deactivated = 0;
         $char_id = $data;
@@ -48,7 +51,8 @@ class Api {
      * Reactivate a player character and account with a matching id
      * @note Admin only
      */
-    public function reactivateChar($data) {
+    public function reactivateChar($data)
+    {
         $chars_reactivated = 0;
         $accounts_reactivated = 0;
         $char_id = $data;
@@ -68,7 +72,8 @@ class Api {
     /**
      * Search through characters by text, returning multiple matches.
      */
-    public function charSearch($term, $limit) {
+    public function charSearch($term, $limit)
+    {
         if (!is_numeric($limit)) {
             $limit = 10;
         }
@@ -86,7 +91,8 @@ class Api {
     /**
      * Last message sent to current player
      */
-    public function latestMessage() {
+    public function latestMessage()
+    {
         DatabaseConnection::getInstance();
         $user_id = (int) SessionFactory::getSession()->get('player_id');
 
@@ -101,7 +107,8 @@ class Api {
         return ['message' => $statement->fetch()];
     }
 
-    public function latestEvent() {
+    public function latestEvent()
+    {
         DatabaseConnection::getInstance();
         $user_id = (int) SessionFactory::getSession()->get('player_id');
 
@@ -114,12 +121,14 @@ class Api {
         return ['event' => $statement->fetch()];
     }
 
-    public function player() {
+    public function player()
+    {
         $player = Player::find(SessionFactory::getSession()->get('player_id'));
         return ['player' => ($player ? $player->data() : null)];
     }
 
-    public function chats($limit = 20) {
+    public function chats($limit = 20)
+    {
         $limit = (int)$limit;
         DatabaseConnection::getInstance();
         $statement = DatabaseConnection::$pdo->prepare("SELECT * FROM chat ORDER BY date DESC LIMIT :limit");
@@ -130,14 +139,16 @@ class Api {
         return ['chats' => $chats];
     }
 
-    public function latestChatId() {
+    public function latestChatId()
+    {
         DatabaseConnection::getInstance();
         $statement = DatabaseConnection::$pdo->query("SELECT chat_id FROM chat ORDER BY date DESC LIMIT 1");
 
         return ['latest_chat_id' => $statement->fetch()];
     }
 
-    public function sendChat($msg) {
+    public function sendChat($msg)
+    {
         if (SessionFactory::getSession()->get('authenticated', false)) {
             $msg     = trim($msg);
             $player  = Player::find(SessionFactory::getSession()->get('player_id'));
@@ -158,7 +169,8 @@ class Api {
     /**
      * Get the newest chats for the mini-chat area.
      */
-    public function newChats($since) {
+    public function newChats($since)
+    {
         $since = ($since ? (float)$since : null); // Since is a float?  Weird
         $now = microtime(true);
         DatabaseConnection::getInstance();
@@ -185,14 +197,16 @@ class Api {
     /**
      * Just count the number of currently active players.
      */
-    public function memberCount() {
+    public function memberCount()
+    {
         return $this->playerCount();
     }
 
     /**
      * Get the player's inventory list.
      */
-    public function inventory() {
+    public function inventory()
+    {
         $char_id = SessionFactory::getSession()->get('player_id');
         $items = query_array(
             "SELECT item.item_display_name as item, amount 
@@ -208,13 +222,15 @@ class Api {
      * Just count the number of active players
      * @return integer $player_count
      */
-    private function playerCount() {
+    private function playerCount()
+    {
         return query_item(
             "SELECT count(player_id) from players where active = 1"
         );
     }
 
-    public function index() {
+    public function index()
+    {
         DatabaseConnection::getInstance();
 
         $player          = Player::find(SessionFactory::getSession()->get('player_id'));

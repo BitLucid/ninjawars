@@ -2,11 +2,13 @@
 
 use NinjaWars\core\extensions\SessionFactory;
 
-class NWError {
+class NWError
+{
     /**
      * Send out error information, about as much as possible
      */
-    public static function sendErrorEmail($p_errorMsg) {
+    public static function sendErrorEmail($p_errorMsg)
+    {
         $session = SessionFactory::getSession();
         if ($session->has('account_id')) {
             $p_errorMsg .= "Error Occured for accountID ".$session->get('account_id')."\r\n";
@@ -31,7 +33,8 @@ class NWError {
     /**
      * Display the error page with 500 error code, redirect if page errored part-way through.
      */
-    public static function showErrorPage() {
+    public static function showErrorPage()
+    {
         if (headers_sent()) {
             echo "<script type='text/javascript'>location.href = 'error.html';</script>";
         } else {
@@ -40,7 +43,8 @@ class NWError {
         }
     }
 
-    public static function exceptionHandler($e) {
+    public static function exceptionHandler($e)
+    {
         $msg = "Exception message: ".$e."\r\n\r\n";
         error_log($e);
         self::sendErrorEmail($msg);
@@ -48,7 +52,8 @@ class NWError {
         exit(1);
     }
 
-    public static function errorHandler($errno, $errstr, $errfile, $errline) {
+    public static function errorHandler($errno, $errstr, $errfile, $errline)
+    {
         switch ($errno) {
             case E_NOTICE:
             case E_USER_NOTICE:

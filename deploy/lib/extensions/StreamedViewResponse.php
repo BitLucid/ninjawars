@@ -6,13 +6,15 @@ use NinjaWars\core\extensions\NWTemplate;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
-class StreamedViewResponse extends StreamedResponse {
+class StreamedViewResponse extends StreamedResponse
+{
     private $title;
     private $template;
     private $data;
     private $options;
 
-    public function __construct($title, $template, $data = [], $options = [], $headers = []) {
+    public function __construct($title, $template, $data = [], $options = [], $headers = [])
+    {
         parent::__construct();
 
         $this->title    = $title;

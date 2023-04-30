@@ -16,7 +16,8 @@ use Pimple\Container;
 /**
  * Handles all user actions related to the in-game Shop
  */
-class ShopController extends AbstractController {
+class ShopController extends AbstractController
+{
     public const ALIVE = true;  // *** must be alive to access the shop ***
     public const PRIV  = false; // *** do not need to be logged in ***
 
@@ -28,7 +29,8 @@ class ShopController extends AbstractController {
      *
      * @return Array
      */
-    public function index(Container $p_dependencies): StreamedViewResponse {
+    public function index(Container $p_dependencies): StreamedViewResponse
+    {
         $player = $p_dependencies['current_player'];
         $authenticated = $p_dependencies['session'] ? $p_dependencies['session']->get('authenticated') : false;
         $parts = [
@@ -48,7 +50,8 @@ class ShopController extends AbstractController {
      * @param item string The identity of the item to purchase
      * @return Array
      */
-    public function buy(Container $p_dependencies): StreamedViewResponse {
+    public function buy(Container $p_dependencies): StreamedViewResponse
+    {
         $request           = RequestWrapper::$request;
         $in_quantity       = $request->get('quantity');
         $in_item           = $request->get('item');
@@ -115,7 +118,8 @@ class ShopController extends AbstractController {
      * @param p_parts Array Name/Value pairings to pass to the view
      * @return StreamedViewResponse
      */
-    private function render($p_parts) {
+    private function render($p_parts)
+    {
         return new StreamedViewResponse('Shop', 'shop.tpl', $p_parts, [ 'quickstat' => 'viewinv' ]);
     }
 }

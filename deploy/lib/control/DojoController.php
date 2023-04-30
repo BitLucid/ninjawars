@@ -17,7 +17,8 @@ use Symfony\Component\HttpFoundation\Request;
  * @note IMPORTANT MAINTENANCE NOTES
  * To disable class change code: set $classChangeAllowed to boolean false
  */
-class DojoController extends AbstractController {
+class DojoController extends AbstractController
+{
     public const ALIVE                = false;
     public const PRIV                 = false;
     public const DIM_MAK_COST         = 90; // Cost of acquiring DimMak In turns
@@ -29,7 +30,8 @@ class DojoController extends AbstractController {
      * @param Container
      * @return Response
      */
-    public function index(Container $p_dependencies) {
+    public function index(Container $p_dependencies)
+    {
         $authenticated = $p_dependencies['session'] ? $p_dependencies['session']->get('authenticated', false) : false;
         if ($authenticated) {
             return $this->render([], $p_dependencies['current_player']);
@@ -45,7 +47,8 @@ class DojoController extends AbstractController {
      * @param Container
      * @return Response
      */
-    public function buyDimMak(Container $p_dependencies) {
+    public function buyDimMak(Container $p_dependencies)
+    {
         $authenticated = $p_dependencies['session'] ? $p_dependencies['session']->get('authenticated', false) : false;
         if ($authenticated) {
             $player = $p_dependencies['current_player'];
@@ -80,7 +83,8 @@ class DojoController extends AbstractController {
      * Get the class and identity data
      *
      */
-    private function getClasses() {
+    private function getClasses()
+    {
         $classes_raw = query_array('select 
                 class_id, 
                 identity, 
@@ -106,7 +110,8 @@ class DojoController extends AbstractController {
      * @param Container
      * @return Response
      */
-    public function changeClass(Container $p_dependencies) {
+    public function changeClass(Container $p_dependencies)
+    {
         if ($p_dependencies['session']->get('authenticated', false)) {
             $player            = $p_dependencies['current_player'];
             $classes           = $this->getClasses();
@@ -145,7 +150,8 @@ class DojoController extends AbstractController {
      * @param int    $p_requiredTurns
      * @return string
      */
-    private function classChangeReqs($p_player, $p_requiredTurns) {
+    private function classChangeReqs($p_player, $p_requiredTurns)
+    {
         $error = '';
 
         if ($p_player->turns < $p_requiredTurns) {
@@ -161,7 +167,8 @@ class DojoController extends AbstractController {
      *
      * @return string
      */
-    private function changePlayerClass($p_player, $p_class, $cost) {
+    private function changePlayerClass($p_player, $p_class, $cost)
+    {
         $error = $p_player->setClass($p_class);
 
         if (!$error) {
@@ -179,7 +186,8 @@ class DojoController extends AbstractController {
      * @param int    $p_requiredTurns
      * @return string
      */
-    private function dimMakReqs(Player $p_player, $p_requiredTurns) {
+    private function dimMakReqs(Player $p_player, $p_requiredTurns)
+    {
         $error = '';
 
         if ($p_player->turns < $p_requiredTurns) {
@@ -195,7 +203,8 @@ class DojoController extends AbstractController {
      * @todo remove this by abstracting login checks throughout this controller
      * @return Response
      */
-    private function accessDenied() {
+    private function accessDenied()
+    {
         return $this->render();
     }
 
@@ -207,7 +216,8 @@ class DojoController extends AbstractController {
      * @param boolean $p_renderMonks Flag to render links to actions
      * @return Response
      */
-    private function render($p_parts = [], $p_player = null, $p_renderMonks = true) {
+    private function render($p_parts = [], $p_player = null, $p_renderMonks = true)
+    {
         $p_parts['max_level']         = MAX_PLAYER_LEVEL; // For non-logged in loop through stats.
         $p_parts['max_hp']            = Player::maxHealthByLevel(MAX_PLAYER_LEVEL+1);
         $p_parts['class_change_cost'] = self::CLASS_CHANGE_COST;

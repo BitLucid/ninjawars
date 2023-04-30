@@ -8,7 +8,8 @@ namespace NinjaWars\core\data;
  * Essentially this acts as the container for the model's data.
  * @var database_fields
  */
-class SkillVO {
+class SkillVO
+{
     public $skill_id;
     public $skill_level;
     public $skill_is_active;

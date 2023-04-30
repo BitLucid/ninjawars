@@ -15,7 +15,8 @@ use NinjaWars\core\data\DatabaseConnection;
  *
  * Note that it returns foreachable resultset object unless an array is specifically requested.
  */
-function query($sql, array $bindings=[], bool $return_resultset=true): array | \PDOStatement {
+function query($sql, array $bindings=[], bool $return_resultset=true): array | \PDOStatement
+{
     DatabaseConnection::getInstance();
     $statement = DatabaseConnection::$pdo->prepare($sql);
 
@@ -43,14 +44,16 @@ function query($sql, array $bindings=[], bool $return_resultset=true): array | \
 /**
  * Wrapper to get a multi-dimensional array.
  */
-function query_array($sql_query, array $bindings=[]): array {
+function query_array($sql_query, array $bindings=[]): array
+{
     return query($sql_query, $bindings)->fetchAll(PDO::FETCH_ASSOC);
 }
 
 /**
  * Update query wrapper, returns the number of rows updated.
  */
-function update_query($update_query, array $bindings=[]): int {
+function update_query($update_query, array $bindings=[]): int
+{
     $updates = query($update_query, $bindings, true); // Return the resultset
     return $updates->rowCount();
 }
@@ -58,21 +61,24 @@ function update_query($update_query, array $bindings=[]): int {
 /**
  * Insert a row, if returning is used it will return the id
  */
-function insert_query($insert_query, array $bindings = [], bool $return_resultset = true): array | \PDOStatement {
+function insert_query($insert_query, array $bindings = [], bool $return_resultset = true): array | \PDOStatement
+{
     return query($insert_query, $bindings, $return_resultset);
 }
 
 /**
  * Run to just get the first row, for 1 row queries.
  */
-function query_row($sql, array $bindings=[]): array | bool {
+function query_row($sql, array $bindings=[]): array | bool
+{
     return query($sql, $bindings)->fetch(PDO::FETCH_ASSOC);
 }
 
 /**
  * Get only the first result item.
  */
-function query_item($sql, array $bindings=[]): int | float | string | null {
+function query_item($sql, array $bindings=[]): int | float | string | null
+{
     $row = query_row($sql, $bindings);
     return (is_array($row) ? reset($row) : null);
 }

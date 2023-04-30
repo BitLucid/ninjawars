@@ -6,12 +6,14 @@ use NinjaWars\core\environment\RequestWrapper;
 use NinjaWars\core\extensions\SessionFactory;
 use NinjaWars\core\control\ApiController;
 
-class ApiControllerTest extends NWTest {
+class ApiControllerTest extends NWTest
+{
     public const CALLBACK = 'callback';
     private $PAYLOAD_RE;
     private $controller;
 
-    public function setUp(): void {
+    public function setUp(): void
+    {
         parent::setUp();
         parent::login();
         // Mock the post request.
@@ -22,7 +24,8 @@ class ApiControllerTest extends NWTest {
         $session->set('player_id', $this->char->id());
     }
 
-    public function tearDown(): void {
+    public function tearDown(): void
+    {
         RequestWrapper::inject(new Request([]));
         TestAccountCreateAndDestroy::purge_test_accounts();
         parent::loginTearDown();
@@ -32,7 +35,8 @@ class ApiControllerTest extends NWTest {
     }
 
     // Want to get the json response out for each controller
-    private function extractPayload($p_response, $raw = false) {
+    private function extractPayload($p_response, $raw = false)
+    {
         if ($raw) {
             return json_decode($p_response->getContent(), true);
         }
@@ -43,7 +47,8 @@ class ApiControllerTest extends NWTest {
 
 
 
-    public function testIllegalCallbackFails() {
+    public function testIllegalCallbackFails()
+    {
         $request = new Request([
             'type'         => 'player',
             'jsoncallback' => 'illegal!',
@@ -56,7 +61,8 @@ class ApiControllerTest extends NWTest {
         TestAccountCreateAndDestroy::purge_test_accounts();
     }
 
-    public function testIllegalTypeShouldGiveNullAnd400StatusCode() {
+    public function testIllegalTypeShouldGiveNullAnd400StatusCode()
+    {
         $request = new Request([
             'type'         => 'illegal',
             'jsoncallback' => self::CALLBACK,
@@ -69,7 +75,8 @@ class ApiControllerTest extends NWTest {
         $this->assertNotEmpty($payload['error']);
     }
 
-    public function testSearch() {
+    public function testSearch()
+    {
         $request = new Request([
             'type'         => 'char_search',
             'jsoncallback' => self::CALLBACK,
@@ -87,7 +94,8 @@ class ApiControllerTest extends NWTest {
         $this->assertObjectHasAttribute('player_id', $payload->char_matches[0]);
     }
 
-    public function testChats() {
+    public function testChats()
+    {
         $request = new Request([
             'type'         => 'chats',
             'jsoncallback' => self::CALLBACK,
@@ -100,7 +108,8 @@ class ApiControllerTest extends NWTest {
         $this->assertObjectHasAttribute('chats', $payload);
     }
 
-    public function testLatestChat() {
+    public function testLatestChat()
+    {
         $request = new Request([
             'type'         => 'latestChatId',
             'jsoncallback' => self::CALLBACK,
@@ -113,7 +122,8 @@ class ApiControllerTest extends NWTest {
         $this->assertObjectHasAttribute('latest_chat_id', $payload);
     }
 
-    public function testIndex() {
+    public function testIndex()
+    {
         $request = new Request([
             'type'         => 'index',
             'jsoncallback' => self::CALLBACK,
@@ -132,7 +142,8 @@ class ApiControllerTest extends NWTest {
         $this->assertObjectHasAttribute('unread_events_count', $payload);
     }
 
-    public function testPlayer() {
+    public function testPlayer()
+    {
         $request = new Request([
             'type'         => 'player',
             'jsoncallback' => self::CALLBACK,
@@ -145,7 +156,8 @@ class ApiControllerTest extends NWTest {
         $this->assertEquals($payload->player->player_id, $this->char->id());
     }
 
-    public function testLatestEvent() {
+    public function testLatestEvent()
+    {
         $request = new Request([
             'type'         => 'latestEvent',
             'jsoncallback' => self::CALLBACK,
@@ -158,7 +170,8 @@ class ApiControllerTest extends NWTest {
         $this->assertObjectHasAttribute('event', $payload);
     }
 
-    public function testLatestMessage() {
+    public function testLatestMessage()
+    {
         $request = new Request([
             'type'         => 'latestMessage',
             'jsoncallback' => self::CALLBACK,
@@ -171,7 +184,8 @@ class ApiControllerTest extends NWTest {
         $this->assertObjectHasAttribute('message', $payload);
     }
 
-    public function testDeactivateCharError() {
+    public function testDeactivateCharError()
+    {
         $request = new Request([
             'type'         => 'deactivateChar',
             'data'         => '-666',
@@ -186,7 +200,8 @@ class ApiControllerTest extends NWTest {
         $this->assertObjectHasAttribute('error', $payload);
     }
 
-    public function testReactivateCharError() {
+    public function testReactivateCharError()
+    {
         // Can't test much more than this because only admins can reactivate
         $request = new Request(['type'         => 'reactivateChar',
             'data'         => '-666',
@@ -201,7 +216,8 @@ class ApiControllerTest extends NWTest {
         $this->assertObjectHasAttribute('error', $payload);
     }
 
-    public function testNextTarget() {
+    public function testNextTarget()
+    {
         $this->markTestSkipped('Not working in ci with fixture data');
         $request = new Request([
             'type'         => 'nextTarget',
@@ -216,7 +232,8 @@ class ApiControllerTest extends NWTest {
         $this->assertObjectHasAttribute('uname', $payload);
     }
 
-    public function testNextTargetShifted() {
+    public function testNextTargetShifted()
+    {
         $this->markTestSkipped('Failing in CI but not locally, for some reason.');
         $request = new Request([
             'type'         => 'nextTarget',

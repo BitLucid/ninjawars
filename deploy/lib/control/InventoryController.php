@@ -18,7 +18,8 @@ use PDO;
 /**
  * Control the display of items and gold (and maybe some day armor) for a char
  */
-class InventoryController extends AbstractController {
+class InventoryController extends AbstractController
+{
     public const PRIV          = true;
     public const ALIVE         = false;
     public const GIVE_COST     = 1;
@@ -30,7 +31,8 @@ class InventoryController extends AbstractController {
      *
      * @return StreamedViewResponse
      */
-    public function index(Container $p_dependencies) {
+    public function index(Container $p_dependencies)
+    {
         $char      = $p_dependencies['current_player'];
         $inv       = Inventory::of($char, 'self');
         $inventory = [];
@@ -66,7 +68,8 @@ class InventoryController extends AbstractController {
      *
      * @return StreamedViewResponse|RedirectResponse
      */
-    public function give(Container $p_dependencies) {
+    public function give(Container $p_dependencies)
+    {
         $slugs  = $this->parseSlugs();
         $player = $p_dependencies['current_player'];
         $target = $this->findPlayer($slugs['in_target']);
@@ -118,7 +121,8 @@ class InventoryController extends AbstractController {
      *
      * @return StreamedViewResponse|RedirectResponse
      */
-    public function selfUse(Container $p_dependencies) {
+    public function selfUse(Container $p_dependencies)
+    {
         $slugs           = $this->parseSlugs();
         $player          = $p_dependencies['current_player'];
         $inventory       = new Inventory($player);
@@ -196,7 +200,8 @@ class InventoryController extends AbstractController {
      * @note
      * /use/ is aliased to useItem externally because use is a php reserved keyword
      */
-    public function useItem(Container $p_dependencies) {
+    public function useItem(Container $p_dependencies)
+    {
         $slugs           = $this->parseSlugs();
         $target          = $this->findPlayer($slugs['in_target']);
         $player          = $p_dependencies['current_player'];
@@ -293,7 +298,8 @@ class InventoryController extends AbstractController {
     /**
      * @return void
      */
-    private function transferOwnership(Player $giver, Player $recipient, Item $item, int $quantity) {
+    private function transferOwnership(Player $giver, Player $recipient, Item $item, int $quantity)
+    {
         $giver_inventory = new Inventory($giver);
         $taker_inventory = new Inventory($recipient);
         $taker_inventory->add($item->identity(), $quantity);
@@ -307,7 +313,8 @@ class InventoryController extends AbstractController {
      * @note
      * Slow and speed effects are exclusive.
      */
-    private function applyItemEffects(Player $user, Player $target, Item $item) {
+    private function applyItemEffects(Player $user, Player $target, Item $item)
+    {
         $success       = true;
         $notice        = null;
         $message       = '';
@@ -465,7 +472,8 @@ class InventoryController extends AbstractController {
     /**
      * Get the slugs and parameter values.
      */
-    private function parseSlugs(): array {
+    private function parseSlugs(): array
+    {
         $url_part = $_SERVER['REQUEST_URI'];
         $path     = parse_url($url_part, PHP_URL_PATH);
         $slugs    = explode('/', trim($path, '/'));
@@ -481,7 +489,8 @@ class InventoryController extends AbstractController {
      *
      * @return void
      */
-    private function sendKillMails(Player $attacker, Player $target, $attacker_label, $article, $item, $loot) {
+    private function sendKillMails(Player $attacker, Player $target, $attacker_label, $article, $item, $loot)
+    {
         $target_email_msg = "You have been killed by $attacker_label with $article $item and lost $loot gold.";
         Event::create(($attacker->name() === $attacker_label ? $attacker->id() : 0), $target->id(), $target_email_msg);
 
@@ -492,7 +501,8 @@ class InventoryController extends AbstractController {
     /**
      * Get the count of how many of an item a player has.
      */
-    private function itemCount(Player $player, Item $item): int {
+    private function itemCount(Player $player, Item $item): int
+    {
         $statement = query(
             "SELECT sum(amount) FROM inventory WHERE item_type = :item AND owner = :owner",
             [
@@ -508,7 +518,8 @@ class InventoryController extends AbstractController {
     /**
      * Benefits for near-equivalent levels.
      */
-    private function calculateBonus(Player $user, Player $target): int {
+    private function calculateBonus(Player $user, Player $target): int
+    {
         $bonus    = 0;
         $distance = abs($target->level - $user->level);
 
@@ -525,7 +536,8 @@ class InventoryController extends AbstractController {
      * @note
      * Caltrops used to be ice scrolls.
      */
-    private function caltropTurnLoss(Player $target, int $bonus): int {
+    private function caltropTurnLoss(Player $target, int $bonus): int
+    {
         $min = 1;
         $max = 0;
 
@@ -549,7 +561,8 @@ class InventoryController extends AbstractController {
      *
      * @return Player|null
      */
-    private function findPlayer($token) {
+    private function findPlayer($token)
+    {
         if (Filter::toNonNegativeInt($token)) {
             $target = Player::find(Filter::toNonNegativeInt($token));
         } else {
@@ -564,7 +577,8 @@ class InventoryController extends AbstractController {
      *
      * @return Item
      */
-    private function findItem($token): Item {
+    private function findItem($token): Item
+    {
         if ($token == (int) $token && is_numeric($token) && $token) {
             $item = Item::find($token);
         } elseif (is_string($token) && $token) {
@@ -579,7 +593,8 @@ class InventoryController extends AbstractController {
     /**
      * @return StreamedViewResponse
      */
-    private function render($parts) {
+    private function render($parts)
+    {
         $options = [
             'body_classes' => 'inventory',
             'quickstat'    => 'viewinv',
@@ -591,7 +606,8 @@ class InventoryController extends AbstractController {
     /**
      * @return StreamedViewResponse
      */
-    private function renderUse($parts) {
+    private function renderUse($parts)
+    {
         $options = [
             'body_classes' => 'inventory-use',
             'quickstat'    => 'player',
@@ -603,7 +619,8 @@ class InventoryController extends AbstractController {
     /**
      * Get the language pluralization of an item's word
      */
-    public static function getIndefiniteArticle($p_noun): string {
+    public static function getIndefiniteArticle($p_noun): string
+    {
         $word = preg_replace("/[^[:alnum:]]/u", '', $p_noun);
         return str_replace(' ' . $word, '', shell_exec('perl ' . LIB_ROOT . 'third-party/lingua-a.pl "' . escapeshellcmd($word) . '"'));
     }

@@ -6,8 +6,10 @@ use Symfony\Component\HttpFoundation\Request; // Just for request created below.
 use NinjaWars\core\environment\RequestWrapper;
 use NinjaWars\core\Filter;
 
-class TestInput extends NWTest {
-    public function setUp(): void {
+class TestInput extends NWTest
+{
+    public function setUp(): void
+    {
         parent::setUp();
         $get = [
             'id'         => 7,
@@ -30,26 +32,30 @@ class TestInput extends NWTest {
         RequestWrapper::inject($request); // Pass a request to be used by tests
     }
 
-    public function tearDown(): void {
+    public function tearDown(): void
+    {
         RequestWrapper::destroy();
         parent::tearDown();
     }
 
-    public function testInputWithinEnvironment() {
+    public function testInputWithinEnvironment()
+    {
         $id = RequestWrapper::getPostOrGet('id');
         $this->assertEquals(7, $id);
         $default_result = RequestWrapper::getPostOrGet('doesnotexist', 5);
         $this->assertEquals(5, $default_result);
     }
 
-    public function testPostWithinMockedEnvironment() {
+    public function testPostWithinMockedEnvironment()
+    {
         $posted = RequestWrapper::getPost('post_post_field', 'Bob');
         $this->assertEquals('Bob', $posted);
         $default = RequestWrapper::getPost('blah_doesnt_exist', 7777);
         $this->assertEquals(7777, $default);
     }
 
-    public function testNonNegativeInt() {
+    public function testNonNegativeInt()
+    {
         $this->assertEquals(4, Filter::toNonNegativeInt(4));
         $this->assertEquals(0, Filter::toNonNegativeInt(-4));
         $this->assertEquals(0, Filter::toNonNegativeInt(4.1));
@@ -62,7 +68,8 @@ class TestInput extends NWTest {
     /**
      *
      */
-    public function testSanitizeToInt() {
+    public function testSanitizeToInt()
+    {
         $this->assertEquals(4, Filter::toInt(4));
         $this->assertEquals(-4, Filter::toInt(-4));
         $this->assertNull(Filter::toInt(4.1));
@@ -72,7 +79,8 @@ class TestInput extends NWTest {
         $this->assertEquals(0, Filter::toInt(0));
     }
 
-    public function testToInt() {
+    public function testToInt()
+    {
         $this->assertEquals(4, Filter::toInt(4));
         $this->assertEquals(-4, Filter::toInt(-4));
         $this->assertNull(Filter::toInt(4.1));
@@ -82,7 +90,8 @@ class TestInput extends NWTest {
         $this->assertEquals(0, Filter::toInt(0));
     }
 
-    public function testFilterToSimple() {
+    public function testFilterToSimple()
+    {
         $this->assertEquals('boba', Filter::toSimple("bob\0aä\x80"));
         $this->assertEquals("!@#^&()_+--", Filter::toSimple("!@#^&()_+'''\"\"''--"));
     }

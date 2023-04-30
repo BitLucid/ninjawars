@@ -8,7 +8,8 @@ use NinjaWars\core\data\Character;
 /**
  * Create a mock player to manipulate
  */
-class MockPlayer extends Player implements Character {
+class MockPlayer extends Player implements Character
+{
     public $strength = 10;
     public $speed = 10;
     public $stamina = 10;
@@ -23,59 +24,72 @@ class MockPlayer extends Player implements Character {
     public $name = 'mock_name';
     public $isAdmin = false;
 
-    public function __get($name) {
+    public function __get($name)
+    {
         return $this->$name;
     }
 
     /**
      * Mock the save, noop, just return the current object
      */
-    public function save(): Player {
+    public function save(): Player
+    {
         return $this;
     }
 
 
-    public function isAdmin(): bool {
+    public function isAdmin(): bool
+    {
         return $this->isAdmin;
     }
 
-    public function setAdmin($onoff): void {
+    public function setAdmin($onoff): void
+    {
         $this->isAdmin = $onoff;
     }
 
-    public function set_gold($amount): void {
+    public function set_gold($amount): void
+    {
         $this->gold = $amount;
     }
 
-    public function setLevel(int $level): int {
+    public function setLevel(int $level): int
+    {
         return $this->level = $level;
     }
 
-    public function getStrength(): int {
+    public function getStrength(): int
+    {
         return $this->strength;
     }
 
-    public function getSpeed(): int {
+    public function getSpeed(): int
+    {
         return $this->speed;
     }
 
-    public function getStamina(): int {
+    public function getStamina(): int
+    {
         return $this->stamina;
     }
 
-    public function maxDamage(Character $char=null): int {
+    public function maxDamage(Character $char=null): int
+    {
         return $this->max_damage;
     }
 
-    public function damage(Character $char=null): int {
+    public function damage(Character $char=null): int
+    {
         return $this->damage;
     }
 
-    public function difficulty(): int {
+    public function difficulty(): int
+    {
         return $this->difficulty;
     }
 
-    public function __toString(): string {
+    public function __toString(): string
+    {
         return $this->name;
     }
 }

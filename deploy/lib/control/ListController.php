@@ -13,7 +13,8 @@ use NinjaWars\core\environment\RequestWrapper;
 /**
  * Display the ninja list as a whole
  */
-class ListController extends AbstractController {
+class ListController extends AbstractController
+{
     public const ALIVE = false;
     public const PRIV  = false;
 
@@ -23,7 +24,8 @@ class ListController extends AbstractController {
      * @param Container $p_dependencies
      * @return Response
      */
-    public function index(Container $p_dependencies) {
+    public function index(Container $p_dependencies)
+    {
         $request      = RequestWrapper::$request;
         $session      = $p_dependencies['session'];
         $searched     = $request->get('searched', null); // Don't filter the search setting
@@ -119,7 +121,8 @@ class ListController extends AbstractController {
      * @param int   $offset
      * @return array An array of decorated ninja
      */
-    private function getFormattedNinjaRows($where_clauses, $params, $record_limit, $offset) {
+    private function getFormattedNinjaRows($where_clauses, $params, $record_limit, $offset)
+    {
         // Get the ninja information to create the lists.
         $sel = "SELECT rank_id, rankings.uname, class.class_name as class, class.identity as class_identity, class.theme as class_theme, rankings.level, rankings.alive, rankings.days, clan_player._clan_id AS clan_id, clan.clan_name, players.player_id
             FROM rankings LEFT JOIN clan_player ON player_id = _player_id LEFT JOIN clan ON clan_id = _clan_id
@@ -150,7 +153,8 @@ class ListController extends AbstractController {
      *
      * @param array $a_player
      */
-    private function formatNinjaRow(array $a_player) {
+    private function formatNinjaRow(array $a_player)
+    {
         return [
             'alive_class'   => ($a_player['alive'] == 1 ? "AliveRow" : "DeadRow"),
             'player_rank'   => $a_player['rank_id'],

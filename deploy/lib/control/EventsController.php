@@ -12,7 +12,8 @@ use NinjaWars\core\extensions\StreamedViewResponse;
 /**
  * Handle the listing of events
  */
-class EventsController extends AbstractController {
+class EventsController extends AbstractController
+{
     public const ALIVE = false;
     public const PRIV  = true;
 
@@ -21,7 +22,8 @@ class EventsController extends AbstractController {
      *
      * @return Response
      */
-    public function index() {
+    public function index()
+    {
         $char   = Player::find(SessionFactory::getSession()->get('player_id'));
         $events = $this->getEvents($char->id(), 300);
 
@@ -43,7 +45,8 @@ class EventsController extends AbstractController {
      * @param String $limit
      * @return array
      */
-    private function getEvents($user_id, $limit=null) {
+    private function getEvents($user_id, $limit=null)
+    {
         $params = [':to' => $user_id];
 
         if ($limit !== null) {
@@ -61,7 +64,8 @@ class EventsController extends AbstractController {
      * @param int $user_id
      * @return void
      */
-    private function readEvents($user_id) {
+    private function readEvents($user_id)
+    {
         DatabaseConnection::getInstance();
         $statement = DatabaseConnection::$pdo->prepare("UPDATE events SET unread = 0 WHERE send_to = :to");
         $statement->bindValue(':to', $user_id);

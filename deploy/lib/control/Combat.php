@@ -8,7 +8,8 @@ namespace NinjaWars\core\control;
 use NinjaWars\core\data\Player;
 use NinjaWars\core\data\Character;
 
-class Combat {
+class Combat
+{
     public const BOUNTY_MAX        = 5000;
     public const BOUNTY_MULTIPLIER = 1;
     public const BOUNTY_MIN        = 25;
@@ -19,7 +20,8 @@ class Combat {
      *
      * @return int
      */
-    public static function killpointsFromDueling(Player $attacker, Player $target) {
+    public static function killpointsFromDueling(Player $attacker, Player $target)
+    {
         $power_difference = ($target->difficulty() - $attacker->difficulty());
 
         $multiplier = max(0, min(4, ceil($power_difference/50)));
@@ -32,7 +34,8 @@ class Combat {
      *
      * @return string
      */
-    public static function runBountyExchange(Player $user, $defender, $bounty_mod=0) {
+    public static function runBountyExchange(Player $user, $defender, $bounty_mod=0)
+    {
         assert($defender instanceof Character); // 'cause can't typehint interfaces
 
         if ($defender instanceof Player && $defender->bounty > 0) {
@@ -67,7 +70,8 @@ class Combat {
     /**
      * Based on the percent damage done, determine the damage class.
      */
-    public static function determineDamageClass(int $damage, int $current_health): string {
+    public static function determineDamageClass(int $damage, int $current_health): string
+    {
         if ($damage === 0) {
             return 'miss';
         }

@@ -13,7 +13,8 @@ use PDO;
  * This is a class that provides a jsonP get api via passing in a callback
  * It is not a REST api
  */
-class ApiController extends AbstractController {
+class ApiController extends AbstractController
+{
     public const ALIVE = false;
     public const PRIV  = false;
 
@@ -22,7 +23,8 @@ class ApiController extends AbstractController {
      *
      * @return Response
      */
-    public function nw_json() {
+    public function nw_json()
+    {
         $request = RequestWrapper::$request;
         $type = $request->get('type');
         $dirty_jsoncallback = $request->get('jsoncallback'); // No callback just gives json

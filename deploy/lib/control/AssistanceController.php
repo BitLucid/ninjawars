@@ -14,7 +14,8 @@ use NinjaWars\core\environment\RequestWrapper;
 /**
  * Give assistance to players and proto-players who anonymous users
  */
-class AssistanceController extends AbstractController {
+class AssistanceController extends AbstractController
+{
     public const PRIV          = false;
     public const ALIVE         = false;
 
@@ -23,7 +24,8 @@ class AssistanceController extends AbstractController {
      *
      * @return array
      */
-    private function userHavingEmail($email) {
+    private function userHavingEmail($email)
+    {
         $data = query_row(
             'SELECT uname, level, account_id, accounts.confirmed,
             accounts.verification_number, accounts.active_email,
@@ -39,7 +41,8 @@ class AssistanceController extends AbstractController {
     /**
      * Sends an email for the user's account data.
      */
-    private function sendAccountEmail($email, $data) {
+    private function sendAccountEmail($email, $data)
+    {
         $template_vars = [
             'lost_uname'   => $data['uname'],
             'active_email' => $data['active_email'],
@@ -63,7 +66,8 @@ class AssistanceController extends AbstractController {
      *
      * @return boolean
      */
-    private function sendConfirmationEmail($email, $data) {
+    private function sendConfirmationEmail($email, $data)
+    {
         $template_vars = [
             'lost_uname'   => $data['uname'],
             'lost_confirm' => $data['verification_number'],
@@ -85,7 +89,8 @@ class AssistanceController extends AbstractController {
      * @return StreamedViewResponse
      * @param Container $p_dependencies Session and account information
      */
-    public function index(Container $p_dependencies) {
+    public function index(Container $p_dependencies)
+    {
         $request = RequestWrapper::$request;
         $email = filter_var($request->get('email', null), FILTER_SANITIZE_EMAIL);
         $password_request = $request->get('password_request');
@@ -141,7 +146,8 @@ class AssistanceController extends AbstractController {
      * @return StreamedViewResponse
      * @param Container $p_dependencies Session and account information
      */
-    public function confirm(Container $p_dependencies) {
+    public function confirm(Container $p_dependencies)
+    {
         $request                   = RequestWrapper::$request;
         $admin_override_pass       = 'WeAllowIt'; // Just a weak passphrase for simply confirming players.
         $admin_override_request    = $request->get('admin_override');

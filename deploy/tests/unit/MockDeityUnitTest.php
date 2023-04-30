@@ -6,8 +6,10 @@ use NinjaWars\tests\MockDeity;
 use NinjaWars\tests\MockGameLog;
 use NWTest;
 
-class MockDeityUnitTest extends NWTest {
-    public function testMockDeityFunctions() {
+class MockDeityUnitTest extends NWTest
+{
+    public function testMockDeityFunctions()
+    {
         $logger = new MockGameLog();
         $deity = new MockDeity($logger);
         $increase_ki = $deity->increaseki();
