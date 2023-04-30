@@ -19,7 +19,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@2.25.1
         with:
-          php-version-file: .phpver
+          php-version: "8.2.4"
           extensions: mbstring, intl, pgsql, xml
           ini-values: post_max_size=256M, max_execution_time=180
           coverage: xdebug
