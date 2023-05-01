@@ -33,7 +33,7 @@ build: dep create-structure link-deps
 create-structure:
 	mkdir -p $(JS)
 	mkdir -p $(VENDOR)
-	cd deploy/ && ln -sf ../vendor/ vendor && cd ..
+	cd deploy/ && rm -rf ./vendor && ln -sf ../vendor/ vendor && cd ..
 	rm -rf ./deploy/templates/compiled/* ./deploy/templates/cache/*
 	mkdir -p ./deploy/templates/compiled ./deploy/templates/cache ./deploy/resources/logs/ /tmp/game_logs/
 	chmod -R ugo+rwX ./deploy/templates/compiled ./deploy/templates/cache /tmp/game_logs/

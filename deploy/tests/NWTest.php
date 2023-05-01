@@ -22,9 +22,9 @@ class NWTest extends \PHPUnit\Framework\TestCase
      */
     public function setUp(): void
     {
+        $this->name = null;
         parent::setUp();
         $this->m_dependencies = new Container();
-        $this->name = null;
 
         $this->m_dependencies['session'] = function ($c) {
             return SessionFactory::getSession();
