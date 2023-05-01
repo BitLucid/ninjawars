@@ -44,16 +44,9 @@ jobs:
 
       - name: Install dependencies
         if: steps.composer-cache.outputs.cache-hit != 'true'
-        run: ./composer.phar install --prefer-dist --no-progress
-
-      - name: Create autoload file if necessary
-        if: steps.composer-cache.outputs.cache-hit == 'true'
         run: |
-          ls -halt ./vendor/
-          ./composer.phar dump-autoload
-
-      # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
-      # Docs: https://getcomposer.org/doc/articles/scripts.md
+          make create-structure
+          ./composer.phar install --prefer-dist --no-progress
 
       - name: Run test suite
         run: |
