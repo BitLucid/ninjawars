@@ -1,13 +1,15 @@
 <?php
 
-require_once(CORE.'/plugins/function.cachebust.php');
-require_once(CORE.'/plugins/modifier.replace_urls.php');
-require_once(CORE.'/plugins/modifier.markdown.php');
-require_once(CORE.'/plugins/function.getTurnCost.php');
-require_once(CORE.'/plugins/function.health_percent.php');
-require_once(CORE.'/plugins/modifier.css_classify.php');
-require_once(CORE.'/plugins/modifier.level_label.php');
-require_once(CORE.'/plugins/modifier.to_tags.php');
+declare(strict_types=1);
+
+require_once(CORE . '/plugins/function.cachebust.php');
+require_once(CORE . '/plugins/modifier.replace_urls.php');
+require_once(CORE . '/plugins/modifier.markdown.php');
+require_once(CORE . '/plugins/function.getTurnCost.php');
+require_once(CORE . '/plugins/function.health_percent.php');
+require_once(CORE . '/plugins/modifier.css_classify.php');
+require_once(CORE . '/plugins/modifier.level_label.php');
+require_once(CORE . '/plugins/modifier.to_tags.php');
 
 class SmartyPluginUnitTest extends \PHPUnit\Framework\TestCase
 {
@@ -19,14 +21,14 @@ class SmartyPluginUnitTest extends \PHPUnit\Framework\TestCase
 
     public function testCachebustPositive()
     {
-        $result = smarty_function_cachebust(['file'=>self::EXISTING_FILE]);
+        $result = smarty_function_cachebust(['file' => self::EXISTING_FILE]);
         $this->assertNotEquals(self::EXISTING_FILE, $result);
         $this->assertGreaterThan(strlen(self::EXISTING_FILE), strlen($result));
     }
 
     public function testCachebustNegative()
     {
-        $this->assertEquals(self::MISSING_FILE, smarty_function_cachebust(['file'=>self::MISSING_FILE]));
+        $this->assertEquals(self::MISSING_FILE, smarty_function_cachebust(['file' => self::MISSING_FILE]));
     }
 
     public function testMarkdownPositive()
@@ -43,11 +45,11 @@ class SmartyPluginUnitTest extends \PHPUnit\Framework\TestCase
 
     public function testReplaceUrlsPositive()
     {
-        $testText = 'The main thing '.self::URL.' is this.';
+        $testText = 'The main thing ' . self::URL . ' is this.';
         $result = smarty_modifier_replace_urls($testText);
         $this->assertNotEquals($testText, $result);
         $this->assertGreaterThan(strlen($testText), strlen($result));
-        $this->assertGreaterThan(strlen(self::URL)*2, strlen($result));
+        $this->assertGreaterThan(strlen(self::URL) * 2, strlen($result));
         $this->assertStringContainsString(self::URL, $result);
     }
 
@@ -57,7 +59,7 @@ class SmartyPluginUnitTest extends \PHPUnit\Framework\TestCase
     }
     public function testTurnCostIsInt()
     {
-        $this->assertIsInt(smarty_function_getTurnCost(['skillName'=>'kampo']));
+        $this->assertIsInt(smarty_function_getTurnCost(['skillName' => 'kampo']));
     }
 
     public function testCSSClassifyIsString()
@@ -72,6 +74,6 @@ class SmartyPluginUnitTest extends \PHPUnit\Framework\TestCase
 
     public function testHealthPercentIsFloat()
     {
-        $this->assertIsFloat(smarty_function_health_percent(['level'=>10, 'health'=>10]));
+        $this->assertIsFloat(smarty_function_health_percent(['level' => 10, 'health' => 10]));
     }
 }

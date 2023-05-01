@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 class NWTest extends \PHPUnit\Framework\TestCase
 {
     protected $m_dependencies;
+    public ?string $name = null;
 
     public static function setUpBeforeClass(): void
     {
@@ -22,7 +23,6 @@ class NWTest extends \PHPUnit\Framework\TestCase
      */
     public function setUp(): void
     {
-        $this->name = null;
         parent::setUp();
         $this->m_dependencies = new Container();
 
