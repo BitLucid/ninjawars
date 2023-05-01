@@ -26,7 +26,7 @@ ifndef TESTFILE
 	TESTFILE=
 endif
 
-build: dep create-structure link-deps
+build: create-structure dep link-deps
 
 # Note that the vendor creation in the below is not the same
 # as the RELATIVE_VENDOR env var, which is pathing related
@@ -37,6 +37,7 @@ create-structure:
 	rm -rf ./deploy/templates/compiled/* ./deploy/templates/cache/*
 	mkdir -p ./deploy/templates/compiled ./deploy/templates/cache ./deploy/resources/logs/ /tmp/game_logs/
 	chmod -R ugo+rwX ./deploy/templates/compiled ./deploy/templates/cache /tmp/game_logs/
+	mkdir -p deploy/vendor && ln -sf deploy/vendor/ vendor
 
 
 link-deps:
@@ -292,7 +293,6 @@ link-vendor:
 
 ci-pre-configure:
 	# Set php version
-	# Versions available: https://documentation.codeship.com/basic/languages-frameworks/php/#versions-and-setup
 	sem-version php 8.0
 	#@echo "Removing xdebug on CI, by default."
 	#rm -f /home/rof/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini
