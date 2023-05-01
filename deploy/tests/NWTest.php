@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Pimple\Container;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use NinjaWars\core\extensions\SessionFactory;
@@ -22,6 +24,7 @@ class NWTest extends \PHPUnit\Framework\TestCase
     {
         parent::setUp();
         $this->m_dependencies = new Container();
+        $this->name = null;
 
         $this->m_dependencies['session'] = function ($c) {
             return SessionFactory::getSession();
