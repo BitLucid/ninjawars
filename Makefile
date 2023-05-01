@@ -26,18 +26,18 @@ ifndef TESTFILE
 	TESTFILE=
 endif
 
-build: create-structure dep link-deps
+build: create-structure dep link-deps check-vendors-installed
 
 # Note that the vendor creation in the below is not the same
 # as the RELATIVE_VENDOR env var, which is pathing related
 create-structure:
 	mkdir -p $(JS)
-	mkdir -p $(VENDOR)
-	cd deploy/ && rm -rf ./vendor && ln -sf ../vendor/ vendor && cd ..
+	mkdir -p deploy/$(VENDOR)
+	rm -f vendor
+	ln -s deploy/vendor vendor
 	rm -rf ./deploy/templates/compiled/* ./deploy/templates/cache/*
 	mkdir -p ./deploy/templates/compiled ./deploy/templates/cache ./deploy/resources/logs/ /tmp/game_logs/
 	chmod -R ugo+rwX ./deploy/templates/compiled ./deploy/templates/cache /tmp/game_logs/
-	mkdir -p deploy/vendor && ln -sf deploy/vendor/ vendor
 
 
 link-deps:
@@ -51,6 +51,10 @@ link-deps:
 
 dep:
 	@$(COMPOSER) install
+
+check-vendors-installed:
+# Throw error if the vendor directories are not installed
+	@ls vendor/ && cd deploy && ls vendor/ && cd ..
 
 
 check: pre-test
@@ -226,7 +230,10 @@ dist-clean: clean
 
 
 clear-vendor:
-	cd deploy && rm -rf vendor/* && mkdir -p vendor && cd ..
+	rm -rf vendor deploy/vendor
+
+	
+
 
 clear-cache:
 	php ./deploy/lib/control/util/clear_cache.php
