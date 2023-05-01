@@ -3,8 +3,8 @@
   "description": "The composer dependencies for the ninjawars game and web components.",
   "license": "proprietary",
   "scripts": {
-    "test": "phpunit",
-    "unit-test": "phpunit --testsuite Unit",
+    "test": "./vendor/bin/phpunit",
+    "unit-test": "./vendor/bin/phpunit --testsuite Unit",
     "lint-fix": "tools/php-cs-fixer/vendor/bin/php-cs-fixer fix ./",
     "test-check": "php deploy/check.php && php ./deploy/cron/tick_atomic.php"
   },
