@@ -7,6 +7,7 @@
     "unit-test": "./vendor/bin/phpunit --testsuite Unit",
     "lint-fix": "tools/php-cs-fixer/vendor/bin/php-cs-fixer fix ./",
     "test-check": "php deploy/check.php",
+    "test-checkbase": "php deploy/checkbase.php",
     "test-cron": "php ./deploy/cron/tick_atomic.php"
   },
   "autoload": {

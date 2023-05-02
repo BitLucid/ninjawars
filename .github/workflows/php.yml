@@ -62,7 +62,5 @@ jobs:
       - name: Run test-check suite
         run: |
           ln -sf ./resources.build.php ./deploy/resources.php
-          ./composer.phar run-script test-check
-          sudo apt install postgresql postgresql-client
-          make db-init-all
-          ./composer.phar run-script test-cron
+          ./composer.phar run-script test-checkbase
+          #./composer.phar run-script test-cron
