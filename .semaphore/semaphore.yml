@@ -81,6 +81,5 @@ blocks:
           - ./configure
           - make preconfig
           - sem-version php 8.2.5
-          - ./composer.phar install --prefer-dist --no-interaction
     run:
       when: change_in('/deploy')
