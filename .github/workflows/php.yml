@@ -53,13 +53,13 @@ jobs:
           make create-structure
           make preconfig
           make link-vendor
-          ./composer.phar install --verbose --prefer-dist --no-progress --no-interaction --no-dev --optimize-autoloader
-
-      - name: Run test suite
+          make build
+      #          ./composer.phar install --verbose --prefer-dist --no-progress --no-interaction --no-dev --optimize-autoloader
+      - name: Run unit test suite
         run: |
           ln -sf ./resources.build.php ./deploy/resources.php
           ./composer.phar run-script unit-test
-      - name: Run test suite
+      - name: Run test-check suite
         run: |
           ln -sf ./resources.build.php ./deploy/resources.php
           ./composer.phar run-script test-check
