@@ -63,4 +63,5 @@ jobs:
         run: |
           ln -sf ./resources.build.php ./deploy/resources.php
           ./composer.phar run-script test-checkbase
+          # make db-init-all
           #./composer.phar run-script test-cron
