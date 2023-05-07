@@ -15,7 +15,8 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 /**
  * Handle updates for changing account password, changing account email and showing the account page
  */
-class AccountController extends AbstractController {
+class AccountController extends AbstractController
+{
     public const ALIVE = false;
     public const PRIV  = true;
 
@@ -24,7 +25,8 @@ class AccountController extends AbstractController {
      *
      * @return StreamedViewResponse
      */
-    public function showChangeEmailForm() {
+    public function showChangeEmailForm()
+    {
         $command = 'show_change_email_form';
 
         $parts = [
@@ -39,7 +41,8 @@ class AccountController extends AbstractController {
      *
      * @return StreamedViewResponse
      */
-    public function changeEmail($p_dependencies) {
+    public function changeEmail($p_dependencies)
+    {
         // confirm_delete
         $request    = RequestWrapper::$request;
         $player     = $p_dependencies['current_player'];
@@ -95,7 +98,8 @@ class AccountController extends AbstractController {
      *
      * @return StreamedViewResponse
      */
-    public function showChangePasswordForm() {
+    public function showChangePasswordForm()
+    {
         // explicitly define command value ?
         $command = 'show_change_password_form';
 
@@ -111,7 +115,8 @@ class AccountController extends AbstractController {
      *
      * @return StreamedViewResponse
      */
-    public function changePassword($p_dependencies) {
+    public function changePassword($p_dependencies)
+    {
         $request    = RequestWrapper::$request;
         $player     = $p_dependencies['current_player'];
         $self_info 	= $player->data();
@@ -151,7 +156,8 @@ class AccountController extends AbstractController {
      * @todo Maybe make functionality in the model to have this done.
      * @return void
      */
-    private function _changePassword($p_playerID, $p_newPassword) {
+    private function _changePassword($p_playerID, $p_newPassword)
+    {
         $changePasswordQuery = "UPDATE accounts SET phash = crypt(:password, gen_salt('bf', 8)) WHERE account_id = (SELECT _account_id FROM account_players WHERE _player_id = :pid)";
 
         $statement = DatabaseConnection::$pdo->prepare($changePasswordQuery);
@@ -165,7 +171,8 @@ class AccountController extends AbstractController {
      *
      * @return StreamedViewResponse
      */
-    public function deleteAccountConfirmation() {
+    public function deleteAccountConfirmation()
+    {
         $session    = SessionFactory::getSession();
         $command = 'show_confirm_delete_form';
         $delete_attempts = $session->get('delete_attempts', 0);
@@ -183,7 +190,8 @@ class AccountController extends AbstractController {
      *
      * @return StreamedViewResponse
      */
-    public function deleteAccount($p_dependencies) {
+    public function deleteAccount($p_dependencies)
+    {
         $request         = RequestWrapper::$request;
         $session         = SessionFactory::getSession();
         $player          = $p_dependencies['current_player'];
@@ -229,14 +237,16 @@ class AccountController extends AbstractController {
      *
      * @return StreamedViewResponse
      */
-    public function index() {
+    public function index()
+    {
         return $this->render([]);
     }
 
     /**
      * @return StreamedViewResponse
      */
-    private function render($p_parts) {
+    private function render($p_parts)
+    {
         $account = Account::findById(SessionFactory::getSession()->get('account_id'));
         $player  = Player::find(SessionFactory::getSession()->get('player_id'));
         $ninjas = $account->getCharacters();
@@ -267,7 +277,8 @@ class AccountController extends AbstractController {
      *
      * @return boolean
      */
-    public static function is_authentic($p_user, $p_pass) {
+    public static function is_authentic($p_user, $p_pass)
+    {
         $account = Account::findByLogin($p_user);
 
         return ($account && $account->authenticate($p_pass));

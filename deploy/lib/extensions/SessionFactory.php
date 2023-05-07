@@ -9,7 +9,8 @@ use Symfony\Component\HttpFoundation\Session\Session as SymfonySession;
  *
  * @see \Symfony\Component\HttpFoundation\Session\Session
  */
-class SessionFactory {
+class SessionFactory
+{
     public static $self = null;
 
     public static function init(
@@ -30,11 +31,13 @@ class SessionFactory {
         }
     }
 
-    public static function getSession() {
+    public static function getSession()
+    {
         return self::init();
     }
 
-    public static function annihilate() {
+    public static function annihilate()
+    {
         if (self::$self) {
             self::$self->invalidate();
         }

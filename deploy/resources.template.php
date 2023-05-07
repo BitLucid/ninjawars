@@ -41,7 +41,8 @@ define('CONNECTION_STRING', 'pgsql:'.(DATABASE_USE_HOST ? 'host='.DATABASE_HOST 
     (DATABASE_USE_PORT ? ';port='.DATABASE_PORT : '').(DATABASE_USE_PASSWORD ? ';password='.DATABASE_PASSWORD : ''));
 
 // Used, among other things, to check for attackLegal, can't use constants as arrays until php 7, so static class info instead.
-class Constants {
+class Constants
+{
     public static $trusted_proxies = ['104.130.111.36', '10.189.245.10', '52.204.80.200', '172.31.17.0', '172.31.54.175'];
 }
 

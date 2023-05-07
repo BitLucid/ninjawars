@@ -1,10 +1,26 @@
-/* eslint-disable camelcase */
-/* Manipulate chats to and from the api, run websockets server by sudo make run-chat */
+/**
+ * @file Chat functionality for the game.
+ * Connects to websockets server to send and receive chat messages.
+ * Manipulate chats to and from the api, run websockets server by sudo make run-chat
+ * or via the serverless websockets server
+ *
+ * Install wscat and
+ * use wscat -c wss://chatapi.ninjawars.net:443 to connect to the chat server.
+ * or see the ws-chat repo below
+ * @link https://github.com/NinjaWars/ws-chat
+ */
+
 /* jshint browser: true, white: true, plusplus: true */
 /* global NW, Chat, window.conn, window.parent, window.WebSocket, window.Chat */
 
 /* eslint max-statements: "Warn" */
 /* eslint max-lines: "Warn" */
+/* eslint camelcase: "Off" */
+/* eslint max-lines: "Off" */
+
+const standardChatApi = 'chatapi.ninjawars.net';
+const standardChatPort = '443';
+const liveChat = (localStorage && localStorage.getItem('liveChat')) || false;
 
 // eslint-disable-next-line no-var
 var logger = window.logger || console || {
@@ -123,6 +139,7 @@ Chat.displayMessages = function fnDisMsg() {
  *              'date':Date.now(),
  *              'sender_id':'128274'});
  */
+// eslint-disable-next-line max-statements
 Chat.renderChatMessage = function fnRendChat(p_data) {
   if (!p_data.message) {
     logger.error(
@@ -261,18 +278,25 @@ Chat.canSend = function fnCCanSend() {
 };
 
 // Get the dev domain if on .local, fallback to live chat
+// eslint-disable-next-line max-statements
 Chat.domain = function fnChDomain(url) {
-  logger.info(`Finding chat api for url: ${url}`);
+  if (liveChat) {
+    console.info('Using live chat api');
+    return standardChatApi;
+  }
 
   if (url && (url.includes('.localurl') || url.includes('localhost'))) {
     const { hostname } = url ? new URL(url) : {};
+    logger.info('Chat api url found was :', hostname);
     return hostname;
   }
   if (url && url.includes('.local')) {
     const { hostname } = new URL(url);
+    logger.info('Chat api url found was :', hostname);
     return `chatapi.${hostname}`;
   }
-  return 'chatapi.ninjawars.net';
+  logger.info('Chat api url found was :', standardChatApi);
+  return standardChatApi; // Fallback default configured
 };
 
 // Add a typewatch IIFE
@@ -290,16 +314,21 @@ Chat.typewatch = (function fnChTypewatch() {
  * @param {*} port
  * @returns
  */
-Chat.setConfig = (initialUrl, port) => ({
+Chat.setConfig = (initialUrl, port, { useSecure } = {}) => ({
   server: Chat.domain(initialUrl),
   port,
-  protocol: initialUrl.includes('http://') ? 'ws' : 'wss',
+  protocol: (initialUrl.includes('http://') || initialUrl.includes('local')) && !useSecure ? 'ws' : 'wss',
 });
 
 // Try to connect to active websocket server, see README
+// eslint-disable-next-line max-statements
 $(() => {
   // Set up initial config.
-  Chat.config = Chat.setConfig(window && window.location.href, '8080');
+  Chat.config = Chat.setConfig(
+    window && window.location.href,
+    standardChatPort,
+    { useSecure: liveChat },
+  );
   if (window.WebSocket !== undefined) {
     // Browser is compatible.
     const connectionString = `${Chat.config.protocol}://${Chat.config.server}:${Chat.config.port}`;
@@ -347,13 +376,13 @@ function refreshpagechat() {
   // Refresh only if text not being written.
   if (
     !messageInput.length
-        || messageInput.val() === false
-        || messageInput.val() === ''
+    || messageInput.val() === false
+    || messageInput.val() === ''
   ) {
     if (
       window.parent
-            && window.parent.main
-            && window.parent.main.location
+      && window.parent.main
+      && window.parent.main.location
     ) {
       window.parent.main.location.reload();
     } else {

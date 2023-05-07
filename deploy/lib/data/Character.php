@@ -5,7 +5,8 @@ namespace NinjaWars\core\data;
 /**
  * Npcs and Players should both implement this interface.
  */
-interface Character {
+interface Character
+{
     /**
      * @return int
      */

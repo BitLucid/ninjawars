@@ -3,45 +3,55 @@
 use NinjaWars\core\data\Skill;
 use NinjaWars\core\data\Player;
 
-class SkillUnitTest extends NWTest {
+class SkillUnitTest extends NWTest
+{
     private $skill;
 
-    public function setUp(): void {
+    public function setUp(): void
+    {
         parent::setUp();
         $this->skill = new Skill();
     }
 
-    public function testGetSkillList() {
+    public function testGetSkillList()
+    {
         $skillList = $this->skill->getSkillList();
         $this->assertIsArray($skillList);
         $this->assertNotEmpty($skillList);
     }
 
-    public function testGetTurnCostDefault() {
+    public function testGetTurnCostDefault()
+    {
         $this->assertEquals(1, $this->skill->getTurnCost(''));
     }
 
-    public function testGetTurnCostSpecific() {
+    public function testGetTurnCostSpecific()
+    {
         $this->assertEquals(2, $this->skill->getTurnCost('deflect'));
     }
 
-    public function testGetSelfUseDefault() {
+    public function testGetSelfUseDefault()
+    {
         $this->assertFalse($this->skill->getSelfUse(''));
     }
 
-    public function testGetSelfUseSpecific() {
+    public function testGetSelfUseSpecific()
+    {
         $this->assertTrue($this->skill->getSelfUse('kampo'));
     }
 
-    public function testGetUsableOnTargetDefault() {
+    public function testGetUsableOnTargetDefault()
+    {
         $this->assertTrue($this->skill->getUsableOnTarget(''));
     }
 
-    public function testGetUsableOnTargetSpecific() {
+    public function testGetUsableOnTargetSpecific()
+    {
         $this->assertFalse($this->skill->getUsableOnTarget('stealth'));
     }
 
-    public function testStalkingAffectsStats() {
+    public function testStalkingAffectsStats()
+    {
         $pc = new Player();
         $str = $pc->getStrength();
         $speed = $pc->getSpeed();
@@ -53,15 +63,18 @@ class SkillUnitTest extends NWTest {
         $this->assertLessThan($stamina, $pc->getStamina());
     }
 
-    public function testGetIgnoreStealthDefault() {
+    public function testGetIgnoreStealthDefault()
+    {
         $this->assertFalse($this->skill->getIgnoreStealth(''));
     }
 
-    public function testGetIgnoreStealthSpecific() {
+    public function testGetIgnoreStealthSpecific()
+    {
         $this->assertTrue($this->skill->getIgnoreStealth('blaze'));
     }
 
-    public function testStealthDecreasesStrengthIncreasesStamina() {
+    public function testStealthDecreasesStrengthIncreasesStamina()
+    {
         $pc = new Player();
         $str = $pc->getStrength();
         $stamina = $pc->getStamina();

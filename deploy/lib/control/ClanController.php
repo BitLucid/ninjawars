@@ -16,7 +16,8 @@ use NinjaWars\core\data\DatabaseConnection;
 /**
  * Controller for all actions involving clan
  */
-class ClanController extends AbstractController {
+class ClanController extends AbstractController
+{
     public const CLAN_CREATOR_MIN_LEVEL = 20;
     public const ALIVE                  = false;
     public const PRIV                   = false;
@@ -29,7 +30,8 @@ class ClanController extends AbstractController {
      * @note
      * If a clan_id is not specified, the clan of the current user will be used
      */
-    public function view(Container $p_dependencies) {
+    public function view(Container $p_dependencies)
+    {
         $clanID = RequestWrapper::getPostOrGet('clan_id', null);
         $player = $p_dependencies['current_player'];
 
@@ -41,7 +43,7 @@ class ClanController extends AbstractController {
 
         if (isset($clan) && $clan instanceof Clan) {
             $parts = [
-                'title'     => $clan->getName().' Clan',
+                'title'     => $clan->getName() . ' Clan',
                 'clan'      => $clan,
                 'pageSections' => [
                     'info',
@@ -90,7 +92,8 @@ class ClanController extends AbstractController {
      * @return Response
      * @throws Exception You cannot use this function if you are not the leader of a clan
      */
-    public function invite(Container $p_dependencies) {
+    public function invite(Container $p_dependencies)
+    {
         $player = $p_dependencies['current_player'];
         $clan   = Clan::findByMember($player);
 
@@ -114,7 +117,7 @@ class ClanController extends AbstractController {
             $error = $clan->invite($person_to_invite, $player);
 
             if ($error === null) {
-                $parts['action_message'] = 'Invited '.$person_to_invite->name().' to your clan.';
+                $parts['action_message'] = 'Invited ' . $person_to_invite->name() . ' to your clan.';
             } else {
                 $parts['error'] = $error;
             }
@@ -132,7 +135,8 @@ class ClanController extends AbstractController {
      * @return Response
      * @throws Exception If you are the only leader of your clan, you cannot leave, you must disband
      */
-    public function leave(Container $p_dependencies) {
+    public function leave(Container $p_dependencies)
+    {
         $player = $p_dependencies['current_player'];
         $clan   = Clan::findByMember($player);
 
@@ -163,21 +167,22 @@ class ClanController extends AbstractController {
      *
      * @see CLAN_CREATOR_MIN_LEVEL
      */
-    public function create(Container $p_dependencies) {
+    public function create(Container $p_dependencies)
+    {
         $player = $p_dependencies['current_player'];
 
         if ($player->level >= self::CLAN_CREATOR_MIN_LEVEL) {
-            $default_clan_name = 'Clan '.$player->name();
+            $default_clan_name = 'Clan ' . $player->name();
 
             while (!Clan::isUniqueClanName($default_clan_name)) {
-                $default_clan_name = $default_clan_name.rand(1, 999);
+                $default_clan_name = $default_clan_name . rand(1, 999);
             }
 
             $clan = Clan::create($player, $default_clan_name);
 
             $parts = [
-                'action_message' => 'Your clan was created with the default name: '.$clan->getName().'. Change it below.',
-                'title'          => 'Clan '.$clan->getName(),
+                'action_message' => 'Your clan was created with the default name: ' . $clan->getName() . '. Change it below.',
+                'title'          => 'Clan ' . $clan->getName(),
                 'clan'           => $clan,
                 'pageSections'      => [
                     'edit',
@@ -185,7 +190,7 @@ class ClanController extends AbstractController {
             ];
         } else {
             $parts = [
-                'error'     => 'You do not have enough renown to create a clan. You must be at least level '.self::CLAN_CREATOR_MIN_LEVEL.'.',
+                'error'     => 'You do not have enough renown to create a clan. You must be at least level ' . self::CLAN_CREATOR_MIN_LEVEL . '.',
                 'title'     => 'You cannot create a clan yet',
                 'clans'     => Clan::rankings(),
                 'pageSections' => [
@@ -202,7 +207,8 @@ class ClanController extends AbstractController {
      * @param Container $p_dependencies
      * @return Response
      */
-    public function join(Container $p_dependencies): StreamedViewResponse {
+    public function join(Container $p_dependencies): StreamedViewResponse
+    {
         $clanID = (int) RequestWrapper::getPostOrGet('clan_id', 0);
         $clan   = Clan::find($clanID);
 
@@ -233,7 +239,8 @@ class ClanController extends AbstractController {
      * @throws \RuntimeException On invalid leader disband request
      * @return Response
      */
-    public function disband(Container $p_dependencies): StreamedViewResponse {
+    public function disband(Container $p_dependencies): StreamedViewResponse
+    {
         $player = $p_dependencies['current_player'];
         $clan   = Clan::findByMember($player);
         $sure   = RequestWrapper::getPostOrGet('sure', '');
@@ -273,7 +280,8 @@ class ClanController extends AbstractController {
      * @return Response
      * @throws Exception The player must be the leader of the clan to kick a member
      */
-    public function kick(Container $p_dependencies) {
+    public function kick(Container $p_dependencies)
+    {
         $kicker = $p_dependencies['current_player'];
         $clan   = Clan::findByMember($kicker);
         $kicked = Player::find(RequestWrapper::getPostOrGet('kicked', ''));
@@ -285,7 +293,7 @@ class ClanController extends AbstractController {
         $clan->kickMember($kicked->id(), $kicker);
 
         return $this->render([
-            'action_message' => "You have removed ".$kicked->name()." from your clan",
+            'action_message' => "You have removed " . $kicked->name() . " from your clan",
             'title'          => 'Manage your clan',
             'clan'           => $clan,
             'pageSections'      => [
@@ -306,7 +314,8 @@ class ClanController extends AbstractController {
      * @note
      * All parameters are options
      */
-    public function update(Container $p_dependencies) {
+    public function update(Container $p_dependencies)
+    {
         $request = RequestWrapper::$request;
         $player  = $p_dependencies['current_player'];
         $clan    = Clan::findByMember($player);
@@ -373,7 +382,8 @@ class ClanController extends AbstractController {
      * @return Response
      * @see update()
      */
-    public function edit(Container $p_dependencies) {
+    public function edit(Container $p_dependencies)
+    {
         $player = $p_dependencies['current_player'];
         $clan   = Clan::findByMember($player);
 
@@ -393,7 +403,8 @@ class ClanController extends AbstractController {
      * @param Container $p_dependencies
      * @return Response
      */
-    public function message(Container $p_dependencies) {
+    public function message(Container $p_dependencies)
+    {
         $player = $p_dependencies['current_player'];
         $message = RequestWrapper::getPostOrGet('message', null);
 
@@ -436,7 +447,8 @@ class ClanController extends AbstractController {
      * @param Container $p_dependencies
      * @return Response
      */
-    public function listClans(Container $p_dependencies) {
+    public function listClans(Container $p_dependencies)
+    {
         $parts = [
             'title'     => 'Clan List',
             'clans'     => Clan::rankings(),
@@ -464,7 +476,8 @@ class ClanController extends AbstractController {
      * @param Container $p_dependencies
      * @return Response
      */
-    public function review(Container $p_dependencies) {
+    public function review(Container $p_dependencies)
+    {
         $request = RequestWrapper::$request;
         $ninja   = $p_dependencies['current_player'];
         $clan    = Clan::findByMember($ninja);
@@ -504,7 +517,8 @@ class ClanController extends AbstractController {
      * @par Preconditions:
      * Active player must be leader of a clan
      */
-    public function accept(Container $p_dependencies) {
+    public function accept(Container $p_dependencies)
+    {
         $request = RequestWrapper::$request;
         $ninja   = $p_dependencies['current_player'];
         $clan    = Clan::findByMember($ninja);
@@ -553,7 +567,8 @@ class ClanController extends AbstractController {
      * @param Array $p_parts Name-Value pairs of values to send to the view
      * @return Response
      */
-    private function render(array $p_parts): StreamedViewResponse {
+    private function render(array $p_parts): StreamedViewResponse
+    {
         if (!isset($p_parts['pageSections'])) {
             $p_parts['pageSections'] = [];
         }
@@ -586,7 +601,8 @@ class ClanController extends AbstractController {
      * @param Clan   $p_objClan   The clan to check against
      * @return boolean
      */
-    private function playerIsLeader(Player $p_objPlayer, Clan $p_objClan): bool {
+    private function playerIsLeader(Player $p_objPlayer, Clan $p_objClan): bool
+    {
         $leaders = $p_objClan->getAllClanLeaders();
 
         foreach ($leaders as $leader) {
@@ -606,41 +622,10 @@ class ClanController extends AbstractController {
      * @param int $clan_id
      * @return Array|bool
      */
-    private function sendClanJoinRequest(int $user_id, int $clan_id) {
-        DatabaseConnection::getInstance();
+    private function sendClanJoinRequest(int $user_id, int $clan_id)
+    {
         $clan_obj  = new Clan($clan_id);
-        $leader    = $clan_obj->getLeaderInfo();
-        $leader_id = $leader['player_id'];
-        $user      = Player::find($user_id);
-        $username  = $user->name();
-
-        if (!$leader_id) {
-            return [
-                'error'=>true,
-                'message'=>'No leader to this clan is available, sorry.'
-            ];
-        }
-
-        $confirmStatement = DatabaseConnection::$pdo->prepare('SELECT verification_number FROM players WHERE player_id = :user');
-        $confirmStatement->bindValue(':user', $user_id);
-        $confirmStatement->execute();
-        $confirm = $confirmStatement->fetchColumn();
-
-
-
-        // These ampersands get encoded later.
-        $url = "[href:clan/review/?joiner=$user_id&confirmation=$confirm|Confirm Request]";
-
-        $join_request_message = 'CLAN JOIN REQUEST: '.htmlentities($username)." has sent a request to join your clan.
-            If you wish to allow this ninja into your clan click the following link:
-				$url";
-
-        Message::create([
-            'send_from' => $user_id,
-            'send_to'   => $leader_id,
-            'message'   => $join_request_message,
-            'type'      => 0,
-        ]);
+        $clan_obj->sendClanJoinRequest($user_id);
         return true;
     }
 }

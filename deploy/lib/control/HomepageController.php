@@ -13,7 +13,8 @@ use NinjaWars\core\data\Clan;
 /**
  * display the standard homepage, and maybe eventually the splash page
  */
-class HomepageController extends AbstractController {
+class HomepageController extends AbstractController
+{
     public const PRIV      = false;
     public const ALIVE     = false;
     private $loggedIn = false;
@@ -22,7 +23,8 @@ class HomepageController extends AbstractController {
     /**
      * Stores logged-in status of user in member variable for use later
      */
-    public function __construct() {
+    public function __construct()
+    {
         $this->loggedIn = (bool) SessionFactory::getSession()->get('player_id');
     }
 
@@ -31,7 +33,8 @@ class HomepageController extends AbstractController {
      *
      * @return Response
      */
-    public function index(Container $p_dependencies) {
+    public function index(Container $p_dependencies)
+    {
         return ($this->loggedIn ? $this->game($p_dependencies) : $this->splash());
     }
 
@@ -40,7 +43,8 @@ class HomepageController extends AbstractController {
      *
      * @return Response
      */
-    private function game(Container $p_dependencies) {
+    private function game(Container $p_dependencies)
+    {
         // Get the actual values of the vars.
         $ninja = $p_dependencies['current_player'] ?? new Player();
         $playerInfo = $ninja ? $ninja->data() : [];
@@ -71,7 +75,8 @@ class HomepageController extends AbstractController {
      * @todo Make version dynamic based on actual version of app
      * @return Response
      */
-    private function splash() {
+    private function splash()
+    {
         // Assign these vars to the template.
         $parts = [
             'main_src'     => '/intro',

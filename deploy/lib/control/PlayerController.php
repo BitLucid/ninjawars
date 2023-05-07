@@ -17,11 +17,13 @@ use NinjaWars\core\extensions\StreamedViewResponse;
 use NinjaWars\core\environment\RequestWrapper;
 use Pimple\Container;
 
-class PlayerController extends AbstractController {
+class PlayerController extends AbstractController
+{
     public const PRIV  = false;
     public const ALIVE = false;
 
-    public function index(Container $p_dependencies): StreamedViewResponse {
+    public function index(Container $p_dependencies): StreamedViewResponse
+    {
         $request   = RequestWrapper::$request;
         $target    = $request->get('player');
         $target_id = $request->get('player_id');
@@ -128,7 +130,8 @@ class PlayerController extends AbstractController {
      * like a final url of /item/use/shuriken/tchalvak
      * from a starting url of http://nw.local/player/use_item/?item=shuriken&target=tchalvak
      */
-    public function use_item() {
+    public function use_item()
+    {
         $request = RequestWrapper::$request;
         $target = $request->get('target_id');
         $item_in = $request->get('item');
@@ -144,7 +147,8 @@ class PlayerController extends AbstractController {
      * like a final url of /skill/use/firebolt/tchalvak
      * from a starting url of http://nw.local/player/use_skill/?act=firebolt&target=tchalvak
      */
-    public function use_skill() {
+    public function use_skill()
+    {
         $request = RequestWrapper::$request;
         $target = $request->get('target');
         $act = $request->get('act');

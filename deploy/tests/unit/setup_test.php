@@ -1,7 +1,11 @@
 <?php
 
-class SetupTest extends \PHPUnit\Framework\TestCase {
-    public function testRequiredConstants() {
+declare(strict_types=1);
+
+class SetupTest extends \PHPUnit\Framework\TestCase
+{
+    public function testRequiredConstants()
+    {
         // Main Resources constants
         $this->assertTrue(defined('DATABASE_HOST'));
         $this->assertTrue(defined('DATABASE_USER'));

@@ -11,7 +11,8 @@ enabled = true
   [analyzers.meta]
   environment = [
     "jquery",
-    "jest"
+    "jest",
+    "nodejs"
   ]
 
 [[analyzers]]

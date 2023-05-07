@@ -7,10 +7,12 @@ use NinjaWars\core\extensions\SessionFactory;
 use NinjaWars\core\extensions\StreamedViewResponse;
 use NinjaWars\core\control\CasinoController;
 
-class CasinoControllerTest extends NWTest {
+class CasinoControllerTest extends NWTest
+{
     private $controller;
 
-    public function setUp(): void {
+    public function setUp(): void
+    {
         parent::setUp();
         $this->controller = new CasinoController();
         SessionFactory::init(new MockArraySessionStorage());
@@ -18,20 +20,23 @@ class CasinoControllerTest extends NWTest {
         SessionFactory::getSession()->set('player_id', $char_id);
     }
 
-    public function tearDown(): void {
+    public function tearDown(): void
+    {
         RequestWrapper::destroy();
         $session = SessionFactory::getSession();
         $session->invalidate();
         parent::tearDown();
     }
 
-    public function testIndex() {
+    public function testIndex()
+    {
         $response = $this->controller->index($this->m_dependencies);
 
         $this->assertInstanceOf(StreamedViewResponse::class, $response);
     }
 
-    public function testIndexEvenIfLoggedOut() {
+    public function testIndexEvenIfLoggedOut()
+    {
         $response = $this->controller->index($this->mockLogout());
 
         $this->assertInstanceOf(StreamedViewResponse::class, $response);

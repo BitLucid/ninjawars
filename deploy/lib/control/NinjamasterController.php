@@ -20,14 +20,16 @@ use NinjaWars\core\control\ShopController;
 /**
  * The ninjamaster/admin info
  */
-class NinjamasterController extends AbstractController {
+class NinjamasterController extends AbstractController
+{
     public const ALIVE = false;
     public const PRIV  = false;
 
     /**
      * Check user authentication as an admin before continuing.
      */
-    private function checkAuth(Container $p_dependencies) {
+    private function checkAuth(Container $p_dependencies)
+    {
         if (!$p_dependencies['current_player'] || !$p_dependencies['current_player']->isAdmin()) {
             return new RedirectResponse(WEB_ROOT);
         } else {
@@ -40,7 +42,8 @@ class NinjamasterController extends AbstractController {
      *
      * Includes player viewing, account duplicates checking, npc balacing
      */
-    public function index(Container $p_dependencies): Response {
+    public function index(Container $p_dependencies): Response
+    {
         $request = RequestWrapper::$request;
         $authed = $this->checkAuth($p_dependencies);
         if ($authed instanceof RedirectResponse) {
@@ -114,7 +117,8 @@ class NinjamasterController extends AbstractController {
     /**
      * Pull the items for administrative review
      */
-    public function items($p_dependencies) {
+    public function items($p_dependencies)
+    {
         $authed = $this->checkAuth($p_dependencies);
         if ($authed instanceof RedirectResponse) {
             return $authed;
@@ -129,7 +133,8 @@ class NinjamasterController extends AbstractController {
      *
      * @return Response
      */
-    public function tools(Container $p_dependencies): Response {
+    public function tools(Container $p_dependencies): Response
+    {
         $authed = $this->checkAuth($p_dependencies);
         if ($authed instanceof RedirectResponse) {
             return $authed;
@@ -142,7 +147,8 @@ class NinjamasterController extends AbstractController {
      *
      * @return Response
      */
-    public function player_tags(Container $p_dependencies): Response {
+    public function player_tags(Container $p_dependencies): Response
+    {
         $authed = $this->checkAuth($p_dependencies);
         if ($authed instanceof RedirectResponse) {
             return $authed;
@@ -156,7 +162,8 @@ class NinjamasterController extends AbstractController {
     /**
      * Get the tag of player activity/score
      */
-    private function playerSize(): array {
+    private function playerSize(): array
+    {
         $res = [];
         $sel = "SELECT 
             (level - 3 - round(days/100)) AS sum, 
@@ -188,7 +195,8 @@ class NinjamasterController extends AbstractController {
      * @param int $p_max
      * @return int
      */
-    private function calculatePlayerSize($p_rank, $p_max): int {
+    private function calculatePlayerSize($p_rank, $p_max): int
+    {
         return (int) floor(((($p_rank-1 < 1 ? 0 : $p_rank-1)) / $p_max)*10)+1;
     }
 }

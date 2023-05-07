@@ -9,8 +9,10 @@ use NinjaWars\core\extensions\SessionFactory;
 use NinjaWars\core\data\Player;
 use TestAccountCreateAndDestroy as TestAccountCreateAndDestroy;
 
-class NewsControllerTest extends NWTest {
-    public function setUp(): void {
+class NewsControllerTest extends NWTest
+{
+    public function setUp(): void
+    {
         parent::setUp();
         $this->char = Player::find(TestAccountCreateAndDestroy::char_id());
         SessionFactory::init(new MockArraySessionStorage());
@@ -21,7 +23,8 @@ class NewsControllerTest extends NWTest {
         RequestWrapper::inject($request);
     }
 
-    public function tearDown(): void {
+    public function tearDown(): void
+    {
         $this->char = null;
         TestAccountCreateAndDestroy::destroy();
         RequestWrapper::inject(new Request([]));
@@ -30,7 +33,8 @@ class NewsControllerTest extends NWTest {
         parent::tearDown();
     }
 
-    public function testIndexLoadsTitle() {
+    public function testIndexLoadsTitle()
+    {
         $cont = new NewsController();
         $response = $cont->index();
         $this->assertNotEmpty($response);
@@ -40,13 +44,15 @@ class NewsControllerTest extends NWTest {
         $this->assertEquals('News Board', $response_title);
     }
 
-    public function testCreateRedirectsForNonAdmin() {
+    public function testCreateRedirectsForNonAdmin()
+    {
         $cont = new NewsController();
         $res = $cont->create();
         $this->assertInstanceOf(RedirectResponse::class, $res);
     }
 
-    public function testCreateLoadsForAdminPlayer() {
+    public function testCreateLoadsForAdminPlayer()
+    {
         $this->markTestIncomplete();
         $this->char->uname = 'Tchalvak'; // HARDCODED STRING HACK
 
@@ -63,7 +69,8 @@ class NewsControllerTest extends NWTest {
         $this->assertEquals('Make New Post', $response_title);
     }
 
-    public function testStoreRedirectsForBlankRequest() {
+    public function testStoreRedirectsForBlankRequest()
+    {
         $cont = new NewsController();
         $res = $cont->store();
         $this->assertInstanceOf(RedirectResponse::class, $res);

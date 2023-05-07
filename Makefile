@@ -14,6 +14,7 @@ COMPONENTS=$(WWW)components/
 JS=$(WWW)js/
 CSS=$(WWW)css/
 DBROLE=developers
+GITHUB_ACCESS_TOKEN=
 
 -include CONFIG
 
@@ -25,10 +26,15 @@ ifndef TESTFILE
 	TESTFILE=
 endif
 
-build: dep create-structure link-deps
+build: create-structure dep link-deps check-vendors-installed
 
+# Note that the vendor creation in the below is not the same
+# as the RELATIVE_VENDOR env var, which is pathing related
 create-structure:
 	mkdir -p $(JS)
+	mkdir -p deploy/$(VENDOR)
+	rm -f vendor
+	ln -s deploy/vendor vendor
 	rm -rf ./deploy/templates/compiled/* ./deploy/templates/cache/*
 	mkdir -p ./deploy/templates/compiled ./deploy/templates/cache ./deploy/resources/logs/ /tmp/game_logs/
 	chmod -R ugo+rwX ./deploy/templates/compiled ./deploy/templates/cache /tmp/game_logs/
@@ -46,6 +52,10 @@ link-deps:
 dep:
 	@$(COMPOSER) install
 
+check-vendors-installed:
+# Throw error if the vendor directories are not installed
+	@ls vendor/ && cd deploy && ls vendor/ && cd ..
+
 
 check: pre-test
 
@@ -57,7 +67,15 @@ js-deps:
 	corepack enable
 	yarn install --immutable
 
-preconfig: 	
+preconfig:
+	@echo "NW step: Setting up composer github access token to avoid ratelimit."
+ifndef COMPOSER
+$(error COMPOSER is not set)
+endif
+ifndef GITHUB_ACCESS_TOKEN
+$(error GITHUB_ACCESS_TOKEN is not set)
+endif
+	@$(COMPOSER) --version
 	@$(COMPOSER) config -g github-oauth.github.com $(GITHUB_ACCESS_TOKEN)
 	cp -u -p ./deploy/resources.build.php ./deploy/resources.php
 
@@ -152,7 +170,6 @@ check-for-syntax-errors:
 	@find "./deploy/www/" -name "*.php" -exec php -l {} \;|grep -v "No syntax errors" || true
 
 test-unit: check-for-syntax-errors
-
 	@$(TEST_RUNNER) $(CC_FLAG) --testsuite Unit
 
 test-quick: check-for-syntax-errors
@@ -213,7 +230,10 @@ dist-clean: clean
 
 
 clear-vendor:
-	cd deploy && rm -rf vendor/* && mkdir -p vendor && cd ..
+	rm -rf vendor deploy/vendor
+
+	
+
 
 clear-cache:
 	php ./deploy/lib/control/util/clear_cache.php
@@ -275,6 +295,10 @@ restart-webserver:
 	sleep 0.5
 	ps waux | grep nginx
 
+link-vendor:
+	rm -rf ./vendor
+	ln -sf ./deploy/vendor ./vendor
+
 ci-pre-configure:
 	# Set php version
 	sem-version php 8.0
@@ -283,7 +307,7 @@ ci-pre-configure:
 	#ln -s `pwd` /tmp/root
 	#precache composer for ci
 	@$(COMPOSER) config -g github-oauth.github.com $(GITHUB_ACCESS_TOKEN)
-	@$(COMPOSER) install --prefer-dist --no-interaction
+	@$(COMPOSER) install --verbose --prefer-dist --no-progress --no-interaction --no-dev --optimize-autoloader
 	# Set up the resources file, replacing first occurance of strings with their build values
 	sed -i "0,/postgres/{s/postgres/${DBUSER}/}" deploy/resources.build.php
 	sed -i "s|/srv/ninjawars/|../..|g" deploy/tests/karma.conf.js

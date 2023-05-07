@@ -10,7 +10,8 @@ use NinjaWars\core\InvalidNpcException;
  *  Create npcs with static methods.
  *
  */
-class NpcFactory {
+class NpcFactory
+{
     public static $data;
 
     /**
@@ -18,7 +19,8 @@ class NpcFactory {
      *
      * @return Npc
      */
-    public static function create($identity) {
+    public static function create($identity)
+    {
         $identity = mb_strtolower($identity);
         $npcs = self::npcsData();
         $npc = null;
@@ -38,7 +40,8 @@ class NpcFactory {
      * @return void
      * @throws InvalidNpcException
      */
-    public static function fleshOut($identity, $npc) {
+    public static function fleshOut($identity, $npc)
+    {
         $npcs_data = self::npcsData();
 
         if (array_key_exists($identity, $npcs_data) && !empty($npcs_data[$identity])) {
@@ -53,7 +56,8 @@ class NpcFactory {
      *
      * @return void
      */
-    public static function fleshOutFromData($data, $npc) {
+    public static function fleshOutFromData($data, $npc)
+    {
         $npc->name              = @$data['name'];
         $npc->image             = @$data['img'];
         $npc->short_desc        = @$data['short'];
@@ -75,7 +79,8 @@ class NpcFactory {
      *
      * @return Npc[]
      */
-    public static function npcs($sort=null) {
+    public static function npcs($sort=null)
+    {
         $npcs_data = self::npcsData();
         $npcs = [];
 
@@ -110,7 +115,8 @@ class NpcFactory {
      *
      * @return Npc[]
      */
-    public static function all() {
+    public static function all()
+    {
         return self::npcs();
     }
 
@@ -119,7 +125,8 @@ class NpcFactory {
      *
      * @return Npc[]
      */
-    public static function allSortedByDifficulty() {
+    public static function allSortedByDifficulty()
+    {
         return self::npcs('difficulty');
     }
 
@@ -128,7 +135,8 @@ class NpcFactory {
      *
      * @return Npc[]
      */
-    public static function allNonTrivialNpcs() {
+    public static function allNonTrivialNpcs()
+    {
         $npcs = self::allSortedByDifficulty();
 
         $nontrivials = array_filter($npcs, function ($npc) {
@@ -143,7 +151,8 @@ class NpcFactory {
      *
      * @return Npc[]
      */
-    public static function allTrivialNpcs() {
+    public static function allTrivialNpcs()
+    {
         $npcs = self::allSortedByDifficulty();
 
         $trivials = array_filter($npcs, function ($npc) {
@@ -158,11 +167,13 @@ class NpcFactory {
      *
      * @return Array
      */
-    public static function npcsData() {
+    public static function npcsData()
+    {
         return self::$data;
     }
 
-    public static function customNpcs() {
+    public static function customNpcs()
+    {
         return [
             ['name'=>'Peasant',  'identity'=>'peasant',  'image'=>'fighter.png'],
             ['name'=>'Thief',    'identity'=>'thief',    'image'=>'thief.png'],

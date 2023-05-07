@@ -13,7 +13,8 @@ use NinjaWars\core\extensions\SessionFactory;
 use NinjaWars\core\extensions\StreamedViewResponse;
 use NinjaWars\core\environment\RequestWrapper;
 
-class MessagesController extends AbstractController {
+class MessagesController extends AbstractController
+{
     public const PRIV  = true;
     public const ALIVE = false;
 
@@ -22,7 +23,8 @@ class MessagesController extends AbstractController {
      *
      * @param Container
      */
-    public function sendPersonal(Container $p_dependencies) {
+    public function sendPersonal(Container $p_dependencies)
+    {
         $request = RequestWrapper::$request;
 
         if ((int) $request->get('target_id')) {
@@ -52,7 +54,8 @@ class MessagesController extends AbstractController {
      *
      * @param Container
      */
-    public function sendClan(Container $p_dependencies) {
+    public function sendClan(Container $p_dependencies)
+    {
         $message = RequestWrapper::getPostOrGet('message');
         $type = 1;
         $sender = $p_dependencies['current_player'];
@@ -68,7 +71,8 @@ class MessagesController extends AbstractController {
      *
      * @param Container
      */
-    public function viewPersonal(Container $p_dependencies) {
+    public function viewPersonal(Container $p_dependencies)
+    {
         $request       = RequestWrapper::$request;
         $type          = 0;
         $page          = max(1, (int) $request->get('page'));
@@ -100,7 +104,8 @@ class MessagesController extends AbstractController {
      *
      * @param Container
      */
-    public function viewClan(Container $p_dependencies) {
+    public function viewClan(Container $p_dependencies)
+    {
         $ninja         = $p_dependencies['current_player'];
         $page          = max(1, (int) RequestWrapper::getPostOrGet('page'));
         $limit         = 25;
@@ -130,7 +135,8 @@ class MessagesController extends AbstractController {
      *
      * @param Container
      */
-    public function deletePersonal(Container $p_dependencies) {
+    public function deletePersonal(Container $p_dependencies)
+    {
         Message::deleteByReceiver($p_dependencies['current_player'], 0);
 
         return new RedirectResponse('/messages?command=personal&informational='.rawurlencode('Messages deleted'));
@@ -141,7 +147,8 @@ class MessagesController extends AbstractController {
      *
      * @param Container
      */
-    public function deleteClan(Container $p_dependencies) {
+    public function deleteClan(Container $p_dependencies)
+    {
         Message::deleteByReceiver($p_dependencies['current_player'], 1);
 
         return new RedirectResponse('/messages?command=clan&informational='.rawurlencode('Messages deleted'));
@@ -150,7 +157,8 @@ class MessagesController extends AbstractController {
     /**
      * Pulls the initial data required to be initialized in the template.
      */
-    public function configure() {
+    public function configure()
+    {
         $request = RequestWrapper::$request;
 
         return [
@@ -180,7 +188,8 @@ class MessagesController extends AbstractController {
         ];
     }
 
-    public function render($parts, $title='Messages') {
+    public function render($parts, $title='Messages')
+    {
         return new StreamedViewResponse($title, 'messages.tpl', $parts, ['quickstat' => true]);
     }
 }

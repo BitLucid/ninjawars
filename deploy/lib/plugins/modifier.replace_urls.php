@@ -2,7 +2,8 @@
 /**
  * Replaces occurances of http://whatever with links (in blank tab).
  */
-function smarty_modifier_replace_urls($p_string) {
+function smarty_modifier_replace_urls($p_string)
+{
     // Images get added by the css after the fact.
     $host = "([a-z\d][-a-z\d]*[a-z\d]\.)+[a-z][-a-z\d]*[a-z]";
     $port = "(:\d{1,})?";

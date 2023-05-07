@@ -13,7 +13,8 @@ use RuntimeException;
  * Get player quests, accept, and view individual ones, etc.
  * at example urls like /quest and /quest/view/##
  */
-class QuestController extends AbstractController {
+class QuestController extends AbstractController
+{
     public const ALIVE = false;
     public const PRIV  = false;
 
@@ -21,7 +22,8 @@ class QuestController extends AbstractController {
      * Display that list of public quests!
      * @return StreamedViewResponse
      */
-    public function index($p_dependencies) {
+    public function index($p_dependencies)
+    {
         $request = RequestWrapper::$request;
         $quest_id = $request->get('quest_id');
         $quest_accepted = $request->get('quest_accepted');
@@ -39,7 +41,8 @@ class QuestController extends AbstractController {
     /**
      * Accept posted quest info to create a new quest.
      */
-    public function create($p_dependencies) {
+    public function create($p_dependencies)
+    {
         throw new RuntimeException('Creating quests not yet implemented.', 500);
         $post = '';
         $title = 'Create a Quest';
@@ -53,7 +56,8 @@ class QuestController extends AbstractController {
     /**
      * Try to view a single quest
      */
-    public function view($p_dependencies, $qid = null) {
+    public function view($p_dependencies, $qid = null)
+    {
         // Hack to get the quest/view/{id}
         $url_part = $_SERVER['REQUEST_URI'];
         if (preg_match('#\/(\w+)(\/)?$#', $url_part, $matches)) {
@@ -87,7 +91,8 @@ class QuestController extends AbstractController {
     /**
      * accept just wraps a single quest view for now, eventually will make viewer as one of the questors
      */
-    public function accept($p_dependencies) {
+    public function accept($p_dependencies)
+    {
         // Hack to get the quest/accept/{id}
         $url_part = $_SERVER['REQUEST_URI'];
         if (preg_match('#\/(\w+)(\/)?$#', $url_part, $matches)) {

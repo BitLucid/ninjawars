@@ -12,7 +12,8 @@ use NinjaWars\core\data\Player;
  * npcs can have shared traits that provide special abilities
  * Generally they are interacted with from the /enemies page
  */
-class Npc implements Character {
+class Npc implements Character
+{
     public const RICH_MIN_GOLD_DIVISOR = 1.3;
     public const MIN_GOLD = 0; // Could become data driven later
 
@@ -31,7 +32,8 @@ class Npc implements Character {
     public $gold;
     public $bounty_mod;
 
-    public function __construct($content) {
+    public function __construct($content)
+    {
         if (is_string($content) && trim($content)) {
             NpcFactory::fleshOut($content, $this);
         } else {
@@ -42,28 +44,32 @@ class Npc implements Character {
     /**
      * @return String
      */
-    public function name() {
+    public function name()
+    {
         return $this->name;
     }
 
     /**
      * @return String
      */
-    public function identity() {
+    public function identity()
+    {
         return $this->name;
     }
 
     /**
      * @return String
      */
-    public function image() {
+    public function image()
+    {
         return $this->image;
     }
 
     /**
      * @return String
      */
-    public function shortDesc() {
+    public function shortDesc()
+    {
         return $this->short_desc;
     }
 
@@ -72,7 +78,8 @@ class Npc implements Character {
      *
      * @return int
      */
-    public function maxDamage(Character $enemy=null): int {
+    public function maxDamage(Character $enemy=null): int
+    {
         $dam = ((1+ ($this->strength * 2)) + $this->damage);
         // Mirror some of their enemy's strength
         if ($this->hasTrait('partial_match_strength') && $enemy instanceof Character) {
@@ -88,7 +95,8 @@ class Npc implements Character {
      *
      * @return int
      */
-    public function damage(Character $char = null) {
+    public function damage(Character $char = null)
+    {
         // Horned enemies do a little extra damage
         return rand(0, $this->maxDamage($char))
             + ($this->hasTrait('horned') ? (int) max(0, floor($this->getStrength()/8)) : 0);
@@ -99,7 +107,8 @@ class Npc implements Character {
      *
      * @return int
      */
-    public function difficulty() {
+    public function difficulty()
+    {
         // Just add together all the points of the mob, so to speak.
         $adds_bounty      = ($this->bountyMod() > 0 ? 1 : 0);
         $armored          = ($this->hasTrait('armored') ? 1 : 0);
@@ -128,49 +137,56 @@ class Npc implements Character {
      * @param string $trait
      * @return boolean
      */
-    public function hasTrait($trait) {
+    public function hasTrait($trait)
+    {
         return in_array($trait, $this->traits_array);
     }
 
     /**
      * @return Array
      */
-    public function traits() {
+    public function traits()
+    {
         return $this->traits_array;
     }
 
     /**
      * @return int
      */
-    public function getSpeed() {
+    public function getSpeed()
+    {
         return $this->speed;
     }
 
     /**
      * @return int
      */
-    public function getStrength() {
+    public function getStrength()
+    {
         return $this->strength;
     }
 
     /**
      * @return int
      */
-    public function getStamina() {
+    public function getStamina()
+    {
         return $this->stamina;
     }
 
     /**
      * @return int
      */
-    public function ki() {
+    public function ki()
+    {
         return $this->ki;
     }
 
     /**
      * @return int
      */
-    public function getHealth() {
+    public function getHealth()
+    {
         return $this->getMaxHealth(); // For now, since there aren't npc instances currently.
     }
 
@@ -179,7 +195,8 @@ class Npc implements Character {
      *
      * @return int
      */
-    public function getMaxHealth() {
+    public function getMaxHealth()
+    {
         $armored = ($this->hasTrait('armored') ? 1 : 0);
         return 1 + ($this->stamina * 5) + ($this->stamina * 2 * $armored);
     }
@@ -189,7 +206,8 @@ class Npc implements Character {
      *
      * @return boolean
      */
-    private function inventory_present($chance) {
+    private function inventory_present($chance)
+    {
         return rand(1, 1000) < (int) ceil((float)$chance * 1000);
     }
 
@@ -198,7 +216,8 @@ class Npc implements Character {
      *
      * @return Array
      */
-    public function inventory() {
+    public function inventory()
+    {
         if (!isset($this->inventory) && isset($this->inventory_chances) && $this->inventory_chances) {
             $inv = [];
             foreach ($this->inventory_chances as $item=>$chance) {
@@ -219,7 +238,8 @@ class Npc implements Character {
      *
      * @return boolean
      */
-    public function hasItem($item) {
+    public function hasItem($item)
+    {
         return isset($this->inventory[$item]);
     }
 
@@ -228,7 +248,8 @@ class Npc implements Character {
      *
      * @return String
      */
-    public function race() {
+    public function race()
+    {
         return $this->race ?? 'creature';
     }
 
@@ -239,7 +260,8 @@ class Npc implements Character {
      * @note
      * Only npcs with a bounty mod will put a bounty on your head at all.
      */
-    public function bountyMod() {
+    public function bountyMod()
+    {
         return $this->bounty_mod;
     }
 
@@ -248,7 +270,8 @@ class Npc implements Character {
      *
      * @return int
      */
-    public function gold() {
+    public function gold()
+    {
         return $this->gold;
     }
 
@@ -257,7 +280,8 @@ class Npc implements Character {
      *
      * @return int
      */
-    public function minGold() {
+    public function minGold()
+    {
         return (int) ($this->hasTrait('rich') ? floor($this->gold()/self::RICH_MIN_GOLD_DIVISOR) : self::MIN_GOLD);
     }
 }

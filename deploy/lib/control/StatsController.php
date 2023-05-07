@@ -16,7 +16,8 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 /**
  * Handle updates for changing details and profile details
  */
-class StatsController extends AbstractController {
+class StatsController extends AbstractController
+{
     public const ALIVE = false;
     public const PRIV  = true;
 
@@ -30,7 +31,8 @@ class StatsController extends AbstractController {
      *
      * @param Container
      */
-    public function changeDetails(Container $p_dependencies) {
+    public function changeDetails(Container $p_dependencies)
+    {
         $request = RequestWrapper::$request;
         $char = $p_dependencies['current_player'];
 
@@ -57,7 +59,8 @@ class StatsController extends AbstractController {
      *
      * @param Container
      */
-    public function updateProfile(Container $p_dependencies) {
+    public function updateProfile(Container $p_dependencies)
+    {
         $char            = $p_dependencies['current_player'];
         $new_profile     = trim(RequestWrapper::getPostOrGet('newprofile', null));
         $profile_changed = false;
@@ -90,7 +93,8 @@ class StatsController extends AbstractController {
      *
      * @param Container
      */
-    public function index(Container $p_dependencies) {
+    public function index(Container $p_dependencies)
+    {
         $request = RequestWrapper::$request;
         $char = $p_dependencies['current_player'];
 
@@ -109,14 +113,16 @@ class StatsController extends AbstractController {
         return $this->render($parts);
     }
 
-    private function render($parts) {
+    private function render($parts)
+    {
         return new StreamedViewResponse('Ninja Stats', 'stats.tpl', $parts, ['quickstat' => 'player']);
     }
 
     /**
      * Get the rank integer for a certain character.
      */
-    private function getRank($p_char_id) {
+    private function getRank($p_char_id)
+    {
         DatabaseConnection::getInstance();
         $statement = DatabaseConnection::$pdo->prepare("SELECT rank_id FROM rankings WHERE player_id = :player");
         $statement->bindValue(':player', $p_char_id);

@@ -4,19 +4,23 @@ use NinjaWars\core\data\NpcFactory;
 use NinjaWars\core\data\Npc;
 use NinjaWars\core\data\Player;
 
-class NpcUnitTest extends NWTest {
-    public function testInstantiatingABlankNpc() {
+class NpcUnitTest extends NWTest
+{
+    public function testInstantiatingABlankNpc()
+    {
         $npc = new Npc([]);
         $this->assertTrue($npc instanceof Npc);
     }
 
-    public function testBlankNpcHasZeroStrengthPositiveHealth() {
+    public function testBlankNpcHasZeroStrengthPositiveHealth()
+    {
         $npc = new Npc([]);
         $this->assertEquals(0, $npc->getStrength());
         $this->assertGreaterThan(0, $npc->getHealth()); // All npcs should actually get some health!
     }
 
-    public function testForPresenceOfSomeNPCData() {
+    public function testForPresenceOfSomeNPCData()
+    {
         $this->assertTrue(array_key_exists('fireflies', NpcFactory::npcsData()), 'Fireflies not present in npcs data array for some reason');
         $this->assertTrue(array_key_exists('firefly', NpcFactory::npcsData()), 'Firefly not present in npcs data array for some reason');
         $this->assertTrue(array_key_exists('spider', NpcFactory::npcsData()));
@@ -25,17 +29,20 @@ class NpcUnitTest extends NWTest {
     }
 
 
-    public function testCreateStandardFirefly() {
+    public function testCreateStandardFirefly()
+    {
         $firefly = NpcFactory::create('firefly');
         $this->assertInstanceOf('NinjaWars\core\data\Npc', $firefly, 'Firefly creation failed');
     }
 
-    public function testCreateStandardFirefliesPlural() {
+    public function testCreateStandardFirefliesPlural()
+    {
         $fireflies = NpcFactory::create('fireflies');
         $this->assertInstanceOf('NinjaWars\core\data\Npc', $fireflies, 'Fireflies creation failed');
     }
 
-    public function testForExperimentalNpcs() {
+    public function testForExperimentalNpcs()
+    {
         if (!DEBUG) {
             $this->markTestSkipped();
         }
@@ -44,7 +51,8 @@ class NpcUnitTest extends NWTest {
         $this->assertTrue(array_key_exists('peasant2', NpcFactory::npcsData()));
     }
 
-    public function testBasanNpcWithBaseCreatureRaceWorks() {
+    public function testBasanNpcWithBaseCreatureRaceWorks()
+    {
         if (!DEBUG) {
             $this->markTestSkipped();
         }
@@ -53,12 +61,14 @@ class NpcUnitTest extends NWTest {
         $this->assertTrue($basan->race() === 'creature');
     }
 
-    public function testNpcListHasLotsOfNpcs() {
+    public function testNpcListHasLotsOfNpcs()
+    {
         $min_npcs = defined('DEBUG') && DEBUG ? 15 : 8;
         $this->assertGreaterThan($min_npcs, count(NpcFactory::npcs()));
     }
 
-    public function testNpcListSortedByDifficultyGetsEasyNpcLast() {
+    public function testNpcListSortedByDifficultyGetsEasyNpcLast()
+    {
         $npcs_by_diff = NpcFactory::allSortedByDifficulty();
         $first_npc = reset($npcs_by_diff);
         $last_npc = array_pop($npcs_by_diff);
@@ -70,7 +80,8 @@ class NpcUnitTest extends NWTest {
     /**
      * Npcs should have damage, assuming they're combat npcs, which most are
      */
-    public function testNpcHasDamage() {
+    public function testNpcHasDamage()
+    {
         $npcs = NpcFactory::npcs();
         unset($npcs['Firefly'], $npcs['Fireflies']);
 
@@ -83,7 +94,8 @@ class NpcUnitTest extends NWTest {
     /**
      * Npcs should always have some health
      */
-    public function testNpcsAlwaysHaveHealth() {
+    public function testNpcsAlwaysHaveHealth()
+    {
         $npcs = NpcFactory::npcs();
 
         foreach ($npcs as $npc) {
@@ -94,7 +106,8 @@ class NpcUnitTest extends NWTest {
     /**
      * Some npcs should cause bounty, generally weaker village peeps
      */
-    public function testWeaklingsCauseBounty() {
+    public function testWeaklingsCauseBounty()
+    {
         if (!(defined('DEBUG') && DEBUG)) {
             $this->markTestSkipped(); // No merchant2 in non-debug scenarios for now.
         } else {
@@ -108,7 +121,8 @@ class NpcUnitTest extends NWTest {
     /**
      * Npcs have similar races, e.g. a guard and a villager.
      */
-    public function testVariousVillagersHaveSameRace() {
+    public function testVariousVillagersHaveSameRace()
+    {
         if (!(defined('DEBUG') && DEBUG)) {
             $this->markTestSkipped();
         } else {
@@ -127,7 +141,8 @@ class NpcUnitTest extends NWTest {
      * added bounty is 1/3rd of attacker's level.
      * If they were a disguised ninja, they should drop the max inventory.
      */
-    public function testPeasant2AbstractNpcIsSimilarToOriginal() {
+    public function testPeasant2AbstractNpcIsSimilarToOriginal()
+    {
         if (!DEBUG) {
             $this->markTestSkipped();
         }
@@ -149,7 +164,8 @@ class NpcUnitTest extends NWTest {
      * ?? 70% chance of phosphor powder drop?
      * 20 gold bounty (ish) from killing
      */
-    public function testMerchant2AbstractNpcIsSimilarToOriginal() {
+    public function testMerchant2AbstractNpcIsSimilarToOriginal()
+    {
         if (!DEBUG) {
             $this->markTestSkipped();
         }
@@ -172,7 +188,8 @@ class NpcUnitTest extends NWTest {
      * Guard2: Strength is about 30, which is multiplied by 2, + 1 point during damage calc.
      * Gold doesn't get boosted by strength
      */
-    public function testGuard2AbstractNpcIsSimilarToGuard1() {
+    public function testGuard2AbstractNpcIsSimilarToGuard1()
+    {
         if (!DEBUG) {
             $this->markTestSkipped();
         }
@@ -189,7 +206,8 @@ class NpcUnitTest extends NWTest {
     }
 
 
-    public function testThief2DoesStuff() {
+    public function testThief2DoesStuff()
+    {
         if (!DEBUG) {
             $this->markTestSkipped();
         }
@@ -221,7 +239,8 @@ class NpcUnitTest extends NWTest {
         $this->assertLessThan(60, $thief2->difficulty());
     }
 
-    public function testAnNpcHasADifficulty() {
+    public function testAnNpcHasADifficulty()
+    {
         if (!DEBUG) {
             $this->markTestSkipped();
         }
@@ -229,14 +248,16 @@ class NpcUnitTest extends NWTest {
         $this->assertGreaterThan(0, $peasant->difficulty());
     }
 
-    public function testNpcDifficultiesAreDifferent() {
+    public function testNpcDifficultiesAreDifferent()
+    {
         $firefly = new Npc('fireflies');
         $tengu = new Npc('tengu');
         $this->assertGreaterThan(0, $tengu->difficulty());
         $this->assertGreaterThan($firefly->difficulty(), $tengu->difficulty());
     }
 
-    public function testDefaultRaceForBasanIsCreature() {
+    public function testDefaultRaceForBasanIsCreature()
+    {
         if (!DEBUG) {
             $this->markTestSkipped();
         }
@@ -245,7 +266,8 @@ class NpcUnitTest extends NWTest {
         $this->assertEquals('creature', $npc->race());
     }
 
-    public function testGuardsThatMatchStrengthTakeEnemyStrength() {
+    public function testGuardsThatMatchStrengthTakeEnemyStrength()
+    {
         if (!DEBUG) {
             $this->markTestSkipped();
         }
@@ -261,7 +283,8 @@ class NpcUnitTest extends NWTest {
         $this->assertGreaterThan($guard_max_damage, $improved_dam, 'Guard damage should be higher with an enemy that has any strength');
     }
 
-    public function testDifficultiesOfDifferentMobsIncreases() {
+    public function testDifficultiesOfDifferentMobsIncreases()
+    {
         if (!DEBUG) {
             $this->markTestSkipped();
         }
@@ -278,17 +301,20 @@ class NpcUnitTest extends NWTest {
         $this->assertGreaterThan((new Npc('tiger'))->difficulty(), (new Npc('ryu'))->difficulty(), 'tiger vs ryu difficulty mismatch');
     }
 
-    public function testNpcs() {
+    public function testNpcs()
+    {
         $npcs = NpcFactory::npcs();
         $this->assertIsArray($npcs);
         $this->assertNotEmpty($npcs);
     }
 
-    public function testAliasAll_for_Npcs() {
+    public function testAliasAll_for_Npcs()
+    {
         $this->assertEqualsCanonicalizing(NpcFactory::all(), NpcFactory::npcs());
     }
 
-    public function testAllNonTrivialNpcs() {
+    public function testAllNonTrivialNpcs()
+    {
         $npcs = NpcFactory::allNonTrivialNpcs();
         $zeroDmgNpcs = [];
         foreach ($npcs as $npc) {
@@ -299,7 +325,8 @@ class NpcUnitTest extends NWTest {
         $this->assertEmpty($zeroDmgNpcs);
     }
 
-    public function testAllTrivialNpcs() {
+    public function testAllTrivialNpcs()
+    {
         $npcs = NpcFactory::allTrivialNpcs();
         $damagingNpcs = [];
         foreach ($npcs as $npc) {
@@ -310,7 +337,8 @@ class NpcUnitTest extends NWTest {
         $this->assertEmpty($damagingNpcs);
     }
 
-    public function testFleshOutFailure() {
+    public function testFleshOutFailure()
+    {
         $this->expectException(NinjaWars\core\InvalidNpcException::class);
         NpcFactory::fleshOut('NotARealNPCByAnyMeans', null);
     }

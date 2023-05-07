@@ -4,27 +4,32 @@ use NinjaWars\core\data\Player;
 use NinjaWars\core\data\Account;
 use NinjaWars\core\data\CloneKill;
 
-class CloneKillTest extends NWTest {
+class CloneKillTest extends NWTest
+{
     /**
      *
      */
-    public function setUp(): void {
+    public function setUp(): void
+    {
         parent::setUp();
     }
 
     /**
      * Delete test user.
      */
-    public function tearDown(): void {
+    public function tearDown(): void
+    {
         TestAccountCreateAndDestroy::purge_test_accounts();
         parent::tearDown();
     }
 
-    private function inactivate($char_id) {
+    private function inactivate($char_id)
+    {
         query('update players set active = 0 where player_id = :char_id', [':char_id'=>$char_id]);
     }
 
-    private function syncIps($ip, $char_id, $char_id_2) {
+    private function syncIps($ip, $char_id, $char_id_2)
+    {
         query(
             'update accounts set last_ip = :ip '.
             'where account_id in (select account_id from accounts b '.
@@ -39,18 +44,21 @@ class CloneKillTest extends NWTest {
         );
     }
 
-    public function testYouCantCloneKillXAndX() {
+    public function testYouCantCloneKillXAndX()
+    {
         $char_id = TestAccountCreateAndDestroy::char_id();
         $this->assertFalse(CloneKill::canKill($char_id, $char_id));
     }
 
-    public function testYouCantCloneKillEmpties() {
+    public function testYouCantCloneKillEmpties()
+    {
         $char_id = TestAccountCreateAndDestroy::char_id();
         $this->assertFalse(CloneKill::canKill(34534534, 234234235));
         $this->assertFalse(CloneKill::canKill(34534534, $char_id));
     }
 
-    public function testSyncIpWorks() {
+    public function testSyncIpWorks()
+    {
         $char_id = TestAccountCreateAndDestroy::char_id();
         $char_id_2 = TestAccountCreateAndDestroy::char_id_2();
         $this->syncIps('222.222.222.250', $char_id, $char_id_2);
@@ -62,7 +70,8 @@ class CloneKillTest extends NWTest {
         $this->assertEquals($account1->getLastIp(), $account2->getLastIp());
     }
 
-    public function testCanSyncIpOfCharactersToBlanks() {
+    public function testCanSyncIpOfCharactersToBlanks()
+    {
         $char_id = TestAccountCreateAndDestroy::char_id();
         $char_id_2 = TestAccountCreateAndDestroy::char_id_2();
         $this->syncIps('', $char_id, $char_id_2);
@@ -74,7 +83,8 @@ class CloneKillTest extends NWTest {
         $this->assertEquals('', $account2->getLastIp());
     }
 
-    public function testCantCloneKillSimilarCharactersEvenIfBothHaveIpOf127001() {
+    public function testCantCloneKillSimilarCharactersEvenIfBothHaveIpOf127001()
+    {
         $previous = $_SERVER['REMOTE_ADDR'];
         $_SERVER['REMOTE_ADDR'] = '127.0.0.11';
         $char_id = TestAccountCreateAndDestroy::char_id();
@@ -90,7 +100,8 @@ class CloneKillTest extends NWTest {
         $this->assertFalse(CloneKill::canKill($char_id, $char_id_2));
     }
 
-    public function testCantCloneKillTwoSimilarCharactersBecauseOfTheirBlankIps() {
+    public function testCantCloneKillTwoSimilarCharactersBecauseOfTheirBlankIps()
+    {
         $previous = $_SERVER['REMOTE_ADDR'];
         $_SERVER['REMOTE_ADDR'] = '';
         $char_id = TestAccountCreateAndDestroy::char_id();
@@ -100,7 +111,8 @@ class CloneKillTest extends NWTest {
         $this->assertFalse(CloneKill::canKill($char_id, $char_id_2));
     }
 
-    public function testYouCantCloneKillWithAnyNonActiveChar() {
+    public function testYouCantCloneKillWithAnyNonActiveChar()
+    {
         $char_id = TestAccountCreateAndDestroy::char_id();
         $char_id_2 = TestAccountCreateAndDestroy::char_id_2();
         $this->syncIps('999.888.777.666', $char_id, $char_id_2);
@@ -108,7 +120,8 @@ class CloneKillTest extends NWTest {
         $this->assertFalse(CloneKill::canKill($char_id_2, $char_id));
     }
 
-    public function testCloneKillOnCharsWithSameIp() {
+    public function testCloneKillOnCharsWithSameIp()
+    {
         $char_id = TestAccountCreateAndDestroy::char_id();
         $char_id_2 = TestAccountCreateAndDestroy::char_id_2();
         // Will create characters with 127.0.0.1 ip, but that shouldn't be clone kill able.
@@ -117,27 +130,33 @@ class CloneKillTest extends NWTest {
         $this->assertTrue(CloneKill::canKill($char_id, $char_id_2), 'Should be able to clone kill similar and same ip characters!');
     }
 
-    public function testCloneKillDoesNotAllowYouToCloneKillYourself() {
+    public function testCloneKillDoesNotAllowYouToCloneKillYourself()
+    {
         $this->markTestIncomplete('Rejection of Clone killing self is implemented at the skills controller level currently.');
     }
 
-    public function testYouCantCloneKillWithAnyNonConfirmedAccounts() {
+    public function testYouCantCloneKillWithAnyNonConfirmedAccounts()
+    {
         $this->markTestIncomplete();
     }
 
-    public function testYouCantCloneKillWithAnyNonOperationalAccounts() {
+    public function testYouCantCloneKillWithAnyNonOperationalAccounts()
+    {
         $this->markTestIncomplete();
     }
 
-    public function testCloneKillOnCharsOfSameAccountSameIpWorks() {
+    public function testCloneKillOnCharsOfSameAccountSameIpWorks()
+    {
         $this->markTestIncomplete();
     }
 
-    public function testCloneKillOnActiveCharsOfSameAccountDifferentIpWorks() {
+    public function testCloneKillOnActiveCharsOfSameAccountDifferentIpWorks()
+    {
         $this->markTestIncomplete();
     }
 
-    public function testCloneKillKillingWipesHealthAndTurns() {
+    public function testCloneKillKillingWipesHealthAndTurns()
+    {
         $char_id = TestAccountCreateAndDestroy::char_id();
         $charObj = Player::find($char_id);
         $char_id_2 = TestAccountCreateAndDestroy::char_id_2();

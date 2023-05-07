@@ -8,10 +8,12 @@ use NinjaWars\core\extensions\SessionFactory;
 use NinjaWars\core\extensions\StreamedViewResponse;
 use NinjaWars\core\control\ListController;
 
-class ListControllerTest extends NWTest {
+class ListControllerTest extends NWTest
+{
     private $controller;
 
-    public function setUp(): void {
+    public function setUp(): void
+    {
         parent::setUp();
         $this->controller = new ListController();
         SessionFactory::init(new MockArraySessionStorage());
@@ -19,14 +21,16 @@ class ListControllerTest extends NWTest {
         SessionFactory::getSession()->set('player_id', $char_id);
     }
 
-    public function tearDown(): void {
+    public function tearDown(): void
+    {
         RequestWrapper::destroy();
         $session = SessionFactory::getSession();
         $session->invalidate();
         parent::tearDown();
     }
 
-    public function testIndex() {
+    public function testIndex()
+    {
         $response = $this->controller->index($this->m_dependencies);
 
         $this->assertInstanceOf(StreamedViewResponse::class, $response);

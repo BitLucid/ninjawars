@@ -1,6 +1,7 @@
 <?php
 
-function smarty_modifier_level_label($p_level) {
+function smarty_modifier_level_label($p_level)
+{
     $level_labels = [
         [0, 'Novice'],
         [2, 'Acolyte'],

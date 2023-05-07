@@ -20,10 +20,11 @@ blocks:
         commands:
           - checkout
           - cache restore
-          - sem-version php 8.2.2
+          - sem-version php 8.2.5
           - nvm install --lts
           - sem-version node --lts
           - corepack enable
+          - ./configure
           - ./composer.phar config -g github-oauth.github.com $GITHUB_ACCESS_TOKEN
       secrets:
         - name: Tchalvak Github Ratelimit Avoidance Token Readonly
@@ -39,11 +40,13 @@ blocks:
         commands:
           - checkout
           - cache restore
-          - sem-version php 8.2.2
+          - sem-version php 8.2.5
           - nvm install --lts
           - sem-version node --lts
           - corepack enable
           - yarn install --immutable
+          - ./configure
+          - make preconfig
           - make js-deps
           - make build
       secrets:
@@ -75,7 +78,8 @@ blocks:
           - checkout
           - cache restore
           - cp -upn ./deploy/resources.build.php ./deploy/resources.php
-          - sem-version php 8.2.2
-          - ./composer.phar install --prefer-dist --no-interaction
+          - ./configure
+          - make preconfig
+          - sem-version php 8.2.5
     run:
       when: change_in('/deploy')

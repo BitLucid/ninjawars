@@ -9,7 +9,8 @@ use NinjaWars\core\data\DatabaseConnection;
  * This is somewhat a business object, though it has direct sql inside it
  *
  */
-class Event {
+class Event
+{
     /**
      * For events, attacks, kills, invites, etc, and no user-created messages
      *
@@ -19,7 +20,8 @@ class Event {
      * @return void
      * @throws InvalidArgumentException
      */
-    public static function create($from_id, $to_id, $message) {
+    public static function create($from_id, $to_id, $message)
+    {
         if (!is_numeric($from_id) || !is_numeric($to_id)) {
             throw new \InvalidArgumentException('When creating an event, invalid character ids or none were sent in.', 400);
         }
@@ -36,7 +38,8 @@ class Event {
     /**
      * @return int Number of rows deleted
      */
-    public static function deleteOldEvents() {
+    public static function deleteOldEvents()
+    {
         $statement = query("delete from events where date < ( now() - '31 days'::interval)");
         return $statement->rowCount();
     }

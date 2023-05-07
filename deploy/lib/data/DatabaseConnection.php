@@ -4,7 +4,8 @@ namespace NinjaWars\core\data;
 
 use PDO;
 
-class DatabaseConnection {
+class DatabaseConnection
+{
     // ************************
     // *** Member Variables ***
 
@@ -14,7 +15,8 @@ class DatabaseConnection {
     // *** /Member Variables ***
     // *************************
 
-    protected function __construct() {
+    protected function __construct()
+    {
         try {
             // *** SINGLE TIME CONNECTION TO THE DATABASE ***
             self::$pdo = new PDO(CONNECTION_STRING);
@@ -27,7 +29,8 @@ class DatabaseConnection {
         }
     }
 
-    public static function getInstance() {
+    public static function getInstance()
+    {
         // *** DataLayer is a singleton, so if already instantiated just return that ***
         if (self::$instance === null) {   // *** DataLayer hasn't been instantiated yet, save the pointer, and return this ***
             self::$instance = new DatabaseConnection();
@@ -36,7 +39,8 @@ class DatabaseConnection {
         return self::$instance;
     }
 
-    public function nextSequenceValue($id_field, $table) {
+    public function nextSequenceValue($id_field, $table)
+    {
         return self::$pdo->query("SELECT nextval('".$table."_".$id_field."_seq')")->fetchColumn();
     }
 }

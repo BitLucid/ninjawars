@@ -10,8 +10,10 @@ use NinjaWars\core\data\Skill;
 use NinjaWars\core\data\Player;
 use TestAccountCreateAndDestroy as TestAccountCreateAndDestroy;
 
-class SkillControllerTest extends NWTest {
-    public function setUp(): void {
+class SkillControllerTest extends NWTest
+{
+    public function setUp(): void
+    {
         parent::setUp();
         $this->char = TestAccountCreateAndDestroy::char();
         $this->char2 = TestAccountCreateAndDestroy::char_2();
@@ -23,7 +25,8 @@ class SkillControllerTest extends NWTest {
         RequestWrapper::inject($request);
     }
 
-    public function tearDown(): void {
+    public function tearDown(): void
+    {
         $this->char = null;
         $this->char2 = null;
         TestAccountCreateAndDestroy::destroy();
@@ -33,7 +36,8 @@ class SkillControllerTest extends NWTest {
         parent::tearDown();
     }
 
-    public function testLoggedInSkillsDisplay() {
+    public function testLoggedInSkillsDisplay()
+    {
         $skill = new SkillController();
         $skill->update_timer = false;
         $response = $skill->index($this->m_dependencies);
@@ -44,7 +48,8 @@ class SkillControllerTest extends NWTest {
         $this->assertEquals('Your Skills', $response_title);
     }
 
-    public function testUseFireboltOnAnotherChar() {
+    public function testUseFireboltOnAnotherChar()
+    {
         $this->char->setTurns(300);
         $this->char->level = 20;
         $initial_health = $this->char2->health;
@@ -76,7 +81,8 @@ class SkillControllerTest extends NWTest {
         $this->assertLessThan($initial_health, $final_defender->health);
     }
 
-    public function testUseFireboltOnAnotherCharDecreasesTurns() {
+    public function testUseFireboltOnAnotherCharDecreasesTurns()
+    {
         $this->char->setTurns(300);
         $this->char->level = 20;
         $initial_health = $this->char2->health;
@@ -108,7 +114,8 @@ class SkillControllerTest extends NWTest {
         $this->assertEquals(298, $final_attacker->turns);
     }
 
-    public function testWhenIFireBoltACharacterAndKillIShouldReceiveBounty() {
+    public function testWhenIFireBoltACharacterAndKillIShouldReceiveBounty()
+    {
         $error = $this->char->setClass('tiger');
         $bounty = 300;
         $self_gold = $this->char->gold;
@@ -148,7 +155,8 @@ class SkillControllerTest extends NWTest {
         $this->assertEquals($self_gold+$bounty, $final_attacker->gold, "Gold not updated");
     }
 
-    public function testIShouldGetBountyOnMyHeadWhenIFireBoltKillALowLevel() {
+    public function testIShouldGetBountyOnMyHeadWhenIFireBoltKillALowLevel()
+    {
         $this->char->setClass('tiger');
         $this->char->setTurns(300);
         $this->char->level = 200;
@@ -185,7 +193,8 @@ class SkillControllerTest extends NWTest {
         $this->assertGreaterThan($initial_bounty, $final_attacker->bounty);
     }
 
-    public function testUseUnstealthOnSelf() {
+    public function testUseUnstealthOnSelf()
+    {
         $this->char->setClass('viper');
         $this->char->setTurns(300);
         $this->char->level = 20;
@@ -208,7 +217,8 @@ class SkillControllerTest extends NWTest {
         $this->assertEquals('Unstealth', $response_data['act']);
     }
 
-    public function testUsePoisonTouchOnAnotherChar() {
+    public function testUsePoisonTouchOnAnotherChar()
+    {
         $error = $this->char->setClass('viper');
         $this->char->setTurns(300);
         $this->char->level = 20;
@@ -241,7 +251,8 @@ class SkillControllerTest extends NWTest {
         $this->assertLessThan($initial_health, $final_defender->health);
     }
 
-    public function testUseSightOnAnotherChar() {
+    public function testUseSightOnAnotherChar()
+    {
         $error = $this->char->setClass('dragon');
         $this->char->setTurns(300);
         $this->char->level = 20;
@@ -271,7 +282,8 @@ class SkillControllerTest extends NWTest {
         $this->assertEquals('Sight', $response_data['act']);
     }
 
-    public function testUseCloneKillOnSelf() {
+    public function testUseCloneKillOnSelf()
+    {
         $error = $this->char->setClass('dragon');
         $this->char->setTurns(300);
         $this->char->level = 20;
@@ -306,7 +318,8 @@ class SkillControllerTest extends NWTest {
     // TODO: test that use of unstealth on another fails
     // TODO: test that use of stealth on another fails.
 
-    public function testUseHealOnSelfAsAHealingCharacter() {
+    public function testUseHealOnSelfAsAHealingCharacter()
+    {
         $this->char->setClass('dragon');
         $this->char->setTurns(300);
         $this->char->level = 20;
@@ -345,7 +358,8 @@ class SkillControllerTest extends NWTest {
         $this->assertGreaterThan($initial_health, $final_char->health);
     }
 
-    public function testUseHarmonizeOnSelf() {
+    public function testUseHarmonizeOnSelf()
+    {
         $this->char->setTurns(300);
         $this->char->ki = 1000;
         $this->char->level = 20;

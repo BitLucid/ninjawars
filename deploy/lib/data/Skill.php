@@ -4,7 +4,8 @@ namespace NinjaWars\core\data;
 
 use NinjaWars\core\data\Player;
 
-class Skill {
+class Skill
+{
     // *** Constructor should eventually get a specific skill's stats from the database.
 
     /**
@@ -59,14 +60,16 @@ class Skill {
     /**
      * List of skills in the whole game.
     **/
-    public function getSkillList() {
+    public function getSkillList()
+    {
         return $this->skills;
     }
 
     /**
      * Returns the list fo all skills available to a ninja.
      */
-    private function skills(Player $char) {
+    private function skills(Player $char)
+    {
         if ($char->isAdmin()) { // Admins get access to all skills.
             $skills = $this->skill_map['crane'] +
                 $this->skill_map['dragon'] +
@@ -90,7 +93,8 @@ class Skill {
     /**
      * Check whether the player has the skill.
      */
-    public function hasSkill($skill, $char=null) {
+    public function hasSkill($skill, $char=null)
+    {
         if ($char instanceof Player) {
             $player = $char;
         } else {
@@ -107,7 +111,8 @@ class Skill {
     /**
      * Get the list of skills that a character has, in an indexed array.
     **/
-    public function hasSkills($username=null) {
+    public function hasSkills($username=null)
+    {
         $skills_avail = [];
 
         foreach ($this->getSkillList() as $loop_skill) {
@@ -120,7 +125,8 @@ class Skill {
     }
 
     // Get the turn costs of the skills, which default to 1.
-    public function getTurnCost($type) {
+    public function getTurnCost($type)
+    {
         $type = strtolower($type);
         $skillsTypeToTurns = [
             'cold steal'     => 3
@@ -151,7 +157,8 @@ class Skill {
     }
 
     // Check whether the item is usable on yourself.
-    public function getSelfUse($type) {
+    public function getSelfUse($type)
+    {
         $type = strtolower($type);
         $skillsTypeToSelf = [
             'stealth'     => true
@@ -169,7 +176,8 @@ class Skill {
     }
 
     // Whether the skill is usable on someone other than self.
-    public function getUsableOnTarget($type) {
+    public function getUsableOnTarget($type)
+    {
         $type = strtolower($type);
         $skillsUsableOnTarget = [
             'stealth'     => false
@@ -180,7 +188,8 @@ class Skill {
         return !(isset($skillsUsableOnTarget[$type]));
     }
 
-    public function getIgnoreStealth($type) {
+    public function getIgnoreStealth($type)
+    {
         $type = strtolower($type);
         $skillsThatIgnoreStealth = [
             'sight'          => true

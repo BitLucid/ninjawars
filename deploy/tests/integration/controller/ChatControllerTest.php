@@ -7,29 +7,34 @@ use NinjaWars\core\extensions\SessionFactory;
 use NinjaWars\core\extensions\StreamedViewResponse;
 use NinjaWars\core\control\ChatController;
 
-class ChatControllerTest extends NWTest {
+class ChatControllerTest extends NWTest
+{
     private $controller;
 
-    public function setUp(): void {
+    public function setUp(): void
+    {
         parent::setUp();
         $this->controller = new ChatController();
         $this->login();
     }
 
-    public function tearDown(): void {
+    public function tearDown(): void
+    {
         RequestWrapper::destroy();
         $this->mockLogout();
         parent::tearDown();
     }
 
-    public function testIndex() {
+    public function testIndex()
+    {
         RequestWrapper::inject(new Request());
         $response = $this->controller->index();
 
         $this->assertInstanceOf(StreamedViewResponse::class, $response);
     }
 
-    public function testIndexRendersEvenLoggedOut() {
+    public function testIndexRendersEvenLoggedOut()
+    {
         $response = $this->controller->index($this->mockLogout());
 
         $this->assertInstanceOf(StreamedViewResponse::class, $response);
