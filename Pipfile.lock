@@ -174,7 +174,7 @@
             "hashes": [
                 "sha256:032e5949c02878c405552fb800743aad96940097460bc6f115340402852dcdde",
                 "sha256:989ab2d3e632ba23358b8d43950bd46babde5bbb1516760dc5f5ccfe7accdd45"
-            ],https://github.com/BitLucid/ninjawars/pulls
+            ],
             "markers": "python_version >= '3.7'",
             "version": "==60.0.3"
         },
