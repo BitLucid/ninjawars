@@ -299,24 +299,40 @@ link-vendor:
 	rm -rf ./vendor
 	ln -sf ./deploy/vendor ./vendor
 
-ci-pre-configure:
+ci-pre-configure: composer-ratelimit-setup
 	# Set php version
 	sem-version php 8.0
 	#@echo "Removing xdebug on CI, by default."
 	#rm -f /home/rof/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini
 	#ln -s `pwd` /tmp/root
 	#precache composer for ci
-	@$(COMPOSER) config -g github-oauth.github.com $(GITHUB_ACCESS_TOKEN)
+	@echo "Github access token set by environment var COMPOSER_AUTH"
 	@$(COMPOSER) install --verbose --prefer-dist --no-progress --no-interaction --no-dev --optimize-autoloader
 	# Set up the resources file, replacing first occurance of strings with their build values
 	sed -i "0,/postgres/{s/postgres/${DBUSER}/}" deploy/resources.build.php
 	sed -i "s|/srv/ninjawars/|../..|g" deploy/tests/karma.conf.js
-	ln -s resources.build.php deploy/resources.php
+	ln -sf resources.build.php deploy/resources.php
 	#Switch from python2 to python3
 	which python3
 	rm -rf ${HOME}/.virtualenv
 	which python3
 	virtualenv -p /usr/bin/python3 "${HOME}/.virtualenv"
+
+deployment-post-upload: composer-ratelimit-setup
+	chmod u+x ./composer.phar
+	php -v && nvm -v && nvm install && nvm use && node -v # Reflects the .nvmrc file
+	corepack enable # allows simple, reliable yarn usage
+	echo "Github access token set by environment var COMPOSER_AUTH"
+	./composer.phar install --prefer-dist --no-interaction -o
+
+composer-ratelimit-setup:
+#Export a COMPOSER_AUTH env var
+	export COMPOSER_AUTH=$(COMPOSER_AUTH)
+
+	
+
+
+
 
 python-install:
 	which python3
