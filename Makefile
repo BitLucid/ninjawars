@@ -33,7 +33,7 @@ build: create-structure dep link-deps check-vendors-installed
 create-structure:
 	mkdir -p $(JS)
 	mkdir -p deploy/$(VENDOR)
-	rm -f vendor
+	rm -rf vendor
 	ln -s deploy/vendor vendor
 	rm -rf ./deploy/templates/compiled/* ./deploy/templates/cache/*
 	mkdir -p ./deploy/templates/compiled ./deploy/templates/cache ./deploy/resources/logs/ /tmp/game_logs/
@@ -67,7 +67,12 @@ js-deps:
 	corepack enable
 	yarn install --immutable
 
-preconfig:
+resources-file:
+	sed -i "0,/postgres/{s/postgres/${DBUSER}/}" deploy/resources.build.php
+	sed -i "s|/srv/ninjawars/|../..|g" deploy/tests/karma.conf.js
+	ln -sf resources.build.php deploy/resources.php
+
+preconfig: composer-ratelimit-setup resources-file
 	@echo "NW step: Setting up composer github access token to avoid ratelimit."
 ifndef COMPOSER
 $(error COMPOSER is not set)
@@ -75,14 +80,14 @@ endif
 ifndef GITHUB_ACCESS_TOKEN
 $(error GITHUB_ACCESS_TOKEN is not set)
 endif
+ifndef COMPOSER_AUTH
+$(error COMPOSER_AUTH is not set)
+endif
 	@$(COMPOSER) --version
-	@$(COMPOSER) config -g github-oauth.github.com $(GITHUB_ACCESS_TOKEN)
-	cp -u -p ./deploy/resources.build.php ./deploy/resources.php
 
 postcheck:
 	@echo "Don't forget to update webserver configs as necessary."
 	@echo "Including updating the php to retain login sessions longer."
-	echo "Note that this does not overwrite existing resources.php"
 	php ./deploy/check.php
 	echo "Check that the webserver user has permissions to the script!"
 
@@ -299,7 +304,7 @@ link-vendor:
 	rm -rf ./vendor
 	ln -sf ./deploy/vendor ./vendor
 
-ci-pre-configure: composer-ratelimit-setup
+ci-pre-configure: composer-ratelimit-setup resources-file
 	# Set php version
 	sem-version php 8.0
 	#@echo "Removing xdebug on CI, by default."
@@ -309,9 +314,6 @@ ci-pre-configure: composer-ratelimit-setup
 	@echo "Github access token set by environment var COMPOSER_AUTH"
 	@$(COMPOSER) install --verbose --prefer-dist --no-progress --no-interaction --no-dev --optimize-autoloader
 	# Set up the resources file, replacing first occurance of strings with their build values
-	sed -i "0,/postgres/{s/postgres/${DBUSER}/}" deploy/resources.build.php
-	sed -i "s|/srv/ninjawars/|../..|g" deploy/tests/karma.conf.js
-	ln -sf resources.build.php deploy/resources.php
 	#Switch from python2 to python3
 	which python3
 	rm -rf ${HOME}/.virtualenv
@@ -326,8 +328,8 @@ deployment-post-upload: composer-ratelimit-setup
 	./composer.phar install --prefer-dist --no-interaction -o
 
 composer-ratelimit-setup:
-#Export a COMPOSER_AUTH env var
-	export COMPOSER_AUTH=$(COMPOSER_AUTH)
+	@echo "Exporting a COMPOSER_AUTH env var"
+	@export COMPOSER_AUTH=$(COMPOSER_AUTH)
 
 	
 
