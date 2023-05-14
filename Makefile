@@ -50,6 +50,8 @@ link-deps:
 
 
 dep:
+	@echo "NW step: dep: composer validate then composer install"
+	@$(COMPOSER) validate
 	@$(COMPOSER) install
 
 check-vendors-installed:
