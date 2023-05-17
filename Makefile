@@ -33,7 +33,7 @@ build: create-structure dep link-deps check-vendors-installed
 create-structure:
 	mkdir -p $(JS)
 	mkdir -p deploy/$(VENDOR)
-	rm -f vendor
+	rm -rf vendor
 	ln -s deploy/vendor vendor
 	rm -rf ./deploy/templates/compiled/* ./deploy/templates/cache/*
 	mkdir -p ./deploy/templates/compiled ./deploy/templates/cache ./deploy/resources/logs/ /tmp/game_logs/
