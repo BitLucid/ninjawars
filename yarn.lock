@@ -2135,10 +2135,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jasmine-core@npm:^4.5.0":
-  version: 4.5.0
-  resolution: "jasmine-core@npm:4.5.0"
-  checksum: e7adda527d544097ddb8aeec7bbbed19c59ca70ef57e1b740189eecf5cde3e0e20fba74d15c511b169105cface4fa2a775a6088c2220bf97f482b51b3c5d1fa1
+"jasmine-core@npm:^5.0.0":
+  version: 5.0.0
+  resolution: "jasmine-core@npm:5.0.0"
+  checksum: e54b746d6fc54f2e36ea0bc48eb375ea3c31547ea9e7719e64184184d00c1845e6a3d82e7a5afada93e7ea16241e181c0bf68562fcd9699210cafc07ba2120cc
   languageName: node
   linkType: hard
 
@@ -2638,7 +2638,7 @@ __metadata:
     eslint-plugin-react: ^7.31.8
     eslint-plugin-react-hooks: 4.6.0
     husky: ^8.0.3
-    jasmine-core: ^4.5.0
+    jasmine-core: ^5.0.0
     karma: ^6.4.1
     karma-chrome-launcher: ^3.1.1
     karma-jasmine: ^5.1.0
