@@ -50,6 +50,8 @@ link-deps:
 
 
 dep:
+	@echo "NW step: dep: composer validate then composer install"
+	@$(COMPOSER) validate
 	@$(COMPOSER) install
 
 check-vendors-installed:
@@ -298,7 +300,7 @@ link-vendor:
 	rm -rf ./vendor
 	ln -sf ./deploy/vendor ./vendor
 
-ci-pre-configure: composer-ratelimit-setup
+ci-pre-configure: composer-ratelimit-check
 	# Set php version
 	sem-version php 8.0
 	#@echo "Removing xdebug on CI, by default."
@@ -317,16 +319,20 @@ ci-pre-configure: composer-ratelimit-setup
 	which python3
 	virtualenv -p /usr/bin/python3 "${HOME}/.virtualenv"
 
-deployment-post-upload: composer-ratelimit-setup
+deployment-post-upload: composer-ratelimit-check
 	chmod u+x ./composer.phar
 	php -v && nvm -v && nvm install && nvm use && node -v # Reflects the .nvmrc file
 	corepack enable # allows simple, reliable yarn usage
 	echo "Github access token set by environment var COMPOSER_AUTH"
 	./composer.phar install --prefer-dist --no-interaction -o
 
-composer-ratelimit-setup:
-#Export a COMPOSER_AUTH env var
-	export COMPOSER_AUTH=$(COMPOSER_AUTH)
+deployment-final-check: check-vendors-installed
+
+composer-ratelimit-check:
+	@echo "Will error if composer_AUTH not available to use"
+ifndef COMPOSER_AUTH
+$(error COMPOSER_AUTH is not set)
+endif
 
 	
 
