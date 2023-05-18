@@ -100,7 +100,8 @@ install-admin: preconfig build start-chat writable postcheck
 
 writable:
 	mkdir -p ./deploy/templates/compiled ./deploy/templates/cache /tmp/game_logs/ ./deploy/resources/logs/
-	chmod -R ugo+rw ./deploy/templates/compiled ./deploy/templates/cache /tmp/game_logs/
+	chmod -R ugo+rw ./deploy/templates/compiled ./deploy/templates/cache
+	chmod -R ugo+rw /tmp/game_logs/ || true
 
 
 install-system:
