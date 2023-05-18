@@ -10,7 +10,7 @@ echo "CC_DIR=./cc/" >> CONFIG
 echo "WEBUSER=www-data:adm" >> CONFIG
 echo "NOCOVER=true" >> CONFIG
 echo "NODE_VERSION=lts/gallium" >> CONFIG
-echo "COMPOSER_AUTH='{\"github-oauth\": {\"github.com\": \"${GITHUB_ACCESS_TOKEN}\"}}'" >> CONFIG
+echo "COMPOSER_AUTH={\"github-oauth\": {\"github.com\": \"${GITHUB_ACCESS_TOKEN}\"}}" >> CONFIG
 echo "GITHUB_ACCESS_TOKEN=${GITHUB_ACCESS_TOKEN}" >> CONFIG
 
 if [ -f ./composer.phar ]
