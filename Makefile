@@ -76,7 +76,6 @@ ifndef GITHUB_ACCESS_TOKEN
 $(error GITHUB_ACCESS_TOKEN is not set)
 endif
 	@$(COMPOSER) --version
-	@$(COMPOSER) config -g github-oauth.github.com $(GITHUB_ACCESS_TOKEN)
 	cp -u -p ./deploy/resources.build.php ./deploy/resources.php
 
 postcheck:
