@@ -50,6 +50,8 @@ link-deps:
 
 
 dep:
+	@echo "NW step: dep: composer validate then composer install"
+	@$(COMPOSER) validate
 	@$(COMPOSER) install
 
 check-vendors-installed:
@@ -72,7 +74,7 @@ resources-file:
 	sed -i "s|/srv/ninjawars/|../..|g" deploy/tests/karma.conf.js
 	ln -sf resources.build.php deploy/resources.php
 
-preconfig: composer-ratelimit-setup resources-file
+preconfig: composer-ratelimit-check resources-file
 	@echo "NW step: Setting up composer github access token to avoid ratelimit."
 ifndef COMPOSER
 $(error COMPOSER is not set)
@@ -304,7 +306,7 @@ link-vendor:
 	rm -rf ./vendor
 	ln -sf ./deploy/vendor ./vendor
 
-ci-pre-configure: composer-ratelimit-setup resources-file
+ci-pre-configure: composer-ratelimit-check resources-file
 	# Set php version
 	sem-version php 8.0
 	#@echo "Removing xdebug on CI, by default."
@@ -320,7 +322,7 @@ ci-pre-configure: composer-ratelimit-setup resources-file
 	which python3
 	virtualenv -p /usr/bin/python3 "${HOME}/.virtualenv"
 
-deployment-post-upload: composer-ratelimit-setup
+deployment-post-upload: composer-ratelimit-check
 	chmod u+x ./composer.phar
 	php -v && nvm -v && nvm install && nvm use && node -v # Reflects the .nvmrc file
 	corepack enable # allows simple, reliable yarn usage
@@ -330,6 +332,14 @@ deployment-post-upload: composer-ratelimit-setup
 composer-ratelimit-setup:
 	@echo "Exporting a COMPOSER_AUTH env var"
 	@export COMPOSER_AUTH=$(COMPOSER_AUTH)
+
+deployment-final-check: check-vendors-installed
+
+composer-ratelimit-check:
+	@echo "Will error if composer_AUTH not available to use"
+ifndef COMPOSER_AUTH
+$(error COMPOSER_AUTH is not set)
+endif
 
 	
 

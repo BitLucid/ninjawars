@@ -25,8 +25,8 @@ blocks:
           - sem-version node --lts
           - corepack enable
           - ./configure
-          - ./composer.phar config -g github-oauth.github.com $GITHUB_ACCESS_TOKEN
       secrets:
+        - name: Tchalvak COMPOSER_AUTH with github pat
         - name: Tchalvak Github Ratelimit Avoidance Token Readonly
     dependencies: []
   - name: JS Tests
@@ -50,6 +50,7 @@ blocks:
           - make js-deps
           - make build
       secrets:
+        - name: Tchalvak COMPOSER_AUTH with github pat
         - name: Tchalvak Github Ratelimit Avoidance Token Readonly
     dependencies:
       - Setup
@@ -61,6 +62,7 @@ blocks:
     task:
       secrets:
         - name: Tchalvak AWS
+        - name: Tchalvak COMPOSER_AUTH with github pat
         - name: Tchalvak Github Ratelimit Avoidance Token Readonly
         - name: Tchalvak Github Token
       env_vars:
