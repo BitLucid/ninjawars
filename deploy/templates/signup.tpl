@@ -10,9 +10,9 @@
 <section id='signup-process' class='glassbox'>
 	<h3>Your Choices</h3>
     <div class='stamp'>
-      Email - <strong><em>{$signupRequest->enteredEmail|escape}</em></strong><br>
-	  Password - {if $signupRequest->enteredPass}<span class='success'>***yourpassword***</span>{else}<span class='failure'>NO PASSWORD</span>{/if}<br>
-	  Ninja Name - <strong class='char-name'>{$signupRequest->enteredName|escape}</strong><br>
+      Email - <strong><em>{$signupRequest && $signupRequest->enteredEmail|escape}</em></strong><br>
+	  Password - {if $signupRequest && $signupRequest->enteredPass}<span class='success'>***yourpassword***</span>{else}<span class='failure'>NO PASSWORD</span>{/if}<br>
+	  Ninja Name - <strong class='char-name'>{$signupRequest && $signupRequest->enteredName|escape}</strong><br>
 	  Ninja Type - {$class_display|escape}<br>
     </div>
 
@@ -118,7 +118,7 @@
   	{/foreach}
       </div>
 	  <div class='glassbox'>
-	  	<small>Change type easily in-game, or check the "wiki" below.</small>
+	  	<small>Change type easily in-game, or check <a href="http://ninjawars.pbworks.com/" target="_blank" class='extLink'>the Wiki</a> for more info.</small>
 	  </div>
 	  </section>
 	</fieldset>
@@ -135,22 +135,33 @@
 
 {/if}
 
-	<h3>Problems?</h3>
+<style>
 
+</style>
 	<section class='glassbox'>
+		<h3>Problems?</h3>
+		<div class='hero'>
 
-	<p>
-	Lost Your Password? <a href="/assistance">Resend Account Info Email</a>
-	</p>
-	<p>Didn't get your confirmation code? <a href="/assistance">Resend Confirmation Email</a>
-	</p>
-	<small>
-	Game &amp; Ninja type info:
-	    <a href="http://ninjawars.pbworks.com/" target="_blank" class='extLink'>the Wiki</a>.
-	</small>
-	<p>
-	  Or <a href='/staff'>Contact Us</a>.
-	</p>
+		<ul>
+
+			<li>
+			Lost Your Password? <a href="/assistance">Resend Account Info Email</a>
+			</li>
+			<li>
+				<small>Already a ninja? <a href='/login'>login</a>
+			</li>
+			<li>
+				Didn't get your confirmation code? <a href="/assistance">Resend Confirmation Email</a>
+			</li>
+			<li>
+			Game &amp; Ninja type info:
+				<a href="http://ninjawars.pbworks.com/" target="_blank" class='extLink'>on the Wiki</a>.
+			</li>
+			<li>
+			Or <a href='/staff'>Contact Us</a>.
+			</li>
+		</ul>
+		</div>
 
 	</section>
 
