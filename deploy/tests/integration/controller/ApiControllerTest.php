@@ -11,6 +11,7 @@ class ApiControllerTest extends NWTest
     public const CALLBACK = 'callback';
     private $PAYLOAD_RE;
     private $controller;
+    public $char;
 
     public function setUp(): void
     {

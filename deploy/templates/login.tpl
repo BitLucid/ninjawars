@@ -35,14 +35,14 @@
     <div class='outer-shade-box'>
       <div class='shade-box'>
         <form id="login-form" class="form-horizontal" action="/login/login_request" method="post">
-          <input type="hidden" name="ref" value="{$referrer|escape}" />
+          <input type="hidden" name="ref" value="{isset($referrer) && $referrer|escape}" />
             <div class='row'>
             <label>
               <div class='line'>
                 <span class='left-side'>Email or ninja name</span>
                 <div class='input-group'>
                   <span class="input-group-addon"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></span>
-                  <input tabindex=1 name="user" placeholder='you@email.com or ninja' required type="text" autocomplete='username email' value='{$stored_username|escape}' class='right-side' />
+                  <input tabindex=1 name="user" placeholder='you@email.com or ninja' required type="text" autocomplete='username email' value='{isset($stored_username) && $stored_username|escape}' class='right-side' />
                 </div>
               </div>
             </label>
@@ -76,7 +76,7 @@
   <footer id='login-bottom-bar-container'>
     <div id="login-problems-resources">
       <span class="signup-link">
-      <a target="main" href="/signup?referrer={$referrer|escape}">Become a Ninja!</a> |
+      <a target="main" href="/signup?referrer={isset($referrer) && $referrer|escape}">Become a Ninja!</a> |
       </span>
       <span>
       <a href="/assistance/" target="main" class="blend side">Login or Signup Problems?</a>

@@ -48,7 +48,7 @@ class WorkController extends AbstractController
         }
 
         $parts = [
-            'recommended_to_work' => $worked,
+            'recommended_to_work' => (int) ($worked ?? self::DEFAULT_RECOMMENDED_TO_WORK),
             'worked'              => $worked,
             'work_multiplier'     => self::WORK_MULTIPLIER,
             'authenticated'       => $p_dependencies['session']->get('authenticated', false),

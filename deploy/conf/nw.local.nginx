@@ -33,7 +33,7 @@ server {
 	#rewrite_log on;
 	add_header X-uri "$uri";
 
-	location ~ ^/(js|css|images|files)/ {
+	location ~ ^/(js|css|images|files|favicon.ico)/ {
 		rewrite "^/(.*)\.[\d]{10,12}\.(.*)$" /$1.$2;
 		expires 365d;
 		try_files $uri =404;
