@@ -56,6 +56,7 @@
                 <a class='btn btn-info' href='#map-section'>Map</a>
                 <a class='btn btn-info' href='#nodes-section'>Nodes</a>
                 <a class='btn btn-info' href='#list-section'>List</a>
+                <a class='btn btn-info' href='#fight-section'>Fight</a>
                 <a class='btn btn-info' href='#wip-fight-section'>WIP Fight</a>
                 <a class='btn btn-info' href='#footer'>Footer</a>
                 <a class='btn btn-info' href='#ninjamaster-section'>Ninjamaster</a>
@@ -72,7 +73,7 @@
         </section>
 
         <section id='wip-fight-section'>
-            <h2>WIP Fight</h2>
+            <h2>WIP New Fight</h2>
             {include file="staging.fight.tpl"}
         </section>
 
@@ -82,11 +83,15 @@
             {assign var="submit_successful" value="0"}
             {assign var="error" value="Some error string for signup"}
             {assign var="submitted" value=false}
+            {assign var="class_display" value="Some Class Here"}
+            {assign var="completedPhase" value="2"}
             {include file="signup.tpl"}
         </section>
 
         <section id='login-section'>
             <h2>Login</h2>
+            {assign var="login_error_message" value="Some error string for login"}
+            {assign var="authenticated" value="0"}
             <div class='login-page'>
                 {include file="login.tpl"}
             </div>
@@ -272,6 +277,7 @@
             <h2>Bath House</h2>
             {assign var="player" value=$char}
             {assign var="error" value="Some error string for bath house/duel"}
+            {assign var="duels" value=[]}
             {include file="duel.tpl"}
         </section>
 
@@ -312,6 +318,12 @@
             {include file="work.tpl"}
         </section>
 
+        <section id='fight-section'>
+            <h2>Fight - Attack Next</h2>
+            {assign var="player" value=$char}
+            {include file="enemies.attack-next.tpl"}
+        </section>
+
         <section id='footer'>
             <h2>Footer</h2>
             {include file="footer.tpl"}
@@ -338,6 +350,7 @@
     {* js script at the top to prevent breaking from templates *}
 
 </main>
+
 
 
 
