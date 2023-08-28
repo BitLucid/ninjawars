@@ -304,6 +304,9 @@ restart-webserver:
 	sleep 0.5
 	ps waux | grep nginx
 
+post-deploy-restart: # for deploybot after deployment
+	sh /srv/ninjawars/deploy/cron/queued_restart.sh
+
 link-vendor:
 	rm -rf ./vendor
 	ln -sf ./deploy/vendor ./vendor
