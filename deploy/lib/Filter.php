@@ -28,6 +28,12 @@ class Filter
         // Cast anything that can be non-destructively cast.
     }
 
+    public static function filter_string_polyfill(string $string): string
+    {
+        $str = preg_replace('/\x00|<[^>]*>?/', '', $string);
+        return str_replace(["'", '"'], ['&#39;', '&#34;'], $str);
+    }
+
     /**
      * Strip low and high ascii characters, leave standard keyboard characters
      */
@@ -35,7 +41,7 @@ class Filter
     {
         return filter_var(
             str_replace(['"', '\''], '', $dirty),
-            FILTER_SANITIZE_STRING,
+            FILTER_UNSAFE_RAW,
             FILTER_FLAG_STRIP_LOW | FILTER_FLAG_STRIP_HIGH
         );
     }
