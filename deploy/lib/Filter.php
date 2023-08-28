@@ -40,7 +40,7 @@ class Filter
     public static function toSimple($dirty)
     {
         return filter_var(
-            str_replace(['"', '\''], '', $dirty),
+            str_replace(['"', '\''], '', Filter::filter_string_polyfill($dirty)),
             FILTER_UNSAFE_RAW,
             FILTER_FLAG_STRIP_LOW | FILTER_FLAG_STRIP_HIGH
         );
