@@ -6,14 +6,15 @@ use NinjaWars\core\data\DatabaseConnection;
 // use Illuminate\Database\Eloquent\Model;
 use NinjaWars\core\data\Player;
 
-class Message extends \Illuminate\Database\Eloquent\Model
+class Message extends NWQuery
 {
-    protected $primaryKey = 'message_id'; // Anything other than id
+    static protected $primaryKey = 'message_id'; // if anything other than id
+    static protected $table = 'messages';
     public $timestamps = false;
     // The non-mass-fillable fields
     protected $guarded = ['message_id', 'date'];
     /**
-    Currently:
+    Messages Currently:
     message_id | serial
     message | text
     date | timestamp
