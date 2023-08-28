@@ -72,7 +72,8 @@
 				<dt>Last Login Failure</dt><dd><time class='timeago' datetime='{$first_account->getLastLoginFailure()|escape}'>{$first_account->getLastLoginFailure()|escape}</time></dd>
 				<dt>Operational</dt><dd>{if $first_account->isOperational()}true{else}false{/if}</dd>
 				<dt>Confirmed</dt><dd>{if $first_account->isConfirmed()}1{else}0{/if}</dd>
-                                <dt>Created</dt><dd>{$first_account.created_date|escape}</dd>
+                <dt>Created</dt><dd><time class="created-time timeago" datetime="{$first_account->created_date|escape}" title="{$first_account->created_date|escape}">
+				{$first_account->created_date|escape}</time></dd>
 			</dl>
 		</div>
 		<details class='constrained' style='margin-bottom:1.25rem'>
