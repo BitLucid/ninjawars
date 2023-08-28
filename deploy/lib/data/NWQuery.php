@@ -9,17 +9,15 @@ use Carbon\Carbon;
 use PDOStatement;
 
 /**
- * Acts as a mini model and query builder with an ActiveRecord pattern 
+ * Acts as a mini model and query builder with an ActiveRecord pattern
  * (e.g. Message::find(id) $message->save(), whatever nw needs)
  */
 abstract class NWQuery
 {
-    protected $date;
+    // Inheriting classes need to set primaryKey and table as:
+    // protected $primaryKey;
+    // protected $table = 'messages';
 
-    public function __construct()
-    {
-        $this->date = static::freshTimestamp();
-    }
 
     public static function freshTimestamp()
     {
@@ -79,7 +77,6 @@ abstract class NWQuery
     {
         $model = new static();
         $found_data = reset(self::query(['select * from messages where ' . $model->primaryKey . ' = :id', [':id' => $id]]));
-        $model = new static();
         foreach ($found_data as $key => $value) {
             $model->$key = $value;
         }
@@ -88,5 +85,4 @@ abstract class NWQuery
 
     abstract protected function save();
     abstract protected function delete();
-
 }
