@@ -14,10 +14,10 @@ use Carbon\Carbon;
 abstract class NWQuery
 {
 
-    private static $model;
+    protected static $model;
     // Inheriting classes need to set primaryKey and table as:
-    // protected $primaryKey;
-    // protected $table = 'messages';
+    static protected $primaryKey;
+    static protected $table;
 
 
     public static function freshTimestamp()
@@ -42,12 +42,13 @@ abstract class NWQuery
         if (!self::$model) {
             // initialize as a stdClass object
 
-            self::$model = new static();
-            self::$model->table = static::$table;
-            self::$model->primaryKey = static::$primaryKey;
+            static::$model = new static();
+
+            static::$model->table = static::getTable();
+            static::$model->primaryKey = static::getPrimaryKey();
         }
-        self::$model->date = self::freshTimestamp();
-        return self::$model;
+        static::$model->date = self::freshTimestamp();
+        return static::$model;
     }
 
     public static function create($model)
@@ -81,7 +82,7 @@ abstract class NWQuery
     public static function find($id)
     {
 
-        $found_data = reset(self::query(['select * from ' . static::$table . ' where ' . static::$primaryKey . ' = :id', [':id' => $id]]));
+        $found_data = reset(self::query(['select * from ' . static::getTable() . ' where ' . static::getPrimaryKey() . ' = :id', [':id' => $id]]));
         $model = new static();
         foreach ($found_data as $key => $value) {
             $model->$key = $value;
