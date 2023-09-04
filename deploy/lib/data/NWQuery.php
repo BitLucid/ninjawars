@@ -11,14 +11,14 @@ use Carbon\Carbon;
  * Acts as a mini model and query builder with an ActiveRecord pattern 
  * (e.g. Message::find(id) $message->save(), whatever nw needs)
  */
-abstract class NWQuery
+class NWQuery
 {
+    protected $date;
 
-    protected static $model;
-    // Inheriting classes need to set primaryKey and table as:
-    static protected $primaryKey;
-    static protected $table;
-
+    public function __construct()
+    {
+        $this->date = static::freshTimestamp();
+    }
 
     public static function freshTimestamp()
     {
@@ -26,39 +26,18 @@ abstract class NWQuery
         return Carbon::now();
     }
 
-    public static function getTable()
-    {
-        return static::$table;
-    }
-
-    public static function getPrimaryKey()
-    {
-        return static::$primaryKey;
-    }
-
-    public static function creating($model)
-    {
-        // initialize the model if it hasn't been already
-        if (!self::$model) {
-            // initialize as a stdClass object
-
-            static::$model = new static();
-
-            static::$model->table = static::getTable();
-            static::$model->primaryKey = static::getPrimaryKey();
-        }
-        static::$model->date = self::freshTimestamp();
-        return static::$model;
-    }
-
     public static function create($model)
     {
-        $model_f = self::creating($model);
-        $model_f->date = self::freshTimestamp();
-        if (!$model_f->table) {
-            throw new \Exception('Error: Model created does not have a table set.');
-        }
+        $model_f = new static();
         return $model_f;
+    }
+
+    public static function mergeData($model, $flat)
+    {
+        foreach ($flat as $key => $value) {
+            $model->$key = $value;
+        }
+        return $model;
     }
 
     /**
@@ -71,7 +50,9 @@ abstract class NWQuery
         $datas = query_array($query, $params);
         // Meld the incoming data array of multiple entries with the current model
         $collected = array_map(function ($data) {
-            return (object) array_merge((array) self::$model, $data);
+            $mod_t = new static();
+            // 
+            return static::mergeData($mod_t, $data);
         }, $datas);
         return $collected;
     }
@@ -82,7 +63,7 @@ abstract class NWQuery
     public static function find($id)
     {
 
-        $found_data = reset(self::query(['select * from ' . static::getTable() . ' where ' . static::getPrimaryKey() . ' = :id', [':id' => $id]]));
+        $found_data = reset(self::query(['select * from messages where message_id = :id', [':id' => $id]]));
         $model = new static();
         foreach ($found_data as $key => $value) {
             $model->$key = $value;
