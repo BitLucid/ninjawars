@@ -8,8 +8,8 @@ use NinjaWars\core\data\Player;
 
 class Message extends NWQuery
 {
-    static protected $primaryKey = 'message_id'; // if anything other than id
-    static protected $table = 'messages';
+    protected static $primaryKey = 'message_id'; // if anything other than id
+    protected static $table = 'messages';
     protected $message_id;
     protected $message;
     protected $date;

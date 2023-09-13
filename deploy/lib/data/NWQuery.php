@@ -53,7 +53,7 @@ abstract class NWQuery
         // Meld the incoming data array of multiple entries with the current model
         $collected = array_map(function ($data) {
             $mod_t = new static();
-            // 
+            //
             return static::mergeData($mod_t, $data);
         }, $datas);
         return $collected;
