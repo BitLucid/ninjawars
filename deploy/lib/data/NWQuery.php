@@ -6,12 +6,13 @@ use NinjaWars\core\data\DatabaseConnection;
 // use Illuminate\Database\Eloquent\Model;
 use NinjaWars\core\data\Player;
 use Carbon\Carbon;
+use PDOStatement;
 
 /**
  * Acts as a mini model and query builder with an ActiveRecord pattern 
  * (e.g. Message::find(id) $message->save(), whatever nw needs)
  */
-class NWQuery
+abstract class NWQuery
 {
     protected $date;
 
@@ -29,10 +30,13 @@ class NWQuery
     public static function create($model)
     {
         $model_f = new static();
+        foreach ($model as $key => $value) {
+            $model_f->$key = $value;
+        }
         return $model_f;
     }
 
-    public static function mergeData($model, $flat)
+    public static function mergeData($model, array $flat): array
     {
         foreach ($flat as $key => $value) {
             $model->$key = $value;
@@ -43,7 +47,7 @@ class NWQuery
     /**
      * @return array of items
      */
-    public static function query($builder)
+    public static function query(array $builder): array
     {
         // Destructure the builder into query and parameters
         list($query, $params) = $builder;
@@ -58,16 +62,31 @@ class NWQuery
     }
 
     /**
+     * @return \PDOStatement the raw statement for rowcount or whatever
+     */
+    public static function query_resultset(array $builder): array | \PDOStatement
+    {
+        // Destructure the builder into query and parameters
+        list($query, $params) = $builder;
+        $datas = query($query, $params);
+        return $datas;
+    }
+
+    /**
      * @return object A single model object
      */
-    public static function find($id)
+    public static function find(int|null|string $id)
     {
-
-        $found_data = reset(self::query(['select * from messages where message_id = :id', [':id' => $id]]));
+        $model = new static();
+        $found_data = reset(self::query(['select * from messages where ' . $model->primaryKey . ' = :id', [':id' => $id]]));
         $model = new static();
         foreach ($found_data as $key => $value) {
             $model->$key = $value;
         }
         return $model;
     }
+
+    abstract protected function save();
+    abstract protected function delete();
+
 }
