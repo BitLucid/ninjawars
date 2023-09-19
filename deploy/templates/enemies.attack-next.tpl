@@ -5,6 +5,21 @@ var enemy = 'enemy to array @json_encode'
 *}
 {* $smarty->register->templateClass('foo','name\name2\myclass'); *}
 <style>
+.ninja-area{
+    width: 100%;
+    background:none;
+    text-align:center;
+}
+/* @media (min-width: 768px) {
+    .ninja-area {
+        display: inline-block;
+        margin: auto;
+        width: 94%;
+        background: rgba(43, 33, 33, 20%);
+        padding: 1rem 0 1rem 0;
+        margin-bottom: 5rem;
+    }
+} */
 .attack-next {
     margin: 1rem 2rem;
     display:grid;
@@ -100,34 +115,36 @@ var enemy = 'enemy to array @json_encode'
         </div>
         <div class='main'>
             {* Display the ninja *}
-            <div class='ninja-area ninja-card'>
-                {if $char && $char->isAdmin()}
-                    <a class='view-link' href='/player?player_id={$enemy->id()|escape}'><button title="View the ninja's full details" class='btn btn-vital'><i class='fa fa-eye'></i></button></a>
-                {/if}
-                <h2>{$enemy->name()|escape}</h2>
-                <div class='avatar'>
-                    {include file="gravatar.tpl" gurl=$enemy->avatarUrl()}
-                </div>
-                <span class='player-class class-name {$enemy->theme|escape}'>
-                    <span class="svg-shuriken">
-                    {include file="shuriken.svg.tpl"}
+            <div class='ninja-area'>
+                <div class='ninja-card'>
+                    {if $char && $char->isAdmin()}
+                        <a class='view-link' href='/player?player_id={$enemy->id()|escape}'><button title="View the ninja's full details" class='btn btn-vital'><i class='fa fa-eye'></i></button></a>
+                    {/if}
+                    <h2>{$enemy->name()|escape}</h2>
+                    <div class='avatar'>
+                        {include file="gravatar.tpl" gurl=$enemy->avatarUrl()}
+                    </div>
+                    <span class='player-class class-name {$enemy->theme|escape}'>
+                        <span class="svg-shuriken">
+                        {include file="shuriken.svg.tpl"}
+                        </span>
+                        {$enemy->class_name|escape}
+                    </span><!-- no space 
+                    --><span class='player-level-category {$enemy->level|level_label|css_classify}'>
+                        {$enemy->level|level_label} [{$enemy->level|escape}]
                     </span>
-                    {$enemy->class_name|escape}
-                </span><!-- no space 
-                --><span class='player-level-category {$enemy->level|level_label|css_classify}'>
-                    {$enemy->level|level_label} [{$enemy->level|escape}]
-                </span>
-                <span class='health-bar-container'>
-                    {include file="health_bar.tpl" health=$enemy->health level=$enemy->level}
-                </span>
-                <div class='c-box'>
-                    {include file="status_section.tpl" statuses=\NinjaWars\core\data\Player::getStatusList($enemy->id())}
+                    <span class='health-bar-container'>
+                        {include file="health_bar.tpl" health=$enemy->health level=$enemy->level}
+                    </span>
+                    <div class='c-box'>
+                        {include file="status_section.tpl" statuses=\NinjaWars\core\data\Player::getStatusList($enemy->id())}
+                    </div>
+                    {if $enemy->description}
+                    <blockquote>
+                    {$enemy->name()|escape} {$enemy->description|escape}
+                    </blockquote>
+                    {/if}
                 </div>
-                {if $enemy->description}
-                <blockquote>
-                {$enemy->name()|escape} {$enemy->description|escape}
-                </blockquote>
-                {/if}
             </div>
             <div class='attack-area'>
                 <div class='glassbox duel-area'>

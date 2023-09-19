@@ -1465,9 +1465,17 @@ td.playerTable {
     /* Width of ninja-card made breakpoint responsive in certain screens */
     font-family: 'Open Sans', 'Arial', sans-serif;
     margin: 0.1rem auto 1rem;
-    padding: 2rem;
+    padding: 0.5rem;
 }
-
+    
+/* @media (min-width: 768px) {
+    .ninja-card {
+        width: 45%;
+        margin: 0.1rem auto 1rem;
+        padding: 2rem; 
+    }
+}
+*/
 .ninja-card h2 {
     width: inherit;
     min-width: 70%;
@@ -5240,8 +5248,7 @@ input[type='button'].btn-block {
  */
 
 /* Grade-A Mobile Browsers (Opera Mobile, Mobile Safari, Android Chrome) */
-@media screen and (max-device-width: 480px),
-(max-device-width: 854px) {
+@media (max-device-width: 480px) and (max-device-width: 854px) {
 
     html,
     body {
@@ -5331,7 +5338,7 @@ input[type='button'].btn-block {
 }
 
 /* Medium and Large screen modifications */
-@media screen and (min-width: 800px) {
+@media (min-width: 801px) {
 
     div.description,
     p.description {
@@ -5357,10 +5364,6 @@ input[type='button'].btn-block {
         padding: 0.3em 0.7em;
     }
 
-    .ninja-card {
-        width: 60%;
-    }
-
     #request-login {
         width: inherit;
     }
@@ -5382,5 +5385,12 @@ input[type='button'].btn-block {
 
     .list-all-players-search .input-group {
         max-width: 50%;
+    }
+}
+
+/* Large screen modifications */
+@media (min-width: 961px) {
+    .ninja-card {
+        width: 60%;
     }
 }
