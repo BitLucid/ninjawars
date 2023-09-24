@@ -1464,8 +1464,9 @@ td.playerTable {
     display: inline-block;
     /* Width of ninja-card made breakpoint responsive in certain screens */
     font-family: 'Open Sans', 'Arial', sans-serif;
-    margin: 0.1rem auto 1rem;
+    margin: 0.1rem 0.5rem 1rem;
     padding: 0.5rem;
+    width: 100%;
 }
 
 /* @media (min-width: 769px) {
@@ -5393,5 +5394,6 @@ input[type='button'].btn-block {
 @media (min-width: 961px) {
     .ninja-card {
         width: 60%;
+        margin: 0.1rem auto 1rem;
     }
 }
