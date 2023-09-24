@@ -186,7 +186,7 @@ pre {
  */
 
 q {
-    quotes: '\201C' '\201D' '\2018' '\2019';
+    quotes: '\201C''\201D''\2018''\2019';
 }
 
 /**
@@ -1464,11 +1464,21 @@ td.playerTable {
     display: inline-block;
     /* Width of ninja-card made breakpoint responsive in certain screens */
     font-family: 'Open Sans', 'Arial', sans-serif;
-    margin: 0.1rem auto 1rem;
-    padding: 2rem;
+    margin: 0.1rem 0.5rem 1rem;
+    padding: 0.5rem;
+    width: 100%;
 }
 
-.ninja-card h2 {
+/* @media (min-width: 769px) {
+    .ninja-card {
+        width: 45%;
+        margin: 0.1rem auto 1rem;
+        padding: 2rem;
+    }
+} */
+
+
+*/ .ninja-card h2 {
     width: inherit;
     min-width: 70%;
 }
@@ -4985,11 +4995,11 @@ input[type='button'].btn-block {
     }
 
     a[href]:after {
-        content: ' (' attr(href) ')';
+        content: ' ('attr(href) ')';
     }
 
     abbr[title]:after {
-        content: ' (' attr(title) ')';
+        content: ' ('attr(title) ')';
     }
 
     .ir a:after,
@@ -5240,8 +5250,7 @@ input[type='button'].btn-block {
  */
 
 /* Grade-A Mobile Browsers (Opera Mobile, Mobile Safari, Android Chrome) */
-@media screen and (max-device-width: 480px),
-(max-device-width: 854px) {
+@media (max-device-width: 480px) and (max-device-width: 854px) {
 
     html,
     body {
@@ -5331,7 +5340,7 @@ input[type='button'].btn-block {
 }
 
 /* Medium and Large screen modifications */
-@media screen and (min-width: 800px) {
+@media (min-width: 801px) {
 
     div.description,
     p.description {
@@ -5357,10 +5366,6 @@ input[type='button'].btn-block {
         padding: 0.3em 0.7em;
     }
 
-    .ninja-card {
-        width: 60%;
-    }
-
     #request-login {
         width: inherit;
     }
@@ -5382,5 +5387,13 @@ input[type='button'].btn-block {
 
     .list-all-players-search .input-group {
         max-width: 50%;
+    }
+}
+
+/* Large screen modifications */
+@media (min-width: 961px) {
+    .ninja-card {
+        width: 60%;
+        margin: 0.1rem auto 1rem;
     }
 }
