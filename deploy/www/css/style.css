@@ -186,7 +186,7 @@ pre {
  */
 
 q {
-    quotes: '\201C' '\201D' '\2018' '\2019';
+    quotes: '\201C''\201D''\2018''\2019';
 }
 
 /**
@@ -1467,16 +1467,17 @@ td.playerTable {
     margin: 0.1rem auto 1rem;
     padding: 0.5rem;
 }
-    
-/* @media (min-width: 768px) {
+
+/* @media (min-width: 769px) {
     .ninja-card {
         width: 45%;
         margin: 0.1rem auto 1rem;
-        padding: 2rem; 
+        padding: 2rem;
     }
-}
-*/
-.ninja-card h2 {
+} */
+
+
+*/ .ninja-card h2 {
     width: inherit;
     min-width: 70%;
 }
@@ -4993,11 +4994,11 @@ input[type='button'].btn-block {
     }
 
     a[href]:after {
-        content: ' (' attr(href) ')';
+        content: ' ('attr(href) ')';
     }
 
     abbr[title]:after {
-        content: ' (' attr(title) ')';
+        content: ' ('attr(title) ')';
     }
 
     .ir a:after,
