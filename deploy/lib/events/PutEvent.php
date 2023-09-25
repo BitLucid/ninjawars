@@ -1,5 +1,7 @@
 <?php
 
+namespace NinjaWars\core\events;
+
 require_once 'vendor/autoload.php';
 
 use Aws\S3\S3Client;
@@ -10,7 +12,7 @@ use Aws\Result;
 /**
  * Send a raw event to the eventbridge
  */
-function putEvent($eventBridgeClient, $event): bool|object
+function putEvent(object $eventBridgeClient, array $event): bool|object
 {
     try {
         $result = $eventBridgeClient->putEvents([
@@ -37,16 +39,29 @@ function generateEventbridgeClient($config = [
 }
 
 /**
+ * Email config validation, which should perhaps eventually be moved away from event lib
+ * @return string|null An error string if invalid
+ */
+function validateEmailIncomingConfig(array $config): ?string
+{
+    $required_keys = ['from', 'subject', 'text', 'html', 'to'];
+    $missing_keys = array_diff($required_keys, array_keys($config));
+    if (count($missing_keys) > 0) {
+        return 'Missing required keys: ' . implode(', ', $missing_keys);
+    }
+    return null;
+}
+
+/**
  * @return bool Whether the event was sent successfully
  */
-function sendCommandNWEmailRequest($eventBridgeClient, string $email, array $emailParams): bool|object
+function sendCommandNWEmailRequest(?object $eventBridgeClient, string $email, array $emailParams): bool|object
 {
-    if (count($emailParams) < 4) {
-        throw new \InvalidArgumentException('Email params must be set.');
-    }
     $sanitized_email = filter_var($email, FILTER_SANITIZE_EMAIL);
+    $final_config = ($emailParams + ['to' => $sanitized_email]);
+    validateEmailIncomingConfig($final_config);
     $event = [ // REQUIRED
-        'Detail' => json_encode(['emailParams' => (['to' => $sanitized_email] + $emailParams)]),
+        'Detail' => json_encode(['emailParams' => $final_config]),
         'DetailType' => 'CommandNWEmailRequest',
         'EventBusName' => 'NWEventBus',
         'Source' => 'php.nwmail.sdk.call',
