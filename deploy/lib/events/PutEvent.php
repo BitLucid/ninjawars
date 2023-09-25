@@ -90,7 +90,7 @@ function sendCommandNWEmailRequest(object $eventBridgeClient, array|string $emai
     if (null !== $validation) {
         error_log('Email validation failed: ' . $validation);
         return false;
-    }    
+    }
 
     $event = [ // REQUIRED
         'Detail' => json_encode(['emailParams' => $final_config]),
