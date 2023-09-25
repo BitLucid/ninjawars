@@ -40,9 +40,17 @@ class Nmail
      *
      * Just sets the fields to use for the mail() function, defaults null.
      * @param $from string or array of email-indexed from addresses
+     * @param $extras array of extra parameters, currently only replyto is the optional one
      * @access public
      */
-    public function __construct(array|string $to = null, string $subject = null, string $body = null, array|string $from = null, ?array $extras = null, $transport = null)
+    public function __construct(
+        array|string $to = null,
+        string $subject = null,
+        string $body = null,
+        array|string $from = null,
+        ?array $extras = null,
+        $transport = null
+    )
     {
         $this->to      = $to;
         $this->subject = $subject;
@@ -101,6 +109,7 @@ class Nmail
             'html' => '<div>' . $this->body . '</div>',
         ] + ($this->reply_to ? ['replyto' => $this->reply_to] : []));
         // Optionally add reply to only if it got set and defined
+        
         $result = sendCommandNWEmailRequest(self::$transport, $this->to, $params);
         if ($debug_override || defined('DEBUG') && DEBUG) {
             error_log('Email sendout' . print_r($params, true) . PHP_EOL, 3, LOGS . "emails.log");

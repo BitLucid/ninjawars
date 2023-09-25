@@ -47,6 +47,21 @@ function validateEmailIncomingConfig(array $config): ?string
     if (count($missing_keys) > 0) {
         return 'Missing required keys: ' . implode(', ', $missing_keys);
     }
+    $from = is_array($config['from']) ? array_key_first($config['from']) : $config['from'];
+    $to = is_array($config['to']) ? array_key_first($config['to']) : $config['to'];
+    if (!filter_var($from, FILTER_VALIDATE_EMAIL)) {
+        return 'Invalid from email address: ' . $from;
+    }
+    if (!filter_var($to, FILTER_VALIDATE_EMAIL)) {
+        return 'Invalid to TO email address. ' . defined(DEBUG) && DEBUG ? $to : '';
+    }
+    if (!preg_match(
+        "/\.|@/",
+        $to
+    )) {
+        return 'Invalid to email address: ' . $to;
+    }
+
     return null;
 }
 
@@ -55,14 +70,22 @@ function validateEmailIncomingConfig(array $config): ?string
  */
 function sendCommandNWEmailRequest(object $eventBridgeClient, array|string $email, array $emailParams): bool|object
 {
-    $to_address = is_array($email) ? reset($email) : $email;
-    $sanitized_email = filter_var($to_address, FILTER_SANITIZE_EMAIL);
-    $final_config = ($emailParams + ['to' => $sanitized_email]);
-    $validation = validateEmailIncomingConfig($final_config);
+    $validation = validateEmailIncomingConfig(($emailParams + ['to' => $email]));
     if (null !== $validation) {
         error_log('Email validation failed: ' . $validation);
         return false;
     }
+    $to_address = is_array($email) ? array_key_first($email) : $email;
+    $from_address = is_array($emailParams['from']) ? array_key_first($emailParams['from']) : $emailParams['from'];
+    $sanitized_email = filter_var($to_address, FILTER_SANITIZE_EMAIL);
+    $sanitized_from_email = filter_var($from_address, FILTER_SANITIZE_EMAIL);
+    $final_config = ($emailParams + ['to' => $sanitized_email, 'from' => $sanitized_from_email]);
+    $validation = validateEmailIncomingConfig($final_config);
+    if (null !== $validation) {
+        error_log('Email validation failed: ' . $validation);
+        return false;
+    }    
+
     $event = [ // REQUIRED
         'Detail' => json_encode(['emailParams' => $final_config]),
         'DetailType' => 'CommandNWEmailRequest',

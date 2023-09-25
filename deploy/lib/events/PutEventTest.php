@@ -21,9 +21,9 @@ class PutEventTest extends NWTest
     public function testValidateEmailIncomingConfigPass()
     {
         // These emails are technically valid, but we're just going to validate input here
-        $dirty_email = 'ninjawarstchalvak+invalid@gmail.com';
+        $dirty_email = 'ninjawarstchalvak+invalid@example.com';
         $config = [
-            'from' => 'ninjawarstchalvak+invalidfrom@gmail.com',
+            'from' => 'ninjawarstchalvak+invalidfrom@example.com',
             'subject' => 'Test event fired via local php sdk ' . hash('SHA512', time()),
             'text' => 'Some Raw text: of the email body that is sent in: Test event fired via lambda email sendout nwEmailSendout function',
             'html' => '<h1>Simple Title for in body</h1><p>Some html of the email body that is sent in: Test event fired via lambda email sendout nwEmailSendout function</p>',
@@ -37,7 +37,7 @@ class PutEventTest extends NWTest
     {
         // These emails are technically valid, but we're just going to validate input here
         $config = [
-            //'from' => 'ninjawarstchalvak+invalidfrom@gmail.com',
+            //'from' => 'ninjawarstchalvak+invalidfrom@example.com',
             'subject' => 'Test event fired via local php sdk ' . hash('SHA512', time()),
             'text' => 'Some Raw text: of the email body that is sent in: Test event fired via lambda email sendout nwEmailSendout function',
             'html' => '<h1>Simple Title for in body</h1><p>Some html of the email body that is sent in: Test event fired via lambda email sendout nwEmailSendout function</p>',
@@ -55,9 +55,9 @@ class PutEventTest extends NWTest
                 return false;
             }
         };
-        $dirty_email = 'ninjawarstchalvak+invalid@gmail.com';
+        $dirty_email = 'ninjawarstchalvak+invalid@example.com';
         $config = [
-            'from' => 'ninjawarstchalvak+invalidfrom@gmail.com',
+            'from' => 'ninjawarstchalvak+invalidfrom@example.com',
             'subject' => 'Test event fired via PutEventTest test file' . hash('SHA512', time()),
             'text' => 'Some Raw text: of the email body that is sent in: Test event fired via lambda email sendout nwEmailSendout function',
             'html' => '<h1>Simple Title for in body</h1><p>Some html of the email body that is sent in: Test event fired via lambda email sendout nwEmailSendout function</p>',
@@ -74,9 +74,9 @@ class PutEventTest extends NWTest
                 return true;
             }
         };
-        $dirty_email = 'ninjawarstchalvak+invalid@gmail.com';
+        $dirty_email = 'invalid@example.com';
         $config = [
-            'from' => 'ninjawarstchalvak+invalidfrom@gmail.com',
+            'from' => 'invalidfrom@example.com',
             'subject' => 'Test event fired via PutEventTest test file' . hash('SHA512', time()),
             'text' => 'Some Raw text: of the email body that is sent in: Test event fired via lambda email sendout nwEmailSendout function',
             'html' => '<h1>Simple Title for in body</h1><p>Some html of the email body that is sent in: Test event fired via lambda email sendout nwEmailSendout function</p>',
@@ -93,9 +93,9 @@ class PutEventTest extends NWTest
                 return true;
             }
         };
-        $dirty_email = 'ninjawarstchalvak+invalid@gmail.com';
+        $dirty_email = 'ninjawarstchalvak+invalid@example.com';
         $config = [
-            //'from' => 'ninjawarstchalvak+invalidfrom@gmail.com',
+            //'from' => 'ninjawarstchalvak+invalidfrom@example.com',
             'subject' => 'Test event fired via PutEventTest test file' . hash('SHA512', time()),
             'text' => 'Some Raw text: of the email body that is sent in: Test event fired via lambda email sendout nwEmailSendout function',
             'html' => '<h1>Simple Title for in body</h1><p>Some html of the email body that is sent in: Test event fired via lambda email sendout nwEmailSendout function</p>',

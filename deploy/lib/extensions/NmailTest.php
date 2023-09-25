@@ -67,7 +67,8 @@ class NmailTest extends NWTest
             }
         };
 
-        $nmail = new Nmail(['Jim' => 'someone@example.com'], 'Some subject', 'some body text', ['William B. Washington' => 'someoneelse@example.com'], null, $transport);
+        $nmail = new Nmail(['someone@example.com' => 'Jim Jenkins'], 'Some subject', 'some body text', ['someoneelse@example.com' => 'William B. Washington'], null, $transport);
+        $nmail->setReplyTo([SUPPORT_EMAIL => SUPPORT_EMAIL_NAME]);
         $outcome = $nmail->send($debug_override = true);
         $this->assertTrue($outcome);
     }
