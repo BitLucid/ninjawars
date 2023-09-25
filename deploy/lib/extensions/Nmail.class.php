@@ -42,7 +42,7 @@ class Nmail
      * @param $from string or array of email-indexed from addresses
      * @access public
      */
-    public function __construct($to = null, $subject = null, $body = null, $from = null, $extras = null, $transport = null)
+    public function __construct(array|string $to = null, string $subject = null, string $body = null, array|string $from = null, ?array $extras = null, $transport = null)
     {
         $this->to      = $to;
         $this->subject = $subject;

@@ -53,9 +53,10 @@ function validateEmailIncomingConfig(array $config): ?string
 /**
  * @return bool Whether the event was sent successfully
  */
-function sendCommandNWEmailRequest(?object $eventBridgeClient, string $email, array $emailParams): bool|object
+function sendCommandNWEmailRequest(object $eventBridgeClient, array|string $email, array $emailParams): bool|object
 {
-    $sanitized_email = filter_var($email, FILTER_SANITIZE_EMAIL);
+    $to_address = is_array($email) ? reset($email) : $email;
+    $sanitized_email = filter_var($to_address, FILTER_SANITIZE_EMAIL);
     $final_config = ($emailParams + ['to' => $sanitized_email]);
     $validation = validateEmailIncomingConfig($final_config);
     if (null !== $validation) {
