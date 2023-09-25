@@ -61,7 +61,7 @@ class Nmail
      *
      * @return void
      */
-    public function replace($to=null, $subject=null, $body=null, $from=null)
+    public function replace($to = null, $subject = null, $body = null, $from = null)
     {
         $this->__construct($to, $subject, $body, $from);
         // *** Replace the current Nmail parameters with a new mailing.

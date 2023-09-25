@@ -49,8 +49,7 @@ class PutEventTest extends NWTest
 
     public function testEmailSendShouldFailWhenClientTransportMocked()
     {
-        $eventBridgeClient = new class
-        {
+        $eventBridgeClient = new class () {
             public function putEvents($params)
             {
                 return false;
@@ -69,8 +68,7 @@ class PutEventTest extends NWTest
 
     public function testEmailSendShouldSucceedWhenClientTransportMocked()
     {
-        $eventBridgeClient = new class
-        {
+        $eventBridgeClient = new class () {
             public function putEvents($params)
             {
                 return true;
@@ -89,8 +87,7 @@ class PutEventTest extends NWTest
 
     public function testEmailSendShouldValidate()
     {
-        $eventBridgeClient = new class
-        {
+        $eventBridgeClient = new class () {
             public function putEvents($params)
             {
                 return true;

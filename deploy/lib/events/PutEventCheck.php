@@ -8,7 +8,7 @@ use function NinjaWars\core\events\sendCommandNWEmailRequest as sendCommandNWEma
 use function NinjaWars\core\events\validateEmailIncomingConfig as validateEmailIncomingConfig;
 
 throw new Exception('This file is not meant to be run except during prototyping.');
-// Checkrun: php deploy/lib/events/PutEventCheck.php 
+// Checkrun: php deploy/lib/events/PutEventCheck.php
 // TODO: remove this prototype check once event email sdk sending is stabilized
 
 // Create a EventBridgeClient

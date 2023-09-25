@@ -6,7 +6,6 @@ require_once __DIR__ . '/Nmail.class.php';
 
 class NmailTest extends NWTest
 {
-
     public function testInstatiateNmail()
     {
         $nmail = new Nmail();
@@ -15,8 +14,7 @@ class NmailTest extends NWTest
 
     public function testProvideMockClientFail()
     {
-        $transport = new class
-        {
+        $transport = new class () {
             public function putEvents($params)
             {
                 return false;
@@ -30,8 +28,7 @@ class NmailTest extends NWTest
 
     public function testProvideMockClientSuccess()
     {
-        $transport = new class
-        {
+        $transport = new class () {
             public function putEvents($params)
             {
                 return (object) [
@@ -54,8 +51,7 @@ class NmailTest extends NWTest
 
     public function testProvideArrayToFromAndMockClientSuccess()
     {
-        $transport = new class
-        {
+        $transport = new class () {
             public function putEvents($params)
             {
                 return (object) [
@@ -78,8 +74,7 @@ class NmailTest extends NWTest
 
     public function testValidationFails()
     {
-        $transport = new class
-        {
+        $transport = new class () {
             public function putEvents($params)
             {
                 return (object) [
