@@ -35,6 +35,16 @@ function generateEventbridgeClient($config = [
     return new EventBridgeClient($config);
 }
 
+function sanitizeAndFormatEmail(array|string $email_complex): string
+{
+    list($email, $display) = is_array($email_complex) ? [array_key_first($email_complex), reset($email_complex)] : [$email_complex, null];
+    $sanitized_email = filter_var($email, FILTER_SANITIZE_EMAIL);
+    if (false === $sanitized_email) {
+        throw new \Exception('Invalid email address: ' . $email);
+    }
+    return '"' . $display . '" <' . $sanitized_email . '>';
+}
+
 /**
  * Email config validation, which should perhaps eventually be moved away from event lib
  * @return string|null An error string if invalid
@@ -47,13 +57,11 @@ function validateEmailIncomingConfig(array $config): ?string
     if (count($missing_keys) > 0) {
         return 'Missing required keys: ' . implode(', ', $missing_keys);
     }
-    $from = is_array($config['from']) ? array_key_first($config['from']) : $config['from'];
-    $to = is_array($config['to']) ? array_key_first($config['to']) : $config['to'];
-    if (!filter_var($from, FILTER_VALIDATE_EMAIL)) {
-        return 'Invalid from email address: ' . $from;
-    }
-    if (!filter_var($to, FILTER_VALIDATE_EMAIL)) {
-        return 'Invalid to TO email address. ' . defined(DEBUG) && DEBUG ? $to : '';
+    try {
+        sanitizeAndFormatEmail($config['from']); // throws if invalid
+        $to = sanitizeAndFormatEmail($config['to']); // throws if invalid
+    } catch (\Exception $e) {
+        return $e->getMessage();
     }
     if (!preg_match(
         "/\.|@/",
@@ -75,11 +83,9 @@ function sendCommandNWEmailRequest(object $eventBridgeClient, array|string $emai
         error_log('Email validation failed: ' . $validation);
         return false;
     }
-    $to_address = is_array($email) ? array_key_first($email) : $email;
-    $from_address = is_array($emailParams['from']) ? array_key_first($emailParams['from']) : $emailParams['from'];
-    $sanitized_email = filter_var($to_address, FILTER_SANITIZE_EMAIL);
-    $sanitized_from_email = filter_var($from_address, FILTER_SANITIZE_EMAIL);
-    $final_config = ($emailParams + ['to' => $sanitized_email, 'from' => $sanitized_from_email]);
+    $to = sanitizeAndFormatEmail($email);
+    $from = sanitizeAndFormatEmail($emailParams['from']);
+    $final_config = ($emailParams + ['to' => $to, 'from' => $from]);
     $validation = validateEmailIncomingConfig($final_config);
     if (null !== $validation) {
         error_log('Email validation failed: ' . $validation);
