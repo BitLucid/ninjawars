@@ -6,6 +6,7 @@ require_once __DIR__ . '/PutEvent.php';
 use function NinjaWars\core\events\generateEventbridgeClient as generateEventbridgeClient;
 use function NinjaWars\core\events\sendCommandNWEmailRequest as sendCommandNWEmailRequest;
 use function NinjaWars\core\events\validateEmailIncomingConfig as validateEmailIncomingConfig;
+use function NinjaWars\core\events\sanitizeAndFormatEmail as sanitizeAndFormatEmail;
 
 class PutEventTest extends NWTest
 {
@@ -31,6 +32,14 @@ class PutEventTest extends NWTest
         ];
         $errorOrNone = validateEmailIncomingConfig($config);
         $this->assertNull($errorOrNone);
+    }
+
+    public function testSanitizeAndFormatEmail()
+    {
+        $complex_email = ['nw@example.com' => 'Ninja Wars'];
+        $formatted = sanitizeAndFormatEmail($complex_email);
+        $this->assertEquals('"Ninja Wars" <nw@example.com>', $formatted);
+        $this->assertEquals('nw@example.com', sanitizeAndFormatEmail('nw@example.com'));
     }
 
     public function testValidateEmailIncomingConfigFail()

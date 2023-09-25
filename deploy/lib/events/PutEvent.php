@@ -42,7 +42,7 @@ function sanitizeAndFormatEmail(array|string $email_complex): string
     if (false === $sanitized_email) {
         throw new \Exception('Invalid email address: ' . $email);
     }
-    return '"' . $display . '" <' . $sanitized_email . '>';
+    return $display ? '"' . $display . '" <' . $sanitized_email . '>' : $sanitized_email;
 }
 
 /**
