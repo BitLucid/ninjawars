@@ -7,10 +7,8 @@ use function NinjaWars\core\events\generateEventbridgeClient as generateEventbri
 use function NinjaWars\core\events\sendCommandNWEmailRequest as sendCommandNWEmailRequest;
 use function NinjaWars\core\events\validateEmailIncomingConfig as validateEmailIncomingConfig;
 
-
 class PutEventTest extends NWTest
 {
-
     public function testGenerateEventbridgeClient()
     {
         $client = generateEventbridgeClient([
