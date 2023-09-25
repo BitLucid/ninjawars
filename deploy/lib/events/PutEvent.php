@@ -2,8 +2,6 @@
 
 namespace NinjaWars\core\events;
 
-require_once 'vendor/autoload.php';
-
 use Aws\S3\S3Client;
 use Aws\EventBridge\EventBridgeClient;
 use Aws\Exception\AwsException;
@@ -43,6 +41,7 @@ function generateEventbridgeClient($config = [
  */
 function validateEmailIncomingConfig(array $config): ?string
 {
+    // replyto is optional
     $required_keys = ['from', 'subject', 'text', 'html', 'to'];
     $missing_keys = array_diff($required_keys, array_keys($config));
     if (count($missing_keys) > 0) {
@@ -58,7 +57,11 @@ function sendCommandNWEmailRequest(?object $eventBridgeClient, string $email, ar
 {
     $sanitized_email = filter_var($email, FILTER_SANITIZE_EMAIL);
     $final_config = ($emailParams + ['to' => $sanitized_email]);
-    validateEmailIncomingConfig($final_config);
+    $validation = validateEmailIncomingConfig($final_config);
+    if (null !== $validation) {
+        error_log('Email validation failed: ' . $validation);
+        return false;
+    }
     $event = [ // REQUIRED
         'Detail' => json_encode(['emailParams' => $final_config]),
         'DetailType' => 'CommandNWEmailRequest',

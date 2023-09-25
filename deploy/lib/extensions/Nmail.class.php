@@ -1,4 +1,8 @@
 <?php
+
+use function NinjaWars\core\events\generateEventbridgeClient as generateEventbridgeClient;
+use function NinjaWars\core\events\sendCommandNWEmailRequest as sendCommandNWEmailRequest;
+
 /**
  * Wrapper class for nw to send out mail, currently wraps the swiftmail mail library.
  *
@@ -38,12 +42,18 @@ class Nmail
      * @param $from string or array of email-indexed from addresses
      * @access public
      */
-    public function __construct($to=null, $subject=null, $body=null, $from=null)
+    public function __construct($to = null, $subject = null, $body = null, $from = null, $extras = null, $transport = null)
     {
         $this->to      = $to;
         $this->subject = $subject;
         $this->body    = $body;
         $this->from    = $from;
+        // destructure extras to replyto
+        list($this->reply_to) = $extras ?? [null];
+        self::$transport  = $transport ?? self::$transport ?? generateEventbridgeClient([
+            'region' => 'us-east-1',
+            'version' => '2015-10-07'
+        ]);
     }
 
     /**
@@ -79,47 +89,22 @@ class Nmail
      *
      * @return boolean whether the mail function accepted the inputs.
      */
-    public function send()
+    public function send($debug_override = false)
     {
-        // Create the Transport
-        if (!(self::$transport instanceof Swift_Transport)) {
-            self::$transport = new Swift_MailTransport();
+        if (!$this->valid()) {
+            return false;
         }
-
-        $mailer = new Swift_Mailer(self::$transport);
-
-        $this->message = new Swift_Message();
-        $this->message
-
-            //Give the message a subject
-            ->setSubject($this->subject)
-
-            //Set the From address with an associative array
-            ->setFrom($this->from)
-
-            //Set the To addresses with an associative array
-            ->setTo($this->to)
-
-            //Give it a body
-            ->setBody($this->body)
-
-            //And optionally an alternative/html body
-            ->addPart('<p>'.$this->body.'</p>', 'text/html')
-
-            //Optionally add any attachments
-            //  ->attach(Swift_Attachment::fromPath('my-document.pdf'))
-        ;
-
-        if ($this->reply_to) {
-            $this->message->setReplyTo($this->reply_to);
-            $this->message->setSender($this->from); // Have to set sender when there's a different reply-to.
+        $params = ([
+            'from' => $this->from,
+            'subject' => $this->subject,
+            'text' => $this->body,
+            'html' => '<div>' . $this->body . '</div>',
+        ] + ($this->reply_to ? ['replyto' => $this->reply_to] : []));
+        // Optionally add reply to only if it got set and defined
+        $result = sendCommandNWEmailRequest(self::$transport, $this->to, $params);
+        if ($debug_override || defined('DEBUG') && DEBUG) {
+            error_log('Email sendout' . print_r($params, true) . PHP_EOL, 3, LOGS . "emails.log");
         }
-
-        if (defined('DEBUG') && DEBUG) {
-            error_log($this->message.PHP_EOL, 3, LOGS."emails.log");
-        }
-
-        // Send the message along.
-        return (bool) $mailer->send($this->message);
+        return $result !== false;
     }
 }

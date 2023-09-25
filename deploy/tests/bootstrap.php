@@ -8,4 +8,21 @@ require_once(ROOT.'tests/NWTest.php');
 //use NinjaWars\tests\TestAccountCreateAndDestroy;
 $_SERVER['REMOTE_ADDR'] = '127.0.0.1';
 
-Nmail::$transport = new Swift_NullTransport();
+class NullTestTransport
+{
+    public function putEvents($params)
+    {
+        return [
+            'FailedEntryCount' => 0,
+            'Entries' => [
+                [
+                    'EventId' => '1234',
+                    'ErrorCode' => null,
+                    'ErrorMessage' => null,
+                ]
+            ]
+        ];
+    }
+}
+
+Nmail::$transport = new NullTestTransport();

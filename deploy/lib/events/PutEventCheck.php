@@ -8,6 +8,7 @@ use function NinjaWars\core\events\sendCommandNWEmailRequest as sendCommandNWEma
 use function NinjaWars\core\events\validateEmailIncomingConfig as validateEmailIncomingConfig;
 
 throw new Exception('This file is not meant to be run except during prototyping.');
+// Checkrun: php deploy/lib/events/PutEventCheck.php 
 // TODO: remove this prototype check once event email sdk sending is stabilized
 
 // Create a EventBridgeClient
@@ -21,6 +22,7 @@ $config = [
     'subject' => 'Test event fired via local php run file ' . hash('SHA512', time()),
     'text' => 'Some Raw text: of the email body that is sent in: Test event fired via lambda email sendout nwEmailSendout function',
     'html' => '<h1>Simple Title for in body</h1><p>Some html of the email body that is sent in: Test event fired via lambda email sendout nwEmailSendout function</p>',
+    'reployto' => 'ninjawarstchalvak@gmail.com',
 ];
 
 $dirty_email = 'roy.ronalds@gmail.com';

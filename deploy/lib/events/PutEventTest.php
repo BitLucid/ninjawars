@@ -37,7 +37,7 @@ class PutEventTest extends NWTest
     {
         // These emails are technically valid, but we're just going to validate input here
         $config = [
-            'from' => 'ninjawarstchalvak+invalidfrom@gmail.com',
+            //'from' => 'ninjawarstchalvak+invalidfrom@gmail.com',
             'subject' => 'Test event fired via local php sdk ' . hash('SHA512', time()),
             'text' => 'Some Raw text: of the email body that is sent in: Test event fired via lambda email sendout nwEmailSendout function',
             'html' => '<h1>Simple Title for in body</h1><p>Some html of the email body that is sent in: Test event fired via lambda email sendout nwEmailSendout function</p>',
@@ -47,17 +47,61 @@ class PutEventTest extends NWTest
         $this->assertIsString($errorOrNone);
     }
 
-    public function testEmailSendShouldFailWhenSomething()
+    public function testEmailSendShouldFailWhenClientTransportMocked()
     {
-        //$this->markTestIncomplete('Email sending fail test is not yet implemented');
-        $eventBridgeClient = null;
+        $eventBridgeClient = new class
+        {
+            public function putEvents($params)
+            {
+                return false;
+            }
+        };
         $dirty_email = 'ninjawarstchalvak+invalid@gmail.com';
         $config = [
             'from' => 'ninjawarstchalvak+invalidfrom@gmail.com',
             'subject' => 'Test event fired via PutEventTest test file' . hash('SHA512', time()),
             'text' => 'Some Raw text: of the email body that is sent in: Test event fired via lambda email sendout nwEmailSendout function',
             'html' => '<h1>Simple Title for in body</h1><p>Some html of the email body that is sent in: Test event fired via lambda email sendout nwEmailSendout function</p>',
-            'to' => $dirty_email,
+        ];
+        $result = sendCommandNWEmailRequest($eventBridgeClient, $dirty_email, $config);
+        $this->assertFalse($result);
+    }
+
+    public function testEmailSendShouldSucceedWhenClientTransportMocked()
+    {
+        $eventBridgeClient = new class
+        {
+            public function putEvents($params)
+            {
+                return true;
+            }
+        };
+        $dirty_email = 'ninjawarstchalvak+invalid@gmail.com';
+        $config = [
+            'from' => 'ninjawarstchalvak+invalidfrom@gmail.com',
+            'subject' => 'Test event fired via PutEventTest test file' . hash('SHA512', time()),
+            'text' => 'Some Raw text: of the email body that is sent in: Test event fired via lambda email sendout nwEmailSendout function',
+            'html' => '<h1>Simple Title for in body</h1><p>Some html of the email body that is sent in: Test event fired via lambda email sendout nwEmailSendout function</p>',
+        ];
+        $result = sendCommandNWEmailRequest($eventBridgeClient, $dirty_email, $config);
+        $this->assertTrue($result);
+    }
+
+    public function testEmailSendShouldValidate()
+    {
+        $eventBridgeClient = new class
+        {
+            public function putEvents($params)
+            {
+                return true;
+            }
+        };
+        $dirty_email = 'ninjawarstchalvak+invalid@gmail.com';
+        $config = [
+            //'from' => 'ninjawarstchalvak+invalidfrom@gmail.com',
+            'subject' => 'Test event fired via PutEventTest test file' . hash('SHA512', time()),
+            'text' => 'Some Raw text: of the email body that is sent in: Test event fired via lambda email sendout nwEmailSendout function',
+            'html' => '<h1>Simple Title for in body</h1><p>Some html of the email body that is sent in: Test event fired via lambda email sendout nwEmailSendout function</p>',
         ];
         $result = sendCommandNWEmailRequest($eventBridgeClient, $dirty_email, $config);
         $this->assertFalse($result);
