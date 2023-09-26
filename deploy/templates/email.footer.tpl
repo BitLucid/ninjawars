@@ -1,5 +1,5 @@
-	<div style='background-color:#0c0c0c'>
-	    <img alt='NinjaWars' src='//www.ninjawars.net/images/ninjawars_title.png'>
+	<div style='background-color:#0c0c0c;min-height:2rem;'>
+	    <img alt='NinjaWars' class='email-footer-logo' src='http://www.ninjawars.net/images/ninjawars_title.png'>
 	</div>
 	
 	<div>
