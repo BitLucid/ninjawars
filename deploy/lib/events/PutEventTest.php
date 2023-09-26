@@ -7,6 +7,7 @@ use function NinjaWars\core\events\generateEventbridgeClient as generateEventbri
 use function NinjaWars\core\events\sendCommandNWEmailRequest as sendCommandNWEmailRequest;
 use function NinjaWars\core\events\validateEmailIncomingConfig as validateEmailIncomingConfig;
 use function NinjaWars\core\events\sanitizeAndFormatEmail as sanitizeAndFormatEmail;
+use function NinjaWars\core\events\generateEmailEvent as generateEmailEvent;
 
 class PutEventTest extends NWTest
 {
@@ -24,7 +25,7 @@ class PutEventTest extends NWTest
         // These emails are technically valid, but we're just going to validate input here
         $dirty_email = 'ninjawarstchalvak+invalid@example.com';
         $config = [
-            'from' => 'ninjawarstchalvak+invalidfrom@example.com',
+            'from' => 'ninjawarstchalvak+shouldnotbesentunto@example.com',
             'subject' => 'Test event fired via local php sdk ' . hash('SHA512', time()),
             'text' => 'Some Raw text: of the email body that is sent in: Test event fired via lambda email sendout nwEmailSendout function',
             'html' => '<h1>Simple Title for in body</h1><p>Some html of the email body that is sent in: Test event fired via lambda email sendout nwEmailSendout function</p>',
@@ -36,17 +37,17 @@ class PutEventTest extends NWTest
 
     public function testSanitizeAndFormatEmail()
     {
-        $complex_email = ['nw@example.com' => 'Ninja Wars'];
-        $formatted = sanitizeAndFormatEmail($complex_email);
-        $this->assertEquals('"Ninja Wars" <nw@example.com>', $formatted);
+        $this->assertEquals('"Ninja Wars" <nw@example.com>', sanitizeAndFormatEmail(['nw@example.com' => 'Ninja Wars']));
         $this->assertEquals('nw@example.com', sanitizeAndFormatEmail('nw@example.com'));
+        $this->assertEquals('"From Ninja Wars System" <ninjawarstchalvak+shouldnotbesentunto@example.com>', sanitizeAndFormatEmail(['ninjawarstchalvak+shouldnotbesentunto@example.com' => 'From Ninja Wars System']));
+
     }
 
     public function testValidateEmailIncomingConfigFail()
     {
         // These emails are technically valid, but we're just going to validate input here
         $config = [
-            //'from' => 'ninjawarstchalvak+invalidfrom@example.com',
+            //'from' => 'ninjawarstchalvak+shouldnotbesentunto@example.com',
             'subject' => 'Test event fired via local php sdk ' . hash('SHA512', time()),
             'text' => 'Some Raw text: of the email body that is sent in: Test event fired via lambda email sendout nwEmailSendout function',
             'html' => '<h1>Simple Title for in body</h1><p>Some html of the email body that is sent in: Test event fired via lambda email sendout nwEmailSendout function</p>',
@@ -54,6 +55,39 @@ class PutEventTest extends NWTest
         ];
         $errorOrNone = validateEmailIncomingConfig($config);
         $this->assertIsString($errorOrNone);
+    }
+
+    public function testGenerateEmailStringEvent()
+    {
+        $config = [
+            'to' => 'someaddress@example.com',
+            'from' => 'ninjawarstchalvak+shouldnotbesentunto@example.com',
+            'subject' => 'Test event fired via PutEventTest test file' . hash('SHA512', time()),
+            'text' => 'Some Raw text: of the email body that is sent in: Test event fired via lambda email sendout nwEmailSendout function',
+            'html' => '<h1>Simple Title for in body</h1><p>Some html of the email body that is sent in: Test event fired via lambda email sendout nwEmailSendout function</p>',
+        ];
+        $event = generateEmailEvent($config);
+        $this->assertEquals('php.nwmail.sdk.call', $event['Source']);
+        $this->assertEquals('CommandNWEmailRequest', $event['DetailType']);
+        $this->assertEquals('ninjawarstchalvak+shouldnotbesentunto@example.com', json_decode($event['Detail'], true)['emailParams']['from']);
+    }
+
+    public function testGenerateEmailComplexArrayEvent()
+    {
+        $config = [
+            'to' => ['someaddress@example.com' => 'Some Player'],
+            'from' => ['ninjawarstchalvak+shouldnotbesentunto@example.com' => 'From Ninja Wars System'],
+            'subject' => 'Test event fired via PutEventTest test file' . hash('SHA512', time()),
+            'text' => 'Some Raw text: of the email body that is sent in: Test event fired via lambda email sendout nwEmailSendout function',
+            'html' => '<h1>Simple Title for in body</h1><p>Some html of the email body that is sent in: Test event fired via lambda email sendout nwEmailSendout function</p>',
+        ];
+        $event = generateEmailEvent($config);
+        $this->assertEquals('php.nwmail.sdk.call', $event['Source']);
+        $this->assertEquals('CommandNWEmailRequest', $event['DetailType']);
+        // Assert detail decoded is a string
+        $generated_email = json_decode($event['Detail'], true)['emailParams']['from'];
+        $this->assertIsString($generated_email);
+        $this->assertEquals('"From Ninja Wars System" <ninjawarstchalvak+shouldnotbesentunto@example.com>', $generated_email);
     }
 
     public function testEmailSendShouldFailWhenClientTransportMocked()
@@ -66,7 +100,7 @@ class PutEventTest extends NWTest
         };
         $dirty_email = 'ninjawarstchalvak+invalid@example.com';
         $config = [
-            'from' => 'ninjawarstchalvak+invalidfrom@example.com',
+            'from' => 'ninjawarstchalvak+shouldnotbesentunto@example.com',
             'subject' => 'Test event fired via PutEventTest test file' . hash('SHA512', time()),
             'text' => 'Some Raw text: of the email body that is sent in: Test event fired via lambda email sendout nwEmailSendout function',
             'html' => '<h1>Simple Title for in body</h1><p>Some html of the email body that is sent in: Test event fired via lambda email sendout nwEmailSendout function</p>',
@@ -85,7 +119,7 @@ class PutEventTest extends NWTest
         };
         $dirty_email = 'invalid@example.com';
         $config = [
-            'from' => 'invalidfrom@example.com',
+            'from' => 'shouldnotbesentunto@example.com',
             'subject' => 'Test event fired via PutEventTest test file' . hash('SHA512', time()),
             'text' => 'Some Raw text: of the email body that is sent in: Test event fired via lambda email sendout nwEmailSendout function',
             'html' => '<h1>Simple Title for in body</h1><p>Some html of the email body that is sent in: Test event fired via lambda email sendout nwEmailSendout function</p>',
@@ -94,7 +128,7 @@ class PutEventTest extends NWTest
         $this->assertTrue($result);
     }
 
-    public function testEmailSendShouldValidate()
+    public function testEmailSendShouldValidateAndRejectSending()
     {
         $eventBridgeClient = new class () {
             public function putEvents($params)
@@ -104,11 +138,12 @@ class PutEventTest extends NWTest
         };
         $dirty_email = 'ninjawarstchalvak+invalid@example.com';
         $config = [
-            //'from' => 'ninjawarstchalvak+invalidfrom@example.com',
+            //'from' => 'ninjawarstchalvak+shouldnotbesentunto@example.com',
             'subject' => 'Test event fired via PutEventTest test file' . hash('SHA512', time()),
             'text' => 'Some Raw text: of the email body that is sent in: Test event fired via lambda email sendout nwEmailSendout function',
             'html' => '<h1>Simple Title for in body</h1><p>Some html of the email body that is sent in: Test event fired via lambda email sendout nwEmailSendout function</p>',
         ];
+        echo PHP_EOL . "Expect an error log during test run here: " . PHP_EOL;
         $result = sendCommandNWEmailRequest($eventBridgeClient, $dirty_email, $config);
         $this->assertFalse($result);
     }

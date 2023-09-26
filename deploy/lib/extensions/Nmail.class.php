@@ -56,7 +56,7 @@ class Nmail
         $this->body    = $body;
         $this->from    = $from;
         // destructure extras to replyto
-        list($this->reply_to) = $extras ?? [null];
+        list($this->reply_to) = $extras['replyto'] ?? [null];
         self::$transport  = $transport ?? self::$transport ?? generateEventbridgeClient([
             'region' => 'us-east-1',
             'version' => '2015-10-07'

@@ -37,7 +37,9 @@ function generateEventbridgeClient($config = [
 
 function sanitizeAndFormatEmail(array|string $email_complex): string
 {
-    list($email, $display) = is_array($email_complex) ? [array_key_first($email_complex), reset($email_complex)] : [$email_complex, null];
+    list($email, $display) = is_array($email_complex) ?
+        [array_key_first($email_complex), reset($email_complex)] :
+        [$email_complex, null];
     $sanitized_email = filter_var($email, FILTER_SANITIZE_EMAIL);
     if (false === $sanitized_email) {
         throw new \Exception('Invalid email address: ' . $email);
@@ -73,26 +75,19 @@ function validateEmailIncomingConfig(array $config): ?string
     return null;
 }
 
-/**
- * @return bool Whether the event was sent successfully
- */
-function sendCommandNWEmailRequest(object $eventBridgeClient, array|string $email, array $emailParams): bool|object
+function generateEmailEvent(array $config): array
 {
-    $validation = validateEmailIncomingConfig(($emailParams + ['to' => $email]));
+    $validation = validateEmailIncomingConfig($config);
     if (null !== $validation) {
-        error_log('Email validation failed: ' . $validation);
-        return false;
+        throw new \Exception('Email initial validation failed: ' . $validation);
     }
-    $to = sanitizeAndFormatEmail($email);
-    $from = sanitizeAndFormatEmail($emailParams['from']);
-    $final_config = ($emailParams + ['to' => $to, 'from' => $from]);
+    $optional_replyto = isset($config['replyto']) ? sanitizeAndFormatEmail($config['from']) : null;
+    $final_config = (['to' => sanitizeAndFormatEmail($config['to']), 'from' => sanitizeAndFormatEmail($config['from'])] + ($optional_replyto ? ['replyto' => $optional_replyto] : []) + $config);
     $validation = validateEmailIncomingConfig($final_config);
     if (null !== $validation) {
-        error_log('Email validation failed: ' . $validation);
-        return false;
+        throw new \Exception('Email validation failed: ' . $validation);
     }
-
-    $event = [ // REQUIRED
+    return [ // REQUIRED
         'Detail' => json_encode(['emailParams' => $final_config]),
         'DetailType' => 'CommandNWEmailRequest',
         'EventBusName' => 'NWEventBus',
@@ -101,6 +96,20 @@ function sendCommandNWEmailRequest(object $eventBridgeClient, array|string $emai
         "Version" => "0",
 
     ];
+}
+
+/**
+ * @return bool Whether the event was sent successfully
+ */
+function sendCommandNWEmailRequest(object $eventBridgeClient, array|string $email, array $emailParams): bool|object
+{
+    $final_config = (['to' => $email] + $emailParams);
+    try {
+        $event = generateEmailEvent($final_config);
+    } catch (\Exception $e) {
+        error_log(PHP_EOL . 'Email event generation failed: ' . $e->getMessage());
+        return false;
+    }
     return putEvent($eventBridgeClient, $event);
 }
 
