@@ -40,7 +40,6 @@ class PutEventTest extends NWTest
         $this->assertEquals('"Ninja Wars" <nw@example.com>', sanitizeAndFormatEmail(['nw@example.com' => 'Ninja Wars']));
         $this->assertEquals('nw@example.com', sanitizeAndFormatEmail('nw@example.com'));
         $this->assertEquals('"From Ninja Wars System" <ninjawarstchalvak+shouldnotbesentunto@example.com>', sanitizeAndFormatEmail(['ninjawarstchalvak+shouldnotbesentunto@example.com' => 'From Ninja Wars System']));
-
     }
 
     public function testValidateEmailIncomingConfigFail()
