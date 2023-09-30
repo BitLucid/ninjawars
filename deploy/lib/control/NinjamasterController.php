@@ -197,6 +197,6 @@ class NinjamasterController extends AbstractController
      */
     private function calculatePlayerSize($p_rank, $p_max): int
     {
-        return (int) floor(((($p_rank-1 < 1 ? 0 : $p_rank-1)) / $p_max)*10)+1;
+        return (int) floor(((($p_rank - 1 < 1 ? 0 : $p_rank - 1)) / $p_max) * 10) + 1;
     }
 }
