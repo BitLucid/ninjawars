@@ -1,9 +1,3 @@
-{*
-<script>
-var enemy = 'enemy to array @json_encode'
-</script>
-*}
-{* $smarty->register->templateClass('foo','name\name2\myclass'); *}
 <style>
 .ninja-area{
     width: 100%;

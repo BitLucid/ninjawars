@@ -253,7 +253,7 @@ var combatSkillsList = {$json_combat_skills nofilter};
     <details class='player-profile'>
       <summary><span class='fa fa-eye'></span></summary>
       <p class='centered profile-message'>
-        {$target_player_obj->messages|trim|escape|replace_urls|nl2br}
+        {$target_player_obj->messages|nw_trim|escape|replace_urls|nl2br}
       </p>
     </details>
 {/if}

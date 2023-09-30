@@ -37,7 +37,7 @@
 
   <dl class='chat-messages'>
 {foreach from=$chats item="record"}
-	{assign var="message" value=$record.message|trim}
+	{assign var="message" value=$record.message|nw_trim}
 
 	{if $message}
 		{include file="chatmessage.tpl" sender_id=$record.sender_id sender_name=$record.uname message=$message message_date=$record.date}
