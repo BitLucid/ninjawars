@@ -3,7 +3,7 @@
   margin-bottom:3em;
 }
 #inventory-content .item-list{
-  margin-bottom:2em;margin-left:auto;margin-right:auto;width:100%;max-width:30rem;
+  margin-bottom:2em;margin-left:auto;margin-right:auto;width:100%;
 }
 #inventory-content .item-list .oddeven td{
   font-size:1em;padding-bottom:0.3em;line-height:2.3;
@@ -25,6 +25,12 @@
 }
 .footnote{
   background-color:rgba(0, 0, 0, 0.5);
+}
+/* media query for large screen */
+@media (min-width: 801px) {
+  #inventory-content .item-list{
+    max-width:50%;
+  }
 }
 </style>
 
