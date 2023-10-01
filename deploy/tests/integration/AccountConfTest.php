@@ -62,7 +62,7 @@ class TestAccountConfirmation extends NWTest
     public function setUp(): void
     {
         parent::setUp();
-        $_SERVER['REMOTE_ADDR']=isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '127.0.0.1';
+        $_SERVER['REMOTE_ADDR'] = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '127.0.0.1';
         $this->test_email = TestAccountCreateAndDestroy::$test_email; // Something@example.com probably
         $this->test_password = TestAccountCreateAndDestroy::$test_password;
         $this->test_ninja_name = TestAccountCreateAndDestroy::$test_ninja_name;
@@ -171,7 +171,7 @@ class TestAccountConfirmation extends NWTest
 
     public function testAttemptLoginOfUnconfirmedAccountShouldFail()
     {
-        $email ='noautoconfirm@hotmail.com'; // Create a non-autoconfirmed user
+        $email = 'noautoconfirm@hotmail.com'; // Create a non-autoconfirmed user
         TestAccountCreateAndDestroy::create_testing_account(false, $email);
 
         RequestWrapper::inject(new Request([]));
