@@ -27,7 +27,7 @@ table .char-title td{
 
 <div class="description">
   <p>
-    You walk up the steps to the grandest building in the village, a gold-leaf topped pagoda with newly panted red wooden beams. The dojo trains many respected ninja.
+    You walk up the steps to the grandest building in the village, a jade tile topped pagoda with newly painted red wooden beams. The dojo trains many respected ninja.
   </p>
   <p>
     As you approach, you can hear the sounds of fighting coming from the wooden doors in front of you.
