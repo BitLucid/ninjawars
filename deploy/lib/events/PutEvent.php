@@ -2,10 +2,8 @@
 
 namespace NinjaWars\core\events;
 
-use Aws\S3\S3Client;
 use Aws\EventBridge\EventBridgeClient;
 use Aws\Exception\AwsException;
-use Aws\Result;
 
 /**
  * Send a raw event to the eventbridge
