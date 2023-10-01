@@ -22,7 +22,7 @@ $config = [
     'subject' => 'Test event fired via local php run file ' . hash('SHA512', time()),
     'text' => 'Some Raw text: of the email body that is sent in: Test event fired via lambda email sendout nwEmailSendout function',
     'html' => '<h1>Simple Title for in body</h1><p>Some html of the email body that is sent in: Test event fired via lambda email sendout nwEmailSendout function</p>',
-    'reployto' => 'ninjawarstchalvak@gmail.com',
+    'replyto' => 'ninjawarstchalvak@gmail.com',
 ];
 
 $dirty_email = 'roy.ronalds@gmail.com';
