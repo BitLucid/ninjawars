@@ -229,7 +229,7 @@ class TestAccountConfirmation extends NWTest
         $account->save();
 
         $res = $account->authenticate('invalid_password');
-        $this->assertfalse($res);
+        $this->assertFalse($res);
     }
 
 
