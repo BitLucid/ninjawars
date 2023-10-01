@@ -36,7 +36,7 @@ class NinjamasterControllerTest extends NWTest
         $cont = new NinjamasterController();
         $player = Player::findByName('tchalvak');
         if (!$player) {
-            $this->markSkippedForMissingDependency();
+            $this->markTestSkipped('Missing dependency on admin user to test against');
         }
         $this->m_dependencies['current_player'] = $player;
         $response = $cont->index($this->m_dependencies);
