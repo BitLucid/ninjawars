@@ -67,7 +67,7 @@ class NinjamasterController extends AbstractController
 
         $initial_char_ids = $request->get('view');
         $char_ids  = $initial_char_ids ? preg_split("/[,\s]+/", $initial_char_ids) : null;
-        $char_name = trim($request->get('char_name'));
+        $char_name = $request->get('char_name') ? trim($request->get('char_name')) : null;
 
         if ($char_name) { // View a target non-self character
             $first_char = Player::findByName($char_name);
@@ -197,6 +197,6 @@ class NinjamasterController extends AbstractController
      */
     private function calculatePlayerSize($p_rank, $p_max): int
     {
-        return (int) floor(((($p_rank-1 < 1 ? 0 : $p_rank-1)) / $p_max)*10)+1;
+        return (int) floor(((($p_rank - 1 < 1 ? 0 : $p_rank - 1)) / $p_max) * 10) + 1;
     }
 }
