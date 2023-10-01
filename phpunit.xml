@@ -19,11 +19,14 @@
       <file>deploy/lib/cleanup.inc.php</file>
       <file>deploy/resources.build.php</file>
       <file>deploy/resources.template.php</file>
+      <file>deploy/lib/events/PutEventCheck.php</file>
     </exclude>
   </coverage>
   <testsuites>
     <testsuite name="Unit">
       <directory suffix=".php">deploy/tests/unit</directory>
+      <directory suffix=".php">deploy/lib/events</directory>
+      <exclude>deploy/lib/events/PutEventCheck.php</exclude>
     </testsuite>
     <testsuite name="Integration">
       <file>deploy/tests/integration/DeityTest.php</file>
@@ -31,6 +34,8 @@
     </testsuite>
     <testsuite name="Quick">
       <directory suffix=".php">deploy/tests/unit</directory>
+      <directory suffix=".php">deploy/lib/events</directory>
+      <exclude>deploy/lib/events/PutEventCheck.php</exclude>
       <file>deploy/tests/integration/controller/HomepageControllerTest.php</file>
       <file>deploy/tests/integration/controller/AttackControllerTest.php</file>
       <file>deploy/tests/integration/controller/LoginControllerTest.php</file>

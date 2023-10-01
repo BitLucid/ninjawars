@@ -103,7 +103,9 @@ class PasswordResetRequest extends Model
             Please contact ' . SUPPORT_EMAIL_NAME . ' via ' . SUPPORT_EMAIL . ' if this was an error.
         ';
 
-        $nmail = new Nmail($email, 'NinjaWars.net: Your password was reset.', $body, SUPPORT_EMAIL);
+        $_from = [SYSTEM_EMAIL => SYSTEM_EMAIL_NAME];
+        $nmail = new Nmail($email, 'NinjaWars.net: Your password was reset.', $body, $_from);
+        $nmail->setReplyTo([SUPPORT_EMAIL => SUPPORT_EMAIL_NAME]);
 
         return (bool) $nmail->send();
     }
