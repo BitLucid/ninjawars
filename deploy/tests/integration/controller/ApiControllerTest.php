@@ -13,6 +13,14 @@ class ApiControllerTest extends NWTest
     private $controller;
     public $char;
 
+    public function helperPropertyExists(
+        $property,
+        $object,
+        $message = 'Property does not exist'
+    ) {
+        return $this->assertTrue(property_exists($object, $property), $message);
+    }
+
     public function setUp(): void
     {
         parent::setUp();
@@ -89,10 +97,10 @@ class ApiControllerTest extends NWTest
         $result = $this->controller->nw_json();
         $payload = $this->extractPayload($result);
 
-        $this->assertObjectHasAttribute('char_matches', $payload);
+        $this->helperPropertyExists('char_matches', $payload);
         $this->assertCount(1, $payload->char_matches);
-        $this->assertObjectHasAttribute('uname', $payload->char_matches[0]);
-        $this->assertObjectHasAttribute('player_id', $payload->char_matches[0]);
+        $this->helperPropertyExists('uname', $payload->char_matches[0]);
+        $this->helperPropertyExists('player_id', $payload->char_matches[0]);
     }
 
     public function testChats()
@@ -106,7 +114,7 @@ class ApiControllerTest extends NWTest
         $result = $this->controller->nw_json();
         $payload = $this->extractPayload($result);
 
-        $this->assertObjectHasAttribute('chats', $payload);
+        $this->helperPropertyExists('chats', $payload);
     }
 
     public function testLatestChat()
@@ -120,7 +128,7 @@ class ApiControllerTest extends NWTest
         $result = $this->controller->nw_json();
         $payload = $this->extractPayload($result);
         $this->assertInstanceOf('stdClass', $payload);
-        $this->assertObjectHasAttribute('latest_chat_id', $payload);
+        $this->helperPropertyExists('latest_chat_id', $payload);
     }
 
     public function testIndex()
@@ -134,13 +142,13 @@ class ApiControllerTest extends NWTest
         $result = $this->controller->nw_json();
         $payload = $this->extractPayload($result);
 
-        $this->assertObjectHasAttribute('player', $payload);
-        $this->assertObjectHasAttribute('inventory', $payload);
-        $this->assertObjectHasAttribute('event', $payload);
-        $this->assertObjectHasAttribute('message', $payload);
-        $this->assertObjectHasAttribute('member_counts', $payload);
-        $this->assertObjectHasAttribute('unread_messages_count', $payload);
-        $this->assertObjectHasAttribute('unread_events_count', $payload);
+        $this->helperPropertyExists('player', $payload);
+        $this->helperPropertyExists('inventory', $payload);
+        $this->helperPropertyExists('event', $payload);
+        $this->helperPropertyExists('message', $payload);
+        $this->helperPropertyExists('member_counts', $payload);
+        $this->helperPropertyExists('unread_messages_count', $payload);
+        $this->helperPropertyExists('unread_events_count', $payload);
     }
 
     public function testPlayer()
@@ -168,7 +176,7 @@ class ApiControllerTest extends NWTest
         $result = $this->controller->nw_json();
         $payload = $this->extractPayload($result);
         $this->assertInstanceOf('stdClass', $payload);
-        $this->assertObjectHasAttribute('event', $payload);
+        $this->helperPropertyExists('event', $payload);
     }
 
     public function testLatestMessage()
@@ -182,7 +190,7 @@ class ApiControllerTest extends NWTest
         $result = $this->controller->nw_json();
         $payload = $this->extractPayload($result);
         $this->assertInstanceOf('stdClass', $payload);
-        $this->assertObjectHasAttribute('message', $payload);
+        $this->helperPropertyExists('message', $payload);
     }
 
     public function testDeactivateCharError()
@@ -198,7 +206,7 @@ class ApiControllerTest extends NWTest
         $payload = $this->extractPayload($result);
 
         // There should be no such character to deactivate
-        $this->assertObjectHasAttribute('error', $payload);
+        $this->helperPropertyExists('error', $payload);
     }
 
     public function testReactivateCharError()
@@ -214,7 +222,7 @@ class ApiControllerTest extends NWTest
         $payload = $this->extractPayload($result);
 
         // There should be no such character to reactivate
-        $this->assertObjectHasAttribute('error', $payload);
+        $this->helperPropertyExists('error', $payload);
     }
 
     public function testNextTarget()
@@ -230,7 +238,7 @@ class ApiControllerTest extends NWTest
         $result = $this->controller->nw_json();
         $payload = $this->extractPayload($result);
         $this->assertNotEmpty($payload, 'No payload returned');
-        $this->assertObjectHasAttribute('uname', $payload);
+        $this->helperPropertyExists('uname', $payload);
     }
 
     public function testNextTargetShifted()
@@ -245,7 +253,7 @@ class ApiControllerTest extends NWTest
         RequestWrapper::inject($request);
         $payload = $this->extractPayload($this->controller->nw_json());
         $this->assertNotEmpty($payload, 'No payload returned');
-        $this->assertObjectHasAttribute('uname', $payload, 'No uname returned');
+        $this->helperPropertyExists('uname', $payload, 'No uname returned');
         $first_target = $payload->uname;
         $request2 = new Request([
             'type'         => 'nextTarget',
