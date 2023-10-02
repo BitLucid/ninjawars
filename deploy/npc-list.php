@@ -94,7 +94,7 @@ NpcFactory::$data = [
         'stamina'   => 100,
         'race'      => 'tengu',
         'inventory' => [
-            'tetsubo'=>'.05',
+            'tetsubo' => '.05',
         ],
         'traits'    => [
             'flying',
@@ -165,7 +165,7 @@ NpcFactory::$data = [
         ],
         'inventory'  => [
             'kunai'    => '.01',
-            'shuriken' => '.01',
+            'shuriken' => '.04',
         ],
     ],
     'merchant2'     => [
@@ -443,7 +443,7 @@ NpcFactory::$data = [
             'short' => 'is a muscled creature that lies wait in the shadows',
             'race'  => 'yokai',
             'img'   => 'shoukera.jpg',
-            'traits'=>[
+            'traits' => [
                 'claws',
                 'stealthy',
             ]
@@ -453,7 +453,7 @@ NpcFactory::$data = [
             'short' => 'is a clawed beast',
             'race'  => 'yokai',
             'img'   => 'waira.jpg',
-            'traits'=>[
+            'traits' => [
                 'claws',
             ]
         ],
@@ -482,8 +482,8 @@ NpcFactory::$data = [
             'short' => 'is a one eyed monk',
             'img'   => 'aobouzu.jpg',
             'race'  => 'yokai',
-            'inventory'=>[
-                'prayerwheel'=>'.01',
+            'inventory' => [
+                'prayerwheel' => '.01',
 
             ]
         ],
@@ -492,7 +492,7 @@ NpcFactory::$data = [
             'short' => 'is a storm demon',
             'img'   => 'akashita.jpg',
             'race'  => 'kami',
-            'traits'=> [
+            'traits' => [
                 'flying',
             ]
         ],
@@ -525,8 +525,8 @@ NpcFactory::$data = [
                 'trickster',
                 'steals',
             ],
-            'inventory'=>[
-                'charcoal'=>'.33'
+            'inventory' => [
+                'charcoal' => '.33'
             ]
         ],
         'yurei'         => [
@@ -549,7 +549,7 @@ NpcFactory::$data = [
             'img'      => 'hokusai-oni.jpg',
             'race'     => 'oni',
             'inventory' => [
-                'tetsubo'=>'.01',
+                'tetsubo' => '.01',
             ],
             'traits'   => [
                 'demonic',
