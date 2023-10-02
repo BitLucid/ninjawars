@@ -165,7 +165,7 @@ NpcFactory::$data = [
         ],
         'inventory'  => [
             'kunai'    => '.01',
-            'shuriken' => '.01',
+            'shuriken' => '.04',
         ],
     ],
     'merchant2'     => [
