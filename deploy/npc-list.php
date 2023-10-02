@@ -137,7 +137,7 @@ NpcFactory::$data = [
         'race'      => 'human',
         'img'       => 'thief.png',
         'inventory' => [
-            'shuriken' => '1',
+            'shuriken' => '0.9',
 
         ],
         'gold'      => 40,
@@ -180,7 +180,7 @@ NpcFactory::$data = [
         'bounty_mod'   => 5,
         'img'          => 'merchant.png',
         'inventory'    => [
-            'phosphor' => '.3',
+            'phosphor' => '.05',
         ],
         'traits'       => [
             'villager',
@@ -200,7 +200,7 @@ NpcFactory::$data = [
         'bounty_mod' => 10,
         'img'        => 'guard.png',
         'inventory'  => [
-            'ginsengroot' => '.2',
+            'ginsengroot' => '.11',
         ],
         'traits'     => [
             'partial_match_strength',
