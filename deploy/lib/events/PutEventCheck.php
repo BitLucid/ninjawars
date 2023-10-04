@@ -5,17 +5,14 @@ require_once(dirname(__DIR__ . '..') . '/base.inc.php');
 require_once __DIR__ . '/PutEvent.php';
 
 use function NinjaWars\core\events\generateEventbridgeClient;
-use function NinjaWars\core\events\sendCommandNWEmailRequest as sendCommandNWEmailRequest;
+use function NinjaWars\core\events\sendCommandNWEmailRequest;
 
 // throw new Exception('This file is not meant to be run except during prototyping.');
 // Checkrun: php deploy/lib/events/PutEventCheck.php
 // TODO: remove this prototype check once event email sdk sending is stabilized
 
 // Create a EventBridgeClient
-$eventBridgeClient = generateEventbridgeClient([
-    'region' => 'us-east-1',
-    'version' => '2015-10-07'
-]);
+$eventBridgeClient = generateEventbridgeClient();
 
 $config = [
     'from' => 'tchalvak@ninjawars.net',
