@@ -1,8 +1,6 @@
 <?php
 
-//require_once 'vendor/autoload.php';
 require_once(dirname(__DIR__ . '..') . '/base.inc.php');
-require_once __DIR__ . '/PutEvent.php';
 
 use function NinjaWars\core\events\generateEventbridgeClient;
 use function NinjaWars\core\events\sendCommandNWEmailRequest;

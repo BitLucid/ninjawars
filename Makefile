@@ -54,16 +54,22 @@ dep:
 	@$(COMPOSER) validate
 	@$(COMPOSER) install
 
+
 check-vendors-installed:
 # Throw error if the vendor directories are not installed
 	@ls vendor/ && cd deploy && ls vendor/ && cd ..
 
+refresh-vendor:
+	rm -rf vendor
+	ln -sf deploy/vendor vendor
 
 check: pre-test
 
 check-base:
-	echo "If the following fails, check that /vendor and /deploy/vendor are symlinked, and that composer install has run"
+	@echo "If the following fails, check that /vendor and /deploy/vendor are symlinked, and that composer install has run"
 	php ./deploy/checkbase.php
+	php deploy/resources.php
+	php deploy/lib/base.inc.php
 
 js-deps:
 	node -v
@@ -336,7 +342,7 @@ deployment-post-upload: composer-ratelimit-check
 	php -v && nvm -v && nvm install && nvm use && node -v # Reflects the .nvmrc file
 	corepack enable # allows simple, reliable yarn usage
 	echo "Github access token set by environment var COMPOSER_AUTH"
-	./composer.phar install --prefer-dist --no-interaction -o
+	./composer.phar install --prefer-dist --no-interaction --optimize-autoloader
 
 composer-ratelimit-setup:
 	@echo "Exporting a COMPOSER_AUTH env var"
