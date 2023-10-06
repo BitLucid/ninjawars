@@ -1,13 +1,17 @@
 <?php
 
+/**
+ * A prototyping file for checking SES integration,
+ * @todo remove this prototype check once event email sdk sending is stabilized
+ * Example run: php deploy/lib/events/PutEventCheck.php
+ */
+
 require_once(dirname(__DIR__ . '..') . '/base.inc.php');
 
 use function NinjaWars\core\events\generateEventbridgeClient;
 use function NinjaWars\core\events\sendCommandNWEmailRequest;
 
 // throw new Exception('This file is not meant to be run except during prototyping.');
-// Checkrun: php deploy/lib/events/PutEventCheck.php
-// TODO: remove this prototype check once event email sdk sending is stabilized
 
 // Create a EventBridgeClient
 $eventBridgeClient = generateEventbridgeClient();
