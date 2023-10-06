@@ -1,4 +1,4 @@
-name: Chrome
+name: Functional Tests
 
 on: push
 
@@ -13,6 +13,6 @@ jobs:
         timeout-minutes: 5
         with:
           build: npm run build
-          start: npm start
+          start: exit 255 && npm start
           # wait-on: http://localhost:3000
           browser: chrome
