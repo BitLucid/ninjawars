@@ -17,7 +17,9 @@ describe('check stats for current ninja', () => {
     cy.visit('/stats')
     // Stats heading should be present on page
     cy.contains('Stats')
-    cy.get('[role=heading][aria-label="Main Navigation"').should('be.visible')
     cy.url().should('match', /stats$/u)
+    cy.get('[role=heading]').should('be.visible')
+    cy.contains('Ninja Stats for').should('be.visible')
+    cy.contains('Class:').should('be.visible')
   })
 });

@@ -42,7 +42,15 @@
                 <span class='left-side'>Email or ninja name</span>
                 <div class='input-group'>
                   <span class="input-group-addon"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></span>
-                  <input tabindex=1 name="user" placeholder='you@email.com or ninja' required type="text" autocomplete='username email' value='{isset($stored_username) && $stored_username|escape}' class='right-side' />
+                  <input 
+                    tabindex=1 
+                    name="user" 
+                    placeholder='you@email.com or ninja' 
+                    required 
+                    type="text" 
+                    autocomplete='username email' 
+                    value='{isset($stored_username) && $stored_username|escape}' 
+                    class='right-side' />
                 </div>
               </div>
             </label>

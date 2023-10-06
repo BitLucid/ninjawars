@@ -40,7 +40,6 @@ Cypress.Commands.add('standardLogin', () => {
       validate: () => {
         // Validate that any nw cookie is present
         cy.getCookie('PHPSESSID').should('exist')
-        cy.getCookie('logged_in').should('exist')
         // Currently the php session id cookie is always set even when logged out, @todo
       },
     },

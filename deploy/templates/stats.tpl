@@ -17,7 +17,7 @@
 </style>
 
 
-<h1><i class="fas fa-heart"></i> Ninja Stats for {$char->name()|escape}</h1>
+<h1 role='heading'><i class="fas fa-heart"></i> Ninja Stats for {$char->name()|escape}</h1>
 
 <div id='content' class='your-stats'>
 
