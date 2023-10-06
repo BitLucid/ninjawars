@@ -65,7 +65,7 @@ refresh-vendor:
 
 check: pre-test
 
-check-base:
+checkbase:
 	@echo "If the following fails, check that /vendor and /deploy/vendor are symlinked, and that composer install has run"
 	php ./deploy/checkbase.php
 	php deploy/resources.php
