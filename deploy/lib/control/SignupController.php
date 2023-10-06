@@ -108,7 +108,7 @@ class SignupController extends AbstractController
         if ($account_id) {
             $sent = $this->sendSignupEmail($account_id, $p_request->enteredEmail, $p_request->enteredName, $confirm, $p_request->enteredClass);
 
-            if (!$sent && !DEBUG) {
+            if (!$sent && defined('DEBUG') && !DEBUG) {
                 throw new \RuntimeException('There was a problem sending your signup to that email address.', 4);
             }
         } else {
