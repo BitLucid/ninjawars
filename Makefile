@@ -61,6 +61,9 @@ check-vendors-installed:
 
 check: pre-test
 
+check-base:
+	php ./deploy/checkbase.php
+
 js-deps:
 	node -v
 	corepack enable
