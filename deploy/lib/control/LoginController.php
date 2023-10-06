@@ -82,7 +82,7 @@ class LoginController extends AbstractController
      */
     private function render($title, $parts)
     {
-        return new StreamedViewResponse($title, 'login.tpl', $parts, ['body_classes'=>'login-page']);
+        return new StreamedViewResponse($title, 'login.tpl', $parts, ['body_classes' => 'login-page']);
     }
 
     /**
@@ -238,7 +238,8 @@ class LoginController extends AbstractController
      */
     private function authenticate(string $dirty_login, string $p_pass, bool $limit_login_attempts = true): array
     {
-        $filter_pattern = "/[^\w\d\s_\-\.\@\:\/]/";
+        // Only allows very simple email addresses, otherwise rejects
+        $filter_pattern = "/[^\w\d\s_\-\+\.\@\:\/]/";
         $login          = strtolower(preg_replace($filter_pattern, "", (string)$dirty_login));
         $rate_limit     = false;
         $pass           = (string)$p_pass;

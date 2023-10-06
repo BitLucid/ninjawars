@@ -54,7 +54,7 @@ class SignupController extends AbstractController
             'signupRequest'     => $signupRequest,
         ];
 
-        $options = ['quickstat' => false, 'body_classes'=>'signup-page'];
+        $options = ['quickstat' => false, 'body_classes' => 'signup-page'];
 
         return new StreamedViewResponse(self::TITLE, self::TEMPLATE, $parts, $options);
     }
@@ -108,7 +108,7 @@ class SignupController extends AbstractController
         if ($account_id) {
             $sent = $this->sendSignupEmail($account_id, $p_request->enteredEmail, $p_request->enteredName, $confirm, $p_request->enteredClass);
 
-            if (!$sent && !DEBUG) {
+            if (!$sent && defined('DEBUG') && !DEBUG) {
                 throw new \RuntimeException('There was a problem sending your signup to that email address.', 4);
             }
         } else {
@@ -144,7 +144,7 @@ class SignupController extends AbstractController
             'error'             => '',
         ];
 
-        $options = ['quickstat' => false, 'body_classes'=>'signup-page'];
+        $options = ['quickstat' => false, 'body_classes' => 'signup-page'];
 
         return new StreamedViewResponse(self::TITLE, self::TEMPLATE, $parts, $options);
     }
@@ -233,7 +233,7 @@ class SignupController extends AbstractController
             'signupRequest'     => $p_request,
         ];
 
-        $options = ['quickstat' => false, 'body_classes'=>'signup-page'];
+        $options = ['quickstat' => false, 'body_classes' => 'signup-page'];
 
         return new StreamedViewResponse(self::TITLE, self::TEMPLATE, $parts, $options);
     }
@@ -304,7 +304,7 @@ class SignupController extends AbstractController
      */
     private function validate_signup_phase4($enteredClass)
     {
-        return (bool)query_item('SELECT identity FROM class WHERE class_active AND identity = :id', [':id'=>$enteredClass]);
+        return (bool)query_item('SELECT identity FROM class WHERE class_active AND identity = :id', [':id' => $enteredClass]);
     }
 
     /**
@@ -403,7 +403,7 @@ class SignupController extends AbstractController
         $error = null;
         if (!Account::emailIsValid($email)) {
             $error = 'Phase 3 Incomplete: The email address ('
-                .htmlentities($email).') must not contain spaces and must contain an @ symbol and a domain name to be valid.';
+            . htmlentities($email) . ') must be valid, including no spaces, have an @ symbol and domain name.';
         } elseif (Account::findByEmail($email) !== null) {
             $error = 'Phase 3 Incomplete: There is already an account using that email.  If that account is yours, you can request a password reset to gain access again.';
         }
@@ -469,7 +469,7 @@ class SignupController extends AbstractController
     /**
      * Create the account and the initial ninja for that account.
      */
-    private function createAccountAndNinja($params=[])
+    private function createAccountAndNinja($params = [])
     {
         $confirm = (int) $params['confirm'];
         $ip      = (isset($params['ip']) ? $params['ip'] : null);
@@ -494,6 +494,6 @@ class SignupController extends AbstractController
      */
     private function classDisplayNameFromIdentity($identity)
     {
-        return query_item('SELECT class_name from class where identity = :identity', [':identity'=>$identity]);
+        return query_item('SELECT class_name from class where identity = :identity', [':identity' => $identity]);
     }
 }

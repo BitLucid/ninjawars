@@ -102,3 +102,5 @@ deploy/.env
 karma.conf.js
 .phpunit.result.cache
 .php-cs-fixer.cache
+cypress/local.json
+cypress.config.js
