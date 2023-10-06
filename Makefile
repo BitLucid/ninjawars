@@ -61,6 +61,10 @@ check-vendors-installed:
 
 check: pre-test
 
+check-base:
+	echo "If the following fails, check that /vendor and /deploy/vendor are symlinked, and that composer install has run"
+	php ./deploy/checkbase.php
+
 js-deps:
 	node -v
 	corepack enable
