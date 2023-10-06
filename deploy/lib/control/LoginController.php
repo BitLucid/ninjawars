@@ -82,7 +82,7 @@ class LoginController extends AbstractController
      */
     private function render($title, $parts)
     {
-        return new StreamedViewResponse($title, 'login.tpl', $parts, ['body_classes'=>'login-page']);
+        return new StreamedViewResponse($title, 'login.tpl', $parts, ['body_classes' => 'login-page']);
     }
 
     /**

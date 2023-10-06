@@ -54,7 +54,7 @@ class SignupController extends AbstractController
             'signupRequest'     => $signupRequest,
         ];
 
-        $options = ['quickstat' => false, 'body_classes'=>'signup-page'];
+        $options = ['quickstat' => false, 'body_classes' => 'signup-page'];
 
         return new StreamedViewResponse(self::TITLE, self::TEMPLATE, $parts, $options);
     }
@@ -144,7 +144,7 @@ class SignupController extends AbstractController
             'error'             => '',
         ];
 
-        $options = ['quickstat' => false, 'body_classes'=>'signup-page'];
+        $options = ['quickstat' => false, 'body_classes' => 'signup-page'];
 
         return new StreamedViewResponse(self::TITLE, self::TEMPLATE, $parts, $options);
     }
@@ -233,7 +233,7 @@ class SignupController extends AbstractController
             'signupRequest'     => $p_request,
         ];
 
-        $options = ['quickstat' => false, 'body_classes'=>'signup-page'];
+        $options = ['quickstat' => false, 'body_classes' => 'signup-page'];
 
         return new StreamedViewResponse(self::TITLE, self::TEMPLATE, $parts, $options);
     }
@@ -304,7 +304,7 @@ class SignupController extends AbstractController
      */
     private function validate_signup_phase4($enteredClass)
     {
-        return (bool)query_item('SELECT identity FROM class WHERE class_active AND identity = :id', [':id'=>$enteredClass]);
+        return (bool)query_item('SELECT identity FROM class WHERE class_active AND identity = :id', [':id' => $enteredClass]);
     }
 
     /**
@@ -469,7 +469,7 @@ class SignupController extends AbstractController
     /**
      * Create the account and the initial ninja for that account.
      */
-    private function createAccountAndNinja($params=[])
+    private function createAccountAndNinja($params = [])
     {
         $confirm = (int) $params['confirm'];
         $ip      = (isset($params['ip']) ? $params['ip'] : null);
@@ -494,6 +494,6 @@ class SignupController extends AbstractController
      */
     private function classDisplayNameFromIdentity($identity)
     {
-        return query_item('SELECT class_name from class where identity = :identity', [':identity'=>$identity]);
+        return query_item('SELECT class_name from class where identity = :identity', [':identity' => $identity]);
     }
 }
