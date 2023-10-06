@@ -1,7 +1,7 @@
 {if !$submit_successful}
-	<h1>Become a Ninja!</h1>
+	<h1 role='heading' aria-label='Signup header'>Become a Ninja!</h1>
 {else}
-	<h1>You are almost ready to be a ninja!</h1>
+	<h1 role='heading' aria-label='Complete header'>You are almost ready to be a ninja!</h1>
 {/if}
 
 
@@ -38,11 +38,11 @@
 	{if $submit_successful}
 		{if $confirmed}
 		  <p>Account with the login email "{$signupRequest->enteredEmail|escape}" is now confirmed!</p>
-		  <div>
+		  <div class='glassbox'>
 		  	You can <a href='/login'><button class='btn btn-primary btn-lg btn-block'>LOGIN NOW!</button></a>
 		  </div>
 		{else}
-		  Phase 5: When you receive an email from ninjawars ({$smarty.const.SYSTEM_EMAIL}), click the confirmation link to activate your account.
+		  Phase 5: <span style='color:green'>When you receive an email from ninjawars ({$smarty.const.SYSTEM_EMAIL}), click the confirmation link to activate your account.</span>
 		  <br><br>
 		  Confirmation email has been sent to <strong>{$signupRequest->enteredEmail|escape}</strong>.
 		  <br>
@@ -63,11 +63,13 @@
 {/if}{* End of if submitted *}
 
 	{if $error}
-	  <p class='signup-page error'>{$error|escape}</p>
+	  <p class='signup-page error' role='alert'>{$error|escape}</p>
 	  <div class='glassbox'>
+		<nav>
 		  <p class>Lost Your Password ? <a href="/assistance">Resend Account Info Email</a> / Didn't get your confirmation code ? <a href="/assistance">Resend Confirmation Email</a></p>
 		  <p>If you need help, email: <a href="mailto:{$smarty.const.SUPPORT_EMAIL}">{$smarty.const.SUPPORT_EMAIL}</a> or use the
 		  <a href="https://www.facebook.com/ninjawars.net/">facebook page</a></p>
+		</nav>
 	  </div>
 	{/if}
 

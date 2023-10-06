@@ -403,7 +403,7 @@ class SignupController extends AbstractController
         $error = null;
         if (!Account::emailIsValid($email)) {
             $error = 'Phase 3 Incomplete: The email address ('
-                .htmlentities($email).') must not contain spaces and must contain an @ symbol and a domain name to be valid.';
+            . htmlentities($email) . ') must be valid, including no spaces, have an @ symbol and domain name.';
         } elseif (Account::findByEmail($email) !== null) {
             $error = 'Phase 3 Incomplete: There is already an account using that email.  If that account is yours, you can request a password reset to gain access again.';
         }

@@ -23,7 +23,7 @@
     "repo": "yarn browse:repo",
     "unit-test": "test",
     "cypress:install": "y add -D cypress",
-    "cypress": "yarn cypress open",
+    "cypress": "npx cypress open",
     "test": "karma start deploy/tests/karma.conf.js --single-run"
   },
   "repository": {
