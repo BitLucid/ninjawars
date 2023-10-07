@@ -74,7 +74,7 @@ article#fight nav{
 	{if $is_quick or $npco->hasTrait('defender')}
 	The {$race|escape} sees you and prepares to defend!
 	{/if}
-	{if $is_stronger}
+	{if $much_stronger}
 	The {$race|escape} seems stronger than you!
 	{/if}
 
@@ -116,18 +116,23 @@ article#fight nav{
 			{if $is_weaker}
 			<p class='ninja-notice target-escape'>The {$display_name|escape} flees from you and escapes!</p>
 			{else}
-				{if $is_stronger}
-				<p class='you-escape'>You are unable to kill the {$display_name|escape}, so you escape instead!</p>
+				{if $much_stronger}
+				<p class='you-escape' title='They had {$enemy_strength|escape} strength'>You are unable to end the {$display_name|escape}, so you escape instead!</p>
 				{else}
-				 <p>You fight to a standstill and neither wins.</p>
+				 <p title='They had {$npc_health} health'>You fight to a standstill and neither wins.</p>
 				{/if}
+			{/if}
+			{if $tagline}
+				<p><em>{$tagline}</em></p>
 			{/if}
 
 		{/if}
 
 		<section id='rewards'>
 		{if $received_gold}<p>You gather <span class='gold'>{$received_gold} gold</span>.</p>{/if}
-		{foreach from=$received_display_items item=display_item}<p>You obtained <span class='obtained-item'>{$display_item}</span>!</p>{/foreach}
+		{foreach from=$received_display_items item=display_item}
+			<p>You obtained <span class='obtained-item'>{$display_item}</span>!</p>
+		{/foreach}
 		&nbsp;
 		</section>
 

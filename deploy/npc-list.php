@@ -2,6 +2,10 @@
 
 use NinjaWars\core\data\NpcFactory;
 
+/**
+ * Note that 1+stamina*5 is health, plus 2*stamina if armored.
+ */
+
 // Npc matrix planning document: https://docs.google.com/spreadsheet/ccc?key=0AkoUgtBBP00HdGZ1eUhaekhTb1dnZVh3ZlpoRExWdGc#gid=0
 NpcFactory::$data = [
     'firefly'   => [ // Baseline weakest mob
@@ -131,13 +135,14 @@ NpcFactory::$data = [
     ],
     'thief2'          => [
         'name'      => 'Thief',
-        'strength'  => 17,
+        'strength'  => 16,
         'stamina'   => 10,
-        'speed'     => 10,
+        'speed'     => 11,
         'race'      => 'human',
         'img'       => 'thief.png',
         'inventory' => [
-            'shuriken' => '0.9',
+            'shuriken' => '.9',
+            'shell' => '1',
 
         ],
         'gold'      => 40,
@@ -147,6 +152,7 @@ NpcFactory::$data = [
             'gang',
             'defender',
         ],
+        'tagline'   => 'Beware the Ninja Thieves, they have entered this world to steal from all!',
     ],
     'peasant2'      => [
         'name'       => 'Peasant',
@@ -172,7 +178,7 @@ NpcFactory::$data = [
         'name'         => 'Merchant',
         'race'         => 'human',
         'strength'     => 10,
-        'stamina'      => 20,
+        'stamina'      => 15,
         'speed'        => 10,
         'ki'           => 1,
         'damage'       => 15,
@@ -268,6 +274,9 @@ NpcFactory::$data = [
             'escaper',
             'flying',
         ],
+        'inventory' => [
+            'egg' => '.3',
+        ],
     ],
 ] + (
     !defined('DEBUG') || !DEBUG ? [] :
@@ -277,6 +286,7 @@ NpcFactory::$data = [
             'short'    => 'swarms and buzzes through the air',
             'strength' => 13,
             'speed'    => 30,
+        'stamina'  => 4,
             'damage'   => 6,
             'gold'     => 0,
             'race'     => 'insect',

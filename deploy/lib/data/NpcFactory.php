@@ -72,6 +72,7 @@ class NpcFactory
         $npc->gold              = @$data['gold'];
         $npc->traits_array      = (isset($data['traits']) && is_array($data['traits']) ? $data['traits'] : []);
         $npc->inventory         = null; // The actual instance inventory is intitially just null;
+        $npc->tagline           = @$data['tagline'];
     }
 
     /**

@@ -31,6 +31,7 @@ class Npc implements Character
     public $race;
     public $gold;
     public $bounty_mod;
+    public $tagline;
 
     public function __construct($content)
     {
@@ -283,5 +284,15 @@ class Npc implements Character
     public function minGold()
     {
         return (int) ($this->hasTrait('rich') ? floor($this->gold()/self::RICH_MIN_GOLD_DIVISOR) : self::MIN_GOLD);
+    }
+
+    /**
+     * Any tagline they get
+     *
+     * @return string
+     */
+    public function tagline()
+    {
+        return $this->tagline;
     }
 }

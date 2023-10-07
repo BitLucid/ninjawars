@@ -39,7 +39,7 @@ describe('signup a new ninja', () => {
     cy.get('input[type=email]').type(`ninjawarstchalvak+cypress-testing${random}@gmail.com`)
     cy.get('input[type=password]').first().type(Cypress.env('TEST_PASSWORD'), { log: false })
     cy.get('input[type=password][name=cpass]').type(Cypress.env('TEST_PASSWORD'), { log: false })
-    cy.get('input[name=send_name]').type(`cypress-test-user${random}`)
+    cy.get('input[name=send_name]').type(`Viper-${random}`)
     cy.get('input[type=submit]').click()
     cy.get('[role=alert]').should('not.exist')
     cy.contains('You are almost ready to be a ninja!').should('be.visible')

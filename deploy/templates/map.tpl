@@ -1,4 +1,4 @@
-<h1>Map</h1>
+<h1 role='heading'>Map</h1>
 
 <div id='attack-player-page'>
 
