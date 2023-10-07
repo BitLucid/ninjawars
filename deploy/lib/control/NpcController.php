@@ -40,7 +40,7 @@ class NpcController extends AbstractController
     /**
      * Inject different seed when non-randomness is needed (for testing)
      */
-    public function __construct($options=[])
+    public function __construct($options = [])
     {
         if (isset($options['randomness']) && is_callable($options['randomness'])) {
             $this->randomness = $options['randomness'];
@@ -77,7 +77,7 @@ class NpcController extends AbstractController
                 $item             = Item::findByIdentity('dimmak');
                 $quantity         = 1;
                 $inventory->add($item->identity(), $quantity);
-            } elseif ($player->turns > floor(self::HIGH_TURNS/2) && rand()&1) {
+            } elseif ($player->turns > floor(self::HIGH_TURNS / 2) && rand() & 1) {
                 // If your turns are somewhat high/you have some energy, 50/50 chance you can kill them.
                 $oni_killed       = true;
                 $item             = Item::findByIdentity('ginsengroot');
@@ -144,7 +144,7 @@ class NpcController extends AbstractController
             $divisor = self::ITEM_DECREASES_GOLD_DIVISOR;
         }
 
-        return rand($npco->minGold(), floor($npco->gold()/$divisor));
+        return rand($npco->minGold(), floor($npco->gold() / $divisor));
     }
 
     /**
@@ -342,7 +342,7 @@ class NpcController extends AbstractController
                 // Check the counter to see whether they've attacked a thief multiple times in a row.
                 $counter = $this->getThiefCounter($p_dependencies);
 
-                $this->setThiefCounter($counter+1, $p_dependencies); // Incremement the current state of the counter.
+                $this->setThiefCounter($counter + 1, $p_dependencies); // Incremement the current state of the counter.
 
                 if ($counter > 20 && rand(1, 3) == 3) {
                     // Only after many attacks do you have the chance to be attacked back by the group of thieves.

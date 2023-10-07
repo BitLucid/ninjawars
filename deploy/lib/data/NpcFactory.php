@@ -80,7 +80,7 @@ class NpcFactory
      *
      * @return Npc[]
      */
-    public static function npcs($sort=null)
+    public static function npcs($sort = null)
     {
         $npcs_data = self::npcsData();
         $npcs = [];
@@ -176,11 +176,11 @@ class NpcFactory
     public static function customNpcs()
     {
         return [
-            ['name'=>'Peasant',  'identity'=>'peasant',  'image'=>'fighter.png'],
-            ['name'=>'Thief',    'identity'=>'thief',    'image'=>'thief.png'],
-            ['name'=>'Merchant', 'identity'=>'merchant', 'image'=>'merchant.png'],
-            ['name'=>'Guard',    'identity'=>'guard',    'image'=>'guard.png'],
-            ['name'=>'Samurai',  'identity'=>'samurai',  'image'=>'samurai.png'],
+            ['name' => 'Peasant',  'identity' => 'peasant',  'image' => 'fighter.png'],
+            ['name' => 'Thief',    'identity' => 'thief',    'image' => 'thief.png'],
+            ['name' => 'Merchant', 'identity' => 'merchant', 'image' => 'merchant.png'],
+            ['name' => 'Guard',    'identity' => 'guard',    'image' => 'guard.png'],
+            ['name' => 'Samurai',  'identity' => 'samurai',  'image' => 'samurai.png'],
         ];
     }
 }

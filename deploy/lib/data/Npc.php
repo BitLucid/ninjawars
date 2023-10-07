@@ -79,9 +79,9 @@ class Npc implements Character
      *
      * @return int
      */
-    public function maxDamage(Character $enemy=null): int
+    public function maxDamage(Character $enemy = null): int
     {
-        $dam = ((1+ ($this->strength * 2)) + $this->damage);
+        $dam = ((1 + ($this->strength * 2)) + $this->damage);
         // Mirror some of their enemy's strength
         if ($this->hasTrait('partial_match_strength') && $enemy instanceof Character) {
             $add = max(0, floor($enemy->getStrength() / 3)); // Enemy str/3 or at minimum 0
@@ -100,7 +100,7 @@ class Npc implements Character
     {
         // Horned enemies do a little extra damage
         return rand(0, $this->maxDamage($char))
-            + ($this->hasTrait('horned') ? (int) max(0, floor($this->getStrength()/8)) : 0);
+            + ($this->hasTrait('horned') ? (int) max(0, floor($this->getStrength() / 8)) : 0);
     }
 
     /**
@@ -221,7 +221,7 @@ class Npc implements Character
     {
         if (!isset($this->inventory) && isset($this->inventory_chances) && $this->inventory_chances) {
             $inv = [];
-            foreach ($this->inventory_chances as $item=>$chance) {
+            foreach ($this->inventory_chances as $item => $chance) {
                 if ($this->inventory_present($chance)) { // Calculate success from a decimal/float.
                     // Add the item.
                     $inv[$item] = true;
@@ -283,7 +283,7 @@ class Npc implements Character
      */
     public function minGold()
     {
-        return (int) ($this->hasTrait('rich') ? floor($this->gold()/self::RICH_MIN_GOLD_DIVISOR) : self::MIN_GOLD);
+        return (int) ($this->hasTrait('rich') ? floor($this->gold() / self::RICH_MIN_GOLD_DIVISOR) : self::MIN_GOLD);
     }
 
     /**
