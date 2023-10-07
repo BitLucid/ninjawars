@@ -488,7 +488,8 @@ class NpcController extends AbstractController
             $damage[] = abs($player->health - $damage[0] - $damage[1]);
         }
 
-        for ($i = 0; $i < count($damage) && $player->health > 0; ++$i) {
+        $total_damage_count = count($damage);
+        for ($i = 0; $i < $total_damage_count && $player->health > 0; ++$i) {
             $player->harm($damage[$i]);
         }
 
