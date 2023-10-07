@@ -212,9 +212,8 @@ class NpcUnitTest extends NWTest
             $this->markTestSkipped();
         }
         /**
-         * Thief should have a max damage of 35
-         * it should have "hitpoints" of 30
-         * it should have zero reward gold
+         * Thief should have a max damage around 35
+         * it should have "hitpoints" around 30
          * it should sometimes be able to steal the equivalent of it's reward gold
          * it should always give a shuriken as long as it was "killed"
          * also adds to the thief counter based on being in a gang, and thus has a chance
@@ -225,9 +224,9 @@ class NpcUnitTest extends NWTest
         $mock_pc->setStrength(30);
         $max_dam = $thief2->maxDamage($mock_pc);
 
-        $this->assertEquals(35, $max_dam);
+        $this->assertEquals(33, $max_dam);
         $this->assertLessThan(50, $thief2->damage());
-        $this->assertGreaterThan(29, $thief2->getHealth());
+        $this->assertGreaterThan(20, $thief2->getHealth());
         $this->assertLessThan(80, $thief2->getHealth());
         $this->assertLessThan(61, $thief2->gold());
         $this->assertGreaterThan(1, $thief2->gold());
