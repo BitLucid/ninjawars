@@ -4,7 +4,7 @@
 }
 </style>
 
-<h1>Skills</h1>
+<h1 role='heading'>Skills</h1>
 
 {include file='flash-message.tpl'}
 

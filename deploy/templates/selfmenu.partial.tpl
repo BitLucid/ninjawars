@@ -1,4 +1,4 @@
-<div class="dropdown btn-group">
+<div class="dropdown btn-group" role='menu'>
     <!-- Link or button to toggle dropdown -->
     <span id='index-avatar' class='dropdown-toggle inline-block' data-toggle="dropdown">
         {include file="gravatar.tpl" gurl=$ninja->avatarUrl()}

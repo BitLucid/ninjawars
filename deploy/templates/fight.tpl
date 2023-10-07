@@ -1,4 +1,4 @@
-<h1>Fight</h1>
+<h1 role='heading'>Fight</h1>
 <link rel="stylesheet" type="text/css" href="{cachebust file="/css/enemies.css"}" media="Screen" />
 <script src='{cachebust file="/js/fightConfig.js"}'></script>
 

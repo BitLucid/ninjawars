@@ -621,7 +621,11 @@ class InventoryController extends AbstractController
      */
     public static function getIndefiniteArticle($p_noun): string
     {
-        $word = preg_replace("/[^[:alnum:]]/u", '', $p_noun);
-        return str_replace(' ' . $word, '', shell_exec('perl ' . LIB_ROOT . 'third-party/lingua-a.pl "' . escapeshellcmd($word) . '"'));
+        // This does strip down to just alphanumeric before running, hmmm.
+        $word = $p_noun ? preg_replace("/[^[:alnum:]]/u", '', $p_noun) : '';
+        preg_match('/^[a-z]/i', $word, $matches); // Captures 90% of the cases,
+        // Doesn't get things like university and hour and things, but better than
+        // a raw shellexec call to a perl script.
+        return $matches && count($matches) ? 'an' : 'a';
     }
 }

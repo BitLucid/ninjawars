@@ -46,6 +46,15 @@ Cypress.Commands.add('standardLogin', () => {
   )
 })
 
+Cypress.Commands.add('logout', () => {
+  cy.visit('/logout')
+  // wait for the url to not be logout
+  cy.log('After logout it should redirect');
+  cy.url().should('include', 'loggedout', { timeout: 10000 })
+  cy.log('Cypress logout() command ran')
+  cy.log('========= Logout should now be COMPLETE --RR =======')
+})
+
 // -- This is a parent command --
 // Cypress.Commands.add('login', (email, password) => { ... })
 //

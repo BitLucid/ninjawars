@@ -40,7 +40,7 @@ class NpcController extends AbstractController
     /**
      * Inject different seed when non-randomness is needed (for testing)
      */
-    public function __construct($options=[])
+    public function __construct($options = [])
     {
         if (isset($options['randomness']) && is_callable($options['randomness'])) {
             $this->randomness = $options['randomness'];
@@ -77,7 +77,7 @@ class NpcController extends AbstractController
                 $item             = Item::findByIdentity('dimmak');
                 $quantity         = 1;
                 $inventory->add($item->identity(), $quantity);
-            } elseif ($player->turns > floor(self::HIGH_TURNS/2) && rand()&1) {
+            } elseif ($player->turns > floor(self::HIGH_TURNS / 2) && rand() & 1) {
                 // If your turns are somewhat high/you have some energy, 50/50 chance you can kill them.
                 $oni_killed       = true;
                 $item             = Item::findByIdentity('ginsengroot');
@@ -144,7 +144,7 @@ class NpcController extends AbstractController
             $divisor = self::ITEM_DECREASES_GOLD_DIVISOR;
         }
 
-        return rand($npco->minGold(), floor($npco->gold()/$divisor));
+        return rand($npco->minGold(), floor($npco->gold() / $divisor));
     }
 
     /**
@@ -164,7 +164,8 @@ class NpcController extends AbstractController
         $reward_item      = (isset($npc_stats['item']) && $npc_stats['item'] ? $npc_stats['item'] : null);
         $is_quick         = (bool) ($npco->getSpeed() > $player->getSpeed()); // Beyond basic speed and they see you coming, so show that message.
         $is_weaker        = ($npco->getStrength() * 3) < $player->getStrength(); // Npc much weaker?
-        $is_stronger      = ($npco->getStrength()) > ($player->getStrength() * 3); // Npc More than twice as strong?
+        $enemy_strength   = $npco->getStrength();
+        $much_stronger      = ($npco->getStrength()) > ($player->getStrength() * 3); // Npc much stronger?
         $image            = $npc_stats['img'] ?? $npc_stats['full_img'] ?? null;
         // Assume defeat...
         $victory          = false;
@@ -185,9 +186,10 @@ class NpcController extends AbstractController
         $npc_damage    = $npco->damage();
         $ninja_damage = $player->damage();
         $npc_damage_class = Combat::determineDamageClass($npc_damage, $player->health);
-        $ninja_damage_class = Combat::determineDamageClass($ninja_damage, $npco->getHealth());
+        $npc_health = $npco->getHealth();
+        $ninja_damage_class = Combat::determineDamageClass($ninja_damage, $npc_health);
         $survive_fight = $player->harm($npc_damage);
-        $kill_npc      = ($npco->getHealth() <= $ninja_damage);
+        $kill_npc      = ($npc_health <= $ninja_damage);
 
         if ($survive_fight > 0) {
             // The ninja survived, they get any gold the npc has.
@@ -200,8 +202,9 @@ class NpcController extends AbstractController
                 // Victory occurred, reward the poor sap.
                 if ($npco->inventory()) {
                     $inventory = new Inventory($player);
+                    $npc_inventory = array_keys($npco->inventory());
 
-                    foreach (array_keys($npco->inventory()) as $l_item) {
+                    foreach ($npc_inventory as $l_item) {
                         $item = Item::findByIdentity($l_item);
                         $received_items[] = $item->getName();
                         $inventory->add($item->identity(), 1);
@@ -244,7 +247,9 @@ class NpcController extends AbstractController
                 'victory'                  => $victory,
                 'survive_fight'            => $survive_fight,
                 'ninja_damage'             => $ninja_damage,
+                'npc_damage'               => $npc_damage,
                 'npc_damage_class'         => $npc_damage_class,
+                'npc_health'               => $npc_health,
                 'ninja_damage_class'       => $ninja_damage_class,
                 'kill_npc'                 => $kill_npc,
                 'image_path'               => $image_path,
@@ -255,7 +260,9 @@ class NpcController extends AbstractController
                 'is_villager'              => $npco->hasTrait('villager'),
                 'race'                     => $npco->race(),
                 'is_weaker'                => $is_weaker,
-                'is_stronger'              => $is_stronger,
+                'much_stronger'            => $much_stronger,
+                'enemy_strength'           => $enemy_strength,
+                'tagline'                  => $npco->tagline(),
             ]
         ];
     }
@@ -335,7 +342,7 @@ class NpcController extends AbstractController
                 // Check the counter to see whether they've attacked a thief multiple times in a row.
                 $counter = $this->getThiefCounter($p_dependencies);
 
-                $this->setThiefCounter($counter+1, $p_dependencies); // Incremement the current state of the counter.
+                $this->setThiefCounter($counter + 1, $p_dependencies); // Incremement the current state of the counter.
 
                 if ($counter > 20 && rand(1, 3) == 3) {
                     // Only after many attacks do you have the chance to be attacked back by the group of thieves.
@@ -481,7 +488,8 @@ class NpcController extends AbstractController
             $damage[] = abs($player->health - $damage[0] - $damage[1]);
         }
 
-        for ($i = 0; $i < count($damage) && $player->health > 0; ++$i) {
+        $total_damage_count = count($damage);
+        for ($i = 0; $i < $total_damage_count && $player->health > 0; ++$i) {
             $player->harm($damage[$i]);
         }
 

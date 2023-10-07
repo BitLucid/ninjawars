@@ -10,9 +10,9 @@
 <section id='signup-process' class='glassbox'>
 	<h3>Your Choices</h3>
     <div class='stamp'>
-      Email - <strong><em>{$signupRequest && $signupRequest->enteredEmail|escape}</em></strong><br>
+	  Email - <strong><em>{if $signupRequest}{$signupRequest->enteredEmail|escape}{/if}</em></strong><br>
 	  Password - {if $signupRequest && $signupRequest->enteredPass}<span class='success'>***yourpassword***</span>{else}<span class='failure'>NO PASSWORD</span>{/if}<br>
-	  Ninja Name - <strong class='char-name'>{$signupRequest && $signupRequest->enteredName|escape}</strong><br>
+	  Ninja Name - <strong class='char-name'>{if $signupRequest}{$signupRequest->enteredName|escape}{/if}</strong><br>
 	  Ninja Type - {$class_display|escape}<br>
     </div>
 
@@ -39,7 +39,10 @@
 		{if $confirmed}
 		  <p>Account with the login email "{$signupRequest->enteredEmail|escape}" is now confirmed!</p>
 		  <div class='glassbox'>
-		  	You can <a href='/login'><button class='btn btn-primary btn-lg btn-block'>LOGIN NOW!</button></a>
+		  	You can 
+			<div class='glassbox' style='width:40%'>
+				<a href='/login'><button class='btn btn-primary btn-lg'>LOGIN NOW!</button></a>
+			</div>
 		  </div>
 		{else}
 		  Phase 5: <span style='color:green'>When you receive an email from ninjawars ({$smarty.const.SYSTEM_EMAIL}), click the confirmation link to activate your account.</span>
