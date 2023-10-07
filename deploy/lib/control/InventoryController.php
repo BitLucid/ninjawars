@@ -620,9 +620,12 @@ class InventoryController extends AbstractController
      * Get the language pluralization of an item's word
      */
     public static function getIndefiniteArticle($p_noun): string
-    {
+    {   
+        // This does strip down to just alphanumeric before running, hmmm.
         $word = $p_noun ? preg_replace("/[^[:alnum:]]/u", '', $p_noun) : '';
-        $shelled_article = shell_exec('perl ' . LIB_ROOT . 'third-party/lingua-a.pl "' . escapeshellcmd($word) . '"') ?? '';
-        return $word ? str_replace(' ' . $word, '', $shelled_article) : '';
+        preg_match('/^[a-z]/i', $word, $matches); // Captures 90% of the cases,
+        // Doesn't get things like university and hour and things, but better than
+        // a raw shellexec call to a perl script.
+        return $matches && count($matches) ? 'an' : 'a';
     }
 }
