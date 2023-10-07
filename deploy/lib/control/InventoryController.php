@@ -621,7 +621,8 @@ class InventoryController extends AbstractController
      */
     public static function getIndefiniteArticle($p_noun): string
     {
-        $word = preg_replace("/[^[:alnum:]]/u", '', $p_noun);
-        return str_replace(' ' . $word, '', shell_exec('perl ' . LIB_ROOT . 'third-party/lingua-a.pl "' . escapeshellcmd($word) . '"'));
+        $word = $p_noun ? preg_replace("/[^[:alnum:]]/u", '', $p_noun) : '';
+        $shelled_article = shell_exec('perl ' . LIB_ROOT . 'third-party/lingua-a.pl "' . escapeshellcmd($word) . '"') ?? '';
+        return $word ? str_replace(' ' . $word, '', $shelled_article) : '';
     }
 }

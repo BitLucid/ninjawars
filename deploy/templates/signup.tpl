@@ -11,7 +11,7 @@
 	<h3>Your Choices</h3>
     <div class='stamp'>
 	  Email - <strong><em>{if $signupRequest}{$signupRequest->enteredEmail|escape}{/if}</em></strong><br>
-	  Password - {if $signupRequest}{$signupRequest->enteredPass}{/if}<span class='success'>***yourpassword***</span>{else}<span class='failure'>NO PASSWORD</span>{/if}<br>
+	  Password - {if $signupRequest && $signupRequest->enteredPass}<span class='success'>***yourpassword***</span>{else}<span class='failure'>NO PASSWORD</span>{/if}<br>
 	  Ninja Name - <strong class='char-name'>{if $signupRequest}{$signupRequest->enteredName|escape}{/if}</strong><br>
 	  Ninja Type - {$class_display|escape}<br>
     </div>
