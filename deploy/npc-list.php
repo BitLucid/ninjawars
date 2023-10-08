@@ -142,8 +142,6 @@ NpcFactory::$data = [
         'img'       => 'thief.png',
         'inventory' => [
             'shuriken' => '.9',
-            'shell' => '1',
-
         ],
         'gold'      => 40,
         'traits'    => [
