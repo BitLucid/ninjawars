@@ -2,6 +2,9 @@ name: Functional Tests
 env:
   GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  CYPRESS_BASE_URL: ${{ secrets.CYPRESS_BASE_URL }}
+  CYPRESS_TEST_USERNAME: ${{ secrets.CYPRESS_TEST_USERNAME }}
+  CYPRESS_TEST_PASSWORD: ${{ secrets.CYPRESS_TEST_PASSWORD }}
 on:
   push:
     branches: [master]
