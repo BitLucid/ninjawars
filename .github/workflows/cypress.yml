@@ -2,6 +2,7 @@ name: Functional Tests
 env:
   GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  COMPOSER_AUTH: ${{ secrets.COMPOSER_AUTH }}
 on:
   push:
     branches: [master]
@@ -13,6 +14,11 @@ jobs:
     # Runs tests in parallel with matrix strategy https://docs.cypress.io/guides/guides/parallelization
     # https://docs.github.com/en/actions/using-jobs/using-a-matrix-for-your-jobs
     # Also see warning here https://github.com/cypress-io/github-action#parallel
+    env:
+      CYPRESS_TEST_USERNAME: ${{ vars.CYPRESS_TEST_USERNAME }}
+      CYPRESS_TEST_FIRST_NAME: ${{ vars.CYPRESS_TEST_FIRST_NAME }}
+      CYPRESS_BASE_URL: ${{ vars.CYPRESS_BASE_URL }}
+      CYPRESS_TEST_PASSWORD: ${{ secrets.CYPRESS_TEST_PASSWORD }} # Secret, not env var
     strategy:
       fail-fast: false # https://github.com/cypress-io/github-action/issues/48
       matrix:
@@ -26,7 +32,7 @@ jobs:
         with:
           # Starts web server for E2E tests - replace with your own server invocation
           # https://docs.cypress.io/guides/continuous-integration/introduction#Boot-your-server
-          start: npm start
+          start: echo "No-op for now"
           wait-on: 'http://www.ninjawars.net' # Waits for above
           # Records to Cypress Cloud 
           # https://docs.cypress.io/guides/cloud/projects#Set-up-a-project-to-record
