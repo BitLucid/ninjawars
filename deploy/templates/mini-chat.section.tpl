@@ -36,12 +36,15 @@
                   <form id="post_msg_js" class='chat-submit' name="post_msg" {if isset($user_id) and $user_id}data-logged-in='true'{/if} action="/chat" method="post">
                   <!-- Check for post_msg_js in chat.js for the functionality -->
 
-                    <div id='chat-input'>
-                        <input type="text" size="20" maxlength="250" name="message" autocomplete='off' class="textField">
+                    <div class='{if !isset($user_id) or !$user_id}hidden{/if}'>
+                      <div id='chat-input'>
+                          <input type="text" size="20" maxlength="250" name="message" autocomplete='off' class="textField">
+                      </div>
+                      <div id='chat-button-box'>
+                          <input id='chat-button' type="submit" value="Chat" class="formButton btn btn-sm">
+                      </div>
                     </div>
-                    <div id='chat-button-box'>
-                        <input id='chat-button' type="submit" value="Chat" class="formButton btn btn-sm">
-                    </div>
+
                   </form>
 
                   <div id="mini-chat-container" class='chat-collapsed dont-break-out'>
