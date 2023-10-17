@@ -2,3 +2,5 @@
 /.yarn/plugins/** binary
 /.yarn/cache/** binary
 /yarn.lock binary
+/deploy/www/css/*.min.css binary
+/deploy/www/js/*.min.js binary
