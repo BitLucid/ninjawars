@@ -26,7 +26,7 @@ class SignupController extends AbstractController
     public const ALIVE    = false;
     public const PRIV     = false;
     public const TEMPLATE = 'signup.tpl';
-    public const TITLE    = 'Become a Ninja';
+    public const TITLE    = 'New Game';
 
     private $classes;
 

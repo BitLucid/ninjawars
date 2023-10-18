@@ -25,7 +25,7 @@
     <em class='speech'>How many of these items would you like?</em> <input id="quantity" type="number" min='1' max='99' name="quantity" class="textField">
   {else}
     <div class='fade-in-flash'>
-      To purchase the items below you must <a href="/signup?referrer=ninjawars.net">become a ninja</a>.
+      To purchase the items below you must <a href="/signup?referrer=ninjawars.net"><button class='btn btn-primary'>Start A New Game</button></a>.
     </div>
   {/if}
   </div>

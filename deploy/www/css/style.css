@@ -649,6 +649,15 @@ h1 {
     margin: 0 0 2.5rem;
 }
 
+h3.text-title {
+    font-size: 1.5em;
+    font-weight: bold;
+    text-align: center;
+    background-color: inherit;
+    border-bottom: none;
+    color: #cccccc;
+}
+
 .player-info .player-name {
     min-height: 4.5rem;
 }
