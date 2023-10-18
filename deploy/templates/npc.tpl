@@ -19,9 +19,9 @@ nav.npcs{
 </nav>
 {if !$ninja}
     <div class='centered'>
-<p class='ninja-error glassbox'>
+        <p class='ninja-error glassbox'>
             You are not a ninja. You may not fight. </br>
-            <a href='/signup' class='large'>Become a ninja!</a>
+            <a href='/signup' class='large'><button class='btn-primary'>New Game</button></a>
         </p>
     </div>
 {elseif $turns lte 0}
