@@ -39,6 +39,10 @@ Shedding your clothes, you ease into a large copper tub that is filled with stea
   <p>The geisha complain about how stingy the patrons have been recently.</p>
 {/if}
 
+<p>
+  From the talk you hear of {$recently_active} traveler{if $recently_active neq 'one'}s{/if} who recently passed through.
+</p>
+
 <div>
   There are {$stats['player_count']} ninja around the village.
 </div>

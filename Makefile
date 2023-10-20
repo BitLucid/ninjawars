@@ -124,7 +124,7 @@ install-system:
 	# PHP!
 	echo "Installing php cli"
 	apt-get -y install php8.2-cli
-	apt-get -y install php8.2-fpm php8.2-xml php8.2-pgsql php8.2-curl php8.2-mbstring
+	apt-get -y install php8.2-fpm php8.2-xml php8.2-pgsql php8.2-curl php8.2-mbstring php8.2-intl
 	phpenmod xml pgsql curl mbstring
 	# Note that xml is what installs the ext-dom
 	apt install curl 
