@@ -6,14 +6,22 @@ use NinjaWars\core\data\DatabaseConnection;
 // use Illuminate\Database\Eloquent\Model;
 use NinjaWars\core\data\Player;
 
-class Message extends \Illuminate\Database\Eloquent\Model
+class Message extends NWQuery
 {
-    protected $primaryKey = 'message_id'; // Anything other than id
+    protected static $primaryKey = 'message_id'; // if anything other than id
+    protected static $table = 'messages';
+    protected $message_id;
+    protected $message;
+    protected $date;
+    protected $send_to;
+    protected $send_from;
+    protected $unread;
+    protected $type;
     public $timestamps = false;
     // The non-mass-fillable fields
     protected $guarded = ['message_id', 'date'];
     /**
-    Currently:
+    Messages Currently:
     message_id | serial
     message | text
     date | timestamp
@@ -22,16 +30,6 @@ class Message extends \Illuminate\Database\Eloquent\Model
     unread | integer default 1
     type | integer default 0
      */
-
-    /**
-     * Custom initialization of `date` field, since this model only keeps one
-     */
-    public static function boot()
-    {
-        static::creating(function ($model) {
-            $model->date = $model->freshTimestamp();
-        });
-    }
 
     /**
      * Special case method to get the id regardless of what it's actually called in the database
@@ -65,49 +63,23 @@ class Message extends \Illuminate\Database\Eloquent\Model
     }
 
     /**
-     * Get messages to a receiver.
+     * Get messages for a receiver.
      */
     public static function findByReceiver(Player $sender, $type = 0, $limit = null, $offset = null)
     {
-        if ($limit !== null && $offset !== null) {
-            return self::where([
-                'send_to' => $sender->id(),
-                'type'    => $type
-            ])
-                ->leftJoin('players', function ($join) {
-                    $join->on('messages.send_from', '=', 'players.player_id');
-                })
-                ->orderBy('date', 'DESC')
-                ->limit($limit)
-                ->offset($offset)
-                ->get([
-                    'players.uname as sender',
-                    'messages.type',
-                    'messages.send_to',
-                    'messages.send_from',
-                    'messages.message',
-                    'messages.unread',
-                    'messages.date'
-                ]);
-        } else {
-            return self::where([
-                'send_to' => $sender->id(),
-                'type'    => $type
-            ])
-                ->leftJoin('players', function ($join) {
-                    $join->on('messages.send_from', '=', 'players.player_id');
-                })
-                ->orderBy('date', 'DESC')
-                ->get([
-                    'players.uname as sender',
-                    'messages.type',
-                    'messages.send_to',
-                    'messages.send_from',
-                    'messages.message',
-                    'messages.unread',
-                    'messages.date'
-                ]);
+        if ($limit === null || $offset ===  null) {
+            $limit = 1000;
+            $offset = 0;
         }
+        $res = query(['select p.uname as sender, m.* from messages m left join players p on p.player_id = m.send_from
+            where m.send_to = :send_to and m.type = :type
+         order by date desc limit :limit offset :offset', [
+            ':send_to' => $sender->id(),
+            ':type'    => $type,
+            ':limit' => $limit,
+            ':offset' => $offset
+        ]]);
+        return $res;
     }
 
     /**
@@ -115,10 +87,11 @@ class Message extends \Illuminate\Database\Eloquent\Model
      */
     public static function countByReceiver(Player $char, $type = 0)
     {
-        return self::where([
-            'send_to' => $char->id(),
-            'type'    => $type
-        ])->count();
+        $res = static::query_resultset(['select count(*) from messages where send_to = :send_to and type = :type', [
+            ':send_to' => $char->id(),
+            ':type'    => $type
+        ]]);
+        return $res->rowCount();
     }
 
     /**
@@ -126,10 +99,11 @@ class Message extends \Illuminate\Database\Eloquent\Model
      */
     public static function deleteByReceiver(Player $char, $type)
     {
-        return self::where([
-            'send_to' => $char->id(),
-            'type'    => $type
-        ])->delete();
+        $resultset = query('delete from messages where send_to is not null and send_to = :send_to and type = :type', [
+            ':send_to' => $char->id(),
+            ':type'    => $type
+        ]);
+        return $resultset->rowCount();
     }
 
     /**
@@ -137,12 +111,11 @@ class Message extends \Illuminate\Database\Eloquent\Model
      */
     public static function markAsRead(Player $char, $type)
     {
-        return self::where([
-            'send_to' => $char->id(),
-            'type'    => $type
-        ])->update([
-            'unread' => 0
+        $resultset = query('update messages set unread = 0 where send_to = :send_to and type = :type', [
+            ':send_to' => $char->id(),
+            ':type'    => $type
         ]);
+        return $resultset->rowCount();
     }
 
     public static function sendChat($user_id, $msg)
@@ -191,5 +164,27 @@ class Message extends \Illuminate\Database\Eloquent\Model
         $deleted->execute();
 
         return (int) $deleted->rowCount();
+    }
+
+    public function save()
+    {
+        $this->date = static::freshTimestamp();
+        query('insert into messages (message, date, send_to, send_from, unread, type) values (:message, :date, :send_to, :send_from, :unread, :type)', [
+            ':message'   => $this->message,
+            ':date'      => $this->date,
+            ':send_to'   => $this->send_to,
+            ':send_from' => $this->send_from,
+            ':unread'    => $this->unread,
+            ':type'      => $this->type
+        ]);
+        return $this;
+    }
+
+    /**
+     * @return bool success
+     */
+    public function delete(): bool
+    {
+        return (query('delete from messages where message_id = :id', [':id' => $this->id()])->rowCount()) > 0;
     }
 }
