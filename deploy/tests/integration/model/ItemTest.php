@@ -59,7 +59,7 @@ class ItemTest extends \NWTest
     }
 
     // Random damage check helper function
-    public function itemRandomDamageSum($item, $iterations=1000)
+    public function itemRandomDamageSum($item, $iterations = 1000)
     {
         $sum = 0;
         $i = $iterations;

@@ -152,7 +152,7 @@ class SkillControllerTest extends NWTest
         $this->assertNull($response_data['error']);
         $this->assertEquals(0, $final_defender->health, "Health not 0");
         $this->assertEquals(0, $final_defender->bounty, "Bounty not 0");
-        $this->assertEquals($self_gold+$bounty, $final_attacker->gold, "Gold not updated");
+        $this->assertEquals($self_gold + $bounty, $final_attacker->gold, "Gold not updated");
     }
 
     public function testIShouldGetBountyOnMyHeadWhenIFireBoltKillALowLevel()
@@ -328,8 +328,8 @@ class SkillControllerTest extends NWTest
         $harm_by = max(
             2,
             min(
-                (int)floor($this->char->health/2),
-                (int)floor($this->char->getMaxHealth()/2)
+                (int)floor($this->char->health / 2),
+                (int)floor($this->char->getMaxHealth() / 2)
             )
         );
         $this->char->harm($harm_by);
@@ -363,7 +363,7 @@ class SkillControllerTest extends NWTest
         $this->char->setTurns(300);
         $this->char->ki = 1000;
         $this->char->level = 20;
-        $this->char->harm(floor($this->char->getMaxHealth()/2));
+        $this->char->harm(floor($this->char->getMaxHealth() / 2));
         $this->char->save();
 
         $initial_health = $this->char->health;

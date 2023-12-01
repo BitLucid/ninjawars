@@ -33,7 +33,7 @@ class NinjaMeta
     {
         return query_item(
             'SELECT rank_id FROM rankings WHERE player_id = :player_id limit 1',
-            [':player_id'=>$this->char->id()]
+            [':player_id' => $this->char->id()]
         ) ?? null;
     }
 

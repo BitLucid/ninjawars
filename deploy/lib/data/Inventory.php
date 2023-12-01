@@ -94,9 +94,9 @@ class Inventory implements IteratorAggregate
     /**
      * Get inventory list of a character
      */
-    public static function of(Player $ch, string $sort=null): array
+    public static function of(Player $ch, string $sort = null): array
     {
-        if ($sort==='self') {
+        if ($sort === 'self') {
             $order = "ORDER BY self_use DESC, item_display_name";
         } else {
             $order = "ORDER BY item_internal_name = 'shuriken' DESC, other_usable desc, item_display_name";
@@ -113,7 +113,7 @@ class Inventory implements IteratorAggregate
             FROM inventory join item on item_type = item.item_id
             WHERE owner = :owner ".$order;
 
-        return query_array($sql, [':owner'=>[$ch->id(), PDO::PARAM_INT]]);
+        return query_array($sql, [':owner' => [$ch->id(), PDO::PARAM_INT]]);
     }
 
     /**
@@ -124,7 +124,7 @@ class Inventory implements IteratorAggregate
         $sql = "SELECT item_display_name AS name, amount AS count, item_internal_name, item_type, item.item_id, other_usable
             FROM inventory join item on item_type = item.item_id
             WHERE owner = :owner ORDER BY item_internal_name = 'shuriken' DESC, item_display_name";
-        return query_array($sql, [':owner'=>[$this->char->id(), PDO::PARAM_INT]]);
+        return query_array($sql, [':owner' => [$this->char->id(), PDO::PARAM_INT]]);
     }
 
     /**

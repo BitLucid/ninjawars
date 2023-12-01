@@ -219,7 +219,7 @@ class DojoController extends AbstractController
     private function render($p_parts = [], $p_player = null, $p_renderMonks = true)
     {
         $p_parts['max_level']         = MAX_PLAYER_LEVEL; // For non-logged in loop through stats.
-        $p_parts['max_hp']            = Player::maxHealthByLevel(MAX_PLAYER_LEVEL+1);
+        $p_parts['max_hp']            = Player::maxHealthByLevel(MAX_PLAYER_LEVEL + 1);
         $p_parts['class_change_cost'] = self::CLASS_CHANGE_COST;
         $p_parts['player']            = $p_player;
 
@@ -255,6 +255,6 @@ class DojoController extends AbstractController
             $p_parts['error'] = null;
         }
 
-        return new StreamedViewResponse('Dojo', 'dojo.tpl', $p_parts, ['quickstat'=>'player']);
+        return new StreamedViewResponse('Dojo', 'dojo.tpl', $p_parts, ['quickstat' => 'player']);
     }
 }

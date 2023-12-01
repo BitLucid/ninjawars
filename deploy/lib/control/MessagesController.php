@@ -188,7 +188,7 @@ class MessagesController extends AbstractController
         ];
     }
 
-    public function render($parts, $title='Messages')
+    public function render($parts, $title = 'Messages')
     {
         return new StreamedViewResponse($title, 'messages.tpl', $parts, ['quickstat' => true]);
     }

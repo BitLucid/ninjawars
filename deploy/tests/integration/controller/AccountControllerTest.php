@@ -22,9 +22,9 @@ class AccountControllerTest extends NWTest
         SessionFactory::getSession()->set('player_id', $char_id);
         SessionFactory::getSession()->set('account_id', $account_id);
         $this->deps = [
-            'current_player'=>$char,
-            'account'=>$account,
-            'account_id'=>$account_id
+            'current_player' => $char,
+            'account' => $account,
+            'account_id' => $account_id
         ];
     }
 

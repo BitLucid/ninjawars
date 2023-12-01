@@ -33,7 +33,7 @@ class MessageTest extends \NWTest
     {
         TestAccountCreateAndDestroy::destroy();
         if ($this->message_id !== null) {
-            query('delete from messages where message_id = :id', [':id'=>$this->message_id]);
+            query('delete from messages where message_id = :id', [':id' => $this->message_id]);
         }
         parent::tearDown();
     }

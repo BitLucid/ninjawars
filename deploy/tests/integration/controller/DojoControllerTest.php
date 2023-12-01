@@ -118,7 +118,7 @@ class DojoControllerTest extends NWTest
      */
     public function testDojoChangeClassWithBadClassDoesNotError()
     {
-        $request = Request::create('/', 'GET', ['requested_identity'=>'stupid']);
+        $request = Request::create('/', 'GET', ['requested_identity' => 'stupid']);
         RequestWrapper::inject($request);
         $this->assertNotEmpty($this->controller->changeClass($this->m_dependencies));
     }
@@ -127,7 +127,7 @@ class DojoControllerTest extends NWTest
      */
     public function testDojoChangeClassWithGoodClassDoesNotError()
     {
-        $request = Request::create('/', 'GET', ['requested_identity'=>'crane']);
+        $request = Request::create('/', 'GET', ['requested_identity' => 'crane']);
         RequestWrapper::inject($request);
         $this->assertNotEmpty($this->controller->changeClass($this->m_dependencies));
     }
@@ -136,7 +136,7 @@ class DojoControllerTest extends NWTest
      */
     public function testDojoChangeClassLowTurnsDoesNotError()
     {
-        $request = Request::create('/', 'GET', ['requested_identity'=>'crane']);
+        $request = Request::create('/', 'GET', ['requested_identity' => 'crane']);
         RequestWrapper::inject($request);
         $char = Player::find($this->char_id);
         $char->setStrength(400);

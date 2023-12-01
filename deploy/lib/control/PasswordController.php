@@ -36,7 +36,7 @@ class PasswordController extends AbstractController
         }
 
         $url = WEB_ROOT.'password/reset/?token='.rawurlencode($token);
-        $rendered = (new NWTemplate())->assign(['url'=>$url])->fetch('email.password_reset_request.tpl');
+        $rendered = (new NWTemplate())->assign(['url' => $url])->fetch('email.password_reset_request.tpl');
 
         // Construct the email with Nmail, and then just send it.
         $subject = 'NinjaWars: Your password reset request';

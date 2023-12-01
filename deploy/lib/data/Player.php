@@ -222,7 +222,7 @@ class Player implements Character
      * Add a string status to a character
      * @return int|bool
      */
-    public function addTextStatus(string $status_name, int $sec_duration, bool $refresh=false): int
+    public function addTextStatus(string $status_name, int $sec_duration, bool $refresh = false): int
     {
         return Status::refreshStatusEffect($status_name, $this, $sec_duration, $refresh);
     }
@@ -231,7 +231,7 @@ class Player implements Character
      * Standard damage output from 1 to max
      * @return int
      */
-    public function damage(Character $enemy=null): int
+    public function damage(Character $enemy = null): int
     {
         return rand(1, $this->maxDamage($enemy));
     }
@@ -241,7 +241,7 @@ class Player implements Character
      *
      * @return int
      */
-    public function maxDamage(Character $enemy=null): int
+    public function maxDamage(Character $enemy = null): int
     {
         return (int) ($this->getStrength() * 5 + $this->getSpeed());
     }
@@ -251,19 +251,19 @@ class Player implements Character
      */
     public function getStrength(): int
     {
-        $str = NEW_PLAYER_INITIAL_STATS + (($this->level-1) * LEVEL_UP_STAT_RAISE);
+        $str = NEW_PLAYER_INITIAL_STATS + (($this->level - 1) * LEVEL_UP_STAT_RAISE);
         if ($this->hasStatus(STALKING)) {
-            $str = (int) max(1, floor($str*1.4));
+            $str = (int) max(1, floor($str * 1.4));
         }
         if ($this->hasStatus(STEALTH)) {
-            $str = (int) max(1, floor($str*0.7));
+            $str = (int) max(1, floor($str * 0.7));
         }
         if ($this->hasStatus(WEAKENED)) {
-            return (int) max(1, $str-(ceil($str*.25))); // 75%
+            return (int) max(1, $str - (ceil($str * .25))); // 75%
         } elseif ($this->hasStatus(STR_UP2)) {
-            return (int) ($str+(ceil($str*.50))); // 150%
+            return (int) ($str + (ceil($str * .50))); // 150%
         } elseif ($this->hasStatus(STR_UP1)) {
-            return (int) ($str+(ceil($str*.25))); //125%
+            return (int) ($str + (ceil($str * .25))); //125%
         } else {
             return (int) $str;
         }
@@ -282,15 +282,15 @@ class Player implements Character
      */
     public function getSpeed(): int
     {
-        $speed = NEW_PLAYER_INITIAL_STATS + (($this->level -1) * LEVEL_UP_STAT_RAISE);
+        $speed = NEW_PLAYER_INITIAL_STATS + (($this->level - 1) * LEVEL_UP_STAT_RAISE);
         if ($this->hasStatus(STALKING)) {
-            $speed = (int) max(1, floor($speed*0.7));
+            $speed = (int) max(1, floor($speed * 0.7));
         }
         if ($this->hasStatus(STEALTH)) {
-            $speed = (int) max(1, ceil($speed*1.3));
+            $speed = (int) max(1, ceil($speed * 1.3));
         }
         if ($this->hasStatus(SLOW)) {
-            return (int) ($speed-(ceil($speed*.25)));
+            return (int) ($speed - (ceil($speed * .25)));
         } else {
             return (int) $speed;
         }
@@ -309,15 +309,15 @@ class Player implements Character
      */
     public function getStamina(): int
     {
-        $stam = NEW_PLAYER_INITIAL_STATS + (($this->level -1) * LEVEL_UP_STAT_RAISE);
+        $stam = NEW_PLAYER_INITIAL_STATS + (($this->level - 1) * LEVEL_UP_STAT_RAISE);
         if ($this->hasStatus(STALKING)) {
-            $stam = (int) max(1, floor($stam*0.9));
+            $stam = (int) max(1, floor($stam * 0.9));
         }
         if ($this->hasStatus(STEALTH)) {
-            $stam = (int) max(1, ceil($stam*1.3));
+            $stam = (int) max(1, ceil($stam * 1.3));
         }
         if ($this->hasStatus(POISON)) {
-            return (int) ($stam-(ceil($stam*.25)));
+            return (int) ($stam - (ceil($stam * .25)));
         } else {
             return (int) $stam;
         }
@@ -485,7 +485,7 @@ class Player implements Character
      */
     public function getMaxHealth(): int
     {
-        return NEW_PLAYER_INITIAL_HEALTH + ($this->getStamina()*static::HEALTH_PER_STAMINA);
+        return NEW_PLAYER_INITIAL_HEALTH + ($this->getStamina() * static::HEALTH_PER_STAMINA);
     }
 
     /**
@@ -505,8 +505,8 @@ class Player implements Character
             $this->data['speed']         = $this->getSpeed();
             $this->data['stamina']       = $this->getStamina();
             $this->data['max_turns']     = 100;
-            $this->data['turns_percent'] = min(100, round($this->data['turns']/$this->data['max_turns']*100));
-            $this->data['exp_percent']   = min(100, round(($this->data['kills']/$this->data['next_level'])*100));
+            $this->data['turns_percent'] = min(100, round($this->data['turns'] / $this->data['max_turns'] * 100));
+            $this->data['exp_percent']   = min(100, round(($this->data['kills'] / $this->data['next_level']) * 100));
             $this->data['status_list']   = implode(', ', self::getStatusList($this->id()));
             $this->data['hash']          = md5(implode($this->data));
             $this->data['class_name']    = ucfirst($this->data['identity']); // A misnomer, identity is actually the class label
@@ -608,7 +608,7 @@ class Player implements Character
      */
     public function health_percent(): int
     {
-        return min(100, round(($this->health/$this->getMaxHealth())*100));
+        return min(100, round(($this->health / $this->getMaxHealth()) * 100));
     }
 
     /**
@@ -745,7 +745,7 @@ class Player implements Character
      */
     public function killsRequiredForNextLevel(): int
     {
-        return $this->level*5;
+        return $this->level * 5;
     }
 
     /**
@@ -763,7 +763,7 @@ class Player implements Character
      */
     public function subtractKills(int $amount): int
     {
-        return $this->changeKills(-1*((int)abs($amount)));
+        return $this->changeKills(-1 * ((int)abs($amount)));
     }
 
     /**
@@ -884,7 +884,7 @@ class Player implements Character
      */
     public static function findByName(string $name): ?Player
     {
-        $id = query_item('select player_id from players where lower(uname) = lower(:name) limit 1', [':name'=>$name]);
+        $id = query_item('select player_id from players where lower(uname) = lower(:name) limit 1', [':name' => $name]);
         return self::find($id);
     }
 
@@ -901,7 +901,7 @@ class Player implements Character
             join accounts a on a.account_id = ap._account_id
             where account_id = :aid
             order by p.created_date asc, a.last_login desc
-            limit 1', [':aid'=>[$account_id, PDO::PARAM_INT]]);
+            limit 1', [':aid' => [$account_id, PDO::PARAM_INT]]);
         return self::find($pid);
     }
 
@@ -909,11 +909,11 @@ class Player implements Character
      * query the recently active players
      * @return array Array of data not of player objects
      */
-    public static function findActive(int $limit=5, bool $alive_only=true): array
+    public static function findActive(int $limit = 5, bool $alive_only = true): array
     {
         $where_cond = ($alive_only ? ' AND health > 0' : '');
         $sel = "SELECT uname, player_id FROM players WHERE active = 1 AND last_started_attack is not null $where_cond ORDER BY last_started_attack DESC LIMIT :limit";
-        $active_ninjas = query_array($sel, [':limit'=>[$limit, PDO::PARAM_INT]]);
+        $active_ninjas = query_array($sel, [':limit' => [$limit, PDO::PARAM_INT]]);
         return $active_ninjas;
     }
 
@@ -946,7 +946,7 @@ class Player implements Character
      * @todo Refactor this so that it doesn't show own status by default, as that is error prone
      *
      */
-    public static function getStatusList(?int $target=null): array
+    public static function getStatusList(?int $target = null): array
     {
         $states = [];
         $target = (isset($target) && (int)$target == $target ? $target : SessionFactory::getSession()->get('player_id'));
@@ -1013,7 +1013,7 @@ class Player implements Character
      */
     public static function baseStrengthByLevel(int $level): int
     {
-        return (int) NEW_PLAYER_INITIAL_STATS + (LEVEL_UP_STAT_RAISE * ($level-1));
+        return (int) NEW_PLAYER_INITIAL_STATS + (LEVEL_UP_STAT_RAISE * ($level - 1));
     }
 
     /**
@@ -1023,7 +1023,7 @@ class Player implements Character
      */
     public static function baseSpeedByLevel(int $level): int
     {
-        return (int) NEW_PLAYER_INITIAL_STATS + (LEVEL_UP_STAT_RAISE * ($level-1));
+        return (int) NEW_PLAYER_INITIAL_STATS + (LEVEL_UP_STAT_RAISE * ($level - 1));
     }
 
     /**
@@ -1033,6 +1033,6 @@ class Player implements Character
      */
     public static function baseStaminaByLevel(int $level): int
     {
-        return (int) NEW_PLAYER_INITIAL_STATS + (LEVEL_UP_STAT_RAISE * ($level-1));
+        return (int) NEW_PLAYER_INITIAL_STATS + (LEVEL_UP_STAT_RAISE * ($level - 1));
     }
 }

@@ -30,7 +30,7 @@ class TestAttackLegal extends NWTest
 
     private function oldify_character_last_attack($char_id)
     {
-        query("update players set last_started_attack = (now() - INTERVAL '20 days') where player_id = :char_id", [':char_id'=>$char_id]);
+        query("update players set last_started_attack = (now() - INTERVAL '20 days') where player_id = :char_id", [':char_id' => $char_id]);
     }
 
     /**
@@ -40,7 +40,7 @@ class TestAttackLegal extends NWTest
     {
         $char_id = TestAccountCreateAndDestroy::create_testing_account();
         $this->oldify_character_last_attack($char_id);
-        $legal = new AttackLegal(Player::find($char_id), Player::find($char_id), ['required_turns'=>1, 'ignores_stealth'=>true]);
+        $legal = new AttackLegal(Player::find($char_id), Player::find($char_id), ['required_turns' => 1, 'ignores_stealth' => true]);
         $this->assertFalse($legal->check(false));
     }
 
@@ -51,7 +51,7 @@ class TestAttackLegal extends NWTest
         $player = Player::find($char_id);
         $info = $player->data();
         $this->assertTrue((bool)$info['uname'], 'Character uname not found to check attacklegal with');
-        $legal = new AttackLegal($player, Player::findByName($info['uname']), ['required_turns'=>1, 'ignores_stealth'=>true]);
+        $legal = new AttackLegal($player, Player::findByName($info['uname']), ['required_turns' => 1, 'ignores_stealth' => true]);
         $this->assertFalse($legal->check(false));
     }
 
@@ -65,7 +65,7 @@ class TestAttackLegal extends NWTest
         $this->oldify_character_last_attack($char_id);
         $char_2_id = TestAccountCreateAndDestroy::create_alternate_testing_account($confirm);
         $this->oldify_character_last_attack($char_2_id);
-        $legal = new AttackLegal(Player::find($char_id), Player::find($char_2_id), ['required_turns'=>1, 'ignores_stealth'=>true]);
+        $legal = new AttackLegal(Player::find($char_id), Player::find($char_2_id), ['required_turns' => 1, 'ignores_stealth' => true]);
         $checked = $legal->check(false);
         $this->assertEquals(null, $legal->getError(), 'There was an attack error message when there shouldn\'t be one.');
         $this->assertTrue($checked);
@@ -96,7 +96,7 @@ class TestAttackLegal extends NWTest
         $char_2_id = TestAccountCreateAndDestroy::create_alternate_testing_account($confirm);
         $this->oldify_character_last_attack($char_2_id);
         $char = Player::find($char_2_id);
-        $legal = new AttackLegal(Player::find($char_id), $char, ['required_turns'=>4000000000, 'ignores_stealth'=>true]);
+        $legal = new AttackLegal(Player::find($char_id), $char, ['required_turns' => 4000000000, 'ignores_stealth' => true]);
         $this->assertFalse($legal->check(false));
     }
 }

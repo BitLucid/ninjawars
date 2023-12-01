@@ -111,7 +111,7 @@ class ShrineControllerTest extends NWTest
     {
         $request = new Request(['heal_points' => 10]);
         RequestWrapper::inject($request);
-        $this->char->harm(floor($this->char->health/2)); // Have to be wounded first.
+        $this->char->harm(floor($this->char->health / 2)); // Have to be wounded first.
         $this->char->setClass('viper'); // Default dragon class has chi skill
         $this->char->save();
 
@@ -125,7 +125,7 @@ class ShrineControllerTest extends NWTest
         $response_data = $reflection->getValue($response);
         $this->assertTrue(in_array('result-heal', $response_data[$this->part]));
         $final_char = Player::find($this->char->id());
-        $this->assertEquals($initial_health+10, $final_char->health);
+        $this->assertEquals($initial_health + 10, $final_char->health);
     }
 
     /**
@@ -133,9 +133,9 @@ class ShrineControllerTest extends NWTest
      */
     public function testShrineMaxHeal()
     {
-        $request = new Request(['heal_points'=>'max'], []);
+        $request = new Request(['heal_points' => 'max'], []);
         RequestWrapper::inject($request);
-        $this->char->harm((int)floor($this->char->health/2)); // Have to be wounded first.
+        $this->char->harm((int)floor($this->char->health / 2)); // Have to be wounded first.
         $initial_health = $this->char->health;
         $this->char->gold = 999999;  // Ensure enough gold to heal.
         $initial_gold = $this->char->gold;
@@ -149,15 +149,15 @@ class ShrineControllerTest extends NWTest
         $response_data = $reflection->getValue($response);
         $this->assertTrue(in_array('result-heal', $response_data[$this->part]));
         $final_char = Player::find($this->char->id());
-        $this->assertEquals(min($initial_health+$initial_gold, $final_char->getMaxHealth()), $final_char->health);
+        $this->assertEquals(min($initial_health + $initial_gold, $final_char->getMaxHealth()), $final_char->health);
         $this->assertEquals(Player::maxHealthByLevel($final_char->level), $final_char->health);
     }
 
     public function testPartialHealWithZeroGoldGivesErrorInPageParts()
     {
-        $request = new Request(['heal_points'=>999], []);
+        $request = new Request(['heal_points' => 999], []);
         RequestWrapper::inject($request);
-        $this->char->harm((int)floor($this->char->health/2)); // Have to be wounded first.
+        $this->char->harm((int)floor($this->char->health / 2)); // Have to be wounded first.
         $this->char->setGold(0);
         $initial_health = $this->char->health;
         $this->assertGreaterThan(0, $initial_health);
@@ -186,7 +186,7 @@ class ShrineControllerTest extends NWTest
         $reflection->setAccessible(true);
         $response_data = $reflection->getValue($response);
         $this->assertTrue(in_array('result-resurrect', $response_data[$this->part]));
-        $this->assertGreaterThan(floor(Player::maxHealthByLevel($this->char->level)/2), $final_char->health);
+        $this->assertGreaterThan(floor(Player::maxHealthByLevel($this->char->level) / 2), $final_char->health);
     }
 
     public function testAntidoteUnpoisoningOfPoisonedCharacter()
@@ -214,7 +214,7 @@ class ShrineControllerTest extends NWTest
         $reflection->setAccessible(true);
         $response_data = $reflection->getValue($response);
         $this->assertTrue(in_array('result-resurrect', $response_data[$this->part]));
-        $this->assertGreaterThan(floor(Player::maxHealthByLevel($this->char->level)/2), $final_char->health);
+        $this->assertGreaterThan(floor(Player::maxHealthByLevel($this->char->level) / 2), $final_char->health);
     }
 
     public function testKillCostResurrectWithChi()
@@ -232,7 +232,7 @@ class ShrineControllerTest extends NWTest
         $reflection->setAccessible(true);
         $response_data = $reflection->getValue($response);
         $this->assertTrue(in_array('result-resurrect', $response_data[$this->part]));
-        $this->assertGreaterThan($this->char->getMaxHealth()/(3), $final_char->health);
+        $this->assertGreaterThan($this->char->getMaxHealth() / (3), $final_char->health);
     }
 
     public function testKillCostResurrectWithStealth()
@@ -272,7 +272,7 @@ class ShrineControllerTest extends NWTest
         $reflection->setAccessible(true);
         $response_data = $reflection->getValue($response);
         $this->assertTrue(in_array('result-resurrect', $response_data[$this->part]));
-        $this->assertGreaterThan($this->char->getMaxHealth()/(1.5), $final_char->health);
+        $this->assertGreaterThan($this->char->getMaxHealth() / (1.5), $final_char->health);
         $this->assertLessThan($turns, $final_char->turns);
     }
 

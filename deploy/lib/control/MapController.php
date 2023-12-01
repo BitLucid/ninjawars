@@ -21,7 +21,7 @@ class MapController extends AbstractController
         $this->setNodes();
     }
 
-    private function setNodes($nodes=null)
+    private function setNodes($nodes = null)
     {
         // Here is where the node locations are defined, and their order is allocated.
         $static_nodes = include(ROOT.'lib/data/raw/nodes.php'); // Mocking database data for later
@@ -40,7 +40,7 @@ class MapController extends AbstractController
             'show_ad' => rand(1, 20) // show the ad in the village 10% of the time
         ];
 
-        $options = ['quickstat'=>'player'];
+        $options = ['quickstat' => 'player'];
 
         return new StreamedViewResponse('Map', 'map.tpl', $parts, $options);
     }

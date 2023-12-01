@@ -26,7 +26,7 @@ class NWTemplate extends Smarty
     /**
      * Displays a template wrapped in the header and footer as needed.
      */
-    public function displayPage($template, $title=null, $local_vars=[], $options=null)
+    public function displayPage($template, $title = null, $local_vars = [], $options = null)
     {
         // Updates the quickstat via javascript if requested.
         $quickstat        = isset($options['quickstat']) ? $options['quickstat'] : null;

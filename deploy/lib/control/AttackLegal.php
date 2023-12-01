@@ -58,7 +58,7 @@ class AttackLegal
     {
         $this->target   = null;
         $this->error    = null;
-        $defaults = ['required_turns'=>null, 'ignores_stealth'=>null, 'self_use'=>null, 'clan_forbidden'=>null];
+        $defaults = ['required_turns' => null, 'ignores_stealth' => null, 'self_use' => null, 'clan_forbidden' => null];
         $this->params = array_merge($defaults, $params);
 
         if ($this->params['required_turns'] === null) {
@@ -87,7 +87,7 @@ class AttackLegal
     {
         // Get all the various ips that shouldn't be matches, and prevent them from being a problem.
         $server_addr = isset($_SERVER['SERVER_ADDR']) ? $_SERVER['SERVER_ADDR'] : null;
-        $host= gethostname();
+        $host = gethostname();
         $active_ip = gethostbyname($host);
         $allowable = array_merge(['127.0.0.1', $server_addr, $active_ip], Constants::$trusted_proxies);
 

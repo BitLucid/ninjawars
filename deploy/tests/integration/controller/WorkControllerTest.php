@@ -12,7 +12,7 @@ class WorkControllerTest extends NWTest
     {
         parent::setUp();
         // Mock the post request.
-        $request = new Request([], ['worked'=>10]);
+        $request = new Request([], ['worked' => 10]);
         RequestWrapper::inject($request);
         SessionFactory::init(new MockArraySessionStorage());
     }
@@ -51,7 +51,7 @@ class WorkControllerTest extends NWTest
     {
         $this->char = TestAccountCreateAndDestroy::char();
         SessionFactory::getSession()->set('player_id', $this->char->id());
-        $request = new Request([], ['worked'=>999]);
+        $request = new Request([], ['worked' => 999]);
         RequestWrapper::inject($request);
         $work = new WorkController();
         $response = $work->requestWork($this->m_dependencies);
@@ -67,7 +67,7 @@ class WorkControllerTest extends NWTest
     {
         $this->char = TestAccountCreateAndDestroy::char();
         SessionFactory::getSession()->set('player_id', $this->char->id());
-        $request = new Request([], ['worked'=>99977777]);
+        $request = new Request([], ['worked' => 99977777]);
         RequestWrapper::inject($request);
         $work = new WorkController();
         $response = $work->requestWork($this->m_dependencies);
@@ -84,7 +84,7 @@ class WorkControllerTest extends NWTest
         // Note that this had to have an active logged in character to not just get an ignored result of "0" gold.
         $this->char = TestAccountCreateAndDestroy::char();
         SessionFactory::getSession()->set('player_id', $this->char->id());
-        $request = new Request([], ['worked'=>-999]);
+        $request = new Request([], ['worked' => -999]);
         RequestWrapper::inject($request);
         $work = new WorkController();
         $response = $work->requestWork($this->m_dependencies);

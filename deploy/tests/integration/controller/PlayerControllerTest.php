@@ -50,7 +50,7 @@ class PlayerControllerTest extends NWTest
     public function testViewOtherPlayerProfile()
     {
         $viewing_char_id = TestAccountCreateAndDestroy::char_id_2();
-        $request = new Request(['player_id'=>$viewing_char_id]);
+        $request = new Request(['player_id' => $viewing_char_id]);
         RequestWrapper::inject($request);
         $sess = SessionFactory::getSession();
         $sess->set('player_id', $this->char->id());
@@ -62,7 +62,7 @@ class PlayerControllerTest extends NWTest
     public function testViewingOfPlayerProfileMyselfViewingOwnProfile()
     {
         $viewing_char_id = $this->char->id();
-        $request = new Request(['player_id'=>$viewing_char_id]);
+        $request = new Request(['player_id' => $viewing_char_id]);
         RequestWrapper::inject($request);
         $sess = SessionFactory::getSession();
         $sess->set('player_id', $this->char->id());
@@ -75,7 +75,7 @@ class PlayerControllerTest extends NWTest
     {
         $char_2 = TestAccountCreateAndDestroy::char_2();
         $viewing_char_id = $this->char->id();
-        $request = new Request(['player_id'=>$char_2->id()]);
+        $request = new Request(['player_id' => $char_2->id()]);
         RequestWrapper::inject($request);
         $sess = SessionFactory::getSession();
         $sess->set('player_id', $this->char->id());

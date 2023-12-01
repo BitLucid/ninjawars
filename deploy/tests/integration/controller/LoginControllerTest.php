@@ -80,7 +80,7 @@ class LoginControllerTest extends NWTest
 
     public function testLoginRequestWithBadFilledValuesShouldError()
     {
-        $request = new Request([], ['user'=>'bob', 'pass'=>'james']);
+        $request = new Request([], ['user' => 'bob', 'pass' => 'james']);
         RequestWrapper::inject($request);
         $controller = new LoginController();
         $res = $controller->requestLogin($this->m_dependencies);
@@ -92,7 +92,7 @@ class LoginControllerTest extends NWTest
     {
         $account = Account::findById(TestAccountCreateAndDestroy::account_id());
         $this->assertInstanceOf(Account::class, $account);
-        $request = new Request([], ['user'=>$account->account_identity, 'pass'=>TestAccountCreateAndDestroy::$test_password]);
+        $request = new Request([], ['user' => $account->account_identity, 'pass' => TestAccountCreateAndDestroy::$test_password]);
         // TestAccountCreateAndDestroy::$test_password
         RequestWrapper::inject($request);
         $controller = new LoginController();
@@ -107,7 +107,7 @@ class LoginControllerTest extends NWTest
         $this->assertInstanceOf(Account::class, $account);
         $account->confirmed = 0;
         $account->save();
-        $request = new Request([], ['user'=>$account->account_identity, 'pass'=>TestAccountCreateAndDestroy::$test_password]);
+        $request = new Request([], ['user' => $account->account_identity, 'pass' => TestAccountCreateAndDestroy::$test_password]);
         // TestAccountCreateAndDestroy::$test_password
         RequestWrapper::inject($request);
         $controller = new LoginController();
@@ -122,7 +122,7 @@ class LoginControllerTest extends NWTest
         $this->assertInstanceOf(Account::class, $account);
         $account->confirmed = 0;
         $account->save();
-        $request = new Request([], ['user'=>'', 'pass'=>'']);
+        $request = new Request([], ['user' => '', 'pass' => '']);
         // TestAccountCreateAndDestroy::$test_password
         RequestWrapper::inject($request);
         $controller = new LoginController();

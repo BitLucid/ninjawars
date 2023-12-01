@@ -184,7 +184,7 @@ class DoshinController extends AbstractController
             $char->setGold($char->gold - $bribe);
             $char->setBounty(max(
                 0,
-                ($char->bounty - floor($bribe/self::BRIBERY_DIVISOR))
+                ($char->bounty - floor($bribe / self::BRIBERY_DIVISOR))
             ));
             $char->save();
             $location = 1;
@@ -227,7 +227,7 @@ class DoshinController extends AbstractController
 
         $bounty_reduction = (int) min(
             $current_bounty,
-            (($doshin_takes > self::SAFE_WEALTH) ? $doshin_takes/self::BRIBERY_DIVISOR : 0)
+            (($doshin_takes > self::SAFE_WEALTH) ? $doshin_takes / self::BRIBERY_DIVISOR : 0)
         );
 
         if (0 < $bounty_reduction) {
@@ -252,7 +252,7 @@ class DoshinController extends AbstractController
      * @param Container $deps  Pass the pimple container
      * @return StreamedViewResponse
      */
-    private function render(array $parts, Container $deps=null): StreamedViewResponse
+    private function render(array $parts, Container $deps = null): StreamedViewResponse
     {
         $char     = $deps ? $deps['current_player'] : null;
 
@@ -274,6 +274,6 @@ class DoshinController extends AbstractController
 
         $quickstat = $parts['quickstat'];
 
-        return new StreamedViewResponse('Doshin Office', 'doshin.tpl', $parts, [ 'quickstat' => $quickstat, 'body_classes'=>'doshin' ]);
+        return new StreamedViewResponse('Doshin Office', 'doshin.tpl', $parts, [ 'quickstat' => $quickstat, 'body_classes' => 'doshin' ]);
     }
 }

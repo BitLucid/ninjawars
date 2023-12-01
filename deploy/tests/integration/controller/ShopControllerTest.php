@@ -14,7 +14,7 @@ class ShopControllerTest extends NWTest
     {
         parent::setUp();
         // Mock the post request.
-        $request = new Request([], ['purchase'=>1, 'quantity'=>2, 'item'=>'Shuriken']);
+        $request = new Request([], ['purchase' => 1, 'quantity' => 2, 'item' => 'Shuriken']);
         RequestWrapper::inject($request);
         $this->login();
     }
@@ -48,7 +48,7 @@ class ShopControllerTest extends NWTest
     public function testShopPurchaseDoesNotError()
     {
         // Inject post request.
-        $request = new Request([], ['quantity'=>5, 'item'=>'shuriken']);
+        $request = new Request([], ['quantity' => 5, 'item' => 'shuriken']);
         RequestWrapper::inject($request);
         $shop = new ShopController();
         $shop_outcome = $shop->buy($this->m_dependencies);
@@ -69,7 +69,7 @@ class ShopControllerTest extends NWTest
         $pc = Player::findPlayable($this->account->id());
         $pc->gold = $pc->gold + 999;
         $pc->save();
-        $request = new Request([], ['quantity'=>1, 'item'=>'Shuriken']);
+        $request = new Request([], ['quantity' => 1, 'item' => 'Shuriken']);
         RequestWrapper::inject($request);
         $shop = new ShopController();
         $response = $shop->buy($this->m_dependencies);
@@ -87,7 +87,7 @@ class ShopControllerTest extends NWTest
         $pc = Player::findPlayable($this->account->id());
         $pc->gold = $pc->gold + 9999;
         $pc->save();
-        $request = new Request([], ['quantity'=>7, 'item'=>'shuriken']);
+        $request = new Request([], ['quantity' => 7, 'item' => 'shuriken']);
         RequestWrapper::inject($request);
         $shop = new ShopController();
         $response = $shop->buy($this->m_dependencies);
@@ -105,7 +105,7 @@ class ShopControllerTest extends NWTest
         $pc = Player::findPlayable($this->account->id());
         $pc->gold = $pc->gold + 9999;
         $pc->save();
-        $request = new Request([], ['quantity'=>4, 'item'=>'zigzigX']);
+        $request = new Request([], ['quantity' => 4, 'item' => 'zigzigX']);
         RequestWrapper::inject($request);
         $shop = new ShopController();
         $response = $shop->buy($this->m_dependencies);

@@ -44,12 +44,12 @@ class MockNpc implements Character
         return $this->stamina;
     }
 
-    public function maxDamage(Character $char=null)
+    public function maxDamage(Character $char = null)
     {
         return $this->max_damage;
     }
 
-    public function damage(Character $char=null)
+    public function damage(Character $char = null)
     {
         return $this->damage;
     }

@@ -53,7 +53,7 @@ class CloneKill
         // TODO: Reject inoperative characters
         // TODO: You can't clone kill yourself..
 
-        $host= gethostname();
+        $host = gethostname();
         $server_ip = gethostbyname($host);
 
         $untouchable_ips = ['127.0.0.1', '173.203.99.229', $server_ip, '', null];

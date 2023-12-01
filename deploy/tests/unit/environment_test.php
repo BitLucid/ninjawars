@@ -14,7 +14,7 @@ class TestInput extends NWTest
         $get = [
             'id'         => 7,
             'ninja_name' => 5,
-            'some_negative_int'=> -444,
+            'some_negative_int' => -444,
             'some_int'         => 66,
             'garbage_field'    => 'Robert\'); drop table students; --'
         ];
@@ -22,7 +22,7 @@ class TestInput extends NWTest
         $post = [
             'hidden_post'      => 1,
             'post_post_field'  => 'Bob',
-            'post_negative_int'=> -234,
+            'post_negative_int' => -234,
             'post_some_int'         => 34,
             'post_garbage_field'    => 'Robert\'); drop table students; --'
         ];
