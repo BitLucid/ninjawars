@@ -1,5 +1,6 @@
 # ignore project specific files
 deploy/resources.php
+
 # ignore composer installed files
 vendor/
 vendor/*
@@ -20,6 +21,10 @@ deploy/model/orm/*
 # Static Built files
 deploy/www/index.html
 deploy/www/intro.html
+
+# build artifacts
+deploy/artifacts/
+nw-artifact/
 
 #ignore developer specific GNU make configuration for this project
 CONFIG
