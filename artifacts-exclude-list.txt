@@ -1,0 +1,5 @@
+./deploy/artifacts
+./deploy/templates/compiled
+./deploy/templates/cache
+./deploy/resources/logs/
+./deploy/www/bad-router.php

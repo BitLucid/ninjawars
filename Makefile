@@ -49,7 +49,7 @@ link-deps:
 	@ln -sf "$(RELATIVE_VENDOR)twbs/bootstrap/dist/js/bootstrap.min.js" "$(JS)"
 
 
-dep:
+dep: js-deps
 	@echo "NW step: dep: composer validate then composer install"
 	@$(COMPOSER) validate
 	@$(COMPOSER) install
@@ -163,6 +163,36 @@ test-one:
 
 test-one-no-watch:
 	php ./vendor/bin/phpunit $(TESTFILE)
+
+
+create-artifact:
+	echo "Creating an artifact for future deployment"
+	echo "Make sure to make dep to build deployable composer and node assets before this"
+	echo "Currently node_modules is not directly included in the artifact, as we just use it for tests for now"
+	mkdir -p ./deploy/artifacts
+	tar -czv -X artifacts-exclude-list.txt -f ./deploy/artifacts/ninjawars-`date +\%F-hour-\%H-min-\%M-sec-\%S-milisec-\%3N`.tar.gz ./composer.json ./composer.lock ./.nvmrc ./.phpver ./.yarnrc.yml ./package.json ./yarn.lock ./Makefile ./deploy/
+	echo "Artifact created, see ./deploy/artifacts/ for the latest,"
+	echo "Note the high importance of overwriting the resources.php config file in the final"
+
+clean-artifacts:
+	rm -rf ./deploy/artifacts/*
+	rm -rf ./nw-artifact
+
+send-artifacts:
+	aws s3 sync  --include '*.tar.gz' ./deploy/artifacts/ s3://ninjawars-deployment-artifacts/
+
+expand-local-artifact:
+	echo "unzipping the latest tar to the local nw-artifact directory"
+	mkdir -p ./nw-artifact
+	tar -xzvf ./deploy/artifacts/*.tar.gz -C ./nw-artifact
+	mkdir -p ./nw-artifact/deploy/templates/compiled ./nw-artifact/deploy/templates/cache /tmp/game_logs/ ./nw-artifact/deploy/resources/logs/
+	chmod -R ugo+rw ./nw-artifact/deploy/templates/compiled ./nw-artifact/deploy/templates/cache
+	chmod -R ugo+rw /tmp/game_logs/ || true
+	ls ./nw-artifact
+
+browse-artifact:
+	xdg-open https://nw-artifact.local
+	
 
 watch:
 	./vendor/bin/phpunit-watcher watch
