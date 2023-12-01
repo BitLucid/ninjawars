@@ -26,10 +26,7 @@ describe('signup a new ninja', () => {
     cy.get('input[type=password][name=cpass]').type(Cypress.env('TEST_PASSWORD'), { log: false })
     const random = (Math.random() + 1).toString(36).substring(7);
     cy.get('input[name=send_name]').type(`cypress-test-user${random}`)
-    cy.get('button#reveal-signup').click()
-    const submitButtonSelector = 'input[type=submit]'
-    cy.get(submitButtonSelector).should('be.visible')
-    cy.get(submitButtonSelector).click()
+    cy.get('input[type=submit]').click()
     cy.get('[role=alert]').should('be.visible')
   })
 
@@ -55,10 +52,7 @@ describe('signup a new ninja', () => {
     cy.get('input[type=password]').first().type(Cypress.env('TEST_PASSWORD'), { log: false })
     cy.get('input[type=password][name=cpass]').type(Cypress.env('TEST_PASSWORD'), { log: false })
     cy.get('input[name=send_name]').type(randomSendName)
-    cy.get('button#reveal-signup').click()
-    const submitButton = 'input[type=submit]'
-    cy.get(submitButton).should('be.visible')
-    cy.get(submitButton).click()
+    cy.get('input[type=submit]').click()
     cy.get('[role=alert]').should('not.exist')
     cy.contains('You are almost ready to be a ninja!').should('be.visible')
     cy.contains(randomEmailLabel).should('be.visible')
