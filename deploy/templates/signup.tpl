@@ -112,7 +112,7 @@
 	 </section>
 	 <section>
 	  <div class='inline-block'>
-	  	<strong>Ninja Animal Style &amp; Expertise:</strong>
+	  	<strong>Ninja Animal Style &amp; Expertise&nbsp;</strong>
 	  </div>
 	  <div class='inline-block'>
   	{foreach from=$classes item='class' key='identity'}
@@ -123,15 +123,26 @@
   	{/foreach}
       </div>
 	  <div class='glassbox'>
-	  	<small>Change type easily in-game, or check <a href="http://ninjawars.pbworks.com/" target="_blank" class='extLink'>the Wiki</a> for more info.</small>
+	  	<small>
+			Change type easily in-game, or check <a href="http://ninjawars.pbworks.com/" target="_blank" class='extLink'>the Wiki</a> for more info.
+		</small>
 	  </div>
 	  </section>
 	</fieldset>
 
-      <section>
-	    <input id='become-a-ninja' type="submit" name="submit" value="Become a Ninja!" class="btn btn-vital">
+      <section style='min-heigth:5rem'>
+	  {* This section is used by signup.js and should only be changed in concert with that script below *}
+	  {* It is also tested via the cypress signup.cy.js script, so changes should be checked by running that *}
+	  	<div style='min-height:6rem'>
+	    <input class="btn btn-vital" id='become-a-ninja' type="submit" name="submit" value="Become a Ninja!" >
+		<button type='button' id='reveal-signup' class='btn btn-vital' style='font-size:xx-large'>
+			Proceed <i class='fa fa-arrow-right'></i>
+		</button>
+		</div>
 	    <div>
-	    	<small>Add <strong>{$smarty.const.SYSTEM_EMAIL}</strong> to your safe email list ensure you get your confirmation email! </small>
+	    	<small>
+				* Note: Add <strong>{$smarty.const.SYSTEM_EMAIL}</strong> to your safe email list ensure you get your confirmation email! 
+			</small>
 	    </div>
 
 
@@ -140,26 +151,22 @@
 
 {/if}
 
-<style>
-
-</style>
 	<section class='glassbox'>
 		<h3>Problems?</h3>
 		<div class='hero'>
 
 		<ul>
-
 			<li>
-			Lost Your Password? <a href="/assistance">Resend Account Info Email</a>
+			Lost Your Password? <a href="/assistance">go to reset password</a>
 			</li>
 			<li>
-				<small>Already a ninja? <a href='/login'>login</a>
+				Already a ninja? <a href='/login'>login instead</a>
 			</li>
 			<li>
 				Didn't get your confirmation code? <a href="/assistance">Resend Confirmation Email</a>
 			</li>
 			<li>
-			Game &amp; Ninja type info:
+			Get more info about Ninja type &amp; the game:
 				<a href="http://ninjawars.pbworks.com/" target="_blank" class='extLink'>on the Wiki</a>.
 			</li>
 			<li>
@@ -170,10 +177,4 @@
 
 	</section>
 
-{literal}
-<script>
-if (top.location != location) { // Framebreak on the signup page as well.
-  top.location.href = document.location.href ;
-}
-</script>
-{/literal}
+	<script src='./js/signup.js'></script>
