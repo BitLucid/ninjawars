@@ -52,7 +52,7 @@ class Status extends BaseModel
     {
         return (object) query_row(
             'select '.implode(', ', static::FIELDS).' from statuses where status_id = :id',
-            [':id'=>[$id, PDO::PARAM_INT]]
+            [':id' => [$id, PDO::PARAM_INT]]
         );
     }
 
@@ -63,7 +63,7 @@ class Status extends BaseModel
     {
         $status_res = query_array(
             'select '.implode(', ', static::FIELDS).' from statuses where _player_id = :id',
-            [':id'=>[$ninja_id, PDO::PARAM_INT]]
+            [':id' => [$ninja_id, PDO::PARAM_INT]]
         );
         $statuses = array_map(function ($sta) {
             return (object) $sta;
@@ -80,8 +80,8 @@ class Status extends BaseModel
     {
         $res = query_item('select status_id from statuses 
 			where _player_id = :id and lower(name) = lower(:name) and expiry_datetime > now()', [
-            ':id'=>[$char->id(), PDO::PARAM_INT],
-            ':name'=>$status_name,
+            ':id' => [$char->id(), PDO::PARAM_INT],
+            ':name' => $status_name,
         ]);
         return $res;
     }
@@ -102,8 +102,8 @@ class Status extends BaseModel
 			SET expiry_datetime = (now() + interval \''.$secs.' seconds\')
 			returning status_id',
             [
-                ':name'=>$name,
-                ':char_id'=>[$char->id(), PDO::PARAM_INT],
+                ':name' => $name,
+                ':char_id' => [$char->id(), PDO::PARAM_INT],
             ]
         );
         $first = $res->fetch(PDO::FETCH_ASSOC);
@@ -114,7 +114,7 @@ class Status extends BaseModel
      * Add a status effect to a character, refreshing if requested, or returning false
      * return int|bool false if it can't refresh, or else the id of the status effect
      */
-    public static function refreshStatusEffect(string $status_name, Player $char, int $secs_duration, bool $refresh=false)
+    public static function refreshStatusEffect(string $status_name, Player $char, int $secs_duration, bool $refresh = false)
     {
         // Run an update/insert
         if (!$refresh) {

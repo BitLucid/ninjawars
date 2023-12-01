@@ -76,7 +76,7 @@ class CasinoController extends AbstractController
 
                 $player->setGold($player->gold + $bet);
 
-                if ($bet >= round(self::MAX_BET*0.99)) {
+                if ($bet >= round(self::MAX_BET * 0.99)) {
                     // within about 1% of the max bet & you win, you get a reward item.
                     $inventory = new Inventory($player);
                     $inventory->add(self::REWARD, 1);

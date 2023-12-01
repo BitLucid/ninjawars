@@ -13,7 +13,7 @@ class ClanTest extends NWTest
 
     public function destroyClan()
     {
-        query('delete from clan where clan_id = :id or clan_name = :clan_name', [':id'=>$this->clan_id, ':clan_name'=>$this->clan_identity]);
+        query('delete from clan where clan_id = :id or clan_name = :clan_name', [':id' => $this->clan_id, ':clan_name' => $this->clan_identity]);
     }
 
     public function setUp(): void

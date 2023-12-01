@@ -25,7 +25,7 @@ class CloneKillTest extends NWTest
 
     private function inactivate($char_id)
     {
-        query('update players set active = 0 where player_id = :char_id', [':char_id'=>$char_id]);
+        query('update players set active = 0 where player_id = :char_id', [':char_id' => $char_id]);
     }
 
     private function syncIps($ip, $char_id, $char_id_2)

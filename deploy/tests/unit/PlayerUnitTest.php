@@ -79,14 +79,14 @@ class PlayerUnitTest extends NWTest
 
     public function testInitialPlayerStaminaConformsToSettings()
     {
-        $expected_stamina = NEW_PLAYER_INITIAL_STATS + (LEVEL_UP_STAT_RAISE * ($this->player->level -1));
+        $expected_stamina = NEW_PLAYER_INITIAL_STATS + (LEVEL_UP_STAT_RAISE * ($this->player->level - 1));
         $this->assertGreaterThanOrEqual(NEW_PLAYER_INITIAL_STATS, $expected_stamina);
     }
 
     public function testInitialPlayerHealthConformsToSettings()
     {
-        $expected_stamina = NEW_PLAYER_INITIAL_STATS + (LEVEL_UP_STAT_RAISE * ($this->player->level -1));
-        $expected_health = NEW_PLAYER_INITIAL_HEALTH+($expected_stamina*Player::HEALTH_PER_STAMINA);
+        $expected_stamina = NEW_PLAYER_INITIAL_STATS + (LEVEL_UP_STAT_RAISE * ($this->player->level - 1));
+        $expected_health = NEW_PLAYER_INITIAL_HEALTH + ($expected_stamina * Player::HEALTH_PER_STAMINA);
         $expected_stamina = NEW_PLAYER_INITIAL_STATS;
         $this->assertEquals($expected_health, $this->player->getMaxHealth());
         $this->assertEquals($expected_health, $this->player->health);
@@ -103,13 +103,13 @@ class PlayerUnitTest extends NWTest
 
         $this->player->harm($max_harm);
         $this->player->heal($max_heal);
-        $this->assertEquals($this->player->getMaxHealth()-5, $this->player->health);
+        $this->assertEquals($this->player->getMaxHealth() - 5, $this->player->health);
     }
 
     public function testHarmAPlayer()
     {
         $this->player->harm(7);
-        $this->assertEquals($this->player->getMaxHealth()-7, $this->player->health);
+        $this->assertEquals($this->player->getMaxHealth() - 7, $this->player->health);
     }
 
     public function testHarmAPlayerWithMoreHealthThanTheyHave()

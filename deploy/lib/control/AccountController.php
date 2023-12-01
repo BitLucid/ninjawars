@@ -219,7 +219,7 @@ class AccountController extends AbstractController
 
             return new RedirectResponse('/logout');
         } else {
-            $session->set('delete_attempts', $delete_attempts+1);
+            $session->set('delete_attempts', $delete_attempts + 1);
             $error = 'Deleting of account failed, please email '.SUPPORT_EMAIL;
         }
 

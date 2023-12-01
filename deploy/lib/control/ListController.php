@@ -141,7 +141,7 @@ class ListController extends AbstractController
 
         foreach ($ninja_infos as $a_player) { // Format each of the ninja rows
             $ninja_rows[] = $this->formatNinjaRow($a_player);
-            $ninja_rows[$ninja_count]['odd_or_even'] = (($ninja_count+1) % 2 ? "odd" : "even");
+            $ninja_rows[$ninja_count]['odd_or_even'] = (($ninja_count + 1) % 2 ? "odd" : "even");
             $ninja_count++;
         }
 
@@ -163,7 +163,7 @@ class ListController extends AbstractController
             'level'         => $a_player['level'],
             'class'         => $a_player['class'],
             'class_theme'   => $a_player['class_theme'],
-            'class_identity'=> $a_player['class_identity'],
+            'class_identity' => $a_player['class_identity'],
             'clan_id'       => $a_player['clan_id'],
             'clan_name'     => $a_player['clan_name'],
             'alive'         => ($a_player['alive'] ? "&nbsp;" : "Dead"), // alive/dead display

@@ -24,36 +24,36 @@ class Skill
     // ... should return an array of crane-specific skills.
     public $skill_map = [
         'crane' => [
-            'ice bolt' => ['available'=>1, 'level'=>2]
-            , 'speed'  => ['available'=>1]
-            , 'kampo' => ['available'=>1, 'level'=>6]
+            'ice bolt' => ['available' => 1, 'level' => 2]
+            , 'speed'  => ['available' => 1]
+            , 'kampo' => ['available' => 1, 'level' => 6]
         ]
         , 'dragon' => [
-            'chi'    => ['available'=>1]
-            , 'heal' => ['available'=>1, 'level'=>2]
-            , 'evasion' => ['available'=>1, 'level'=>6]
+            'chi'    => ['available' => 1]
+            , 'heal' => ['available' => 1, 'level' => 2]
+            , 'evasion' => ['available' => 1, 'level' => 6]
         ]
         , 'tiger' => [
-            'fire bolt' => ['available'=>1, 'level'=>2]
-            , 'blaze'   => ['available'=>1, 'level'=>1]
+            'fire bolt' => ['available' => 1, 'level' => 2]
+            , 'blaze'   => ['available' => 1, 'level' => 1]
         ]
         , 'viper' => [
-            'poison touch'       => ['available'=>1]
-            , 'hidden resurrect' => ['available'=>1]
+            'poison touch'       => ['available' => 1]
+            , 'hidden resurrect' => ['available' => 1]
         ]
         , 'all' => [
-            'attack'          => ['available'=>1]
-            , 'duel'          => ['available'=>1]
-            , 'unstealth'     => ['available'=>1]
-            , 'clone kill'    => ['available'=>1, 'level'=>2]
-            , 'wrath'	      => ['available'=>1, 'level'=>2]
-            , 'stealth'       => ['available'=>1, 'level'=>2]
-            , 'sight'         => ['available'=>1, 'level'=>2]
-            , 'deflect'       => ['available'=>1, 'level'=>5]
-            , 'steal'         => ['available'=>1, 'level'=>5]
-            , 'stalk'         => ['available'=>1, 'level'=>6]
-            , 'cold steal'    => ['available'=>1, 'level'=>10]
-            , 'midnight heal' => ['available'=>1, 'level'=>20] // Because the logic is such a PITA
+            'attack'          => ['available' => 1]
+            , 'duel'          => ['available' => 1]
+            , 'unstealth'     => ['available' => 1]
+            , 'clone kill'    => ['available' => 1, 'level' => 2]
+            , 'wrath'	      => ['available' => 1, 'level' => 2]
+            , 'stealth'       => ['available' => 1, 'level' => 2]
+            , 'sight'         => ['available' => 1, 'level' => 2]
+            , 'deflect'       => ['available' => 1, 'level' => 5]
+            , 'steal'         => ['available' => 1, 'level' => 5]
+            , 'stalk'         => ['available' => 1, 'level' => 6]
+            , 'cold steal'    => ['available' => 1, 'level' => 10]
+            , 'midnight heal' => ['available' => 1, 'level' => 20] // Because the logic is such a PITA
         ]
     ];
 
@@ -93,7 +93,7 @@ class Skill
     /**
      * Check whether the player has the skill.
      */
-    public function hasSkill($skill, $char=null)
+    public function hasSkill($skill, $char = null)
     {
         if ($char instanceof Player) {
             $player = $char;
@@ -111,7 +111,7 @@ class Skill
     /**
      * Get the list of skills that a character has, in an indexed array.
     **/
-    public function hasSkills($username=null)
+    public function hasSkills($username = null)
     {
         $skills_avail = [];
 
@@ -165,7 +165,7 @@ class Skill
             , 'unstealth' => true
             , 'kampo'     => true
             , 'heal'      => true
-            , 'clone kill'=> true
+            , 'clone kill' => true
             , 'stalk'     => true
         ];
         $res = false; // default is that they're not self usable.

@@ -31,7 +31,7 @@ class InventoryTest extends \NWTest
 
         $count = query_item(
             'select amount from inventory join item on item.item_id = inventory.item_type where owner = :id',
-            [':id'=>$this->char->id()]
+            [':id' => $this->char->id()]
         );
         $this->assertEquals(10, $count);
     }
@@ -55,7 +55,7 @@ class InventoryTest extends \NWTest
         $inventory = new Inventory($this->char);
         $inventory->add('shuriken', 10);
         $inventory->add('amanita', 40);
-        $sorted_inv = Inventory::of($this->char, $sort='self');
+        $sorted_inv = Inventory::of($this->char, $sort = 'self');
         $item = reset($sorted_inv);
         $this->assertEquals('Amanita Mushroom', $item['name']);
     }

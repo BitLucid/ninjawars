@@ -45,7 +45,7 @@ class EventsController extends AbstractController
      * @param String $limit
      * @return array
      */
-    private function getEvents($user_id, $limit=null)
+    private function getEvents($user_id, $limit = null)
     {
         $params = [':to' => $user_id];
 

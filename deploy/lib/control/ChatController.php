@@ -80,7 +80,7 @@ class ChatController extends AbstractController
     /**
      * Get all the chat messages info.
      */
-    private function getChats($chatlength=null)
+    private function getChats($chatlength = null)
     {
         $chatlength = Filter::toNonNegativeInt($chatlength); // Prevent negatives.
         $limit = ($chatlength ? 'LIMIT :limit' : '');

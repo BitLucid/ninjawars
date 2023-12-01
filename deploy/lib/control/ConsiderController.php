@@ -99,7 +99,7 @@ class ConsiderController extends AbstractController
             'combat_skills'    => $combat_skills,
             'targeted_skills'  => $targeted_skills,
         ];
-        return new StreamedViewResponse('Fight Next Enemy', 'enemies.attack-next.tpl', $parts, ['quickstat'=>false]);
+        return new StreamedViewResponse('Fight Next Enemy', 'enemies.attack-next.tpl', $parts, ['quickstat' => false]);
     }
 
     /**

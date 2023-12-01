@@ -321,7 +321,7 @@ class ShrineController extends AbstractController
 
         $normalHP = $this->calculateResurrectionHP($p_player);
 
-        $enhancedHP = $normalHP + (($p_player->level-1)*10);
+        $enhancedHP = $normalHP + (($p_player->level - 1) * 10);
 
         $p_player->heal($enhancedHP);
 
@@ -349,7 +349,7 @@ class ShrineController extends AbstractController
             $hpMultiplier = 1;
         }
 
-        $maxHP = Player::maxHealthByLevel($p_player->level)*$hpMultiplier;
+        $maxHP = Player::maxHealthByLevel($p_player->level) * $hpMultiplier;
 
         return min($maxHP, $p_player->getMaxHealth());
     }
@@ -452,7 +452,7 @@ class ShrineController extends AbstractController
      */
     private function calculateMaxHeal($p_player)
     {
-        return (int)((2*$p_player->gold)/(2*$this->calculateHealCost($p_player)));
+        return (int)((2 * $p_player->gold) / (2 * $this->calculateHealCost($p_player)));
     }
 
     /**
@@ -467,7 +467,7 @@ class ShrineController extends AbstractController
         $skillController = new Skill();
 
         if ($skillController->hasSkill('Chi', $p_player->name())) {
-            $costOfHealPoint = self::HEAL_POINT_COST/2;
+            $costOfHealPoint = self::HEAL_POINT_COST / 2;
         } else {
             $costOfHealPoint = self::HEAL_POINT_COST;
         }

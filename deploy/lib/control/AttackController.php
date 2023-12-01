@@ -54,8 +54,8 @@ class AttackController extends AbstractController
         $required_turns  = 0;
         $rank_spot = null;
 
-        foreach (array_filter($options) as $type=>$value) {
-            $ignores_stealth = $ignores_stealth||$skillListObj->getIgnoreStealth($type);
+        foreach (array_filter($options) as $type => $value) {
+            $ignores_stealth = $ignores_stealth || $skillListObj->getIgnoreStealth($type);
             $required_turns += $skillListObj->getTurnCost($type);
         }
 
@@ -85,7 +85,7 @@ class AttackController extends AbstractController
                 'target'   => $target,
                 'attacker' => $attacker,
                 'error'    => $error,
-                'rank_spot'=> $rank_spot,
+                'rank_spot' => $rank_spot,
             ];
 
             return new StreamedViewResponse('Battle Status', 'attack_mod.tpl', $parts, ['quickstat' => 'player' ]);
@@ -97,7 +97,7 @@ class AttackController extends AbstractController
     /**
      * @return StreamedViewResponse
      */
-    private function combat(Player $attacker, Player $target, int $required_turns=0, $options=[])
+    private function combat(Player $attacker, Player $target, int $required_turns = 0, $options = [])
     {
         $error             = '';
         $stealthed_attack  = false;
@@ -154,8 +154,8 @@ class AttackController extends AbstractController
                  * health is less than average of defender's strength
                  */
                 if ($options['evade'] && (
-                    $attacker->health < ($target->getStrength()*.5) ||
-                    $attacker->health < ($attacker->health*.1)
+                    $attacker->health < ($target->getStrength() * .5) ||
+                    $attacker->health < ($attacker->health * .1)
                 )
                 ) {
                     break;
@@ -271,11 +271,11 @@ class AttackController extends AbstractController
         $attacker_damage = rand(1, $attacker->getStrength());
 
         if ($blaze) {
-            $attacker_damage = $attacker_damage*2;
+            $attacker_damage = $attacker_damage * 2;
         }
 
         if ($deflect) {
-            $target_damage = floor($target_damage/2);
+            $target_damage = floor($target_damage / 2);
         }
 
         $target->harm($attacker_damage);

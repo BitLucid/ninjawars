@@ -22,14 +22,14 @@ class PasswordControllerTest extends NWTest
 
     public function tearDown(): void
     {
-        query("delete from password_reset_requests where nonce = '777777' or nonce = :nonce", [':nonce'=>$this->nonce]);
+        query("delete from password_reset_requests where nonce = '777777' or nonce = :nonce", [':nonce' => $this->nonce]);
         TestAccountCreateAndDestroy::purge_test_accounts();
         parent::tearDown();
     }
 
     private function checkTestPasswordMatches($pass)
     {
-        $phash = query_item('select phash from accounts where account_id = :id', [':id'=>$this->account_id]);
+        $phash = query_item('select phash from accounts where account_id = :id', [':id' => $this->account_id]);
         return password_verify($pass, $phash);
     }
 

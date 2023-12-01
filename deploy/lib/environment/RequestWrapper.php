@@ -43,7 +43,7 @@ class RequestWrapper
     /**
      * Get url parameter by key
      */
-    public static function get($val, $default=null)
+    public static function get($val, $default = null)
     {
         static::init();
         return static::$request->query->get($val, $default);
@@ -61,7 +61,7 @@ class RequestWrapper
     /**
      * Post parameter by key
      */
-    public static function getPost($val, $default=null)
+    public static function getPost($val, $default = null)
     {
         static::init();
         return static::$request->request->get($val, $default);
@@ -70,7 +70,7 @@ class RequestWrapper
     /**
      * Equivalent to $_REQUEST
      */
-    public static function getPostOrGet($val, $default=null)
+    public static function getPostOrGet($val, $default = null)
     {
         return (static::getPost($val) ? static::getPost($val) : static::get($val, $default));
     }

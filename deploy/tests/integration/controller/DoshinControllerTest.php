@@ -96,7 +96,7 @@ class DoshinControllerTest extends NWTest
         $this->assertEquals(400, $this->char->bounty);
 
         $request = new Request([
-            'bribe'=>300
+            'bribe' => 300
         ]);
         RequestWrapper::inject($request);
 
@@ -115,7 +115,7 @@ class DoshinControllerTest extends NWTest
 
     public function testOfferOfBadNegativeBribe()
     {
-        $request = new Request(['bribe'=>-40]);
+        $request = new Request(['bribe' => -40]);
         RequestWrapper::inject($request);
 
         $bounty_set = 4444;

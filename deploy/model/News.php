@@ -32,7 +32,7 @@ class News
 			left join account_players on _player_id = player_id 
 			left join account_news on account_news._account_id = account_players._account_id 
 			where _news_id = :id limit 1';
-        return !$this->id ? null : query_row($query, [':id'=>[$this->id, \PDO::PARAM_INT]]);
+        return !$this->id ? null : query_row($query, [':id' => [$this->id, \PDO::PARAM_INT]]);
     }
 
     /**
@@ -50,7 +50,7 @@ class News
         // Validate the account
         $author = Account::findById($authorId);
 
-        if (! ($author instanceof Account)) {
+        if (!($author instanceof Account)) {
             throw new \InvalidArgumentException('Account not found');
         }
 
@@ -78,14 +78,14 @@ class News
             // Return id during insert
             $stmt = insert_query(
                 'insert into news (title, content, tags) values (:title, :content, :tags) returning news_id',
-                [':title'=>$this->title, ':content'=>$this->content, ':tags'=>$this->tags]
+                [':title' => $this->title, ':content' => $this->content, ':tags' => $this->tags]
             );
             $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
             $this->id = reset($data)['news_id'] ?? null;
             // Add the author association as well.
             insert_query(
                 'insert into account_news (_account_id, _news_id) values (:aid, :nid)',
-                [':aid'=>$this->authorFull->id(), ':nid'=>$this->id]
+                [':aid' => $this->authorFull->id(), ':nid' => $this->id]
             );
             return $this->id;
         } else {
@@ -151,7 +151,7 @@ class News
             'select '.static::fields().' from news '.static::authorJoined().' 
 				where tags like \'%\' || :tag || \'%\' 
 				order by news_id desc',
-            [':tag'=>$tag]
+            [':tag' => $tag]
         );
 
         if (empty($news)) {
@@ -174,7 +174,7 @@ class News
         $news = query_row(
             'select '.static::fields().' from news '.static::authorJoined().' 
 				where news_id = :id',
-            [':id'=>$id]
+            [':id' => $id]
         );
         return (object) $news;
     }

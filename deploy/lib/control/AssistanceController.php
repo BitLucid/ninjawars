@@ -33,7 +33,7 @@ class AssistanceController extends AbstractController
             from accounts LEFT JOIN account_players ON account_id = _account_id
             LEFT JOIN players on _player_id = player_id
             WHERE trim(lower(active_email)) = trim(lower(:email)) limit 1;',
-            [':email'=>$email]
+            [':email' => $email]
         );
         return $data;
     }
@@ -50,14 +50,14 @@ class AssistanceController extends AbstractController
             'level'        => $data['level'],
         ];
 
-        $_from = [SYSTEM_EMAIL=>SYSTEM_EMAIL_NAME];
+        $_from = [SYSTEM_EMAIL => SYSTEM_EMAIL_NAME];
         /* additional headers */
-        $_to = ["$email"=>$data['uname']];
+        $_to = ["$email" => $data['uname']];
         $_subject = 'NinjaWars Account Info Request';
         $_body = (new NWTemplate())->assign($template_vars)->fetch('email.assistance.account.tpl');
         $mail_obj = new Nmail($_to, $_subject, $_body, $_from);
         // *** Set the custom replyto email. ***
-        $mail_obj->setReplyTo([SUPPORT_EMAIL=>SUPPORT_EMAIL_NAME]);
+        $mail_obj->setReplyTo([SUPPORT_EMAIL => SUPPORT_EMAIL_NAME]);
         return $mail_obj->send();
     }
 
@@ -74,12 +74,12 @@ class AssistanceController extends AbstractController
             'account_id'   => $data['account_id'],
         ];
 
-        $_from = [SYSTEM_EMAIL=>SYSTEM_EMAIL_NAME];
-        $_to = [$email=>$data['uname']];
+        $_from = [SYSTEM_EMAIL => SYSTEM_EMAIL_NAME];
+        $_to = [$email => $data['uname']];
         $_subject = "NinjaWars Account Confirmation Info";
         $_body = (new NWTemplate())->assign($template_vars)->fetch('email.assistance.confirmation.tpl');
         $mail_obj = new Nmail($_to, $_subject, $_body, $_from);
-        $mail_obj->setReplyTo([SUPPORT_EMAIL=>SUPPORT_EMAIL_NAME]);
+        $mail_obj->setReplyTo([SUPPORT_EMAIL => SUPPORT_EMAIL_NAME]);
         return $mail_obj->send();
     }
 
@@ -128,14 +128,14 @@ class AssistanceController extends AbstractController
         }
 
         $parts = [
-            'data'=>$data,
-            'error'=>$error,
-            'password_request'=>$password_request,
-            'confirmation_request'=>$confirmation_request,
-            'username'=>$username,
+            'data' => $data,
+            'error' => $error,
+            'password_request' => $password_request,
+            'confirmation_request' => $confirmation_request,
+            'username' => $username,
             ];
 
-        $options = ['quickstat'=>false, 'body_classes'=>'account-issues'];
+        $options = ['quickstat' => false, 'body_classes' => 'account-issues'];
 
         return new StreamedViewResponse('Account Assistance', 'assistance.tpl', $parts, $options);
     }
@@ -164,7 +164,7 @@ class AssistanceController extends AbstractController
             status, member, days, players.created_date
             FROM accounts JOIN account_players ON _account_id = account_id
             JOIN players ON _player_id = player_id
-            WHERE account_id = :acctId', [':acctId'=>$aid]);
+            WHERE account_id = :acctId', [':acctId' => $aid]);
 
         if ($data && count($data)) {
             $check     = $data['verification_number'];
@@ -184,7 +184,7 @@ class AssistanceController extends AbstractController
             // Confirmation number not null and matches
             // or the admin override was met.
             query('UPDATE accounts SET operational = true, confirmed=1
-                WHERE account_id = :accountID', [':accountID'=>$aid]);
+                WHERE account_id = :accountID', [':accountID' => $aid]);
 
             $statement = DatabaseConnection::$pdo->prepare(
                 'UPDATE players SET active = 1 WHERE player_id in
@@ -203,7 +203,7 @@ class AssistanceController extends AbstractController
             'confirmation_confirmed' => $confirmation_confirmed,
         ];
 
-        $options = ['quickstat'=>false];
+        $options = ['quickstat' => false];
 
         return new StreamedViewResponse('Account Confirmation', 'assistance.confirm.tpl', $parts, $options);
     }

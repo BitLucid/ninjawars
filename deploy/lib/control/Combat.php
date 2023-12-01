@@ -24,9 +24,9 @@ class Combat
     {
         $power_difference = ($target->difficulty() - $attacker->difficulty());
 
-        $multiplier = max(0, min(4, ceil($power_difference/50)));
+        $multiplier = max(0, min(4, ceil($power_difference / 50)));
 
-        return self::KILLPOINTS_MIN+$multiplier;
+        return self::KILLPOINTS_MIN + $multiplier;
     }
 
     /**
@@ -34,7 +34,7 @@ class Combat
      *
      * @return string
      */
-    public static function runBountyExchange(Player $user, $defender, $bounty_mod=0)
+    public static function runBountyExchange(Player $user, $defender, $bounty_mod = 0)
     {
         assert($defender instanceof Character); // 'cause can't typehint interfaces
 
@@ -76,14 +76,14 @@ class Combat
             return 'miss';
         }
         $damage_tiers = [
-            'kill'=>100,
-            'obliterate'=>90,
-            'savage'=>50,
-            'wound'=>15,
-            'nick'=>0,
+            'kill' => 100,
+            'obliterate' => 90,
+            'savage' => 50,
+            'wound' => 15,
+            'nick' => 0,
         ];
-        $percent = floor($damage/$current_health * 100);
-        foreach ($damage_tiers as $class=>$tier) {
+        $percent = floor($damage / $current_health * 100);
+        foreach ($damage_tiers as $class => $tier) {
             if ($percent >= $tier) {
                 return $class;
             }

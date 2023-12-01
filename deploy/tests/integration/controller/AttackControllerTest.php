@@ -49,7 +49,7 @@ class AttackControllerTest extends NWTest
     {
         $char_id_2 = TestAccountCreateAndDestroy::char_id_2();
 
-        $request = Request::create('/attack', 'GET', ['target'=>$char_id_2]);
+        $request = Request::create('/attack', 'GET', ['target' => $char_id_2]);
         RequestWrapper::inject($request);
         $response = $this->controller->index($this->m_dependencies);
 
@@ -62,12 +62,12 @@ class AttackControllerTest extends NWTest
         $char_2 = Player::find($char_id_2);
         $initial_turns = $char_2->turns;
 
-        $request = Request::create('/attack', 'GET', ['target'=>$char_id_2]);
+        $request = Request::create('/attack', 'GET', ['target' => $char_id_2]);
         RequestWrapper::inject($request);
         $response = $this->controller->index($this->m_dependencies);
         $char_2 = Player::find($char_id_2); // Get latest player data again
         $this->assertInstanceOf(StreamedViewResponse::class, $response);
-        $this->assertGreaterThan($initial_turns-5, $char_2->turns);
+        $this->assertGreaterThan($initial_turns - 5, $char_2->turns);
     }
 
     public function testDuelWithTarget()

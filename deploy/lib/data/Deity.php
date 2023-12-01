@@ -133,7 +133,7 @@ class Deity
      *
      * @return int|boolean
      */
-    public static function unconfirmOlderPlayersOverMinimums($keep_players=2300, $unconfirm_days_over=90, $max_to_unconfirm=30)
+    public static function unconfirmOlderPlayersOverMinimums($keep_players = 2300, $unconfirm_days_over = 90, $max_to_unconfirm = 30)
     {
         $minimum_days = 30;
         $max_to_unconfirm = (is_numeric($max_to_unconfirm) ? $max_to_unconfirm : 30);
@@ -218,7 +218,7 @@ class Deity
     {
         //Nightly Unconfirm of aged players
         $unconfirmed = self::unconfirmOlderPlayersOverMinimums(MIN_PLAYERS_FOR_UNCONFIRM, MIN_DAYS_FOR_UNCONFIRM, MAX_PLAYERS_TO_UNCONFIRM);
-        assert($unconfirmed < MAX_PLAYERS_TO_UNCONFIRM+1);
+        assert($unconfirmed < MAX_PLAYERS_TO_UNCONFIRM + 1);
 
         return ($unconfirmed === false ? 'Under the Minimum number of players' : $unconfirmed);
     }
@@ -245,7 +245,7 @@ class Deity
      * @param int|null $basic      Per tick regen, usually about 3hp
      * @param bool     $with_extras whether regen increases stamina and other extras
      */
-    public function regenCharacters($basic, $with_extras=true) // REGEN!
+    public function regenCharacters($basic, $with_extras = true) // REGEN!
     {assert(POISON != 'POISON');
         $max_with_stamina = $with_extras ? ''.self::BASE_HEALTH.' +(players.stamina * '.Player::HEALTH_PER_STAMINA.')' : self::BASE_HEALTH;
         $add_with_stamina = $with_extras ? '+(players.stamina/50 * '.Player::HEALTH_PER_STAMINA.')' : '';
@@ -311,7 +311,7 @@ class Deity
     {
         $stamina_add = self::STAMINA_REVIVE_INCREASE ? '+(players.stamina * '.Player::HEALTH_PER_STAMINA.')' : '';
         // Note: This is limited to only active and dead players already
-        $up_revive_players= 'UPDATE players 
+        $up_revive_players = 'UPDATE players 
             SET status = 0, 
             health =
                 CASE WHEN level < coalesce(class_skill_level, skill_level)
@@ -364,7 +364,7 @@ class Deity
      * @param array('minor_revive_to'=>100, 'major_revive_percent'=>5)
      * @return mixed
      */
-    public function revivePlayers($set=[])
+    public function revivePlayers($set = [])
     {
         $minor_revive_to      = (isset($set['minor_revive_to']) ? $set['minor_revive_to'] : 100);
         $major_revive_percent = (isset($set['major_revive_percent']) ? $set['major_revive_percent'] : 5);
@@ -389,7 +389,7 @@ class Deity
                 $revive_amount = (int) floor($minor_revive_to - $pc_data['alive']);
             }
         } else { // major.
-            $percent_int = (int) floor(($major_revive_percent/100)*$pc_data['active']);
+            $percent_int = (int) floor(($major_revive_percent / 100) * $pc_data['active']);
             // Use the max of either pcs dead, or revives requested
             $revive_amount = min($percent_int, $pc_data['dead']);
         }
