@@ -18,13 +18,13 @@ $(function initializeNMPage() {
     .html("<span class='slider'><span class='dot'></span></span>");
   $('.show-hide-next').parent().next().toggle();
 
-  $('#start-deactivate').click(() => {
+  $('#start-deactivate').on('click', () => {
     $('#start-deactivate').hide();
     $('#deactivate-character').fadeIn('slow');
   });
 
   // So that we can turn off problematic characters
-  $('#deactivate-character').click(function () {
+  $('#deactivate-character, button.deactivate-character').on('click', function () {
     const charId = $(this).data('char-id');
     api.deactivateChar(charId).then(() => {
       // eslint-disable-next-line no-unused-expressions
@@ -33,7 +33,7 @@ $(function initializeNMPage() {
   });
 
   // Turn back on So that we can turn off problematic characters
-  $('#reactivate-character').click(function () {
+  $('#reactivate-character').on('click', function () {
     const charId = $(this).data('char-id');
     api.reactivateChar(charId).then(() => {
       // eslint-disable-next-line no-unused-expressions
