@@ -161,6 +161,31 @@
 	</div>
 </section>
 
+<section id='review-new-signups'>
+	<header>
+		<h3>Review New Signups</h3>
+	</header>
+	<div class='text-center'>
+		<button class='btn btn-default show-hide-next' type='button'>Show/Hide</button>
+	</div>
+	<div id='review-new-signups'>
+		<h5>New Signups</h5>
+		<div>Recent new player accounts created: {$signups.new_count}</div>
+		<div>
+			<ul>
+				{foreach from=$signups.new item='nsChar'}
+					<li>
+						<button type='button' class='btn btn-danger deactivate-character' data-char-id="{$nsChar.player_id}">
+							Deactivate {$nsChar.uname|escape}
+						</button>
+						<a href='?view={$nsChar.player_id|escape}'>{$nsChar.uname|escape}</a> <time class='timeago' datetime='{$nsChar.created_date|escape}'>{$nsChar.created_date|escape}</time> 
+					</li>
+				{/foreach}
+			</ul>
+		</div>
+	</div>
+</section>
+
 <section id='char-list'>
 	<header>
 		<h3>Char List of High Rollers</h3>
