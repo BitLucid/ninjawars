@@ -327,7 +327,6 @@ class SignupControllerTest extends NWTest
 
         $controller = new SignupController();
         $response = $controller->signup($this->m_dependencies);
-        debug($response);
 
 
         $account = Account::findByEmail($email);
