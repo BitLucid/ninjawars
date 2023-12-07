@@ -8,7 +8,7 @@ use Aws\Exception\AwsException;
 /**
  * Send a raw event to the eventbridge
  */
-function putEvent(object $eventBridgeClient, array $event): bool|object
+function putEvent(object $eventBridgeClient, array $event): bool|array
 {
     try {
         $result = $eventBridgeClient->putEvents([
@@ -99,7 +99,7 @@ function generateEmailEvent(array $config): array
 /**
  * @return bool Whether the event was sent successfully
  */
-function sendCommandNWEmailRequest(object $eventBridgeClient, array|string $email, array $emailParams): bool|object
+function sendCommandNWEmailRequest(object $eventBridgeClient, array|string $email, array $emailParams): bool|object|array
 {
     $final_config = (['to' => $email] + $emailParams);
     try {

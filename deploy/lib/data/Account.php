@@ -67,7 +67,7 @@ class Account extends stdClass
      * @param int $account_id
      * @return Account|null
      */
-    public static function findById($account_id): ?Account
+    public static function findById(?int $account_id): ?Account
     {
         $data = self::accountInfo($account_id);
 
@@ -214,7 +214,7 @@ class Account extends stdClass
     {
         DatabaseConnection::getInstance();
 
-        $newID = query_item("SELECT nextval('accounts_account_id_seq')");
+        $new_account_sequence_id = query_item("SELECT nextval('accounts_account_id_seq')");
 
         $ins = "INSERT INTO accounts (account_id, account_identity, active_email, phash, type, operational, verification_number, last_ip)
             VALUES (:acc_id, :email, :email2, crypt(:password, gen_salt('bf', 10)), :type, :operational, :verification_number, :ip)";
@@ -222,7 +222,7 @@ class Account extends stdClass
         $email = strtolower($email);
 
         $statement = DatabaseConnection::$pdo->prepare($ins);
-        $statement->bindParam(':acc_id', $newID);
+        $statement->bindParam(':acc_id', $new_account_sequence_id);
         $statement->bindParam(':email', $email);
         $statement->bindParam(':email2', $email);
         $statement->bindParam(':password', $password_to_hash);
@@ -236,7 +236,7 @@ class Account extends stdClass
         $link_ninja = 'INSERT INTO account_players (_account_id, _player_id, last_login) VALUES (:acc_id, :ninja_id, default)';
 
         $statement = DatabaseConnection::$pdo->prepare($link_ninja);
-        $statement->bindParam(':acc_id', $newID, PDO::PARAM_INT);
+        $statement->bindParam(':acc_id', $new_account_sequence_id, PDO::PARAM_INT);
         $statement->bindParam(':ninja_id', $ninja_id, PDO::PARAM_INT);
         $statement->execute();
 
@@ -245,9 +245,9 @@ class Account extends stdClass
             JOIN accounts ON _account_id = account_id
             WHERE account_id = :acc_id ORDER BY level DESC LIMIT 1';
 
-        $verify_ninja_id = query_item($sel_ninja_id, [':acc_id' => [$newID, PDO::PARAM_INT]]);
+        $verify_ninja_id = query_item($sel_ninja_id, [':acc_id' => [$new_account_sequence_id, PDO::PARAM_INT]]);
 
-        return ($verify_ninja_id != $ninja_id ? false : $newID);
+        return ($verify_ninja_id != $ninja_id ? false : $new_account_sequence_id);
     }
 
     /**
@@ -503,6 +503,18 @@ class Account extends stdClass
             WHERE account_id = :account_id', $params);
 
         return $updated;
+    }
+
+    /**
+     * Delete the current account
+     */
+    public function delete(): int
+    {
+        $query = 'DELETE FROM accounts WHERE account_id = :account_id';
+        $id = $this->getId();
+
+        update_query($query, [':account_id' => $id]);
+        return $id;
     }
 
     /**

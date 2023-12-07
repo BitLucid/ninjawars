@@ -92,6 +92,7 @@ class Player implements Character
         $this->beliefs             = '';
         $this->goals               = '';
         $this->last_started_attack = null;
+        $this->created_date        = (new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s.uP'); // php datetime with timezone info
     }
 
     /**
