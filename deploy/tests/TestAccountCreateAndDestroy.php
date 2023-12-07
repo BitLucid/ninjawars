@@ -142,9 +142,9 @@ class TestAccountCreateAndDestroy
         ); // Delete the account_players linkage.
 
         $query = query(
-            'delete from accounts where active_email = :active_email or account_identity= :ae2 
-                or active_email = :alt_active_email 
-                or account_identity = :alt_active_email2 
+            'delete from accounts where active_email = :active_email or account_identity= :ae2
+                or active_email = :alt_active_email
+                or account_identity = :alt_active_email2
                 or account_identity = :alt_active_email3
                 or account_identity = \'' . self::$test_email . '\'
                 or account_identity = \'' . self::$alt_test_email . '\'
@@ -230,7 +230,7 @@ class TestAccountCreateAndDestroy
         $ninja->active              = 1;
         $ninja->_class_id           = $class_id;
         $ninja->email = $email;
-        $ninja->created_date = $created_date; // Have to refresh this due to vo magic methods 
+        $ninja->created_date = $created_date; // Have to refresh this due to vo magic methods
         $up_ninja = $ninja->save();
 
 

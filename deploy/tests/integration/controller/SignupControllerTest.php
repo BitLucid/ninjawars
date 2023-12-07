@@ -344,7 +344,7 @@ class SignupControllerTest extends NWTest
         }
 
         TestAccountCreateAndDestroy::destroy($uname, $email);
-        
+
 
         $reflection = new \ReflectionProperty(get_class($response), 'data');
         $reflection->setAccessible(true);
