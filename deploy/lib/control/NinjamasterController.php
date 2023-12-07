@@ -60,7 +60,7 @@ class NinjamasterController extends AbstractController
         $dupes            = AdminViews::dupedIps();
         $stats            = AdminViews::highRollers();
         $usage           = AdminViews::recentUsage();
-        $signups           = AdminViews::recentUsage(1000);
+        $signups           = AdminViews::recentUsage(500);
         $npcs             = NpcFactory::allNonTrivialNpcs();
         $trivial_npcs      = NpcFactory::allTrivialNpcs();
 

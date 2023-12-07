@@ -24,11 +24,21 @@ $(function initializeNMPage() {
   });
 
   // So that we can turn off problematic characters
-  $('#deactivate-character, button.deactivate-character').on('click', function () {
+  $('#deactivate-character').on('click', function () {
     const charId = $(this).data('char-id');
     api.deactivateChar(charId).then(() => {
       // eslint-disable-next-line no-unused-expressions
       window && window.location.reload();
+    });
+  });
+
+  // Batch deactivations
+  $('button.deactivate-character').on('click', function () {
+    const refer = $(this);
+    const charId = $(this).data('char-id');
+    api.deactivateChar(charId).then(() => {
+      // eslint-disable-next-line no-unused-expressions
+      refer.parent().hide();
     });
   });
 

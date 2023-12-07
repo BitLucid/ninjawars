@@ -174,10 +174,11 @@
 		<div>
 			<ul>
 				{foreach from=$signups.new item='nsChar'}
-					<li><a href='?view={$nsChar.player_id|escape}'>{$nsChar.uname|escape}</a> <time class='timeago' datetime='{$nsChar.created_date|escape}'>{$nsChar.created_date|escape}</time> 
+					<li>
 						<button type='button' class='btn btn-danger deactivate-character' data-char-id="{$nsChar.player_id}">
 							Deactivate {$nsChar.uname|escape}
 						</button>
+						<a href='?view={$nsChar.player_id|escape}'>{$nsChar.uname|escape}</a> <time class='timeago' datetime='{$nsChar.created_date|escape}'>{$nsChar.created_date|escape}</time> 
 					</li>
 				{/foreach}
 			</ul>
