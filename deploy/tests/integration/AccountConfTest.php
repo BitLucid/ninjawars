@@ -182,7 +182,7 @@ class AccountConfTest extends NWTest
         $this->assertNotEmpty($account, 'No account was created');
         $this->assertNotEquals(true, $account->operational, 'Account was confirmed despite not using an autoconfirm email');
         $this->assertNotEquals('', $res, 'No error string returned from login returned, indicating the login was able to continue');
-        $this->assertNotEmpty($res, 'No error string returned from login returned, indicating the login was able to continue');        
+        $this->assertNotEmpty($res, 'No error string returned from login returned, indicating the login was able to continue');
     }
 
 
