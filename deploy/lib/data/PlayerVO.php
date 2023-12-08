@@ -36,7 +36,7 @@ class PlayerVO extends ValueObject
     public $energy;
     public $avatar_type;
     public $verification_number;
-    public $description;
+    public string $description;
     public $beliefs;
     public $goals;
     public $instincts;
