@@ -12,7 +12,7 @@ use NinjaWars\core\data\ValueObject;
  */
 class PlayerVO extends ValueObject
 {
-    public $player_id;
+    public int $player_id;
     public $uname;
     public $health;
     public $strength;
@@ -24,7 +24,8 @@ class PlayerVO extends ValueObject
     public $messages;
     public $kills;
     public $turns;
-    public $active;
+    public int $active;
+    public string $email;
     public $_class_id;
     public $level;
     public $status;

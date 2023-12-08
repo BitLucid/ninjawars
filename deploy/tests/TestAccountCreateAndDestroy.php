@@ -174,7 +174,7 @@ class TestAccountCreateAndDestroy
     /**
      * Create a testing account
      */
-    public static function create_testing_account(?bool $confirm = false, ?array $overrides = null)
+    public static function create_testing_account(?bool $confirm = false, ?array $overrides = [])
     {
         self::purge_test_accounts();
         return self::createAccount($overrides['name'] ?? self::$test_ninja_name, $overrides['email'] ?? self::$test_email, 'tiger');

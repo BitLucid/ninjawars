@@ -32,6 +32,8 @@ use PDO;
  * @property int gold
  * @property int level
  * @property int turns
+ * @property int active
+ * @property string email
  * @property int bounty
  * @property int days
  * @property int member
@@ -39,7 +41,6 @@ use PDO;
  * @property int avatar_type
  * @property int ki
  * @property int karma
- * @property int active
  * @property string identity Identity of the character class
  * @property string class_name
  * @property string goals
@@ -66,7 +67,8 @@ class Player implements Character
     {
         $level = 1;
 
-        $this->vo                  = new PlayerVO();
+        $this->vo                  = new PlayerVO(); // Value Object
+        // Via magic methods, all of the below should by default get/set on the value object
         $this->avatar_url          = null;
         $this->uname               = null;
         $this->health              = self::maxHealthByLevel($level);
@@ -77,6 +79,8 @@ class Player implements Character
         $this->gold                = 100;
         $this->turns               = 180;
         $this->kills               = 0;
+        $this->active              = 0;
+        $this->email               = null;
         $this->status              = 0;
         $this->member              = 0;
         $this->days                = 0;

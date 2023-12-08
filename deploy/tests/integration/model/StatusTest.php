@@ -22,9 +22,9 @@ class TestStatus extends NWTest
     public function tearDown(): void
     {
         // Delete testing news.
-        //query('delete from statuses where _player_id = :id', [':id'=>$this->char_id]);
-        //TestAccountCreateAndDestroy::destroy();
-        //unset($this->char_id);
+        query('delete from statuses where _player_id = :id', [':id' => $this->char_id]);
+        TestAccountCreateAndDestroy::destroy();
+        unset($this->char_id);
         parent::tearDown();
     }
 
