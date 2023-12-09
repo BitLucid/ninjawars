@@ -98,7 +98,7 @@ class LoginController extends AbstractController
         $login_attempt_info = [
             'username'        => $username_requested,
             'user_agent'      => $user_agent,
-            'ip'              => $request->getClientIp(),
+            'ip'              => ($request ? $request->getClientIp() : null),
             'successful'      => 0,
             'additional_info' => $_SERVER
         ];

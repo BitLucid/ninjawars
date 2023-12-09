@@ -50,13 +50,14 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * Test that after login, the ninja is toggled to active.
  */
-class TestAccountConfirmation extends NWTest
+class AccountConfTest extends NWTest
 {
     // These will be initialized in the test setup.
     public $test_email = null;
     public $test_password = null;
     public $test_ninja_name = null;
     public $test_ninja_id = null;
+    public $temp_test_email = 'noautoconfirm@hotmail.com';
 
 
     public function setUp(): void
@@ -66,7 +67,7 @@ class TestAccountConfirmation extends NWTest
         $this->test_email = TestAccountCreateAndDestroy::$test_email; // Something@example.com probably
         $this->test_password = TestAccountCreateAndDestroy::$test_password;
         $this->test_ninja_name = TestAccountCreateAndDestroy::$test_ninja_name;
-        TestAccountCreateAndDestroy::purge_test_accounts($this->test_ninja_name);
+        TestAccountCreateAndDestroy::purge_test_accounts($this->test_ninja_name, $this->temp_test_email);
         $this->test_ninja_id = TestAccountCreateAndDestroy::create_testing_account();
         SessionFactory::init(new MockArraySessionStorage());
     }
@@ -75,7 +76,7 @@ class TestAccountConfirmation extends NWTest
     public function tearDown(): void
     {
         // Delete test user.
-        TestAccountCreateAndDestroy::purge_test_accounts($this->test_ninja_name);
+        TestAccountCreateAndDestroy::purge_test_accounts($this->test_ninja_name, $this->temp_test_email);
         $session = SessionFactory::getSession();
         $session->invalidate();
         parent::tearDown();
@@ -171,13 +172,17 @@ class TestAccountConfirmation extends NWTest
 
     public function testAttemptLoginOfUnconfirmedAccountShouldFail()
     {
-        $email = 'noautoconfirm@hotmail.com'; // Create a non-autoconfirmed user
-        TestAccountCreateAndDestroy::create_testing_account(false, $email);
+        $email = $this->temp_test_email; // Create a non-autoconfirmed user
+        TestAccountCreateAndDestroy::create_testing_account(false, ['email' => $email]);
 
         RequestWrapper::inject(new Request([]));
+        $account = Account::findByEmail($email);
         $controller = new LoginController();
         $res = $controller->performLogin($email, $this->test_password);
-        $this->assertNotEmpty($res, 'No error returned');
+        $this->assertNotEmpty($account, 'No account was created');
+        $this->assertNotEquals(true, $account->operational, 'Account was confirmed despite not using an autoconfirm email');
+        $this->assertNotEquals('', $res, 'No error string returned from login returned, indicating the login was able to continue');
+        $this->assertNotEmpty($res, 'No error string returned from login returned, indicating the login was able to continue');
     }
 
 

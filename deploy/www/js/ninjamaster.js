@@ -28,7 +28,7 @@ $(function initializeNMPage() {
     const charId = $(this).data('char-id');
     api.deactivateChar(charId).then(() => {
       // eslint-disable-next-line no-unused-expressions
-      window && window.location.reload();
+      window?.location?.reload();
     });
   });
 
@@ -47,7 +47,7 @@ $(function initializeNMPage() {
     const charId = $(this).data('char-id');
     api.reactivateChar(charId).then(() => {
       // eslint-disable-next-line no-unused-expressions
-      window && window.location.reload();
+      window?.location?.reload();
     });
   });
 });

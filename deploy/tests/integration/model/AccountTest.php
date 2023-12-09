@@ -15,9 +15,7 @@ class AccountTest extends NWTest
         TestAccountCreateAndDestroy::destroy();
         $this->extra_char_name = 'some_extra_test_char';
         $this->extra_char_email = 'temp_account_test_phpunit@example.com';
-        TestAccountCreateAndDestroy::destroy($this->extra_char_name, [
-            'email' => $this->extra_char_email,
-        ]);
+        TestAccountCreateAndDestroy::destroy($this->extra_char_name, $this->extra_char_email);
         $this->char = TestAccountCreateAndDestroy::char();
         $this->char2 = TestAccountCreateAndDestroy::char_2();
         $_SERVER['REMOTE_ADDR'] = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '127.0.0.1';

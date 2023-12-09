@@ -11,6 +11,10 @@ describe('fight', () => {
     cy.standardLogin()
   })
   afterEach(() => {
+    cy.attemptResurrect()
+  })
+  after(() => {
+    cy.attemptResurrect()
   })
 
   it('displays someone to fight', () => {

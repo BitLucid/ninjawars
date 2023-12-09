@@ -7,6 +7,7 @@ use NinjaWars\core\data\Player;
 
 class TestStatus extends NWTest
 {
+    private int $char_id = null;
     public function setUp(): void
     {
         parent::setUp();
@@ -22,9 +23,9 @@ class TestStatus extends NWTest
     public function tearDown(): void
     {
         // Delete testing news.
-        //query('delete from statuses where _player_id = :id', [':id'=>$this->char_id]);
-        //TestAccountCreateAndDestroy::destroy();
-        //unset($this->char_id);
+        query('delete from statuses where _player_id = :id', [':id' => $this->char_id]);
+        TestAccountCreateAndDestroy::destroy();
+        unset($this->char_id);
         parent::tearDown();
     }
 
@@ -41,7 +42,7 @@ class TestStatus extends NWTest
 
     public function testCanAddStatusViaStaticMethod()
     {
-        $id = Status::refreshStatusEffect('weakenedt', Player::find($this->char_id), 434, true); // Allow refresh
+        $id = Status::refreshStatusEffect('weakened', Player::find($this->char_id), 434, true); // Allow refresh
         $this->assertGreaterThan(0, $id);
     }
     public function testCanAddStatusViaStaticMethodAndStaticCheckhasTextStatusAfter()
