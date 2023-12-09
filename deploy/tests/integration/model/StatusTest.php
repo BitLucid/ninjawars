@@ -42,7 +42,7 @@ class TestStatus extends NWTest
 
     public function testCanAddStatusViaStaticMethod()
     {
-        $id = Status::refreshStatusEffect('weakenedt', Player::find($this->char_id), 434, true); // Allow refresh
+        $id = Status::refreshStatusEffect('weakened', Player::find($this->char_id), 434, true); // Allow refresh
         $this->assertGreaterThan(0, $id);
     }
     public function testCanAddStatusViaStaticMethodAndStaticCheckhasTextStatusAfter()
