@@ -7,6 +7,7 @@ use NinjaWars\core\data\Player;
 
 class TestStatus extends NWTest
 {
+    private int $char_id = null;
     public function setUp(): void
     {
         parent::setUp();

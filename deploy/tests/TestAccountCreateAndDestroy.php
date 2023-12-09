@@ -224,13 +224,12 @@ class TestAccountCreateAndDestroy
 
         $ninja = new Player();
         // Sets vo fields via magic methods, unfortunately
-        $created_date = $ninja->created_date;
         $ninja->uname               = $ninja_name;
         $ninja->verification_number = $confirm;
         $ninja->active              = 1;
         $ninja->_class_id           = $class_id;
         $ninja->email = $email;
-        $ninja->created_date = $created_date; // Have to refresh this due to vo magic methods
+        // $ninja->created_date = $created_date; // May have to refresh this due to vo magic methods
         $up_ninja = $ninja->save();
 
 
@@ -257,8 +256,8 @@ class TestAccountCreateAndDestroy
             $up_ninja->save();
 
             $account = Account::findByChar($ninja);
-            $account->confirmed = 1; // hack to set confirmed though it is readonly
             $account->setOperational(true);
+            $account->setConfirmed(true);
             $account->save();
         }
 

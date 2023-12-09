@@ -448,9 +448,17 @@ class Account extends stdClass
     /**
      * @return void
      */
-    public function setOperational($p_operational): void
+    public function setOperational(bool $p_operational): void
     {
         $this->operational = (bool) $p_operational;
+    }
+
+    /**
+     * @return void
+     */
+    public function setConfirmed(bool $p_confirmed): void
+    {
+        $this->p_confirmed = (bool) $p_confirmed;
     }
 
     /**
