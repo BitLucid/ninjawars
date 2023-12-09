@@ -4,11 +4,12 @@ namespace NinjaWars\core\events;
 
 use Aws\EventBridge\EventBridgeClient;
 use Aws\Exception\AwsException;
+use Aws\Result;
 
 /**
  * Send a raw event to the eventbridge
  */
-function putEvent(object $eventBridgeClient, array $event): bool|array
+function putEvent(object $eventBridgeClient, array $event): bool|array|Result
 {
     try {
         $result = $eventBridgeClient->putEvents([
