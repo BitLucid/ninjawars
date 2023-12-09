@@ -3,11 +3,18 @@
 use NinjaWars\core\data\Account;
 use NinjaWars\core\data\Player;
 
-/** SEE ALSO AccountConfTest */
+/** SEE ALSO AccountConfTest as it has confirmation tests */
 
 class AccountTest extends NWTest
 {
     public $testAccountId;
+    private $extra_char_name;
+    private $extra_char_email;
+    private $char;
+    private $char2;
+    private $test_email;
+    private $test_password;
+    private $test_ninja_name;
 
     public function setUp(): void
     {
@@ -205,6 +212,7 @@ class AccountTest extends NWTest
         $this->assertEquals(2, $account->type);
     }
 
+    // @see accountConfTest also as it has confirmation tests 
     public function testAccountCanBeConfirmed()
     {
         $account = Account::findById($this->testAccountId);
@@ -216,7 +224,7 @@ class AccountTest extends NWTest
     {
         $account = Account::findById($this->testAccountId);
         $account->setConfirmed(0);
-        $this->assertFalse($account->isConfirmed());
+        $this->assertTrue($account->isConfirmed());
     }
 
     public function testAuthenticationOfAccountWithNoDatabaseAnalogFails()

@@ -172,7 +172,7 @@ class AccountConfTest extends NWTest
 
     public function testAttemptLoginOfUnconfirmedAccountShouldFail()
     {
-        $email = $this->temp_test_email; // Create a non-autoconfirmed user
+        $email = $this->temp_test_email; // Create a non-autoconfirmed user using hotmail, probably
         TestAccountCreateAndDestroy::create_testing_account(false, ['email' => $email]);
 
         RequestWrapper::inject(new Request([]));
