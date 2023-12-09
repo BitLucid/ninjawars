@@ -394,5 +394,4 @@ class SignupControllerTest extends NWTest
         //debug($account);
         $this->assertTrue($account->isConfirmed(), 'Account should have become preconfirmed with gmail, but it was not!');
     }
-
 }

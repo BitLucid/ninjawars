@@ -326,7 +326,6 @@ class SignupController extends AbstractController
         foreach ($whitelisted_by as $loop_domain) {
             if (strpos(strtolower($email), $loop_domain) !== false) {
                 return 1;
-
             }
         }
 
