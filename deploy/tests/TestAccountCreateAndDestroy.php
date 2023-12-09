@@ -209,7 +209,7 @@ class TestAccountCreateAndDestroy
             throw new Exception("Test user found [$found] with name [$ninja_name] already exists");
         }
         if ($found_account) {
-            throw new Exception("Test account found [$found_account] with email [$email] already exists");
+            throw new Exception("Test account found for email [" . $email . "] already exists and should not");
         }
 
         $ip = (isset($_SERVER['REMOTE_ADDR']) && $_SERVER['REMOTE_ADDR'] ? $_SERVER['REMOTE_ADDR'] : '127.0.0.1');
