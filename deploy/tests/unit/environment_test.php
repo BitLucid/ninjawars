@@ -52,5 +52,4 @@ class TestInput extends NWTest
         $default = RequestWrapper::getPost('blah_doesnt_exist', 7777);
         $this->assertEquals(7777, $default);
     }
-
 }
