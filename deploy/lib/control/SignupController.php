@@ -97,7 +97,7 @@ class SignupController extends AbstractController
             'send_pass'   => $p_request->enteredPass,
             'send_class'  => $p_request->enteredClass,
             'preconfirm'  => $preconfirm,
-            'confirm'     => $confirm,
+            'verification_number'     => $confirm,
             'referred_by' => $p_request->enteredReferral,
             'ip'          => $p_request->clientIP,
         ];
@@ -119,7 +119,7 @@ class SignupController extends AbstractController
             $completedPhase = 4;
 
             $account = Account::findById($account_id);
-            $account->confirmed = 1;
+            $account->setConfirmed(true);
             $account->setOperational(true);
             $account->save();
 
@@ -313,7 +313,6 @@ class SignupController extends AbstractController
     public static function preconfirm_some_emails($email)
     {
         // Made the default be to auto-confirm players.
-        $res = 1;
         $blacklisted_by = self::getBlacklistedEmails();
         $whitelisted_by = self::getWhitelistedEmails();
 
@@ -330,7 +329,7 @@ class SignupController extends AbstractController
             }
         }
 
-        return $res;
+        return 1;
     }
 
     /**
@@ -471,7 +470,8 @@ class SignupController extends AbstractController
      */
     private function createAccountAndNinja($params = [])
     {
-        $confirm = (int) $params['confirm'];
+        $verification_number = (int) $params['verification_number'];
+        $confirmed = (int) $params['preconfirm'];
         $ip      = (isset($params['ip']) ? $params['ip'] : null);
 
         $class_id = query_item(
@@ -481,12 +481,22 @@ class SignupController extends AbstractController
 
         $ninja = new Player();
         $ninja->uname               = $params['send_name'];
-        $ninja->verification_number = $confirm;
+        $ninja->verification_number = $verification_number;
         $ninja->active              = (int) $params['preconfirm'];
         $ninja->_class_id           = $class_id;
+        $ninja->email               = $params['send_email'];
         $ninja->save();
 
-        return Account::create($ninja->id(), $params['send_email'], $params['send_pass'], $confirm, 0, 1, $ip);
+        return Account::create(
+            $ninja->id(), // Ninja id, so it's okay
+            $params['send_email'],
+            $params['send_pass'],
+            $verification_number,
+            $confirmed,
+            0,
+            1,
+            $ip
+        );
     }
 
     /**

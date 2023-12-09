@@ -210,14 +210,14 @@ class Account extends stdClass
      * Create a new account
      * @return int|false
      */
-    public static function create($ninja_id, $email, $password_to_hash, $confirm, $type = 0, $active = 1, $ip = null): int | false
+    public static function create(int $ninja_id, string $email, string $password_to_hash, int $verification_number, int $confirmed, int $type = 0, int $active = 1, $ip = null): int | false
     {
         DatabaseConnection::getInstance();
 
         $new_account_sequence_id = query_item("SELECT nextval('accounts_account_id_seq')");
 
-        $ins = "INSERT INTO accounts (account_id, account_identity, active_email, phash, type, operational, verification_number, last_ip)
-            VALUES (:acc_id, :email, :email2, crypt(:password, gen_salt('bf', 10)), :type, :operational, :verification_number, :ip)";
+        $ins = "INSERT INTO accounts (account_id, account_identity, active_email, phash, type, operational, verification_number, confirmed, last_ip)
+            VALUES (:acc_id, :email, :email2, crypt(:password, gen_salt('bf', 10)), :type, :operational, :verification_number, :confirmed, :ip)";
 
         $email = strtolower($email);
 
@@ -228,7 +228,8 @@ class Account extends stdClass
         $statement->bindParam(':password', $password_to_hash);
         $statement->bindParam(':type', $type, PDO::PARAM_INT);
         $statement->bindParam(':operational', $active, PDO::PARAM_INT);
-        $statement->bindParam(':verification_number', $confirm);
+        $statement->bindParam(':verification_number', $verification_number, PDO::PARAM_INT);
+        $statement->bindParam(':confirmed', $confirmed, PDO::PARAM_INT);
         $statement->bindParam(':ip', $ip);
         $statement->execute();
 
@@ -458,7 +459,7 @@ class Account extends stdClass
      */
     public function setConfirmed(bool $p_confirmed): void
     {
-        $this->p_confirmed = (bool) $p_confirmed;
+        $this->confirmed = (bool) $p_confirmed;
     }
 
     /**
@@ -466,7 +467,7 @@ class Account extends stdClass
      */
     public function isConfirmed(): bool
     {
-        return ($this->confirmed === 1);
+        return (bool) $this->confirmed;
     }
 
     /**
@@ -502,7 +503,7 @@ class Account extends stdClass
             ':account_id'     => $this->getId(),
             ':karma_total'    => $this->getKarmaTotal(),
             ':operational'    => [$this->isOperational(), \PDO::PARAM_BOOL],
-            ':confirmed'      => [(int) $this->isConfirmed(), \PDO::PARAM_INT],
+            ':confirmed'      => [$this->isConfirmed() ? 1 : 0, \PDO::PARAM_INT],
         ];
 
         $updated = update_query('UPDATE accounts SET

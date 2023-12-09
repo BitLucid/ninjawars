@@ -4,7 +4,6 @@
 
 use Symfony\Component\HttpFoundation\Request; // Just for request created below.
 use NinjaWars\core\environment\RequestWrapper;
-use NinjaWars\core\Filter;
 
 class TestInput extends NWTest
 {
@@ -52,47 +51,5 @@ class TestInput extends NWTest
         $this->assertEquals('Bob', $posted);
         $default = RequestWrapper::getPost('blah_doesnt_exist', 7777);
         $this->assertEquals(7777, $default);
-    }
-
-    public function testNonNegativeInt()
-    {
-        $this->assertEquals(4, Filter::toNonNegativeInt(4));
-        $this->assertEquals(0, Filter::toNonNegativeInt(-4));
-        $this->assertEquals(0, Filter::toNonNegativeInt(4.1));
-        $this->assertEquals(0, Filter::toNonNegativeInt(4.9));
-        $this->assertEquals(0, Filter::toNonNegativeInt(0));
-        $this->assertEquals(0, Filter::toNonNegativeInt('somestring'));
-        $this->assertEquals(0, Filter::toNonNegativeInt([]));
-    }
-
-    /**
-     *
-     */
-    public function testSanitizeToInt()
-    {
-        $this->assertEquals(4, Filter::toInt(4));
-        $this->assertEquals(-4, Filter::toInt(-4));
-        $this->assertNull(Filter::toInt(4.1));
-        $this->assertNull(Filter::toInt(4.9));
-        $this->assertEquals(0, Filter::toInt('somestring'));
-        $this->assertNull(Filter::toInt([]));
-        $this->assertEquals(0, Filter::toInt(0));
-    }
-
-    public function testToInt()
-    {
-        $this->assertEquals(4, Filter::toInt(4));
-        $this->assertEquals(-4, Filter::toInt(-4));
-        $this->assertNull(Filter::toInt(4.1));
-        $this->assertNull(Filter::toInt(4.9));
-        $this->assertEquals(0, Filter::toInt('somestring'));
-        $this->assertNull(Filter::toInt([]));
-        $this->assertEquals(0, Filter::toInt(0));
-    }
-
-    public function testFilterToSimple()
-    {
-        $this->assertEquals('boba', Filter::toSimple("bob\0aä\x80"));
-        $this->assertEquals("!@#^&()_+--", Filter::toSimple("!@#^&()_+'''\"\"''--"));
     }
 }

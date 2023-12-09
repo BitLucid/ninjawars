@@ -174,10 +174,10 @@ class TestAccountCreateAndDestroy
     /**
      * Create a testing account
      */
-    public static function create_testing_account(?bool $confirm = false, ?array $overrides = [])
+    public static function create_testing_account(?bool $preconfirm = true, ?array $overrides = [])
     {
         self::purge_test_accounts();
-        return self::createAccount($overrides['name'] ?? self::$test_ninja_name, $overrides['email'] ?? self::$test_email, 'tiger');
+        return self::createAccount($overrides['name'] ?? self::$test_ninja_name, $overrides['email'] ?? self::$test_email, 'tiger', $preconfirm);
     }
 
     public static function deleteAccountByEmail($email)
@@ -192,15 +192,15 @@ class TestAccountCreateAndDestroy
     /**
      * Create a separate, second testing account
      */
-    public static function create_alternate_testing_account(bool $confirm = false)
+    public static function create_alternate_testing_account(bool $preconfirm = true)
     {
-        return self::createAccount(self::$alt_test_ninja_name, self::$alt_test_email, 'dragon');
+        return self::createAccount(self::$alt_test_ninja_name, self::$alt_test_email, 'dragon', $preconfirm);
     }
 
     /**
      * Create an account, requires specifying a class and other non optional arguments
      */
-    public static function createAccount(string $ninja_name, string $email, string $class_identity)
+    public static function createAccount(string $ninja_name, string $email, string $class_identity, bool $preconfirm = true)
     {
         $found = Player::findByName($ninja_name);
         $found_account = Account::findByEmail($email);
@@ -215,7 +215,7 @@ class TestAccountCreateAndDestroy
         $ip = (isset($_SERVER['REMOTE_ADDR']) && $_SERVER['REMOTE_ADDR'] ? $_SERVER['REMOTE_ADDR'] : '127.0.0.1');
 
         // Create test user, unconfirmed, whatever the default is for activity.
-        $confirm = rand(1000, 9999); //generate confirmation code
+        $verification_number = rand(1000, 9999); //generate confirmation code
 
         $class_id = query_item(
             'SELECT class_id FROM class WHERE identity = :class_identity',
@@ -225,7 +225,7 @@ class TestAccountCreateAndDestroy
         $ninja = new Player();
         // Sets vo fields via magic methods, unfortunately
         $ninja->uname               = $ninja_name;
-        $ninja->verification_number = $confirm;
+        $ninja->verification_number = $verification_number;
         $ninja->active              = 1;
         $ninja->_class_id           = $class_id;
         $ninja->email = $email;
@@ -237,10 +237,7 @@ class TestAccountCreateAndDestroy
             throw new Exception("Test user [$ninja_name] failed to save");
         }
 
-        // debug($up_ninja, $email, self::$test_password, $confirm, 0, 1, $ip);
-        // throw new Exception('Reached');
-
-        $account_id = Account::create($up_ninja->id(), $email, self::$test_password, $confirm, 0, 1, $ip);
+        $account_id = Account::create($up_ninja->id(), $email, self::$test_password, $verification_number, ($preconfirm ? 1 : 0), 0, 1, $ip);
         if (!$account_id) {
             throw new Exception("Test account [$account_id] with email [$email] and name [$ninja_name] failed to save");
         }
@@ -251,7 +248,7 @@ class TestAccountCreateAndDestroy
         }
 
 
-        if ($confirm) {
+        if ($preconfirm) {
             $up_ninja->active = 1;
             $up_ninja->save();
 

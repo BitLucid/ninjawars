@@ -177,7 +177,7 @@ class LoginController extends AbstractController
                     // *** Set return values ***
                     $success = true;
                     $login_error = null;
-                } else {	// *** Account was not activated yet ***
+                } else {    // *** Account was not activated yet ***
                     $success = false;
                     $login_error = "You must confirm your account before logging in, check your email. <a href='/assistance'>You can request another confirmation email here.</a>";
                 }

@@ -56,11 +56,11 @@ Cypress.Commands.add('logout', () => {
 })
 
 Cypress.Commands.add('attemptResurrect', () => {
-  cy.visit('/shrine')
+  cy.visit('/shrine/heal_and_resurrect')
   // wait for the url to not be logout
   cy.log('Attempting a resurrect if necessary')
 
-  cy.url().should('include', 'alive', { timeout: 10000 })
+  cy.url().should('include', 'heal_and_resurrect', { timeout: 10000 })
   cy.log('Cypress attemptResurrect() command ran')
 })
 

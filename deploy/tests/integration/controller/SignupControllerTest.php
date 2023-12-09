@@ -345,6 +345,7 @@ class SignupControllerTest extends NWTest
         TestAccountCreateAndDestroy::destroy($uname, $email);
 
 
+        // Get the data from the response
         $reflection = new \ReflectionProperty(get_class($response), 'data');
         $reflection->setAccessible(true);
         $response_data = $reflection->getValue($response);
@@ -355,5 +356,42 @@ class SignupControllerTest extends NWTest
         $this->assertTrue($response_data['submit_successful'], 'Signup() returned error: '.$response_data['error']);
         $this->assertEquals($relationship_count, 1);
         $this->assertTrue($account_unconfirmed);
+    }
+
+    public function testSuccessfulSignupWithWhitelistedEmailResultsInConfirmation()
+    {
+        $uname = 'KnownGood';
+        $email = 'example@gmail.com';
+        // Due to the nature of gmail, gmail emails are whitelisted
+        // such that they will be preconfirmed.  This leaves an account not needing confirmation.
+
+        RequestWrapper::inject(new Request([
+            'key'        => 'password1',
+            'cpass'      => 'password1',
+            'send_email' => $email,
+            'send_name'  => $uname,
+        ]));
+
+        $controller = new SignupController();
+        $response = $controller->signup($this->m_dependencies);
+
+        // Get the data from the response
+        $reflection = new \ReflectionProperty(get_class($response), 'data');
+        $reflection->setAccessible(true);
+        $response_data = $reflection->getValue($response);
+
+
+
+        $account = Account::findByEmail($email);
+        $player = Player::findByName($uname);
+        TestAccountCreateAndDestroy::destroy($uname, $email);
+        $this->assertTrue($response_data['submit_successful'], 'Signup() returned error: ' . $response_data['error']);
+        $this->assertNotEmpty($account);
+        $this->assertNotEmpty($player);
+        $this->assertGreaterThan(0, $account->id());
+        $this->assertGreaterThan(0, $player->id());
+        $this->assertEquals($account->account_identity, $email);
+        //debug($account);
+        $this->assertTrue($account->isConfirmed(), 'Account should have become preconfirmed with gmail, but it was not!');
     }
 }

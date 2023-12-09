@@ -198,12 +198,25 @@ class AccountTest extends NWTest
         $this->assertNull($account);
     }
 
-
     public function testThanAccountCanBeSetAsDifferentType()
     {
         $account = new Account();
         $account->setType(2);
         $this->assertEquals(2, $account->type);
+    }
+
+    public function testAccountCanBeConfirmed()
+    {
+        $account = Account::findById($this->testAccountId);
+        $account->setConfirmed(true);
+        $this->assertTrue($account->isConfirmed());
+    }
+
+    public function testAccountCanBeUnConfirmed()
+    {
+        $account = Account::findById($this->testAccountId);
+        $account->setConfirmed(0);
+        $this->assertFalse($account->isConfirmed());
     }
 
     public function testAuthenticationOfAccountWithNoDatabaseAnalogFails()
