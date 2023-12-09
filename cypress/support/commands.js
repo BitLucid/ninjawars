@@ -55,6 +55,15 @@ Cypress.Commands.add('logout', () => {
   cy.log('========= Logout should now be COMPLETE --RR =======')
 })
 
+Cypress.Commands.add('attemptResurrect', () => {
+  cy.visit('/shrine')
+  // wait for the url to not be logout
+  cy.log('Attempting a resurrect if necessary')
+
+  cy.url().should('include', 'alive', { timeout: 10000 })
+  cy.log('Cypress attemptResurrect() command ran')
+})
+
 // -- This is a parent command --
 // Cypress.Commands.add('login', (email, password) => { ... })
 //
