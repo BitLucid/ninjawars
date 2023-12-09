@@ -212,7 +212,7 @@ class AccountTest extends NWTest
         $this->assertEquals(2, $account->type);
     }
 
-    // @see accountConfTest also as it has confirmation tests 
+    // @see accountConfTest also as it has confirmation tests
     public function testAccountCanBeConfirmed()
     {
         $account = Account::findById($this->testAccountId);
