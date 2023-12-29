@@ -18,7 +18,7 @@ class HomepageController extends AbstractController
     public const PRIV      = false;
     public const ALIVE     = false;
     private $loggedIn = false;
-    public const NW_VERSION = 'v1.12.2 2021.06.12';
+    public const NW_VERSION = 'v1.20.2 2023.12.28';
 
     /**
      * Stores logged-in status of user in member variable for use later
@@ -66,7 +66,7 @@ class HomepageController extends AbstractController
             'unread_message_count' => $unreadCount,
         ];
 
-        return new StreamedViewResponse('Live by the Shuriken', 'index.tpl', $parts, [ 'is_index' => true ]);
+        return new StreamedViewResponse('Live by the Shuriken', 'index.tpl', $parts, ['is_index' => true]);
     }
 
     /**
@@ -84,6 +84,6 @@ class HomepageController extends AbstractController
             'version'      => self::NW_VERSION,
         ];
 
-        return new StreamedViewResponse('Live by the Shuriken', 'splash.tpl', $parts, [ 'is_index' => true ]);
+        return new StreamedViewResponse('Live by the Shuriken', 'splash.tpl', $parts, ['is_index' => true]);
     }
 }
