@@ -78,6 +78,7 @@
 
 
 {if !$submit_successful}
+	{* Do not change this without changing the recaptcha in signup.js *}
 	<form id='signup' action="/signup/signup" method="post">
 
     <fieldset>
@@ -134,10 +135,16 @@
 	  {* This section is used by signup.js and should only be changed in concert with that script below *}
 	  {* It is also tested via the cypress signup.cy.js script, so changes should be checked by running that *}
 	  	<div style='min-height:6rem'>
-	    <input class="btn btn-vital" id='become-a-ninja' type="submit" name="submit" value="Become a Ninja!" >
-		<button type='button' id='reveal-signup' class='btn btn-vital' style='font-size:xx-large'>
-			Proceed <i class='fa fa-arrow-right'></i>
-		</button>
+			<input 
+				class="btn btn-vital g-recaptcha" 
+				id='become-a-ninja' 
+				type="submit" 
+				name="submit" 
+				value="Become a Ninja!"
+				data-sitekey="reCAPTCHA_site_key" 
+				data-callback='onSubmit'
+				data-action='submit'
+			>
 		</div>
 	    <div>
 	    	<small>
@@ -176,5 +183,5 @@
 		</div>
 
 	</section>
-
+	<script src="https://www.google.com/recaptcha/api.js"></script>
 	<script src='./js/signup.js'></script>

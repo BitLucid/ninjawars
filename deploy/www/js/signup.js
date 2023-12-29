@@ -21,16 +21,18 @@ const { log } = console || {};
   // }
   $( // on document ready
     () => {
-      // Click the button to reveal the signup form button
-      const become = $('#become-a-ninja');
-      const reveal = $('#reveal-signup');
-      become.hide();
-      reveal.show();
-      reveal.on('click', () => {
-        log('reveal-signup click');
-        reveal.hide('slow');
-        become.show('slow');
-      });
     },
   );
 })();
+
+const signupFormId = 'signup';
+
+// eslint-disable-next-line no-unused-vars
+function onSubmit(token) {
+  // For recaptcha
+  if (!document) {
+    throw new Error('Invalid call to recapcha onSubmit, in environment with no document');
+  } else {
+    document && document.getElementById(signupFormId).submit();
+  }
+}
