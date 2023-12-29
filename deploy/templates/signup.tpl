@@ -104,7 +104,7 @@
 	 <legend>Create Your Ninja Info</legend>
 	 <section>
 		<label for='send_name'>Ninja Name:</label>
-	 	<input id="send_name" required autofocus type="text" pattern='{literal}^[a-zA-Z][a-zA-Z0-9-_\.]{1,23}${/literal}'
+	 	<input id="send_name" required autofocus type="text" pattern='{literal}^[a-zA-Z][a-zA-Z0-9\-_\.]{1,23}${/literal}'
 	 	title='Your ninja name can only contain letters, numbers and underscores, and must be from 2 to 24 characters long.'
 		name="send_name" maxlength="50" class="textField" value="{if $signupRequest}{$signupRequest->enteredName|escape}{/if}">
 	 	<small>
@@ -141,7 +141,7 @@
 				type="submit" 
 				name="submit" 
 				value="Become a Ninja!"
-				data-sitekey="reCAPTCHA_site_key" 
+				data-sitekey="{$smarty.const.RECAPTCHA_SITE_KEY}" 
 				data-callback='onSubmit'
 				data-action='submit'
 			>
@@ -184,4 +184,4 @@
 
 	</section>
 	<script src="https://www.google.com/recaptcha/api.js"></script>
-	<script src='./js/signup.js'></script>
+	<script src='/js/signup.js'></script>

@@ -12,6 +12,8 @@ echo "NOCOVER=true" >> CONFIG
 echo "NODE_VERSION=lts/hydrogen" >> CONFIG
 echo "COMPOSER_AUTH={\"github-oauth\": {\"github.com\": \"${GITHUB_ACCESS_TOKEN}\"}}" >> CONFIG
 echo "GITHUB_ACCESS_TOKEN=${GITHUB_ACCESS_TOKEN}" >> CONFIG
+echo "RECAPTCHA_SITE_KEY=${RECAPTCHA_SITE_KEY}" >> CONFIG
+echo "RECAPTCHA_SECRET_KEY=${RECAPTCHA_SECRET_KEY}" >> CONFIG
 
 if [ -f ./composer.phar ]
 then
