@@ -27,7 +27,7 @@ $(function() {
 {/if}
 </script>
 
-{if !$smarty.const.LOCAL_JS}<!-- Skip for local js -->
+{if !$smarty.const.LOCAL_JS}{* Skip for local js *}
 <!-- Google Analytics, just add all the tracking info to an array at once -->
 {literal}
 <script>
