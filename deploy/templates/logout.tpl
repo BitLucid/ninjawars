@@ -65,17 +65,18 @@
 	</div>
 	<div class='horizontal'>
 		<div class='google-ad group'>
-			    <!-- Google Ad -->
-		    <script type="text/javascript"><!--
-		    google_ad_client = "pub-9488510237149880";
-		    /* 300x250, created 12/17/09 */
-		    google_ad_slot = "9563671390";
-		    google_ad_width = 300;
-		    google_ad_height = 250;
-		    //-->
-		    </script>
-		    <script type="text/javascript" src="https://pagead2.googlesyndication.com/pagead/show_ads.js">
-		    </script>
+			<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9488510237149880"
+			crossorigin="anonymous"></script>
+	<!-- NWShopAd -->
+	<ins class="adsbygoogle"
+			style="display:block"
+			data-ad-client="ca-pub-9488510237149880"
+			data-ad-slot="9729123112"
+			data-ad-format="auto"
+			data-full-width-responsive="true"></ins>
+		<script>
+				(adsbygoogle = window.adsbygoogle || []).push({});
+		</script>
 		</div>
 	</div>
 </div><!-- End of .well -->
