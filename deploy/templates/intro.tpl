@@ -51,7 +51,7 @@ display:none; /* Hidden by default to avoid FOUC */
   font-size:larger;
 }
 
-#join-link{
+#join-link,#continue-link{
     font-size:3.5rem;
 }
 .accent-sandwiched{
@@ -70,7 +70,7 @@ display:none; /* Hidden by default to avoid FOUC */
   display:inherit;
 }
 /** Text to accent as links later **/
-a.dull-link#join-link{
+a.dull-link#join-link, a.dull-link#continue-link{
   font-size:3.5rem;
 }
 
@@ -104,7 +104,7 @@ a.dull-link#join-link{
       </div>
       <nav class='btn-group btn-group-lg'>
         <a class='btn btn-primary' target='main' href='/signup' id='join-link'>NEW GAME</a>
-        <a class='btn btn-primary' target='main' href='/login' id='join-link'>CONTINUE</a>
+        <a class='btn btn-primary' target='main' href='/login' id='continue-link'>CONTINUE</a>
       </nav>
     </div>
   </div>

@@ -20,6 +20,7 @@
     "browse:epics": "xdg-open https://localhost:8765/epics",
     "browse:repo": "xdg-open https://github.com/BitLucid/ninjawars/",
     "browse:deploybot": "xdg-open https://ninjawars.deploybot.com/",
+    "browse:ninjamaster": "xdg-open https://localhost:8765/ninjamaster",
     "repo": "yarn browse:repo",
     "unit-test": "test",
     "cypress:install": "y add -D cypress",
