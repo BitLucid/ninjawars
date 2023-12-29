@@ -62,9 +62,11 @@
 	</div>
 
 	<div id='casino-betting'>
-		{foreach from=$pageParts item="part"}
-		{include file="casino.$part.tpl"}
-		{/foreach}
+		{if $pageParts}
+			{foreach from=$pageParts item="part"}
+			{include file="casino.$part.tpl"}
+			{/foreach}
+		{/if}
 
 		<form id="coin_flip" class='js-hooked' action="/casino/bet" method="post" name="coin_flip">
 			<div>

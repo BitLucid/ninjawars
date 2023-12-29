@@ -1878,7 +1878,7 @@ time {
 #event-list .event-time,
 .chat-messages .chat-time,
 #message-list .message-time {
-    font-family: Trebuchet MS1, Helvetica, sans-serif;
+    font-family: "Trebuchet MS1", Helvetica, sans-serif;
     font-size: 0.8rem;
     display: inline-block;
     margin-left: 1em;

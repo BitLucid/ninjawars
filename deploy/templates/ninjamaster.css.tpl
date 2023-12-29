@@ -5,6 +5,9 @@
 .headed{
 	border-top:1px brown solid;
 }
+.special-info{
+	margin-bottom:3rem;
+}
 .char-actions{
 	display:flex;
 	justify-content: space-evenly;

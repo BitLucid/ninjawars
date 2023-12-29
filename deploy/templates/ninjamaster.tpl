@@ -1,3 +1,6 @@
+<link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
+
 {include file="ninjamaster.css.tpl"}
 
 <span style='float:left'><a href='/'><button type='button' class='btn btn-default'><i class='fa fa-home'></i></button></a></span>
@@ -15,16 +18,19 @@
 
 <nav class='admin-nav parent'>
 	<div class='child'>
-		<a class='btn btn-info' href='/ninjamaster/#npc-list-stats'>Npc List</a>
-		<a class='btn btn-info' href='/ninjamaster/#char-list'>Character List</a>
-		<a class='btn btn-info' href='/ninjamaster/tools'>Validation Tools</a>
-		<a class='btn btn-info' href='/ninjamaster/player_tags'>Character Tag List</a>
-		<a class='btn btn-info' href='/ninjamaster/#item-list-area'>Item List</a>
-<a class='btn btn-info' href='/epics'>UI Epics</a>
+		<ul class='nav nav-pills'>
+			<li><a class='' href='/ninjamaster/#npc-list-stats'>Npc List</a></li>
+			<li><a class='' href='/ninjamaster/#char-list'>Character List</a></li>
+			<li><a class='' href='/ninjamaster/tools'>Validation Tools</a></li>
+			<li><a class='' href='/ninjamaster/player_tags'>Character Tag List</a></li>
+			<li><a class='' href='/ninjamaster/#item-list-area'>Item List</a></li>
+			<li><a class='' href='/ninjamaster/#aws-services'>AWS Services</a></li>
+			<li><a class='' href='/epics'>UI Epics</a></li>
+		</ul>
 	</div>
 </nav>
 
-<section class='centered glassbox'>
+<section class='centered glassbox special-info'>
 	<form name='char-search' action='/ninjamaster' method='post'>
 		View character @<input id='char-name' name='char_name' type='text' placeholder='character' value='{$char_name|escape}' required=required>
 		<div><input type='Submit' value='Find'></div>
@@ -131,7 +137,7 @@
 {/if}
 
 
-<section>
+<section class='special-info'>
 	<header>
 		<h2 id='usage-usage'>Recent Usage</h2>
 	</header>
@@ -161,7 +167,7 @@
 	</div>
 </section>
 
-<section id='review-new-signups'>
+<section id='review-new-signups' class='special-info'>
 	<header>
 		<h3>Review New Signups</h3>
 	</header>
@@ -186,7 +192,7 @@
 	</div>
 </section>
 
-<section id='char-list'>
+<section id='char-list' class='special-info'>
 	<header>
 		<h3>Char List of High Rollers</h3>
 	</header>
@@ -206,7 +212,7 @@
 </section>
 
 {if $dupes}
-<section id='duplicate-ips' class='glassbox'>
+<section id='duplicate-ips' class='glassbox special-info'>
 	<header><h3>Duplicate Ips</h3></header>
 	<div class='text-center'>
 		<button class='btn btn-default show-hide-next' type='button'>Show/Hide</button>
@@ -219,7 +225,7 @@
 </section>
 {/if}
 
-<section class='special-info'>
+<section class='special-info npc-list'>
 	<header><h2 id='npc-list-stats'>Npc list raw info</h2></header>
 	<div class='text-center'>
 		<button class='btn btn-default show-hide-next' type='button'>Show/Hide</button>
@@ -273,13 +279,50 @@
 	</div>
 </section>
 
-<section>
+<section class='special-info'>
 	<header><h2 id='item-list-area'>Item Raw Data</h2></header>
 	<div class='text-center'>
 		<button class='btn btn-default show-hide-next' type='button'>Show/Hide</button>
 	</div>
 {include file="ninjamaster.items.tpl"}
 </section>
+
+<section class='special-info'>
+	<header><h2 id='aws-services'>AWS Services</h2></header>
+	<nav class='glassbox nav nav-pills'>
+			<li><a href='https://us-east-1.console.aws.amazon.com/ses/home?region=us-east-1#/reputation'>
+				AWS Email Reputation Metrics
+			</a></li>
+			<li><a href='https://us-east-1.console.aws.amazon.com/ec2/home?region=us-east-1#Instances:instanceState=running'>
+				Running Instances
+			</a></li>
+			<li><a href='https://us-east-1.console.aws.amazon.com/costmanagement/home?region=us-east-1#/home'>
+				Billing
+			</a></li>
+	</nav>
+</section>
+
+
+<footer class="admin-dashboard-footer bg-dark text-light p-4 mt-5">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+	  	<hr class="bg-light">
+        <ul class='nav nav-pills'>
+
+		<li><a class='' href='/ninjamaster/#npc-list-stats'>Npc List</a></li>
+		<li><a class='' href='/ninjamaster/#char-list'>Character List</a></li>
+		<li><a class='' href='/ninjamaster/tools'>Validation Tools</a></li>
+		<li><a class='' href='/ninjamaster/player_tags'>Character Tag List</a></li>
+		<li><a class='' href='/ninjamaster/#item-list-area'>Item List</a></li>
+		<li><a class='' href='/ninjamaster/#aws-services'>AWS Services</a></li>
+		<li><a class='' href='/epics'>UI Epics</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</footer>
+
 
 <script type='module' src='/js/ninjamaster.js'></script>
 

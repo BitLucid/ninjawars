@@ -40,7 +40,6 @@
                 <a class='btn btn-info' href='#typography-section'>Typography</a>
                 <a class='btn btn-info' href='#staff-section'>Staff</a>
                 <a class='btn btn-info' href='#about-section'>About</a>
-                <a class='btn btn-info' href='#signup-section'>Signup</a>
                 <a class='btn btn-info' href='#errors-section'>Errors</a>
                 <a class='btn btn-info' href='#events-section'>Events</a>
                 <a class='btn btn-info' href='#single-event-section'>Single Event</a>
@@ -268,6 +267,7 @@
             <h2>Casino</h2>
             {assign var="player" value=$char}
             {assign var="error" value="Some error string for casino"}
+            {assign var="pageParts" value=[]}
             {include file="casino.tpl"}
         </section>
 
@@ -278,6 +278,10 @@
             {assign var="player" value=$char}
             {assign var="error" value="Some error string for bath house/duel"}
             {assign var="duels" value=[]}
+            {assign var="vicious_killer" value='SomeViciousKiller'}
+            {assign var="player_count" value=9999}
+            {assign var="rich_haul" value=77777}
+            {assign var="recently_active" value=23232323}
             {include file="duel.tpl"}
         </section>
 

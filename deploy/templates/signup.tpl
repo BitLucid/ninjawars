@@ -37,7 +37,7 @@
 
 	{if $submit_successful}
 		{if $confirmed}
-		  <p>Account with the login email "{$signupRequest->enteredEmail|escape}" is now confirmed!</p>
+		  <p>Account with the login email "{if $signupRequest}{$signupRequest->enteredEmail|escape}{/if}" is now confirmed!</p>
 		  <div class='glassbox'>
 		  	You can 
 			<div class='glassbox' style='width:40%'>
@@ -47,7 +47,7 @@
 		{else}
 		  Phase 5: <span style='color:green'>When you receive an email from ninjawars ({$smarty.const.SYSTEM_EMAIL}), click the confirmation link to activate your account.</span>
 		  <br><br>
-		  Confirmation email has been sent to <strong>{$signupRequest->enteredEmail|escape}</strong>.
+		Confirmation email has been sent to <strong>{if $signupRequest}{$signupRequest->enteredEmail|escape}{/if}</strong>.
 		  <br>
 		  Be sure to also check for the email in any "Junk Mail" or "Spam" folders. Delivery typically takes less than 15 minutes.
 		{/if}
@@ -84,7 +84,7 @@
      <legend>Create Your Login Info</legend>
      <div>
      	<label for='send_email'>Email Address:</label>
-		<input id="send_email" required type="email" name="send_email" class="textField" placeholder='you@example.com' value="{$signupRequest->enteredEmail|escape}">
+<input id="send_email" required type="email" name="send_email" class="textField" placeholder='you@example.com' value="{if $signupRequest}{$signupRequest->enteredEmail|escape}{/if}">
 		  <small>
 		    (email never spammed, never shared)
 		  </small>
@@ -105,7 +105,7 @@
 		<label for='send_name'>Ninja Name:</label>
 	 	<input id="send_name" required autofocus type="text" pattern='{literal}^[a-zA-Z][a-zA-Z0-9-_\.]{1,23}${/literal}'
 	 	title='Your ninja name can only contain letters, numbers and underscores, and must be from 2 to 24 characters long.'
-	 	name="send_name" maxlength="50" class="textField" value="{$signupRequest->enteredName|escape}">
+		name="send_name" maxlength="50" class="textField" value="{if $signupRequest}{$signupRequest->enteredName|escape}{/if}">
 	 	<small>
 	   	(letters, numbers and underscores only)
 	   </small>
@@ -118,7 +118,7 @@
   	{foreach from=$classes item='class' key='identity'}
 		<label class='class-desc block'>
 			<input type='radio' name='send_class' value='{$identity}'
-				{if $signupRequest->enteredClass eq $identity}checked='checked'{/if}> {$class.name} - {$class.expertise}
+				{if $signupRequest}{if $signupRequest->enteredClass eq $identity}checked='checked'{/if}{/if}> {$class.name} - {$class.expertise}
 		</label>
   	{/foreach}
       </div>
