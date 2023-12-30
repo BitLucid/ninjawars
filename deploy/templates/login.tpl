@@ -48,7 +48,7 @@
                     placeholder='you@email.com or ninja' 
                     required 
                     type="text" 
-                    autocomplete='username email' 
+                    autocomplete='username' 
                     value='{isset($stored_username) && $stored_username|escape}' 
                     class='right-side' />
                 </div>

@@ -6,7 +6,7 @@
 // eslint-disable-next-line no-var
 // const { location: tLocation, top: tTop } = window;
 // const { location: tFrameLocation } = tTop || {};
-const { log } = console || {};
+const { log, debug } = console || { log: () => { }, debug: () => { } };
 
 /**
  * Executions on the signup page.
@@ -21,18 +21,20 @@ const { log } = console || {};
   // }
   $( // on document ready
     () => {
+      $('#become-a-ninja').hide().fadeIn(1500);
+      debug('Fading in the submit');
     },
   );
 })();
 
-const signupFormId = 'signup';
+// const signupFormId = 'signup';
 
-// eslint-disable-next-line no-unused-vars
-function onSubmit(token) {
-  // For recaptcha
-  if (!document) {
-    throw new Error('Invalid call to recapcha onSubmit, in environment with no document');
-  } else {
-    document && document.getElementById(signupFormId).submit();
-  }
-}
+// // eslint-disable-next-line no-unused-vars
+// function onSubmit(token) {
+//   // For recaptcha
+//   if (!document) {
+//     throw new Error('Invalid call to recapcha onSubmit, in environment with no document');
+//   } else {
+//     document && document.getElementById(signupFormId).submit();
+//   }
+// }

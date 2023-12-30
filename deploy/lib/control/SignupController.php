@@ -11,6 +11,7 @@ use NinjaWars\core\environment\RequestWrapper;
 use NinjaWars\core\extensions\NWTemplate;
 use NinjaWars\core\extensions\StreamedViewResponse;
 use Symfony\Component\HttpFoundation\Request;
+use ReCaptcha\ReCaptcha;
 use Nmail;
 
 /**
@@ -45,6 +46,9 @@ class SignupController extends AbstractController
         RequestWrapper::init();
         $request = RequestWrapper::$request;
         $signupRequest = $this->buildSignupRequest($request);
+        if (!RECAPTCHA_SITE_KEY) {
+            throw new \RuntimeException('ERROR: 8324: Recaptcha site key not set, please set it in resources.template.php', 0);
+        }
 
         $parts = [
             'submit_successful' => false,
@@ -71,6 +75,22 @@ class SignupController extends AbstractController
 
         try {
             $this->validateSignupRequest($signupRequest); // guard method
+            // compare a random number against the recaptcha quotient to see if recaptcha gets used
+            $quotient = defined('RECAPTCHA_QUOTIENT') ? RECAPTCHA_QUOTIENT : 1;
+            if ($quotient === 1 || rand(1, $quotient) === 1) {
+                $gRecaptchaResponse = $request->get('g-recaptcha-response');
+                $recaptcha = new ReCaptcha(RECAPTCHA_SECRET_KEY);
+                $resp = $recaptcha
+                    // ->setExpectedHostname('www.ninjawars.net') 
+                    // Above is needed if "domain/package name validation" disabled at
+                    // https://www.google.com/recaptcha/admin/site/352364760
+                    ->verify($gRecaptchaResponse, $request->getClientIp());
+                if ($resp->isSuccess() !== true) {
+                    error_log('Signup form client had a Recaptcha failure: ' . print_r($resp->getErrorCodes(), true));
+                    throw new \RuntimeException('There was a problem with the captcha, please wait 10 seconds and try again.', 0);
+                }
+            }
+            // Post recaptcha or if recaptcha skipped
             $response = $this->doWork($signupRequest);
         } catch (\RuntimeException $e) {
             $response = $this->renderException($e, $signupRequest);
@@ -341,7 +361,7 @@ class SignupController extends AbstractController
     {
         $error = null;
 
-        if (strlen($password_to_hash) < 3 || strlen($password_to_hash) > 500) {	// *** Why is there a max length to passwords? ***
+        if (strlen($password_to_hash) < 3 || strlen($password_to_hash) > 500) {    // *** Why is there a max length to passwords? ***
             $error = 'Phase 2 Incomplete: Passwords must be at least 3 characters long.';
         }
 
@@ -360,7 +380,7 @@ class SignupController extends AbstractController
         $format_error = Account::usernameIsValid($send_name);
 
         if ($format_error !== null && $format_error !== false) {
-            $error = 'Phase 1 Incomplete: Ninja name: '.$error;
+            $error = 'Phase 1 Incomplete: Ninja name: ' . $error;
         }
 
         return $error;
@@ -402,7 +422,7 @@ class SignupController extends AbstractController
         $error = null;
         if (!Account::emailIsValid($email)) {
             $error = 'Phase 3 Incomplete: The email address ('
-            . htmlentities($email) . ') must be valid, including no spaces, have an @ symbol and domain name.';
+                . htmlentities($email) . ') must be valid, including no spaces, have an @ symbol and domain name.';
         } elseif (Account::findByEmail($email) !== null) {
             $error = 'Phase 3 Incomplete: There is already an account using that email.  If that account is yours, you can request a password reset to gain access again.';
         }
@@ -476,7 +496,7 @@ class SignupController extends AbstractController
 
         $class_id = query_item(
             'SELECT class_id FROM class WHERE identity = :class_identity',
-            [ ':class_identity' => $params['send_class'] ]
+            [':class_identity' => $params['send_class']]
         );
 
         $ninja = new Player();

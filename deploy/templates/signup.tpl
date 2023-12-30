@@ -85,18 +85,18 @@
      <legend>Create Your Login Info</legend>
      <div>
      	<label for='send_email'>Email Address:</label>
-<input id="send_email" required type="email" name="send_email" class="textField" placeholder='you@example.com' value="{if $signupRequest}{$signupRequest->enteredEmail|escape}{/if}">
+		<input id="send_email" required type="email" autocomplete='username' name="send_email" class="textField" placeholder='you@example.com' value="{if $signupRequest}{$signupRequest->enteredEmail|escape}{/if}">
 		  <small>
 		    (email never spammed, never shared)
 		  </small>
 	 </div>
 	 <div>
 	  <label for='key'>Password:</label>
-	  <input id="key" required type="password" maxlength="50" name="key" class="textField" value='{$signupRequest->enteredPass|escape}'>
+	  <input id="key" required type="password" autocomplete='new-password' maxlength="50" name="key" class="textField" value='{$signupRequest->enteredPass|escape}'>
 	 </div>
 	 <div>
 	  <label for='cpass'>Confirm&nbsp;Pass:</label>
-	  <input id="cpass" required type="password" maxlength="50" name="cpass" class='textField' value='{$signupRequest->enteredCPass|escape}'>
+	  <input id="cpass" required type="password" autocomplete='new-password' maxlength="50" name="cpass" class='textField' value='{$signupRequest->enteredCPass|escape}'>
 	 </div>
 	</fieldset>
 
@@ -135,16 +135,17 @@
 	  {* This section is used by signup.js and should only be changed in concert with that script below *}
 	  {* It is also tested via the cypress signup.cy.js script, so changes should be checked by running that *}
 	  	<div style='min-height:6rem'>
-			<input 
+			<button
 				class="btn btn-vital g-recaptcha" 
 				id='become-a-ninja' 
 				type="submit" 
-				name="submit" 
-				value="Become a Ninja!"
-				data-sitekey="{$smarty.const.RECAPTCHA_SITE_KEY}" 
-				data-callback='onSubmit'
+				name="submit"
+				data-callback='onSubmit' 
 				data-action='submit'
+				data-sitekey="{$smarty.const.RECAPTCHA_SITE_KEY}"
 			>
+				Become a Ninja!
+			</button>
 		</div>
 	    <div>
 	    	<small>
@@ -183,5 +184,26 @@
 		</div>
 
 	</section>
+	{* see https://www.google.com/recaptcha/admin/site/692084162/settings *}
+	{* <script src="https://www.google.com/recaptcha/api.js?render={$smarty.const.RECAPTCHA_SITE_KEY}"></script> *}
 	<script src="https://www.google.com/recaptcha/api.js"></script>
+	
 	<script src='/js/signup.js'></script>
+	<script>
+	{literal}
+		function onSubmit(token) {
+			debug('Login submit handler executed.');
+			document.getElementById("signup").submit();
+			// log('Signup submit handler fired.');
+			// e.preventDefault();
+			// grecaptcha.execute('reCAPTCHA_site_key', {action: 'submit'}).then(function(token) {
+			// 	// Add your logic to submit to your backend server here.
+			// 	log('Signup submit handler executed.');
+			// 	log(token);
+			// 	document.getElementById("signup").submit();
+			// });
+			//
+		}
+	{/literal}
+	</script>
+
