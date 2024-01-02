@@ -91,4 +91,6 @@
       </span>
     </div>
   </footer>
+  {* see https://www.google.com/recaptcha/admin/site/692084162/settings *}
+  <script src="https://www.google.com/recaptcha/api.js?render={$smarty.const.RECAPTCHA_SITE_KEY}"></script>
 </div>

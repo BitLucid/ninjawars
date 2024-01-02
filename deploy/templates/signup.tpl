@@ -135,17 +135,17 @@
 	  {* This section is used by signup.js and should only be changed in concert with that script below *}
 	  {* It is also tested via the cypress signup.cy.js script, so changes should be checked by running that *}
 	  	<div style='min-height:6rem'>
-			<button
+			<input
 				class="btn btn-vital g-recaptcha" 
 				id='become-a-ninja' 
 				type="submit" 
 				name="submit"
-				data-callback='onSubmit' 
+				value="Become a Ninja!"
+				{*data-callback='onSubmit' 
 				data-action='submit'
 				data-sitekey="{$smarty.const.RECAPTCHA_SITE_KEY}"
-			>
-				Become a Ninja!
-			</button>
+				*}
+			/>
 		</div>
 	    <div>
 	    	<small>
@@ -186,14 +186,15 @@
 	</section>
 	{* see https://www.google.com/recaptcha/admin/site/692084162/settings *}
 	{* <script src="https://www.google.com/recaptcha/api.js?render={$smarty.const.RECAPTCHA_SITE_KEY}"></script> *}
-	<script src="https://www.google.com/recaptcha/api.js"></script>
+	{* Eventually include this on the splash page and login page as well *}
+	<script src="https://www.google.com/recaptcha/api.js?render={$smarty.const.RECAPTCHA_SITE_KEY}"></script>
 	
 	<script src='/js/signup.js'></script>
 	<script>
 	{literal}
-		function onSubmit(token) {
-			debug('Login submit handler executed.');
-			document.getElementById("signup").submit();
+		// function onSubmit(token) {
+		// 	debug('Login submit handler executed.');
+		// 	document.getElementById("signup").submit();
 			// log('Signup submit handler fired.');
 			// e.preventDefault();
 			// grecaptcha.execute('reCAPTCHA_site_key', {action: 'submit'}).then(function(token) {
@@ -203,7 +204,7 @@
 			// 	document.getElementById("signup").submit();
 			// });
 			//
-		}
+		// }
 	{/literal}
 	</script>
 

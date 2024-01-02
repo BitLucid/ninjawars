@@ -11,7 +11,7 @@ use NinjaWars\core\environment\RequestWrapper;
 use NinjaWars\core\extensions\NWTemplate;
 use NinjaWars\core\extensions\StreamedViewResponse;
 use Symfony\Component\HttpFoundation\Request;
-use ReCaptcha\ReCaptcha;
+use \ReCaptcha\ReCaptcha as Recap;
 use Nmail;
 
 /**
@@ -79,7 +79,7 @@ class SignupController extends AbstractController
             $quotient = defined('RECAPTCHA_QUOTIENT') ? RECAPTCHA_QUOTIENT : 1;
             if ($quotient === 1 || rand(1, $quotient) === 1) {
                 $gRecaptchaResponse = $request->get('g-recaptcha-response');
-                $recaptcha = new ReCaptcha(RECAPTCHA_SECRET_KEY);
+                $recaptcha = new Recap(RECAPTCHA_SECRET_KEY);
                 $resp = $recaptcha
                     // ->setExpectedHostname('www.ninjawars.net') 
                     // Above is needed if "domain/package name validation" disabled at
