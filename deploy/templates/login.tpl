@@ -48,7 +48,7 @@
                     placeholder='you@email.com or ninja' 
                     required 
                     type="text" 
-                    autocomplete='username email' 
+                    autocomplete='username' 
                     value='{isset($stored_username) && $stored_username|escape}' 
                     class='right-side' />
                 </div>
@@ -91,4 +91,6 @@
       </span>
     </div>
   </footer>
+  {* see https://www.google.com/recaptcha/admin/site/692084162/settings *}
+  <script src="https://www.google.com/recaptcha/api.js?render={$smarty.const.RECAPTCHA_SITE_KEY}"></script>
 </div>

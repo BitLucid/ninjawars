@@ -18,7 +18,6 @@
       <file>deploy/check.php</file>
       <file>deploy/lib/cleanup.inc.php</file>
       <file>deploy/resources.build.php</file>
-      <file>deploy/resources.template.php</file>
       <file>deploy/lib/events/PutEventCheck.php</file>
     </exclude>
   </coverage>

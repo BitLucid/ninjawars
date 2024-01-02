@@ -11,9 +11,9 @@ The source code dojo for the [Ninja Game](http://www.ninjawars.net) @ http://nin
 
 ## Install
 
-Install your webserver (nginx + php8.0-fpm recommended) & configure it
+Install your webserver (nginx + php8.2-fpm recommended) & configure it
 
-    sudo apt-get install php8.0-cli php8.0-fpm nginx
+    sudo apt-get install php8.2-cli php8.2-fpm nginx
 
 On your database server, install postgresql & configure it
 
