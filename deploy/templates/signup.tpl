@@ -159,35 +159,44 @@
 
 {/if}
 
-	<section class='glassbox'>
-		<h3>Problems?</h3>
-		<div class='hero'>
+	<footer>
+		<section class='glassbox'>
+			<h3>Problems?</h3>
+			<div class='hero'>
 
-		<ul>
-			<li>
-			Lost Your Password? <a href="/assistance">go to reset password</a>
-			</li>
-			<li>
-				Already a ninja? <a href='/login'>login instead</a>
-			</li>
-			<li>
-				Didn't get your confirmation code? <a href="/assistance">Resend Confirmation Email</a>
-			</li>
-			<li>
-			Get more info about Ninja type &amp; the game:
-				<a href="http://ninjawars.pbworks.com/" target="_blank" class='extLink'>on the Wiki</a>.
-			</li>
-			<li>
-			Or <a href='/staff'>Contact Us</a>.
-			</li>
-		</ul>
-		</div>
+				<ul>
+					<li>
+					Lost Your Password? <a href="/assistance">go to reset password</a>
+					</li>
+					<li>
+						Already a ninja? <a href='/login'>login instead</a>
+					</li>
+					<li>
+						Didn't get your confirmation code? <a href="/assistance">Resend Confirmation Email</a>
+					</li>
+					<li>
+					Get more info about Ninja type &amp; the game:
+						<a href="http://ninjawars.pbworks.com/" target="_blank" class='extLink'>on the Wiki</a>.
+					</li>
+					<li>
+					Or <a href='/staff'>Contact Us</a>.
+					</li>
+				</ul>
+			</div>
 
-	</section>
+		</section>
+	</footer>
+
+	<style>
+	{literal}
+		.grecaptcha-badge { 
+			visibility: hidden; 
+		}
+	{/literal}
+	</style>
 	{* see https://www.google.com/recaptcha/admin/site/692084162/settings *}
-	{* <script src="https://www.google.com/recaptcha/api.js?render={$smarty.const.RECAPTCHA_SITE_KEY}"></script> *}
-	{* Eventually include this on the splash page and login page as well *}
-	<script src="https://www.google.com/recaptcha/api.js?render={$smarty.const.RECAPTCHA_SITE_KEY}"></script>
+	<!-- See staff page for policy information. -->
+	<script src="https://www.recaptcha.net/recaptcha/api.js?render={$smarty.const.RECAPTCHA_SITE_KEY}"></script>
 	
 	<script src='/js/signup.js'></script>
 	<script>

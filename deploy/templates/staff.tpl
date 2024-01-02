@@ -110,6 +110,10 @@ Email Ninjawars Staff
     <li> Some pixel art by Roy Ronalds </li>
     <li>Alegion - the original for the Koi photograph Background - <a
 href='http://alegion.deviantart.com/'>alegion.deviantart.com/</a></li>
+    <li>This site is protected by reCAPTCHA and the Google
+    <a href="https://policies.google.com/privacy">Privacy Policy</a> and
+    <a href="https://policies.google.com/terms">Terms of Service</a> apply.
+    </li>
   </ul>
 </section>
 

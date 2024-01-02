@@ -54,6 +54,10 @@
     padding: 0;
 }
 
+.grecaptcha-badge {
+    visibility: hidden;
+}
+
 /* Medium and Large screen modifications */
 @media screen and (min-width: 800px) {
     .splash #top-logo {

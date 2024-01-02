@@ -6,7 +6,7 @@
 // eslint-disable-next-line no-var
 // const { location: tLocation, top: tTop } = window;
 // const { location: tFrameLocation } = tTop || {};
-const { log, debug } = console || { log: () => { }, debug: () => { } };
+const { log, debug } = console || { log: () => { /** noop */ }, debug: () => { /** noop */ } };
 
 /**
  * Executions on the signup page.
@@ -29,6 +29,10 @@ const { log, debug } = console || { log: () => { }, debug: () => { } };
 
 // const signupFormId = 'signup';
 
+/**
+ * Callback for the recaptcha widget.
+ * https://www.google.com/recaptcha/admin/site/692084162/settings
+ */
 // // eslint-disable-next-line no-unused-vars
 // function onSubmit(token) {
 //   // For recaptcha
