@@ -47,7 +47,8 @@
     </div><!-- End of core -->
 
 <!-- Version: {$version} -->
-
+<!-- See staff page for policy information. -->
+<script src="https://www.recaptcha.net/recaptcha/api.js?render={$smarty.const.RECAPTCHA_SITE_KEY}"></script>
 {literal}
 <script>
 if (top.location != location) { // Framebreak on the splash page to prevent any issues.

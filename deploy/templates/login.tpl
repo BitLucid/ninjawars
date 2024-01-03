@@ -9,6 +9,9 @@
   .three-bar > div, .three-bar > section{
     flex:1;
   }
+  .grecaptcha-badge { 
+    visibility: hidden; 
+  }
 {/literal}
 </style>
 <div class='three-bar'>
@@ -92,5 +95,6 @@
     </div>
   </footer>
   {* see https://www.google.com/recaptcha/admin/site/692084162/settings *}
-  <script src="https://www.google.com/recaptcha/api.js?render={$smarty.const.RECAPTCHA_SITE_KEY}"></script>
+  <!-- See staff page for policy information. -->
+  <script src="https://www.recaptcha.net/recaptcha/api.js?render={$smarty.const.RECAPTCHA_SITE_KEY}"></script>
 </div>

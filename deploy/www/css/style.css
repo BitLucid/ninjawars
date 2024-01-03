@@ -1060,6 +1060,10 @@ form#signup fieldset span {
     font-style: italic;
 }
 
+.grecaptcha-badge {
+    visibility: hidden;
+}
+
 legend {
     font-family: 'Roboto', Arial, sans-serif;
     padding: 0.2em 0.5em;

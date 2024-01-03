@@ -79,7 +79,7 @@
 
 {if !$submit_successful}
 	{* Do not change this without changing the recaptcha in signup.js *}
-	<form id='signup' action="/signup/signup" method="post">
+	<form id='signup' action="/signup/signup" onSubmit='recFormSubmit' method="post">
 
     <fieldset>
      <legend>Create Your Login Info</legend>
@@ -135,17 +135,15 @@
 	  {* This section is used by signup.js and should only be changed in concert with that script below *}
 	  {* It is also tested via the cypress signup.cy.js script, so changes should be checked by running that *}
 	  	<div style='min-height:6rem'>
-			<input
-				class="btn btn-vital g-recaptcha" 
+			<button
+				class="btn btn-vital" 
 				id='become-a-ninja' 
 				type="submit" 
 				name="submit"
-				value="Become a Ninja!"
-				{*data-callback='onSubmit' 
-				data-action='submit'
-				data-sitekey="{$smarty.const.RECAPTCHA_SITE_KEY}"
-				*}
-			/>
+			>
+			Become A Ninja!
+			</button>
+			<input type='hidden' name='token-response' id='token-response' value=''>
 		</div>
 	    <div>
 	    	<small>
@@ -159,52 +157,64 @@
 
 {/if}
 
-	<section class='glassbox'>
-		<h3>Problems?</h3>
-		<div class='hero'>
+	<footer>
+		<section class='glassbox'>
+			<h3>Problems?</h3>
+			<div class='hero'>
 
-		<ul>
-			<li>
-			Lost Your Password? <a href="/assistance">go to reset password</a>
-			</li>
-			<li>
-				Already a ninja? <a href='/login'>login instead</a>
-			</li>
-			<li>
-				Didn't get your confirmation code? <a href="/assistance">Resend Confirmation Email</a>
-			</li>
-			<li>
-			Get more info about Ninja type &amp; the game:
-				<a href="http://ninjawars.pbworks.com/" target="_blank" class='extLink'>on the Wiki</a>.
-			</li>
-			<li>
-			Or <a href='/staff'>Contact Us</a>.
-			</li>
-		</ul>
-		</div>
+				<ul>
+					<li>
+					Lost Your Password? <a href="/assistance">go to reset password</a>
+					</li>
+					<li>
+						Already a ninja? <a href='/login'>login instead</a>
+					</li>
+					<li>
+						Didn't get your confirmation code? <a href="/assistance">Resend Confirmation Email</a>
+					</li>
+					<li>
+					Get more info about Ninja type &amp; the game:
+						<a href="http://ninjawars.pbworks.com/" target="_blank" class='extLink'>on the Wiki</a>.
+					</li>
+					<li>
+					Or <a href='/staff'>Contact Us</a>.
+					</li>
+				</ul>
+			</div>
 
-	</section>
+		</section>
+	</footer>
+
+	<style>
+	{literal}
+		.grecaptcha-badge { 
+			visibility: hidden;
+		}
+	{/literal}
+	</style>
 	{* see https://www.google.com/recaptcha/admin/site/692084162/settings *}
-	{* <script src="https://www.google.com/recaptcha/api.js?render={$smarty.const.RECAPTCHA_SITE_KEY}"></script> *}
-	{* Eventually include this on the splash page and login page as well *}
-	<script src="https://www.google.com/recaptcha/api.js?render={$smarty.const.RECAPTCHA_SITE_KEY}"></script>
+	<!-- See staff page for policy information. -->
+	<script src="https://www.recaptcha.net/recaptcha/api.js?render={$smarty.const.RECAPTCHA_SITE_KEY}"></script>
 	
 	<script src='/js/signup.js'></script>
 	<script>
+	const recaptchaSiteKey = '{$smarty.const.RECAPTCHA_SITE_KEY}';
 	{literal}
-		// function onSubmit(token) {
-		// 	debug('Login submit handler executed.');
-		// 	document.getElementById("signup").submit();
-			// log('Signup submit handler fired.');
-			// e.preventDefault();
-			// grecaptcha.execute('reCAPTCHA_site_key', {action: 'submit'}).then(function(token) {
-			// 	// Add your logic to submit to your backend server here.
-			// 	log('Signup submit handler executed.');
-			// 	log(token);
-			// 	document.getElementById("signup").submit();
-			// });
-			//
-		// }
+
+		function recFormSubmit(e){
+			e.preventDefault();
+			e.stopPropagation();
+			console.debug('Running grecaptcha.execute')
+			grecaptcha.ready(function() {
+				grecaptcha.execute(recaptchaSiteKey, {action: 'submit'}).then(function(token) {
+					console.debug('grecaptcha.execute token', token);
+					// Add your logic to submit to your backend server here.
+					$('#token-response').val(token);
+					$('#signup').submit();
+				});
+			});
+		}
+		// Currently in form onSubmit
 	{/literal}
 	</script>
 

@@ -11,8 +11,9 @@ use NinjaWars\core\environment\RequestWrapper;
 use NinjaWars\core\extensions\NWTemplate;
 use NinjaWars\core\extensions\StreamedViewResponse;
 use Symfony\Component\HttpFoundation\Request;
-use ReCaptcha\ReCaptcha as Recap;
+// use ReCaptcha\ReCaptcha;
 use Nmail;
+use debug;
 
 /**
  * Implements user actions for creating an account
@@ -78,16 +79,17 @@ class SignupController extends AbstractController
             // compare a random number against the recaptcha quotient to see if recaptcha gets used
             $quotient = defined('RECAPTCHA_QUOTIENT') ? RECAPTCHA_QUOTIENT : 1;
             if ($quotient === 1 || rand(1, $quotient) === 1) {
-                $gRecaptchaResponse = $request->get('g-recaptcha-response');
-                $recaptcha = new Recap(RECAPTCHA_SECRET_KEY);
+                $gRecaptchaResponse = $request->get('token-reponse');
+                $recaptcha = new \ReCaptcha\ReCaptcha(RECAPTCHA_SECRET_KEY);
                 $resp = $recaptcha
                     // ->setExpectedHostname('www.ninjawars.net')
                     // Above is needed if "domain/package name validation" disabled at
                     // https://www.google.com/recaptcha/admin/site/352364760
                     ->verify($gRecaptchaResponse, $request->getClientIp());
+                error_log('Signup form client had a Recaptcha response: ' . print_r($gRecaptchaResponse, true) . print_r($resp, true));
                 if ($resp->isSuccess() !== true) {
                     error_log('Signup form client had a Recaptcha failure: ' . print_r($resp->getErrorCodes(), true));
-                    throw new \RuntimeException('There was a problem with the captcha, please wait 10 seconds and try again.', 0);
+                    throw new \RuntimeException('There was a problem with the submission, please wait 10 seconds and try again.', 0);
                 }
             }
             // Post recaptcha or if recaptcha skipped
