@@ -280,6 +280,7 @@ dist-clean: clean
 
 clear-vendor:
 	rm -rf vendor deploy/vendor
+	@echo "vendor and deploy/vendor cleared, you will want to re: make create-structure to get the directories back"
 
 	
 

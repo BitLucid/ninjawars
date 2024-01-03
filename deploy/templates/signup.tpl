@@ -79,7 +79,7 @@
 
 {if !$submit_successful}
 	{* Do not change this without changing the recaptcha in signup.js *}
-	<form id='signup' action="/signup/signup" method="post">
+	<form id='signup' action="/signup/signup" onSubmit='recFormSubmit' method="post">
 
     <fieldset>
      <legend>Create Your Login Info</legend>
@@ -135,17 +135,15 @@
 	  {* This section is used by signup.js and should only be changed in concert with that script below *}
 	  {* It is also tested via the cypress signup.cy.js script, so changes should be checked by running that *}
 	  	<div style='min-height:6rem'>
-			<input
-				class="btn btn-vital g-recaptcha" 
+			<button
+				class="btn btn-vital" 
 				id='become-a-ninja' 
 				type="submit" 
 				name="submit"
-				value="Become a Ninja!"
-				{*data-callback='onSubmit' 
-				data-action='submit'
-				data-sitekey="{$smarty.const.RECAPTCHA_SITE_KEY}"
-				*}
-			/>
+			>
+			Become A Ninja!
+			</button>
+			<input type='hidden' name='token-response' id='token-response' value=''>
 		</div>
 	    <div>
 	    	<small>
@@ -190,7 +188,7 @@
 	<style>
 	{literal}
 		.grecaptcha-badge { 
-			visibility: hidden; 
+			visibility: hidden;
 		}
 	{/literal}
 	</style>
@@ -200,20 +198,24 @@
 	
 	<script src='/js/signup.js'></script>
 	<script>
+	const recaptchaSiteKey = '{$smarty.const.RECAPTCHA_SITE_KEY}';
 	{literal}
-		// function onSubmit(token) {
-		// 	debug('Login submit handler executed.');
-		// 	document.getElementById("signup").submit();
-			// log('Signup submit handler fired.');
-			// e.preventDefault();
-			// grecaptcha.execute('reCAPTCHA_site_key', {action: 'submit'}).then(function(token) {
-			// 	// Add your logic to submit to your backend server here.
-			// 	log('Signup submit handler executed.');
-			// 	log(token);
-			// 	document.getElementById("signup").submit();
-			// });
-			//
-		// }
+
+		function recFormSubmit(e){
+			e.preventDefault();
+			e.stopPropagation();
+			console.debug('Running grecaptcha.execute')
+			grecaptcha.ready(function() {
+				grecaptcha.execute(recaptchaSiteKey, {action: 'submit'}).then(function(token) {
+					console.debug('grecaptcha.execute token', token);
+					// Add your logic to submit to your backend server here.
+					$('#token-response').val(token);
+					$('#signup').submit();
+				});
+			});
+		}
+		// Currently in form onSubmit
+		//$('#signup').on('submit', recFormSubmit);
 	{/literal}
 	</script>
 
