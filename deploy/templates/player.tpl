@@ -156,7 +156,8 @@ var combatSkillsList = {$json_combat_skills nofilter};
                     <option value="{$item.item_id|escape}">{$item.name|escape} ({$item.count|escape})</option>
             {/if}
             {if $item@last}
-                  </select><!-- No space between --><input type="submit" value="Use Item" class="btn btn-default" style="border-top-left-radius:0;border-bottom-left-radius:0">
+                  </select><!-- No space between 
+                  --><input type="submit" value="Use Item" class="btn btn-default" style="border-top-left-radius:0;border-bottom-left-radius:0">
             {/if}
         {foreachelse}
 				  <div id='no-items' class='ninja-notice'>
