@@ -215,7 +215,6 @@
 			});
 		}
 		// Currently in form onSubmit
-		//$('#signup').on('submit', recFormSubmit);
 	{/literal}
 	</script>
 
