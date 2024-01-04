@@ -206,8 +206,12 @@ class NpcController extends AbstractController
 
                     foreach ($npc_inventory as $l_item) {
                         $item = Item::findByIdentity($l_item);
-                        $received_items[] = $item->getName();
-                        $inventory->add($item->identity(), 1);
+                        if ($item) {
+                            $received_items[] = $item->getName();
+                            $inventory->add($item->identity(), 1);
+                        } else {
+                            error_log('Invalid npc item data found: ' . $l_item);
+                        }
                     }
                 }
 

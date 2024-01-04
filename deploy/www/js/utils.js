@@ -22,12 +22,12 @@ export const canDebug = () => {
   }
   return (
     (typeof process !== 'undefined'
-            && typeof process.env !== 'undefined'
-            && process.env.NODE_ENV === 'development')
-        || urlDebug
-        || (typeof window !== 'undefined'
-            && typeof window.NW !== 'undefined'
-            && window.NW.debug)
+      && typeof process.env !== 'undefined'
+      && process.env.NODE_ENV === 'development')
+    || urlDebug
+    || (typeof window !== 'undefined'
+      && typeof window.NW !== 'undefined'
+      && window.NW.debug)
   );
 };
 
@@ -39,6 +39,7 @@ const noop = (_) => {
 /**
  * Mimic console, except ignore certain loggings if not in debug mode
  * @returns {Function}
+ * @example logger().debug('hello world');
  */
 export const logger = () => ({
   // eslint-disable-next-line no-console
@@ -53,6 +54,8 @@ export const logger = () => ({
   warn: canDebug() ? console.error : noop,
   // eslint-disable-next-line no-console
   dir: canDebug() ? console.dir : noop,
+  // eslint-disable-next-line no-console
+  debug: canDebug() ? console.debug : noop,
 });
 
 export const urlParam = (key) => {
