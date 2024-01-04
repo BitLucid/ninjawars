@@ -254,7 +254,7 @@ NpcFactory::$data = [
     'koi'           => [
         'name'      => 'Koi',
         'short'     => 'swims through the water',
-        'img'       => 'koi.jpg',
+        'img'       => 'koi2.jpg',
         'strength'  => 0,
         'speed'     => 5,
         'stamina'   => 2,
@@ -394,7 +394,7 @@ NpcFactory::$data = [
         'hitodama'      => [
             'name'   => 'Hitodama',
             'short'  => 'are spirit orbs of fire',
-            'img'    => 'hitodama.gif',
+            'img'    => 'hitodama.jpg',
             'race'   => 'kami',
             'traits' => [
                 'wispy',

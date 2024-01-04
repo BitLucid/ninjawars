@@ -26,11 +26,12 @@ const environment = 'NW App context'; // For testing
 // Guarantee that there is a console to prevent errors while debugging.
 if (window.console === undefined) {
   window.console = {
-    log() { },
-    info() { },
-    error() { },
-    warn() { },
-    assert() { },
+    log() { /* no-op */ },
+    info() { /* no-op */ },
+    error() { /* no-op */ },
+    warn() { /* no-op */ },
+    assert() { /* no-op */ },
+    debug() { /* no-op */ },
   };
 }
 
@@ -40,12 +41,12 @@ if (
   && window.parent.window !== window
   && window.parent.NW
 ) {
-  console.info('Reusing existing parent NW object in new page');
+  console.debug('Reusing existing parent NW object in new page');
   // If the interior page of an iframe, use the already-defined globals from the index.
   // $ = parent.$;
   NW = window.parent.NW;
 } else {
-  console.info('Creating new NW object');
+  console.debug('Creating new NW object');
   // If the page is standalone, define the objects as needed.
   // $ = jQuery;
   NW = {};
@@ -178,7 +179,7 @@ $(selector).keyup(function () {
     if (this.debugging || !g_isLive) {
       if (console) {
         // eslint-disable-next-line no-console
-        console.log(arg);
+        console.debug(arg);
       }
       return true;
     }

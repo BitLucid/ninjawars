@@ -5,6 +5,8 @@
 import api from './api.js';
 import { logger, urlParam } from './utils.js';
 
+const { debug, log } = logger();
+
 // State handling for the current place
 const [getOffset, setOffset] = [
   () => (localStorage && JSON.parse(localStorage.getItem('offset'))) || 0,
@@ -69,14 +71,15 @@ const render = () => {
 };
 
 $(() => {
+  debug('next target IIFE run');
   const nextTarget = (offset = 0) => {
-    logger().log('Getting next target', offset);
+    debug('Getting next target', offset);
     return api
       .nextTarget(offset)
       .then((res) => res.json())
       .then((data) => {
         placeTarget(data);
-        logger().log('Target health: ', data.health, data);
+        debug('Target health: ', data.health, data);
         completeLoading();
         return data;
       });
