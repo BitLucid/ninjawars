@@ -64,7 +64,7 @@ class EpicsController extends AbstractController
         $npco             = new Npc($this->filterNpcData($other_npcs, 'Oni')); // Construct the npc object.
         $item             = Item::findByIdentity('dimmak');
         $npc_damage_class = Combat::determineDamageClass(9999, 10);
-        $transientClass = new \stdclass;
+        $transientClass = new \stdclass();
         $transientClass->enteredClass = 'dragon';
         $transientClass->enteredName = 'dragon';
         $transientClass->enteredEmail = 'dragon@example.com';

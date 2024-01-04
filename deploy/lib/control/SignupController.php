@@ -85,7 +85,7 @@ class SignupController extends AbstractController
                 // https://www.google.com/recaptcha/admin/site/352364760
                 ->verify($gRecaptchaResponse, $request->getClientIp());
             error_log('Signup form client had a Recaptcha response: ' . print_r($gRecaptchaResponse, true) . print_r($resp, true));
-            // compare a random number against the recaptcha quotient to 
+            // compare a random number against the recaptcha quotient to
             // see if recaptcha even gets used
             $divisor = defined('RECAPTCHA_DIVISOR') ? RECAPTCHA_DIVISOR : 1;
             if ($resp->isSuccess() !== true && ($divisor === 1 || rand(1, $divisor) === 1)) {
