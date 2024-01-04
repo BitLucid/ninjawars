@@ -65,11 +65,12 @@ class EpicsController extends AbstractController
         $item             = Item::findByIdentity('dimmak');
         $npc_damage_class = Combat::determineDamageClass(9999, 10);
         $transientClass = new \stdclass();
+        $transientClass->enteredName = 'CoolNameGuy';
+        $transientClass->enteredEmail = 'coolNameGuy@example.com';
+        $transientClass->enteredPass = 'dragon';
+        $transientClass->enteredCPass = 'dragon';
         $transientClass->enteredClass = 'dragon';
-        $transientClass->enteredName = 'dragon';
-        $transientClass->enteredEmail = 'dragon@example.com';
-        $transientClass->enteredClass = 'dragon';
-        $signupRequest    = $transientClass;
+        $signupRequest2    = $transientClass;
 
         $error            = null;
         $static_nodes = include(ROOT . 'lib/data/raw/nodes.php');
@@ -89,7 +90,7 @@ class EpicsController extends AbstractController
             'item_costs'        => Shop::itemForSaleCosts(),
             'full_item_costs'   => Shop::fullItems(true),
             'clans'     => Clan::rankings(),
-            'signupRequest'     => $signupRequest,
+            'signupRequest2'     => $signupRequest2,
         ];
 
         return new StreamedViewResponse('UI Epics', 'epics.tpl', $parts);
