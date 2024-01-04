@@ -149,7 +149,8 @@
   	{foreach from=$classes item='class' key='identity'}
 		<label class='class-desc inline-block'>
 			<img src='/images/characters/{$identity}_ninja.jpg' alt='{$identity} icon' class='class-icon quarter-max'>
-			<input type='radio' name='send_class' value='{$identity}' {if $signupRequest}{if $signupRequest->enteredClass eq $identity}checked='checked'{/if}{/if}>
+			<input type='radio' name='send_class' value='{$identity}' 
+				{if $signupRequest}{if $signupRequest->enteredClass eq $identity}checked='checked'{/if}{/if}>
 				{$class.name} - {$class.expertise}
 			</label>
   	{/foreach}
@@ -208,8 +209,13 @@
 						<a href="http://ninjawars.pbworks.com/" target="_blank" class='extLink'>on the Wiki</a>.
 					</li>
 					<li>
+					Info on privacy and terms of service <a href="https://www.google.com/intl/en/policies/privacy/" target="_blank" style="">Privacy</a>
+					 - <a href="https://www.google.com/intl/en/policies/terms/" target="_blank" style="">Terms</a>
+					</li>
+					<li>
 					Or <a href='/staff'>Contact Us</a>.
 					</li>
+
 				</ul>
 			</div>
 
@@ -220,6 +226,7 @@
 	{literal}
 		.grecaptcha-badge { 
 			visibility: hidden;
+			visibility: visible;
 		}
 	{/literal}
 	</style>

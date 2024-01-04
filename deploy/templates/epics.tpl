@@ -33,6 +33,9 @@
                 <a class='btn btn-info' href='#signup-section'>Signup</a>
                 <a class='btn btn-info' href='#profile-section'>Profile</a>
                 <a class='btn btn-info' href='#npcs-section'>Npcs</a>
+                <a class='btn btn-info' href='#npcs-abstract-section'>Npcs: Abstract</a>
+                <a class='btn btn-info' href='#npcs-oni-section'>Npcs: Oni</a>
+                <a class='btn btn-info' href='#npcs-theif-group-section'>Npcs: Thief Group</a>
                 <a class='btn btn-info' href='#aside-section'>Aside</a>
                 <a class='btn btn-info' href='#chat-section'>Chat</a>
                 <a class='btn btn-info' href='#clan-section'>Clan</a>
@@ -78,8 +81,9 @@
 
         <section id='signup-section'>
             <h2>Signup</h2>
-            {assign var="classes" value=[]}
+            {assign var="classes" value=['dragon'=>['name'=>'dragon','expertise'=>'healing']]}
             {assign var="submit_successful" value="0"}
+            {assign var="signupRequest" value=$signupRequest}
             {assign var="error" value="Some error string for signup"}
             {assign var="submitted" value=false}
             {assign var="class_display" value="Some Class Here"}
@@ -120,6 +124,59 @@
             <h2>Npcs</h2>
             {include file="npc.list.tpl"}
         </section>
+
+
+        <section id='npcs-oni-section'>
+            <h2>Npcs: Oni</h2>
+            {assign var="npco" value=$npco}
+            {assign var="player" value=$char}
+            {assign var="item" value=$item}
+            {assign var="victory" value=true}
+            {assign var="multiple_rewards" value=true}
+            {assign var="oni_health_loss" value=9999}
+            {assign var="oni_killed" value=true}
+            {include file="npc.oni.tpl"}
+        </section>
+
+                        {*
+
+        <section id='npcs-abstract-section'>
+            <h2>Npcs: Abstract</h2>
+            {assign var="npco" value=$npco}
+            {assign var="image_path" value='/images/characters/firefly.jpg'}
+            {assign var="is_quick" value=true}
+            {assign var="race" value='OniMonster'}
+            {assign var="display_name" value='OniOrWhatever'}
+            {assign var="tagline" value='Some cool npc tagline'}
+            {assign var="much_stronger" value=true}
+            {assign var="is_weaker" value=true}
+            {assign var="kill_npc" value=true}
+            {assign var="is_villager" value=true}
+            {assign var="survive_fight" value=true}
+            {assign var="attack_damage" value=99999}
+            {assign var="received_gold" value=33333}
+            {assign var="added_bounty" value=4444}
+            {assign var="ninja_damage" value=7777}
+            {assign var="ninja_damage_class" value='nick'}
+            {assign var="display_statuses" value='poisoned, frozen, dead, healthy'}
+            {assign var="display_statuses_classes" value='poisoned frozen dead healthy'}
+            {assign var="received_display_items" value=['shuriken', 'fireorsomething', 'stick', 'brick']}
+            {assign var="npc_stats" value=['short'=>'A short description of the npc here']}
+            {assign var="player" value=$char}
+            {include file="npc.abstract.tpl"}
+        </section>
+
+
+
+
+
+        <section id='npcs-section'>
+            <h2>Npcs: Theif Group</h2>
+            {assign var="npco" value=$npco}
+            {include file="npc.thief-group.tpl"}
+        </section>
+
+        *}
 
         <section id='intro-section'>
             <h2>Intro</h2>
@@ -289,6 +346,12 @@
             <h2>Work</h2>
             {assign var="player" value=$char}
             {assign var="error" value="Some error string for work"}
+            {assign var="work_multiplier" value="10"}
+            {assign var="not_enough_energy" value="1"}
+            {assign var="earned_gold" value="55"}
+            {assign var="worked" value="5"}
+            {assign var="authenticated" value="0"}
+            {assign var="recommended_to_work" value=555}
             {include file="work.tpl"}
         </section>
 
@@ -318,7 +381,7 @@
             {assign var="earned_gold" value="55"}
             {assign var="worked" value="5"}
             {assign var="authenticated" value="0"}
-            {assign var="recommended_to_work" value="6"}
+            {assign var="recommended_to_work" value=555}
             {include file="work.tpl"}
         </section>
 

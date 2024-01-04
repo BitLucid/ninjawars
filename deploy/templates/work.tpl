@@ -77,7 +77,7 @@ To earn pay for your work you must first <a href="/signup">become a citizen of t
 
 <script type='text/javascript'>
 var userStore = {if $authenticated}true{else}false{/if};
-var recommendedTurns = {$recommended_to_work};
+var recommendedTurns = parseInt("{$recommended_to_work|intval}") ?? 1;
 {literal}
 $(function () {
     $('#attack-peasant-link').click(function () {

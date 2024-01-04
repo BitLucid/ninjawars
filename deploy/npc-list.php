@@ -10,7 +10,7 @@ use NinjaWars\core\data\NpcFactory;
 NpcFactory::$data = [
     'firefly'   => [ // Baseline weakest mob
         'name'     => 'Firefly',
-        'img'      => 'firefly.png',
+        'img'      => 'firefly.jpg',
         'strength' => 0,
         'stamina'  => 0,
         'damage'   => 0,
@@ -19,7 +19,7 @@ NpcFactory::$data = [
     ],
     'fireflies' => [
         'name'     => 'Fireflies',
-        'img'      => 'fireflies.png',
+        'img'      => 'fireflies.jpg',
         'strength' => 0,
         'stamina'  => 1,
         'damage'   => 0,
@@ -284,7 +284,7 @@ NpcFactory::$data = [
             'short'    => 'swarms and buzzes through the air',
             'strength' => 13,
             'speed'    => 30,
-        'stamina'  => 4,
+            'stamina'  => 4,
             'damage'   => 6,
             'gold'     => 0,
             'race'     => 'insect',
@@ -303,12 +303,12 @@ NpcFactory::$data = [
             'strength' => 3,
             'speed'    => 25,
             'damage'   => 3,
-        'stamina'  => 3,
+            'stamina'  => 3,
             'race'     => 'bird',
-        'traits'    => [
-            'escaper',
-            'flying',
-        ],
+            'traits'    => [
+                'escaper',
+                'flying',
+            ],
         ],
         'kingfisher'    => [
             'name'     => 'Kingfisher',
@@ -317,10 +317,10 @@ NpcFactory::$data = [
             'speed'    => 30,
             'damage'   => 3,
             'race'     => 'bird',
-        'traits'    => [
-            'escaper',
-            'flying',
-        ],
+            'traits'    => [
+                'escaper',
+                'flying',
+            ],
         ],
         'horse'         => [
             'name'     => 'Horse',
@@ -549,12 +549,12 @@ NpcFactory::$data = [
         ],
         'oni'           => [
             'name'     => 'Oni',
-            'strength' => 25,
-            'stamina'  => 5,
-            'speed'    => 15,
-            'ki'       => 10,
+            'strength' => 50,
+            'stamina'  => 10,
+            'speed'    => 30,
+            'ki'       => 20,
             'short'    => 'a horned demon',
-            'img'      => 'hokusai-oni.jpg',
+            'img'      => 'attacking_wandering_oni.jpg',
             'race'     => 'oni',
             'inventory' => [
                 'tetsubo' => '.01',
@@ -575,8 +575,7 @@ NpcFactory::$data = [
             'short'    => 'a slimy toad',
             'img'      => 'matsuoto-hoji-toad.jpg',
             'race'     => 'animal',
-            'inventory' => [
-            ],
+            'inventory' => [],
             'traits'   => [
                 'amphibious',
             ],
