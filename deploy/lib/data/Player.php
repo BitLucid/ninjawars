@@ -357,7 +357,7 @@ class Player implements Character
         }
 
         if (is_numeric($gold) && (int) $gold != $gold) {
-            throw new \InvalidArgumentException('Gold must be a whole number [not '.(string)$gold.'].');
+            throw new \InvalidArgumentException('Gold must be a whole number [not ' . (string)$gold . '].');
         }
 
         return $this->vo->gold = $gold;
@@ -369,10 +369,10 @@ class Player implements Character
     public function setBounty($bounty): int
     {
         if ($bounty < 0) {
-            throw new \InvalidArgumentException('Bounty cannot be made negative ['.(string)$bounty.'].');
+            throw new \InvalidArgumentException('Bounty cannot be made negative [' . (string)$bounty . '].');
         }
         if ((int) $bounty != $bounty) {
-            throw new \InvalidArgumentException('Bounty must be a whole number [not '.(string)$bounty.'].');
+            throw new \InvalidArgumentException('Bounty must be a whole number [not ' . (string)$bounty . '].');
         }
         return $this->vo->bounty = $bounty;
     }
@@ -652,20 +652,20 @@ class Player implements Character
         $account = Account::findByChar($this);
 
         if (OFFLINE) {
-            return IMAGE_ROOT.'default_avatar.png';
+            return IMAGE_ROOT . 'default_avatar.png';
         } elseif (!$this->vo || !$this->vo->avatar_type || !$account || !$account->email()) {
             return '';
         } else {
             $email       = $account->email();
 
-            $def         = 'monsterid'; // Default image or image class.
+            $def         = 'identicon'; // Default image or image class.
             // other options: wavatar (polygonal creature) , monsterid, identicon (random shape)
             $base        = "https://www.gravatar.com/avatar/";
             $hash        = md5(trim(strtolower($email)));
-            $no_gravatar = "d=".urlencode($def);
+            $no_gravatar = "d=" . urlencode($def);
             $size        = 80;
             $rating      = "r=x";
-            $res         = $base.$hash."?".implode('&', [$no_gravatar, $size, $rating]);
+            $res         = $base . $hash . "?" . implode('&', [$no_gravatar, $size, $rating]);
 
             return $res;
         }
@@ -685,9 +685,9 @@ class Player implements Character
     }
 
     /**
-    * Check whether the player is the leader of their clan.
-    * @return boolean
-    */
+     * Check whether the player is the leader of their clan.
+     * @return boolean
+     */
     public function isClanLeader(): bool
     {
         return (($clan = Clan::findByMember($this)) && $this->id() == $clan->getLeaderID());
@@ -989,9 +989,11 @@ class Player implements Character
             }
 
             // If any of the shield skills are up, show a single status state for any.
-            if ($target->hasStatus(FIRE_RESISTING) || $target->hasStatus(INSULATED) || $target->hasStatus(GROUNDED)
+            if (
+                $target->hasStatus(FIRE_RESISTING) || $target->hasStatus(INSULATED) || $target->hasStatus(GROUNDED)
                 || $target->hasStatus(BLESSED) || $target->hasStatus(IMMUNIZED)
-                || $target->hasStatus(ACID_RESISTING)) {
+                || $target->hasStatus(ACID_RESISTING)
+            ) {
                 $states[] = 'Shielded';
             }
         }
