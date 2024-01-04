@@ -217,8 +217,10 @@ NpcFactory::$data = [
         'speed'     => 10,
         'ki'        => 30,
         'race'      => 'human',
+        'img'       => 'monk.jpg',
         'inventory' => [
             'prayerwheel' => '.2',
+            'bambooflute' => '.1',
         ],
         'traits'    => [
             'villager',
@@ -236,6 +238,7 @@ NpcFactory::$data = [
         'gold'       => 20,
         'bounty_mod' => 50,
         'race'       => 'human',
+        'img'       => 'geisha.jpg',
         'inventory'  => [
             'sake'   => '.2',
             'mirror' => '.01',
