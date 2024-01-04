@@ -112,31 +112,31 @@
 	   </small>
 	 </section>
 	 <section>
-	  <div class='inline-block'>
-	  	<strong>Ninja Animal Style &amp; Expertise&nbsp;</strong>
+	  <div class='block'>
+	  	<strong>Animal Style &amp; Expertise:&nbsp;</strong>
 	  </div>
 	  <style>
 	  {literal}
 	  	.ninja-picker-container {
 	  		display: flex;
 	  		flex-wrap: wrap;
-	  		justify-content: space-around;
+	  		justify-content: space-between;
 	  	}
 		.ninja-picker-container label {
 			display: flex;
 			flex-direction: column;
 			align-items: center;
 			justify-content: center;
-			width: 20vw;
-			height: 20vw;
-			margin: 0.5vw;
-			padding: 0.5vw;
-			border: 2px solid #ccc;
-			border-radius: 0.5rem;
-			background-color: #eee;
 			color: #333;
 			font-weight: bold;
 			font-size: smaller;
+			width: 20vw;
+			height: 20vw;
+			margin-left: 0.5vw;
+			margin-right: 0.5vw;
+			border: 2px solid #ccc;
+			border-radius: 0.5rem;
+			background-color: #eee;
 			cursor: pointer;
 		}
 		.ninja-picker-container label:hover {
@@ -145,7 +145,7 @@
 		}
 		{/literal}
 	  </style>
-	  <div class='block ninja-picker-container'>
+	  <div class='ninja-picker-container'>
   	{foreach from=$classes item='class' key='identity'}
 		<label class='class-desc inline-block'>
 			<img src='/images/characters/{$identity}_ninja.jpg' alt='{$identity} icon' class='class-icon quarter-max'>
