@@ -81,13 +81,13 @@
 
         <section id='signup-section'>
             <h2>Signup</h2>
-            {assign var="classes" value=['dragon'=>['name'=>'dragon','expertise'=>'healing']]}
+            {assign var="classes" value=['dragon'=>['name'=>'Dragon','expertise'=>'healing'], 'tiger'=>['name'=>'Tiger','expertise'=>'fire'], 'viper'=>['name'=>'Viper','expertise'=>'poison'], 'crane'=>['name'=>'Crane','expertise'=>'speed']]}
             {assign var="submit_successful" value="0"}
-            {assign var="signupRequest" value=$signupRequest}
+            {assign var="signupRequest" value=$signupRequest2}
             {assign var="error" value="Some error string for signup"}
             {assign var="submitted" value=false}
             {assign var="class_display" value="Some Class Here"}
-            {assign var="completedPhase" value="2"}
+            {assign var="completedPhase" value="4"}
             {include file="signup.tpl"}
         </section>
 
