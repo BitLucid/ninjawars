@@ -1,0 +1,165 @@
+article#fight {
+    font-size: 110%;
+}
+
+article#fight nav {
+    margin-top: 1.5em;
+    margin-left: 8%;
+    margin-right: 10%;
+}
+
+#rewards p {
+    display: inline-block;
+    font-weight: bold;
+}
+
+#rewards p+p {
+    margin-left: 3em;
+}
+
+.money {
+    color: gold;
+    color: rgba(255, 215, 0, .7);
+}
+
+.npc-fight {
+    width: 80%;
+    margin: 0 10%;
+}
+
+#fight .npc-avatar {
+    float: left;
+    margin: 0.5em 1em 0.5em 0.5em;
+    text-align: center;
+}
+
+.damage-amount {
+    background-color: rgba(130, 0, 0, .5);
+    border-radius: 0.5rem;
+    display: inline-block;
+    padding: 0 .3em;
+}
+
+.damage.miss {
+    color: #006100;
+}
+
+.damage.nick {
+    color: #ffe1ad;
+}
+
+.damage.wound {
+    color: #dd164f;
+}
+
+.damage.savage {
+    color: red;
+    background-color: #2f2b2b;
+}
+
+.damage.obliterate {
+    color: white;
+    background-color: #800040;
+    font-weight: bold;
+}
+
+.damage.kill {
+    color: black;
+    background-color: #cd124d;
+    font-weight: bold;
+}
+
+.encounter-overall figure {
+    padding: 1em;
+    margin-bottom: 0.5em;
+    text-align: center;
+}
+
+.encounter-overall .npc-image {
+    max-width: 450px;
+}
+
+/* Combat text styling */
+.combat-text {
+    font-size: 16px;
+    line-height: 1.6;
+    margin-top: 10px;
+}
+
+/* Danger text styling for ninja errors */
+.danger-text {
+    color: #ff5757;
+    /* Reddish color for danger */
+    font-weight: bold;
+    font-size: 18px;
+    text-shadow: 1px 1px 3px #000;
+    /* Shadow for a dramatic effect */
+}
+
+/* Victory text styling */
+.combat-text b {
+    color: #5fff5f;
+    /* Greenish color for victory */
+}
+
+/* Item styling */
+.combat-text em {
+    color: #9fd8ff;
+    /* Bluish color for items */
+}
+
+/* Container styling */
+.encounter-container {
+    padding: 20px;
+    border: 1px solid #444;
+    border-radius: 5px;
+    background-color: #450c0ca8;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    height: 20vh;
+}
+
+.encounter-container .encounter-content {
+    margin: 0;
+    padding: 3rem;
+}
+
+/* Reward Container Styles */
+.reward-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1.5rem;
+    background-color: #e0b153;
+    /* Light yellow background */
+    border: 2px solid #8b4513;
+    /* Brown border */
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    /* Shadow for depth */
+    margin: 3rem;
+    max-width: 40vw;
+    /* Adjust the maximum width as needed */
+}
+
+/* Chest Icon Styles */
+.chest-icon {
+    width: 50px;
+    height: 50px;
+    background-color: #e99458;
+    /* Brown color */
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    /* White color */
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+/* Reward Text Styles */
+.reward-text {
+    color: #8b4513;
+}

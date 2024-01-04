@@ -138,6 +138,17 @@
             {include file="npc.oni.tpl"}
         </section>
 
+
+        <section id='npcs-theif-group-section'>
+            <h2>Npcs: Theif Group</h2>
+            {assign var="npco" value=$npco}
+            {assign var="victory" value=true}
+            {assign var="gold" value=44444}
+            {assign var="attack" value=22222}
+            {assign var="powerful_attack" value=true}
+            {include file="npc.thief-group.tpl"}
+        </section>
+
                         {*
 
         <section id='npcs-abstract-section'>
@@ -167,14 +178,6 @@
         </section>
 
 
-
-
-
-        <section id='npcs-section'>
-            <h2>Npcs: Theif Group</h2>
-            {assign var="npco" value=$npco}
-            {include file="npc.thief-group.tpl"}
-        </section>
 
         *}
 
