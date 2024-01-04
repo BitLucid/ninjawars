@@ -1,70 +1,17 @@
-{literal}
-<style>
-article#fight{
-	font-size:110%;
-}
-article#fight nav{
-	margin-top:1.5em;
-	margin-left:8%;
-	margin-right:10%;
-}
-#rewards p{
-	display:inline-block;
-	font-weight:bold;
-}
-#rewards p + p{
-	margin-left:3em;
-}
-.money{
-    color:gold;
-    color:rgba(255,215,0,.7);
-}
-.npc-fight{
-	width:80%;margin:0 10%;
-}
-#fight .npc-avatar{
-	float:left;margin:0.5em 1em 0.5em 0.5em;text-align:center;
-}
-.damage-amount{
-	background-color:rgba(130, 0, 0, .5);
-	border-radius:0.5rem;
-	display:inline-block;
-	padding:0 .3em;
-}
-.damage.miss{
-	color: #006100;
-}
-.damage.nick{
-	color:#ffe1ad;
-}
-.damage.wound{
-	color:#dd164f;
-}
-.damage.savage{
-	color:red;
-	background-color:#2f2b2b;
-}
-.damage.obliterate{
-	color:white;
-	background-color:#800040;
-	font-weight:bold;
-}
-.damage.kill{
-	color:black;
-	background-color:#cd124d;
-	font-weight:bold;
-}
-</style>
-{/literal}
+<link href="/css/npcs.css" rel="stylesheet" type="text/css" />
 
-
-  <article id='fight'>
+  <article id='fight' class='encounter-overall'>
 	<h2>{$display_name|escape}</h2>
 
 	<section class='npc-fight'>
 	{if $image_path}
 		<figure class='npc-avatar'>
-		  <img src='{cachebust file=$image_path}' alt='A {$race}' title='A {$race}'>
+		  <img 
+		  	src='{cachebust file=$image_path}'
+		    alt='A {$race}' 
+			title='A {$race}'
+			style='max-width: 450px;'
+			>
 		</figure>
 	{/if}
 
@@ -110,7 +57,10 @@ article#fight nav{
 		{if $is_weaker}<p>The {if $is_villager}villager{/if}{if !$is_villager}{$race|escape}{/if} is no match for you!</p>{/if}
 		{if $kill_npc}<p class='ninja-notice fade-in'>You kill the {$display_name|escape}!</p>
 			{if $added_bounty}
-			<div class='bounty-notice'>{if $is_villager}<p>You have slain a member of the village!</p>{/if} <em class='money'>{$added_bounty}</div>
+				<div class='bounty-notice'>
+					{if $is_villager}<p>You have slain a member of the village!</p>{/if} 
+					<em class='money'>{$added_bounty}</em> bounty added.
+				</div>
 			{/if}
 		{else}
 			{if $is_weaker}

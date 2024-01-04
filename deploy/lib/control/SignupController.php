@@ -13,7 +13,6 @@ use NinjaWars\core\extensions\StreamedViewResponse;
 use Symfony\Component\HttpFoundation\Request;
 // use ReCaptcha\ReCaptcha;
 use Nmail;
-use debug;
 
 /**
  * Implements user actions for creating an account
@@ -76,23 +75,25 @@ class SignupController extends AbstractController
 
         try {
             $this->validateSignupRequest($signupRequest); // guard method
-            // compare a random number against the recaptcha quotient to see if recaptcha gets used
-            $quotient = defined('RECAPTCHA_QUOTIENT') ? RECAPTCHA_QUOTIENT : 1;
-            if ($quotient === 1 || rand(1, $quotient) === 1) {
-                $gRecaptchaResponse = $request->get('token-reponse');
-                $recaptcha = new \ReCaptcha\ReCaptcha(RECAPTCHA_SECRET_KEY);
-                $resp = $recaptcha
-                    // ->setExpectedHostname('www.ninjawars.net')
-                    // Above is needed if "domain/package name validation" disabled at
-                    // https://www.google.com/recaptcha/admin/site/352364760
-                    ->verify($gRecaptchaResponse, $request->getClientIp());
-                error_log('Signup form client had a Recaptcha response: ' . print_r($gRecaptchaResponse, true) . print_r($resp, true));
-                if ($resp->isSuccess() !== true) {
-                    error_log('Signup form client had a Recaptcha failure: ' . print_r($resp->getErrorCodes(), true));
-                    throw new \RuntimeException('There was a problem with the submission, please wait 10 seconds and try again.', 0);
-                }
+            // Recaptcha section
+
+            $gRecaptchaResponse = $request->get('token-reponse');
+            $recaptcha = new \ReCaptcha\ReCaptcha(RECAPTCHA_SECRET_KEY);
+            $resp = $recaptcha
+                // ->setExpectedHostname('www.ninjawars.net')
+                // Above is needed if "domain/package name validation" disabled at
+                // https://www.google.com/recaptcha/admin/site/352364760
+                ->verify($gRecaptchaResponse, $request->getClientIp());
+            error_log('Signup form client had a Recaptcha response: ' . print_r($gRecaptchaResponse, true) . print_r($resp, true));
+            // compare a random number against the recaptcha quotient to
+            // see if recaptcha even gets used
+            $divisor = defined('RECAPTCHA_DIVISOR') ? RECAPTCHA_DIVISOR : 1;
+            if ($resp->isSuccess() !== true && ($divisor === 1 || rand(1, $divisor) === 1)) {
+                error_log('Signup form client had a Recaptcha failure: ' . print_r($resp->getErrorCodes(), true));
+                throw new \RuntimeException('There was a problem with the submission, please wait 10 seconds and try again.', 0);
             }
-            // Post recaptcha or if recaptcha skipped
+            // Recaptcha always gets run, but the validation isn't always utilized,
+            // mainly it's ignored mostly in local development environments
             $response = $this->doWork($signupRequest);
         } catch (\RuntimeException $e) {
             $response = $this->renderException($e, $signupRequest);
@@ -102,7 +103,10 @@ class SignupController extends AbstractController
     }
 
     /**
-     * Implementation of the signup logic.
+     * Implementation of the signup logic after validation
+     * Creates the account and ninja, sends the confirmation email
+     * for example, so only should be done after the initial request
+     * is fully vetted as valid.
      *
      * @param SignupRequest $p_request
      * @return Response
@@ -137,7 +141,7 @@ class SignupController extends AbstractController
             throw new \RuntimeException('No account_id came back from creation', 4);
         }
 
-        if ($preconfirm) {
+        if ($preconfirm) { // Some emails get auto-confirmed.
             $completedPhase = 4;
 
             $account = Account::findById($account_id);
@@ -222,16 +226,11 @@ class SignupController extends AbstractController
         $signupRequest                    = new \stdClass();
         $signupRequest->enteredName       = Filter::toSimple(trim($p_request->get('send_name') ?? ''));
         $signupRequest->enteredEmail      = Filter::toSimple(trim($p_request->get('send_email') ?? ''));
-        $signupRequest->enteredClass      = strtolower(trim($p_request->get('send_class') ?? ''));
+        $signupRequest->enteredClass      = Filter::toSimple(strtolower(trim($p_request->get('send_class') ?? '')));
         $signupRequest->enteredReferral   = trim($p_request->get('referred_by', $p_request->get('referrer')) ?? '');
         $signupRequest->enteredPass       = Filter::toSimple($p_request->get('key') ?? '');
         $signupRequest->enteredCPass      = Filter::toSimple($p_request->get('cpass') ?? '');
         $signupRequest->clientIP          = $p_request->getClientIp();
-
-        // Fallback to key for class
-        if (!$signupRequest->enteredClass) {
-            $signupRequest->enteredClass = key($this->classes);
-        }
 
         return $signupRequest;
     }
@@ -251,7 +250,7 @@ class SignupController extends AbstractController
             'error'             => $p_exception->getMessage(),
             'completedPhase'    => $p_exception->getCode(),
             'submit_successful' => false,
-            'class_display'     => '',
+            'class_display'     => $this->classDisplayNameFromIdentity(strtolower($p_request->enteredClass)),
             'signupRequest'     => $p_request,
         ];
 
@@ -266,9 +265,11 @@ class SignupController extends AbstractController
      * @todo Move this to a model
      * @return String[][] An array of class attributes indexed by class key
      */
-    private function class_choices()
+    private function class_choices(): array
     {
-        $activeClasses = query_array('SELECT identity, class_name, class_note AS expertise FROM class WHERE class_active');
+        $activeClasses = query_array('SELECT 
+            identity, class_name, class_note AS expertise
+             FROM class WHERE class_active'); // Filters out classes like mantis perhaps
         $classes = [];
 
         foreach ($activeClasses as $loopClass) {
@@ -326,7 +327,7 @@ class SignupController extends AbstractController
      */
     private function validate_signup_phase4($enteredClass)
     {
-        return (bool)query_item('SELECT identity FROM class WHERE class_active AND identity = :id', [':id' => $enteredClass]);
+        return (bool) $this->classDisplayNameFromIdentity($enteredClass);
     }
 
     /**
@@ -524,8 +525,13 @@ class SignupController extends AbstractController
     /**
      * Get the display name from the identity.
      */
-    private function classDisplayNameFromIdentity($identity)
+    private function classDisplayNameFromIdentity(string $identity): string
     {
-        return query_item('SELECT class_name from class where identity = :identity', [':identity' => $identity]);
+        $classes = $this->class_choices();
+        if (!isset($classes[$identity])) {
+            return null;
+        } else {
+            return $classes[$identity]['name'];
+        }
     }
 }

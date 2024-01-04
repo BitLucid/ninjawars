@@ -9,6 +9,9 @@ use NinjaWars\core\extensions\SessionFactory;
 use NinjaWars\core\data\Player;
 use NinjaWars\core\data\Clan;
 use NinjaWars\core\data\Shop;
+use NinjaWars\core\data\Npc;
+use NinjaWars\core\data\Item;
+use NinjaWars\core\control\Combat;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use NinjaWars\core\extensions\StreamedViewResponse;
@@ -34,6 +37,16 @@ class EpicsController extends AbstractController
         }
     }
 
+    private function filterNpcData($npcs, $npc_id)
+    {
+        foreach ($npcs as $npc) {
+            if ($npc['name'] == $npc_id) {
+                return $npc;
+            }
+        }
+        return null;
+    }
+
     /**
      * Epics for raw ui stories
      */
@@ -48,6 +61,15 @@ class EpicsController extends AbstractController
         $clan             = $char->getClan();
         $other_npcs       = NpcFactory::npcsData();
         $npcs             = NpcFactory::customNpcs();
+        $npco             = new Npc($this->filterNpcData($other_npcs, 'Oni')); // Construct the npc object.
+        $item             = Item::findByIdentity('dimmak');
+        $npc_damage_class = Combat::determineDamageClass(9999, 10);
+        $transientClass = new \stdclass();
+        $transientClass->enteredClass = 'dragon';
+        $transientClass->enteredName = 'dragon';
+        $transientClass->enteredEmail = 'dragon@example.com';
+        $transientClass->enteredClass = 'dragon';
+        $signupRequest    = $transientClass;
 
         $error            = null;
         $static_nodes = include(ROOT . 'lib/data/raw/nodes.php');
@@ -55,6 +77,9 @@ class EpicsController extends AbstractController
         $parts = [
             'nodes'             => $static_nodes,
             'npcs'              => $npcs,
+            'npco'              => $npco,
+            'item'              => $item,
+            'npc_damage_class'  => $npc_damage_class,
             'other_npcs'        => $other_npcs,
             'error'             => $error,
             'char'              => $char,
@@ -64,6 +89,7 @@ class EpicsController extends AbstractController
             'item_costs'        => Shop::itemForSaleCosts(),
             'full_item_costs'   => Shop::fullItems(true),
             'clans'     => Clan::rankings(),
+            'signupRequest'     => $signupRequest,
         ];
 
         return new StreamedViewResponse('UI Epics', 'epics.tpl', $parts);

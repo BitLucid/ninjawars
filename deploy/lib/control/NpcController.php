@@ -178,8 +178,8 @@ class NpcController extends AbstractController
         $image_path       = null;
 
         // If the image exists, set the path to it for use on the page.
-        if ($image && file_exists(SERVER_ROOT.'www/images/characters/'.$image)) {
-            $image_path = IMAGE_ROOT.'characters/'.$image;
+        if ($image && file_exists(SERVER_ROOT . 'www/images/characters/' . $image)) {
+            $image_path = IMAGE_ROOT . 'characters/' . $image;
         }
 
         // ******* FIGHT Logic ***********
@@ -212,7 +212,8 @@ class NpcController extends AbstractController
                 }
 
                 // Add bounty where applicable for npcs.
-                if ($npco->bountyMod() > 0 &&
+                if (
+                    $npco->bountyMod() > 0 &&
                     $player->level > self::MIN_LEVEL_FOR_BOUNTY &&
                     $player->level <= self::MAX_LEVEL_FOR_BOUNTY
                 ) {
@@ -550,6 +551,7 @@ class NpcController extends AbstractController
     {
         $damage = rand(50, 150);
         $victory = $player->harm($damage) > 0;
+        $powerful_attack = false;
 
         if ($victory) {
             // The den of thieves didn't accomplish their goal
@@ -557,6 +559,7 @@ class NpcController extends AbstractController
 
             if ($damage > 120) { // Powerful attack gives an additional disadvantage
                 $player->subtractKills(1);
+                $powerful_attack = true;
             }
 
             $player->setGold($player->gold + $gold);
@@ -575,6 +578,7 @@ class NpcController extends AbstractController
                 'attack'  => $damage,
                 'gold'    => $gold,
                 'victory' => $victory,
+                'powerful_attack' => $powerful_attack,
             ],
         ];
     }
