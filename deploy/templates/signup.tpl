@@ -115,12 +115,43 @@
 	  <div class='inline-block'>
 	  	<strong>Ninja Animal Style &amp; Expertise&nbsp;</strong>
 	  </div>
-	  <div class='inline-block'>
+	  <style>
+	  {literal}
+	  	.ninja-picker-container {
+	  		display: flex;
+	  		flex-wrap: wrap;
+	  		justify-content: space-around;
+	  	}
+		.ninja-picker-container label {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			width: 20vw;
+			height: 20vw;
+			margin: 0.5vw;
+			padding: 0.5vw;
+			border: 2px solid #ccc;
+			border-radius: 0.5rem;
+			background-color: #eee;
+			color: #333;
+			font-weight: bold;
+			font-size: smaller;
+			cursor: pointer;
+		}
+		.ninja-picker-container label:hover {
+			background-color: #ddd;
+			border-color: #aaa;
+		}
+		{/literal}
+	  </style>
+	  <div class='block ninja-picker-container'>
   	{foreach from=$classes item='class' key='identity'}
-		<label class='class-desc block'>
-			<input type='radio' name='send_class' value='{$identity}'
-				{if $signupRequest}{if $signupRequest->enteredClass eq $identity}checked='checked'{/if}{/if}> {$class.name} - {$class.expertise}
-		</label>
+		<label class='class-desc inline-block'>
+			<img src='/images/characters/{$identity}_ninja.jpg' alt='{$identity} icon' class='class-icon quarter-max'>
+			<input type='radio' name='send_class' value='{$identity}' {if $signupRequest}{if $signupRequest->enteredClass eq $identity}checked='checked'{/if}{/if}>
+				{$class.name} - {$class.expertise}
+			</label>
   	{/foreach}
       </div>
 	  <div class='glassbox'>
