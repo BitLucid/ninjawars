@@ -17,17 +17,17 @@ article#fight nav {
     margin-left: 3em;
 }
 
-.money {
+.encounter-overall .money {
     color: gold;
-    color: rgba(255, 215, 0, .7);
+    color: rgba(255, 215, 0, 0.7);
 }
 
-.npc-fight {
+.encounter-overall .npc-fight {
     width: 80%;
     margin: 0 10%;
 }
 
-#fight .npc-avatar {
+.encounter-overall #fight .npc-avatar {
     float: left;
     margin: 0.5em 1em 0.5em 0.5em;
     text-align: center;

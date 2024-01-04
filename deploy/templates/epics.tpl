@@ -149,11 +149,11 @@
             {include file="npc.thief-group.tpl"}
         </section>
 
-                        {*
 
         <section id='npcs-abstract-section'>
             <h2>Npcs: Abstract</h2>
             {assign var="npco" value=$npco}
+            {assign var="victim" value='firefly'}
             {assign var="image_path" value='/images/characters/firefly.jpg'}
             {assign var="is_quick" value=true}
             {assign var="race" value='OniMonster'}
@@ -179,7 +179,6 @@
 
 
 
-        *}
 
         <section id='intro-section'>
             <h2>Intro</h2>
@@ -312,6 +311,9 @@
             {assign var="player" value=$char}
             {assign var="error" value="Some error string for dojo"}
             {assign var="dojoSections" value=['access-denied', 'form-class-change', 'form-dim-mak', 'reminder-class-change', 'reminder-class', 'reminder-dim-mak', 'reminder-level', 'reminder-next-level', 'scroll', 'success-class-change', 'success-dim-mak']}
+            {assign var="required_kills" value=999999}
+            {assign var="dim_mak_cost" value=545454}
+            {assign var="classOptions" value=[]}
             {include file="dojo.tpl"}
         </section>
 
@@ -342,6 +344,8 @@
             {assign var="player_count" value=9999}
             {assign var="rich_haul" value=77777}
             {assign var="recently_active" value=23232323}
+            {assign var="stats" value=['player_count'=>2343443, 'rich_haul'=>23232323, 'recently_active'=>23232323]}
+            {assign var="duels" value=[['attacker_id'=>23232323, 'attacker'=>'whoever', 'defender'=>'someoneelse', 'defender_id'=>555555, 'won'=>true, 'killpoints'=>23424, 'date'=>'34343434']]}
             {include file="duel.tpl"}
         </section>
 
@@ -391,6 +395,12 @@
         <section id='fight-section'>
             <h2>Fight - Attack Next</h2>
             {assign var="player" value=$char}
+            {assign var="enemy" value=$char}
+            {assign var="combat_skills" value=[]}
+            {assign var="targeted_skills" value=[]}
+            {assign var="shift" value=66}
+            {assign var="player_count" value=66666}
+            {assign var="items" value=['shuriken'=>['item_id'=>232323, 'other_usable'=>true, 'name'=>'Some Item', 'count'=>454545]]}
             {include file="enemies.attack-next.tpl"}
         </section>
 

@@ -1,12 +1,17 @@
 <link href="/css/npcs.css" rel="stylesheet" type="text/css" />
 
-  <article id='fight'>
+  <article id='fight' class='encounter-overall'>
 	<h2>{$display_name|escape}</h2>
 
 	<section class='npc-fight'>
 	{if $image_path}
 		<figure class='npc-avatar'>
-		  <img src='{cachebust file=$image_path}' alt='A {$race}' title='A {$race}'>
+		  <img 
+		  	src='{cachebust file=$image_path}'
+		    alt='A {$race}' 
+			title='A {$race}'
+			style='max-width: 450px;'
+			>
 		</figure>
 	{/if}
 
@@ -52,7 +57,10 @@
 		{if $is_weaker}<p>The {if $is_villager}villager{/if}{if !$is_villager}{$race|escape}{/if} is no match for you!</p>{/if}
 		{if $kill_npc}<p class='ninja-notice fade-in'>You kill the {$display_name|escape}!</p>
 			{if $added_bounty}
-			<div class='bounty-notice'>{if $is_villager}<p>You have slain a member of the village!</p>{/if} <em class='money'>{$added_bounty}</div>
+				<div class='bounty-notice'>
+					{if $is_villager}<p>You have slain a member of the village!</p>{/if} 
+					<em class='money'>{$added_bounty}</em> bounty added.
+				</div>
 			{/if}
 		{else}
 			{if $is_weaker}
