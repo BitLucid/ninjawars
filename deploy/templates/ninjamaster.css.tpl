@@ -3,11 +3,90 @@
 	float:right;clear:right;
 }
 .headed{
-	border-top:1px brown solid;
+	border-top:1px rgb(119, 65, 65) solid;
 }
 .special-info{
 	margin-bottom:3rem;
 }
+
+.char-info-area {
+  padding: 20px;
+  border-radius: 10px;
+  border: rgba(19, 1, 1, 0.9) thin solid;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.char-info-area h2 {
+  margin-bottom: 10px;
+}
+
+#char-info-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+#char-info-table th, #char-info-table td {
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+
+
+.char-profile, .char-description {
+  margin-bottom: 0.3rem;
+}
+
+/* Style for the character profile and description */
+.char-profile,
+.char-description {
+  margin-bottom: 0.2rem;
+  padding: 0.75rem;
+  border: 1px solid #260223;
+  border-radius: 0.5rem;
+}
+
+.char-profile {
+  background-color: #2a0a0a;
+}
+
+.char-description {
+  background-color: #170e0e;
+  margin-bottom:1rem;
+}
+
+
+.account-info {
+  border: #f9f9f9 thin solid;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+.account-info h3 {
+  margin-bottom: 10px;
+}
+
+.account-info dl {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 10px;
+}
+
+.constrained {
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.alert-info {
+  background-color: #d9edf7;
+  border-color: #bce8f1;
+  color: #31708f;
+  padding: 15px;
+  border-radius: 5px;
+  margin-top: 20px;
+}
+
+
 .char-actions{
 	display:flex;
 	justify-content: space-evenly;
@@ -31,7 +110,7 @@
 
 .carded-area{
 	display:flex;
-	justify-content: space-evenly;
+	justify-content: space-around;
 }
 
 .highlight-box{
@@ -48,9 +127,12 @@
   border: 1px solid #424954;
   border-radius: 0.25rem;
   display:inline-block;
-  max-width: 25vw;
-  height: 20rem;
+  max-width: 50vw;
+  height: 25vh;
   overflow-y: auto;
+}
+.card-50{
+	max-width: 50vw;
 }
 
 /* On mouse-over, add a deeper shadow */
@@ -107,10 +189,19 @@
 	margin-right: 2rem;
 }
 .npc-box figcaption{
-	color:gray;text-overflow:ellipsis;overflow:hidden;white-space:nowrap;max-width:10em;width:100%;
+	color:gray;
+	text-overflow:ellipsis;
+	overflow:hidden;
+	white-space:nowrap;
+	max-width:100%;
+	width:100%;
 }
 .npc-box .char-profile{
-	text-overflow:ellipsis;overflow:hidden;white-space:nowrap;max-width:10em;width:100%;
+	text-overflow:ellipsis;
+	overflow:hidden;
+	white-space:nowrap;
+	max-width:100%;
+	width:100%;
 }
 
 

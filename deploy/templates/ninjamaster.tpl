@@ -59,8 +59,8 @@
 		</table>
 	</div>
 	<div class='text-center'>
-		<div class='highlight-box'>
-		{$char_info.days} days
+		<div class='highlight-box thick'>
+		active {$char_info.days} days ago
 		</div>
 	</div>
 	{if $char_info.first}
@@ -139,10 +139,10 @@
 
 <section class='special-info'>
 	<header>
-		<h2 id='usage-usage'>Recent Usage</h2>
+		<h2 id='usage-usage'>Recent Activity</h2>
 	</header>
 	<div class='carded-area'>
-		<div class='card'>
+		<div class='card card-50'>
 			<div class='card-container'>
 				<h5>New Players</h5>
 				<div>Recent new players in 7 days: {$usage.new_count}</div>
