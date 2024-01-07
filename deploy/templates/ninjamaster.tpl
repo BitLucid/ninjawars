@@ -231,51 +231,78 @@
 		<button class='btn btn-default show-hide-next' type='button'>Show/Hide</button>
 	</div>
 	<div class='npc-raw-info'>
+		<section class='npc-raw-info-list-area'>
 			{foreach from=$npcs item='npc'}
-		<div class='npc-box tiled'>
-		  <h2>{$npc->identity()}</h2>
-		  <figure>
-		  	<img {if $npc->image()}src='/images/characters/{$npc->image()}'{/if} class='npc-icon' alt='no-image'>
-		  	<figcaption>{$npc->shortDesc()|escape}&nbsp;</figcaption>
-		  </figure>
-		  <dl>
-			<dt>Name</dt><dd>{$npc->name()|escape}</dd>
-			<dt>Race</dt><dd>{$npc->race()|escape}</dd>
-			<dt>Difficulty</dt><dd><strong>{$npc->difficulty()}</strong></dd>
-			<dt>Max Damage</dt><dd>{$npc->maxDamage()}</dd>
-			<dt>Max Health</dt><dd>{$npc->getMaxHealth()}</dd>
-		</dl>
-		<div>
-			Traits: 
-				{foreach from=$npc->traits() item='trait'}
-				{$trait|escape}
-				{/foreach}
-		</div>
-		</div>
+			<div class='npc-box tiled'>
+			<h2>{$npc->identity()|escape}</h2>
+			<div class='npc-details'>
+				<dl>
+					<dt>Name</dt><dd>{$npc->name()|escape}</dd>
+					<dt>Race</dt><dd>{$npc->race()|escape}</dd>
+					<dt>Difficulty</dt><dd><span class='badge badge-info'>{$npc->difficulty()}</span></dd>
+					<dt>Max Damage</dt><dd>{$npc->maxDamage()}</dd>
+					<dt>Max Health</dt><dd>{$npc->getMaxHealth()}</dd>
+				</dl>
+			</div>
+			<div class='npc-traits glassbox'>
+				<span class='inline'>Traits:</span>
+				{if !$npc->traits()}
+					<span class='notice'>None</span>
+				{/if}
+				<ul>
+					{foreach from=$npc->traits() item='trait'}
+					<li><span class='badge badge-secondary'>{$trait|escape}</span></li>
+					{/foreach}
+				</ul>
+			</div>
+			<figure>
+				<img {if $npc->image()}src='/images/characters/{$npc->image()|escape}'{/if} class='npc-icon' alt='no-image'>
+				<figcaption title='{$npc->shortDesc()|escape}'>{$npc->shortDesc()|escape}&nbsp;</figcaption>
+			</figure>
+			</div>
 			{/foreach}
+		</section>
 		<h3>Unfinished Raw Npcs</h3>
+		<div class='callout'>
+			<div class='notice'>
+				<p>
+					<em>These are npcs that have a difficulty less than one, and are thus unfinished.</em>
+					Fighting them will be trivial, they don't have strength, speed, or health beyond the default 1,
+					they don't have a representational image (not always required), etc.
+				</p>
+			</div>
+		</div>
+		<section class='npc-raw-info-list-area'>
 			{foreach from=$trivial_npcs item='npc'}
-		<div class='npc-box tiled'>
-		  <h2>{$npc->identity()}</h2>
-		  <figure>
-		  	<img src='/images/characters/{$npc->image()}' class='npc-icon' alt='no-image'>
-		  	<figcaption>{$npc->shortDesc()|escape}&nbsp;</figcaption>
-		  </figure>
-		  <dl>
-			<dt>Name</dt><dd>{$npc->name()|escape}</dd>
-			<dt>Race</dt><dd>{$npc->race()|escape}</dd>
-			<dt>Difficulty</dt><dd><strong>{$npc->difficulty()|escape}</strong></dd>
-			<dt>Max Damage</dt><dd>{$npc->maxDamage()|escape}</dd>
-			<dt>Max Health</dt><dd>{$npc->getMaxHealth()|escape}</dd>
-		</dl>
-		<div>
-			Traits: 
-				{foreach from=$npc->traits() item='trait'}
-				{$trait|escape}
-				{/foreach}
-		</div>
-		</div>
+			<div class='npc-box tiled'>
+			<h2>{$npc->identity()|escape}</h2>
+			<div class='npc-details'>
+				<dl>
+					<dt>Name</dt><dd>{$npc->name()|escape}</dd>
+					<dt>Race</dt><dd>{$npc->race()|escape}</dd>
+					<dt>Difficulty</dt><dd><span class='badge badge-info'>{$npc->difficulty()|escape}</span></dd>
+					<dt>Max Damage</dt><dd><span class='damage'>{$npc->maxDamage()|escape}</span></dd>
+					<dt>Max Health</dt><dd>{$npc->getMaxHealth()|escape}</dd>
+				</dl>
+			</div>
+			<div class='npc-traits glassbox'>
+				<span class='inline'>Traits:</span>
+				{if !$npc->traits()}
+					<span class='notice'>None</span>
+				{/if}
+				<ul>
+					{foreach from=$npc->traits() item='trait'}
+					<li><span class='badge badge-secondary'>{$trait|escape}</span></li>
+					{/foreach}
+				</ul>
+			</div>
+			<figure>
+				<img src='/images/characters/{$npc->image()|escape}' class='npc-icon' alt='no-image'>
+				<figcaption title='{$npc->shortDesc()|escape}'>{$npc->shortDesc()|escape}&nbsp;</figcaption>
+			</figure>
+			</div>
 			{/foreach}
+		</section>
 	</div>
 </section>
 
