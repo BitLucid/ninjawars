@@ -324,7 +324,7 @@ class InventoryController extends AbstractController
         $bonus = $this->calculateBonus($user, $target);
 
         if ($item->hasEffect('wound')) {
-            $item->setTargetDamage(rand(1, $item->getMaxDamage()));
+            $item->setTargetDamage(rand(1, $item->getMaxDamage() ?? 0));
 
             if ($item->hasEffect('slice')) {
                 $item->setTargetDamage(rand(1, max(9, $user->getStrength() - 4)) + $bonus);
@@ -413,7 +413,7 @@ class InventoryController extends AbstractController
             if ($user->id() === $target->id()) {
                 $message .= "You take " . $item->getTargetDamage() . " damage!";
             } else {
-                if (strlen($notice) > 0) {
+                if ($notice !== null && strlen($notice) > 0) {
                     $notice .= " You also"; // Join multiple targetResult messages.
                 }
 

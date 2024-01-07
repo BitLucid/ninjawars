@@ -2704,15 +2704,20 @@ table#sight-info {
     padding-right: 1em;
 }
 
+.solo-page nav.attack-nav a {
+    margin-left: 2rem;
+}
+
 #attack-outcome .died {
     background-image: url(/images/combat/blood_splatter.png);
     background-repeat: no-repeat;
     background-position: center center;
-    height: 100px;
+    height: 130px;
 }
 
 #attack-outcome .died .ninja-error {
     margin-top: 2.5em;
+    font-size: x-large;
 }
 
 /* Clan page styling */

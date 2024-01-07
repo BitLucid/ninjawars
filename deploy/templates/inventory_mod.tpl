@@ -14,7 +14,7 @@
     {assign var="linkText" value="Combat"}
 {/if}
 
-<h1>Item Use</h1>
+<h1>Item Effects</h1>
 
 <nav class='LinkBack glassbox'>
     <a href="{$urlBack}" class='return-to-location'>{$linkText}</a>
@@ -22,7 +22,7 @@
 
 {if $error eq 1}
   <div class='centered glassbox'>
-      <div class='ninja-error centered'>{$resultMessage}</div>
+      <div class='ninja-error centered alert alert-warning fade-in-slow' role='alert'><strong>{$resultMessage}</strong></div>
   </div>
 {elseif $error eq 2}
   You didn't choose an item/victim.
