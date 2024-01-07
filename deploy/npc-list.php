@@ -7,6 +7,8 @@ use NinjaWars\core\data\NpcFactory;
  */
 
 // Npc matrix planning document: https://docs.google.com/spreadsheet/ccc?key=0AkoUgtBBP00HdGZ1eUhaekhTb1dnZVh3ZlpoRExWdGc#gid=0
+// Also see: https://localhost:8765/ninjamaster/#npc-list-stats for a comparison of the different difficulty levels
+// and where the different npcs fall on the scale.
 NpcFactory::$data = [
     'firefly'   => [ // Baseline weakest mob
         'name'     => 'Firefly',
@@ -21,7 +23,7 @@ NpcFactory::$data = [
         'name'     => 'Fireflies',
         'img'      => 'fireflies.jpg',
         'strength' => 0,
-        'stamina'  => 1,
+        'stamina'  => 2,
         'damage'   => 0,
         'race'     => 'insect',
     ],
