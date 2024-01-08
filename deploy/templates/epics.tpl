@@ -55,6 +55,7 @@
                 <a class='btn btn-info' href='#shop-items-section'>Shop.Items</a>
                 <a class='btn btn-info' href='#shop-buy-section'>Shop.Buy</a>
                 <a class='btn btn-info' href='#shrine-section'>Shrine</a>
+                <a class='btn btn-info' href='#shrine-resurrect-section'>Shrine.Ressurrect</a>
                 <a class='btn btn-info' href='#map-section'>Map</a>
                 <a class='btn btn-info' href='#nodes-section'>Nodes</a>
                 <a class='btn btn-info' href='#list-section'>List</a>
@@ -118,6 +119,15 @@
             {assign var="has_chi" value=true}
             {assign var="shrineSections" value=['entrance', 'result-resurrect', 'result-heal', 'form-heal','reminder-full-hp','form-cure','form-resurrect','reminder-resurrect-cost']}
             {include file="shrine.tpl"}
+        </section>
+        <section id='shrine-resurrect-section'>
+            <h2>Shrine</h2>
+            {assign var="error" value=''}
+            {assign var="player" value=$char}
+            {assign var="freeResurrection" value=true}
+            {assign var="has_chi" value=true}
+            {assign var="shrineSections" value=['entrance', 'result-resurrect', 'result-heal', 'form-heal','reminder-full-hp','form-cure','form-resurrect','reminder-resurrect-cost']}
+            {include file="shrine.result-resurrect.tpl"}
         </section>
 
         <section id='npcs-section'>
