@@ -887,7 +887,7 @@ article#player-titles {
     font-size: larger;
 }
 
-#health-bar-container {
+.health-bar-container {
     min-width: 12rem;
     display: inline-block;
 }
