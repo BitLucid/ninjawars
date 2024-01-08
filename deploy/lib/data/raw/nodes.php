@@ -2,7 +2,7 @@
 
 return [
             [ // Row
-                ['name' => 'Shrine', 'type' => 'shrine building', 'url' => 'shrine', 'icon_raw' => '⛩', 'tile_image' => 'concentric_shrine.png', 'xcoord' => 0, 'ycoord' => 0, 'id' => 1]
+                ['name' => 'Shrine', 'type' => 'shrine building', 'url' => 'shrine', 'icon_raw' => 'fa-solid fa-torii-gate', 'tile_image' => 'concentric_shrine.png', 'xcoord' => 0, 'ycoord' => 0, 'id' => 1]
                 , ['name' => '', 'type' => 'dirt', 'url' => '', 'tile_image' => null, 'xcoord' => 0, 'ycoord' => 2, 'id' => 12]
                 , ['name' => '', 'type' => 'north-south-road', 'url' => '', 'tile_image' => 'north-south-road.png', 'xcoord' => 2, 'ycoord' => 0, 'id' => 3]
                 , ['name' => '', 'type' => 'dirt', 'url' => '', 'tile_image' => null, 'xcoord' => 0, 'ycoord' => 2, 'id' => 12]

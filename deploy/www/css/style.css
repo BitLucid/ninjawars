@@ -1161,6 +1161,11 @@ table.playerTable {
     vertical-align: middle;
 }
 
+.svg-sword svg {
+    fill: currentColor;
+    vertical-align: middle;
+}
+
 .player-info .svg-shuriken svg {
     height: 3rem;
     width: 3rem;

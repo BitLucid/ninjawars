@@ -102,7 +102,7 @@
     </div>
     {if $i_am_dead}
       <div class='glassbox'>
-        <a href='/shrine/heal_and_resurrect' target='main' title='Fully heal and resurrect' class='btn btn-default ninja-info centered'>⛩ Heal</a>
+        <a href='/shrine/heal_and_resurrect' target='main' title='Fully heal and resurrect' class='btn btn-default ninja-info centered'><i class="fa-solid fa-torii-gate"></i> Heal</a>
       </div>
     {/if}
   </section>

@@ -51,10 +51,19 @@
     margin-top:2.5rem;
 }
 
-.attack-next .duel-area .svg-shuriken svg{
+.attack-next .duel-area .svg-sword svg, .attack-next .duel-area .svg-shuriken svg{
     height: 5rem;
     width: 5rem;
 }
+.attack-next .svg-sword svg{
+    fill: currentColor;
+}
+
+.attack-next .item-use-area .svg-shuriken svg{
+    height: 5rem;
+    width: 5rem;
+}
+
 .attack-next .player-class .svg-shuriken svg{
     height: 3rem;
     width: 3rem;
@@ -64,6 +73,9 @@
 }
 .attack-next .item-use-area{
     text-align: right;
+}
+.attack-next .duel-area{
+    margin-bottom:3rem;
 }
 .attack-next .use-item {
     border-top-left-radius:0;
@@ -175,6 +187,7 @@
                 <div class='glassbox duel-area'>
                     <form id='attack_player' action='/attack' method='post' name='attack_player'>
                         <input id="duel" type="hidden" name="duel" value="1">
+                        {* https://thenounproject.com/browse/icons/term/game-attack/ for sword svg*}
                         <div class='btn-group' role='group'>
                             {foreach from=$combat_skills item="skill"}<!-- No space
                                 --><label class='btn btn-default' for='{$skill.skill_internal_name|escape}' title='{$skill.skill_internal_name|escape} while attacking for {getTurnCost skillName=$skill.skill_display_name} turns more'>
@@ -182,9 +195,9 @@
                                 </label><!-- no space
                             -->{/foreach}<!-- no space
                             --><input id="target" type="hidden" value="{$enemy->id()|escape}" name="target">
-                            <button type="submit" class='btn btn-vital'>
-                                <span class='svg-shuriken'>
-                                    {include file='shuriken.svg.tpl'}
+                            <button type="submit" class='btn btn-vital btn-primary'>
+                                <span class='svg-sword'>
+                                    {include file='sword.svg.tpl'}
                                 </span>
                                 Attack
                             </button>
@@ -205,11 +218,19 @@
                                 <option value="{$item.item_id|escape}">{$item.name|escape} ({$item.count|escape})</option>
                             {/if}
                             {if $item@last}
-                                </select><!-- No space between --><input type="submit" value="Use Item" class="btn btn-default use-item">
+                                </select><!-- No space between --><button
+                                type="submit" 
+                                value="Use Item" 
+                                class="btn btn-default btn-vital use-item">
+                                    <span class='svg-shuriken'>
+                                        {include file='shuriken.svg.tpl'}
+                                    </span>
+                                    Use Item
+                                </button>
                             {/if}
                         {foreachelse}
                         <div id='no-items' class='ninja-notice'>
-                        You have no items.
+                            You have no items.
                         </div>
                         {/foreach}
                     </div>

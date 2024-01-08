@@ -53,8 +53,10 @@
 
     <div class='battle-arena'>
 {for $round=1 to $rounds}
-        <div class='battle-round'><span class='fa fa-bolt'/> Round {$round}, fight!</div>
+        <div class='battle-round'><i class='fa fa-bolt'></i> Round {$round}, fight!</div>
 {/for}
+    <div class='thick'>
+        You fought for <div class='battle-round'><i class='fa fa-bolt'></i> {$rounds} rounds</div>.</div>
     </div>
 
     {if $options.evade && $target->health gt 0}

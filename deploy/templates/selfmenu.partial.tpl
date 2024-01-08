@@ -39,7 +39,7 @@
                     class="fa fa-cog"></i> Account Info</a></li>
         <li class="divider"></li>
         <li><a href="/shrine/heal_and_resurrect" target="main" title='Fully heal and resurrect if necessary'
-                tabindex="-1">⛩ Heal</a>
+                tabindex="-1"><i class="fa-solid fa-torii-gate"></i> Heal</a>
         <li class="divider"></li>
         <!-- Recent Events count and target will get put in here via javascript -->
         <div id='recent-events' class="boxes active" style='display:none'>

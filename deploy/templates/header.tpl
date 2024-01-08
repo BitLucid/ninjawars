@@ -15,7 +15,7 @@
     <!-- Bootstrap core CSS -->
     <link href="/css/bootstrap.min.css" rel="stylesheet">
     <link href="/css/style.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
+    <script src="https://kit.fontawesome.com/9d4bd8fe2e.js" crossorigin="anonymous"></script>
     <link rel="manifest" href="/manifest.json">
 
     <!-- Bootstrap core JavaScript
