@@ -117,6 +117,20 @@ class ApiControllerTest extends NWTest
         $this->helperPropertyExists('chats', $payload);
     }
 
+    public function testClans()
+    {
+        $request = new Request([
+            'type'         => 'clans',
+            'jsoncallback' => self::CALLBACK,
+        ], []);
+
+        RequestWrapper::inject($request);
+        $result = $this->controller->nw_json();
+        $payload = $this->extractPayload($result);
+
+        $this->helperPropertyExists('clans', $payload);
+    }
+
     public function testLatestChat()
     {
         $request = new Request([

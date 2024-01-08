@@ -645,6 +645,12 @@ h1,
     text-shadow: black 2px 2px 3px;
 }
 
+.player-info .player-name {
+    border-bottom: none;
+    padding-top: 1rem;
+    padding-bottom: 0.7rem;
+}
+
 h1 {
     margin: 0 0 2.5rem;
 }

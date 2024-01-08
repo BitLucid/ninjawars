@@ -14,6 +14,7 @@ const apiMethods = {
   self: (data) => fetch(`/api?type=player&json=1&data=${encodeURIComponent(JSON.stringify(data))}`),
   player: (data) => fetch(`/api?type=player&json=1&data=${encodeURIComponent(JSON.stringify(data))}`),
   chats: (data) => fetch(`/api?type=chats&json=1&data=${encodeURIComponent(JSON.stringify(data))}`),
+  clans: (data) => fetch(`/api?type=clans&json=1&data=${encodeURIComponent(JSON.stringify(data))}`),
   newChats: (data) => fetch(`/api?type=newChats&json=1&since=${encodeURIComponent(JSON.stringify(data))}`),
   sendChat: (message) => fetch(`/api?type=send_chat&json=1&msg=${encodeURIComponent(JSON.stringify(message))}`),
   inventory: () => fetch('/api?type=inventory&json=1'),

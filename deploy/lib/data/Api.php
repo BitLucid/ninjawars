@@ -147,6 +147,14 @@ class Api
         return ['latest_chat_id' => $statement->fetch()];
     }
 
+    public function clans()
+    {
+        $clans = query_array(
+            "SELECT clan_id, clan_name, clan_created_date, clan_founder, clan_avatar_url, description, coalesce(clan_avatar_url, null) as has_avatar FROM clan ORDER BY has_avatar desc nulls last, clan_name DESC"
+        );
+        return ['clans' => $clans];
+    }
+
     public function sendChat($msg)
     {
         if (SessionFactory::getSession()->get('authenticated', false)) {
