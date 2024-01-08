@@ -24,14 +24,14 @@ const initializeClans = () => {
         $('#clan-list-progress').hide();
         // loop over the clan list and add the data of each clan to it
         data.clans.forEach((clan) => {
-          $('#clan-list-area').append(`<li>
+          $('#clan-list-area').append(`<li class='card'>
           <div class='glassbox'>
             ${clan.clan_name} 
             ${clan.clan_id} 
             <time class='timeago' datetime='${escape(clan.clan_created_date)}'>${escape(clan.clan_created_date)}</time>
             <a href='${escape(clan.clan_avatar_url ?? '')}'>Avatar</a>
             <figure>
-              <img src='${escape(clan.clan_avatar_url)}' alt='' />
+              <img style='max-height:35rem;max-width:35rem' src='${escape(clan.clan_avatar_url)}' alt='' />
               <figcaption>Clan Avatar: ${clan.clan_avatar_url ? '' : 'None'}</figcaption>
             </figure>
             Founded by ${escape(clan.clan_founder)}
