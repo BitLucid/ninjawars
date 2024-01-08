@@ -1,5 +1,40 @@
 <link href="/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/css/style.css" rel="stylesheet">
+<link href="/css/style.css" rel="stylesheet">
+<script>
+{literal}
+  var link = document.querySelector("link[rel~='icon']");
+if (!link) {
+    link = document.createElement('link');
+    link.rel = 'icon';
+    document.head.appendChild(link);
+}
+link.href = '/images/ninjamaster/shuriken-favicon.png';
+{/literal}
+</script>
+
+<style>
+#admin-favicon {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 1000;
+  background: #ff29ed;
+  border-radius: 50%;
+  padding: 1rem;
+  box-shadow: 0 0 1rem #ff29ed;
+}
+#admin-favicon svg {
+  height: 5rem;
+  width: 5rem;
+}
+</style>
+<div id='admin-favicon'>
+  <span>
+    <a href='/ninjamaster'>
+      <img src='/images/ninjamaster/shuriken-favicon.svg' width='50' height='50' alt='dashboard-icon' />
+    </a>
+  </span>
+</div>
 
 {include file="ninjamaster.css.tpl"}
 
@@ -21,6 +56,7 @@
 		<ul class='nav nav-pills'>
 			<li><a class='' href='/ninjamaster/#npc-list-stats'>Npc List</a></li>
 			<li><a class='' href='/ninjamaster/#char-list'>Character List</a></li>
+			<li><a class='' href='/ninjamaster/#clans'>Clans</a></li>
 			<li><a class='' href='/ninjamaster/tools'>Validation Tools</a></li>
 			<li><a class='' href='/ninjamaster/player_tags'>Character Tag List</a></li>
 			<li><a class='' href='/ninjamaster/#item-list-area'>Item List</a></li>
@@ -208,6 +244,23 @@
 		{/foreach}
 		</div>
 		{/foreach}
+	</div>
+</section>
+
+<section id='clan-list' class='special-info'>
+	<header>
+		<h3>Clans</h3>
+	</header>
+	<div class='text-center'>
+		<button class='btn btn-default show-hide-next' type='button'>Show/Hide</button>
+	</div>
+	<div id='clan-list-stats'>
+		<progress id='clan-list-progress' indeterminate=indeterminate></progress>
+    <div class='text-center thick'>
+		  <button class='btn btn-primary' id='load-clans'>VIEW CLANS</button>
+    </div>
+		<ul id='clan-list-area'>
+		</ul>
 	</div>
 </section>
 

@@ -35,7 +35,9 @@
                 <a class='btn btn-info' href='#npcs-section'>Npcs</a>
                 <a class='btn btn-info' href='#npcs-abstract-section'>Npcs: Abstract</a>
                 <a class='btn btn-info' href='#npcs-oni-section'>Npcs: Oni</a>
+                <a class='btn btn-info' href='#npcs-blockers-section'>Npcs.blockers</a>
                 <a class='btn btn-info' href='#npcs-theif-group-section'>Npcs: Thief Group</a>
+                <a class='btn btn-info' href='#npcs-samurai-section'>Npcs.Samurai</a>
                 <a class='btn btn-info' href='#aside-section'>Aside</a>
                 <a class='btn btn-info' href='#chat-section'>Chat</a>
                 <a class='btn btn-info' href='#clan-section'>Clan</a>
@@ -44,6 +46,7 @@
                 <a class='btn btn-info' href='#staff-section'>Staff</a>
                 <a class='btn btn-info' href='#about-section'>About</a>
                 <a class='btn btn-info' href='#errors-section'>Errors</a>
+                <a class='btn btn-info' href='#errors-dead-section'>Errors.dead</a>
                 <a class='btn btn-info' href='#events-section'>Events</a>
                 <a class='btn btn-info' href='#single-event-section'>Single Event</a>
                 <a class='btn btn-info' href='#dojo-section'>Dojo</a>
@@ -55,7 +58,7 @@
                 <a class='btn btn-info' href='#shop-items-section'>Shop.Items</a>
                 <a class='btn btn-info' href='#shop-buy-section'>Shop.Buy</a>
                 <a class='btn btn-info' href='#shrine-section'>Shrine</a>
-                <a class='btn btn-info' href='#shrine-resurrect-section'>Shrine.Ressurrect</a>
+                <a class='btn btn-info' href='#shrine-resurrect-section'>Shrine.Resurrect</a>
                 <a class='btn btn-info' href='#map-section'>Map</a>
                 <a class='btn btn-info' href='#nodes-section'>Nodes</a>
                 <a class='btn btn-info' href='#list-section'>List</a>
@@ -148,6 +151,15 @@
             {include file="npc.oni.tpl"}
         </section>
 
+        <section id='npcs-blockers-section'>
+            <h2>Npcs.blockers</h2>
+            {assign var="ninja" value=$char}
+            {assign var="health" value=0}
+            {assign var="turns" value=0}
+            {assign var="npc_template" value='npc.oni.tpl'}
+            {include file="npc.tpl"}
+        </section>
+
 
         <section id='npcs-theif-group-section'>
             <h2>Npcs: Theif Group</h2>
@@ -188,7 +200,22 @@
         </section>
 
 
-
+        <section id='npcs-samurai-section'>
+            <h2>Npcs: Samurai</h2>
+            {include file="npc.samurai-too-weak.tpl"}
+            {include file="npc.samurai-too-tired.tpl"}
+            {assign var="victory" value=true}
+            {assign var="gold" value=44444}
+            {assign var="samurai_damage_array" value=[22222, 343434, 565656]}
+            {assign var="drop" value=true}
+            {assign var="drop_display" value='some ginseng powder or whatever'}
+            {include file="npc.samurai.tpl"}
+            {assign var="samurai_damage_array" value=[7777, 36666, 565656]}
+            {assign var="drop" value=true}
+            {assign var="drop_display" value='some ginseng powder or whatever'}
+            {assign var="victory" value=0}
+            {include file="npc.samurai.tpl"}
+        </section>
 
         <section id='intro-section'>
             <h2>Intro</h2>
@@ -258,13 +285,25 @@
         </section>
 
         <section id='errors-section'>
-            <h2>Errors</h2>
+            <h2>Various Errors Scroll Long</h2>
             {assign var="error_type" value="frozen"}
-            {include file="error.dead.tpl"}
+            {assign var="error" value='Some error message or another here'}
             {include file="error.default.tpl"}
             {include file="error.frozen.tpl"}
             {include file="error.log_in.tpl"}
+            <h2>(This one is the main error template)</h2>
             {include file="error.tpl"}
+            {include file="error.dead.tpl"}
+        </section>
+
+        <section id='errors-dead-section'>
+            <h2>Dead Go To Shrine Errors.dead</h2>
+            {include file="error.dead.tpl"}
+        </section>
+
+        <section id='errors-log-in-section'>
+            <h2>Login Errors</h2>
+            {include file="error.log_in.tpl"}
         </section>
 
         {*
@@ -410,7 +449,7 @@
             {assign var="targeted_skills" value=[]}
             {assign var="shift" value=66}
             {assign var="player_count" value=66666}
-            {assign var="items" value=['shuriken'=>['item_id'=>232323, 'other_usable'=>true, 'name'=>'Some Item', 'count'=>454545]]}
+            {assign var="items" value=['shuriken'=>['item_id'=>232323, 'other_usable'=>true, 'name'=>'Shuriken', 'count'=>4321]]}
             {include file="enemies.attack-next.tpl"}
         </section>
 

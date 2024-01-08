@@ -50,8 +50,8 @@
     </nav>
 
   {if $viewing_player_obj && $viewing_player_obj->isAdmin()}
-    <a style='font-size:small;float:right;' href='/ninjamaster/?view={$target_player_obj->id()|escape}'>
-      Admin <i class="fas fa-eye"></i>
+    <a style='font-size:small;float:right;background:#333;padding:1rem;' href='/ninjamaster/?view={$target_player_obj->id()|escape}'>
+      <i class="fa-solid fa-lock"></i> <i class="fa-solid fa-eye"></i>
     </a>
   {/if}
 
@@ -102,7 +102,7 @@
     </div>
     {if $i_am_dead}
       <div class='glassbox'>
-        <a href='/shrine/heal_and_resurrect' target='main' title='Fully heal and resurrect' class='btn btn-default ninja-info centered'>⛩ Heal</a>
+        <a href='/shrine/heal_and_resurrect' target='main' title='Fully heal and resurrect' class='btn btn-default ninja-info centered'><i class="fa-solid fa-torii-gate"></i> Heal</a>
       </div>
     {/if}
   </section>

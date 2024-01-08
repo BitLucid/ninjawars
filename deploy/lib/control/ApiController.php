@@ -54,6 +54,7 @@ class ApiController extends AbstractController
             'latest_chat_id',
             'latest_event',
             'latest_message',
+            'clans',
         ];
 
         if (isset($type) && (in_array($type, $allowed) || method_exists($api, $type))) {
@@ -64,6 +65,8 @@ class ApiController extends AbstractController
                 $result = $api->latestEvent();
             } elseif ($type == 'latest_chat_id') {
                 $result = $api->latestChatId();
+            } elseif ($type == 'clans') {
+                $result = $api->clans();
             } elseif ($type == 'send_chat') {
                 $result = $api->sendChat($request->get('msg'));
             } elseif ($type == 'new_chats') {

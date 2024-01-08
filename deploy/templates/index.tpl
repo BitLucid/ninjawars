@@ -28,7 +28,7 @@
           <li><a href="/inventory" target="main">Inventory</a></li>
           <li><a href="/skill" target="main">Skills</a></li>
           <li><a href="/clan" target="main"><i class='fa fa-users' aria-hidden='true'></i><span class='hidden-sm hidden-md'> Clans</span></a></li>
-          <li class='hidden-sm'><a href="/shrine" target="main">⛩ Shrine</a></li>
+          <li class='hidden-sm'><a href="/shrine" target="main"><i class="fa-solid fa-torii-gate"></i> Shrine</a></li>
           <li class='hidden-sm'><a href="/shop" target="main">石 Shop</a></li>
           <li class='hidden-sm hidden-md'><a href="/work" target="main"><i class="fab fa-pagelines"></i> Work</a></li>
           <li class='hidden-sm hidden-md'><a href="/doshin" target="main"><i class='fa fa-bullseye' aria-hidden='true'></i> <span class='hidden-md hidden-sm'>Hunt</span></a></li>

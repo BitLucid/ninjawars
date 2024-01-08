@@ -21,7 +21,7 @@
         </div>
         {if $clan}
         <div>
-          <a href="/clan/view?clan_id={$clan->id|escape}" target='main' title='Your clan members and clan chat'><i class='fa fa-users'></i> My Clan</a>
+          <a href="/clan/view?clan_id={$clan->id|escape}" target='main' title='Your clan members and clan chat'><i class="fa-solid fa-users"></i> My Clan</a>
         </div>
         {/if}
         {/if}
