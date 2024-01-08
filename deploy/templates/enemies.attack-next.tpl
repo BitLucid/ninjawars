@@ -1,3 +1,4 @@
+{* See ConsiderController for the fight template origination*}
 <style>
 .ninja-area{
     width: 100%;
@@ -30,8 +31,13 @@
     padding: 0 0.4rem;
     display: inline-block;
 }
+.attack-next .f-avatar img {
+    border-radius: 50%;
+    width: 100%;
+    height: auto;
+}
 .attack-next .attack-area{
-    margin-top:10rem;
+    margin-top:7vh;
     display:flex;
     justify-content: space-between;
     flex-wrap:wrap;
@@ -141,7 +147,7 @@
                     {/if}
                     <h2>{$enemy->name()|escape}</h2>
                     <div class='f-avatar'>
-                        {include file="gravatar.tpl" gurl=$enemy->avatarUrl()}
+                        {include file="gravatar.tpl" gurl=$enemy->avatarUrl() avatar_size=150}
                     </div>
                     <span class='player-class class-name {$enemy->theme|escape}'>
                         <span class="svg-shuriken">

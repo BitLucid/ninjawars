@@ -29,6 +29,7 @@ var logger = window.logger || console || {
   info: () => { /* noop */ },
   warn: () => { /* noop */ },
   dir: () => { /* noop */ },
+  debug: () => { /* noop */ },
 };
 
 // eslint-disable-next-line no-var
@@ -105,17 +106,17 @@ var Chat = window && typeof window.Chat !== 'undefined' ? window.Chat : {};
 
 // Get all the initial chat messages and render them.
 Chat.getExistingChatMessages = function fnCh() {
-  logger.info('Existing chat messages requested');
+  logger.debug('Existing chat messages requested');
   const since = '1424019122';
 
   $.getJSON(
     `/api?type=new_chats&since=${encodeURIComponent(since)}&jsoncallback=?`,
     (data) => {
-      logger.info('Existing chats data found:', data);
+      logger.debug('Existing chats data found:', data);
       window.storeChats = data;
 
       if (data && data.new_chats && data.new_chats.chats) {
-        logger.info('Rendering pre-existing chat messages.');
+        logger.debug('Rendering pre-existing chat messages.');
 
         $.each(data.new_chats.chats, (key, val) => {
           Chat.renderChatMessage(val);
@@ -226,7 +227,7 @@ Chat.send = function fnCCS(messageData) {
   let passfail = true;
   try {
     window.conn.send(JSON.stringify(messageData)); // Turn the data into a json object to pass.
-    logger.info('Chat message sent.');
+    logger.debug('Chat message sent.');
   } catch (ex) {
     // Maybe the connection send didn't work out.
     logger.warn(`Chat connection failed with: ${ex.message}`);
@@ -263,17 +264,17 @@ Chat.chatReady = function fnCCR() {
     Chat.showSubmissionArea();
   } else {
     Chat.hideSubmissionArea();
-    logger.info('Chat: Not logged in to be able to send messages.');
+    logger.debug('Chat: Not logged in to be able to send messages.');
   }
 
-  logger.info('Chat connected and ready');
+  logger.debug('Chat connected and ready');
   return true;
 };
 
 // Check whether logged in for chat sending
 Chat.canSend = function fnCCanSend() {
   const $area = Chat.submissionArea();
-  logger.info('Chat: Logged in or out: ', $area.data('logged-in'));
+  logger.debug('Chat: Logged in or out: ', $area.data('logged-in'));
   return Boolean($area.data('logged-in'));
 };
 
@@ -281,21 +282,21 @@ Chat.canSend = function fnCCanSend() {
 // eslint-disable-next-line max-statements
 Chat.domain = function fnChDomain(url) {
   if (liveChat) {
-    console.info('Using live chat api');
+    console.debug('Using live chat api');
     return standardChatApi;
   }
 
   if (url && (url.includes('.localurl') || url.includes('localhost'))) {
     const { hostname } = url ? new URL(url) : {};
-    logger.info('Chat api url found was :', hostname);
+    logger.debug('Chat api url found was :', hostname);
     return hostname;
   }
   if (url && url.includes('.local')) {
     const { hostname } = new URL(url);
-    logger.info('Chat api url found was :', hostname);
+    logger.debug('Chat api url found was :', hostname);
     return `chatapi.${hostname}`;
   }
-  logger.info('Chat api url found was :', standardChatApi);
+  logger.debug('Chat api url found was :', standardChatApi);
   return standardChatApi; // Fallback default configured
 };
 
@@ -332,12 +333,12 @@ $(() => {
   if (window.WebSocket !== undefined) {
     // Browser is compatible.
     const connectionString = `${Chat.config.protocol}://${Chat.config.server}:${Chat.config.port}`;
-    logger.info(`... Connecting to ${connectionString} ...`);
+    logger.debug(`... Connecting to ${connectionString} ...`);
 
     window.conn = new WebSocket(connectionString);
     /* eslint no-unused-vars: 0 */
     window.conn.onopen = function fnWebsocketConn(e) {
-      logger.info('Websocket Connection established!');
+      logger.debug('Websocket Connection established!');
       Chat.chatReady();
     };
 
