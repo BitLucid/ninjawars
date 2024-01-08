@@ -127,10 +127,10 @@ h1 .account-identity{
       <li>
         <span {if $ninja->active }class="n-active"{/if}><i class="fas fa-circle" ></i> </span>
         <a href='/player?player_id={$ninja->id()|escape:'url'|escape}'>{$ninja->name()|escape}</a>  
-        <span class='player-level-category {$ninja->level|level_label|css_classify}'>
-          {$ninja->level|level_label} [{$ninja->level|escape}]
-        </span> 
         <span class='class-name {$ninja->theme|escape}'>{$ninja->class_name|escape}</span> 
+        <span class='player-level-category {$ninja->level|level_label|css_classify}'>
+          {$ninja->level|level_label} <span class='ninja-level-number'>{$ninja->level|escape}</span>
+        </span>
         <span class='health-bar-area' title='Max health: {$ninja->getMaxHealth()|escape}'>
           {include file="health_bar.tpl" health=$ninja->health level=$ninja->level}
         </span> 

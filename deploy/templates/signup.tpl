@@ -226,7 +226,6 @@
 	{literal}
 		.grecaptcha-badge { 
 			visibility: hidden;
-			visibility: visible;
 		}
 	{/literal}
 	</style>

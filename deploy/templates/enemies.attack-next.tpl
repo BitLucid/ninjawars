@@ -1,8 +1,13 @@
+{* See ConsiderController for the fight template origination*}
 <style>
 .ninja-area{
     width: 100%;
     background:none;
     text-align:center;
+}
+.ninja-card {
+    background-color:#151010;
+    padding:1rem 2rem 0.3rem;
 }
 /* @media (min-width: 768px) {
     .ninja-area {
@@ -21,11 +26,31 @@
 .attack-next .main {
     display:grid;
 }
-.attack-next .avatar {
+.attack-next .f-avatar {
     text-align: center;
     padding: 0 0.4rem;
     display: inline-block;
 }
+.attack-next .f-avatar img {
+    border-radius: 50%;
+    width: 100%;
+    height: auto;
+}
+.attack-next .attack-area{
+    margin-top:7vh;
+    display:flex;
+    justify-content: space-between;
+    flex-wrap:wrap;
+}
+
+.attack-next .attack-area .full-width{
+    width:100%;
+}
+
+.attack-next .attack-area .skill-use-area{
+    margin-top:2.5rem;
+}
+
 .attack-next .duel-area .svg-shuriken svg{
     height: 5rem;
     width: 5rem;
@@ -46,7 +71,8 @@
 }
 .attack-next .player-level-category {
     display: inline-block;
-    padding: 0.5rem 0.7rem;
+    padding: 0.58rem 0.7rem;
+    margin-right:5rem;
 }
 .attack-next .player-class {
     display: inline-block;
@@ -67,8 +93,7 @@
     color: #ffffff;
     background-color: #555555;
     display: inline-block;
-    max-width: 50%;
-    width: 17rem;
+    max-width: 17rem;
 }
 .attack-next .carousel {
     display:grid;
@@ -95,7 +120,13 @@
 }
 .view-link .btn{
     border-radius: 0.4rem;
+    border-color:#555555;
 }
+
+/* ai restyling */
+
+
+/* end of ai restyling block */
 </style>
 
 {if $enemy}
@@ -115,8 +146,8 @@
                         <a class='view-link' href='/player?player_id={$enemy->id()|escape}'><button title="View the ninja's full details" class='btn btn-vital'><i class='fa fa-eye'></i></button></a>
                     {/if}
                     <h2>{$enemy->name()|escape}</h2>
-                    <div class='avatar'>
-                        {include file="gravatar.tpl" gurl=$enemy->avatarUrl()}
+                    <div class='f-avatar'>
+                        {include file="gravatar.tpl" gurl=$enemy->avatarUrl() avatar_size=150}
                     </div>
                     <span class='player-class class-name {$enemy->theme|escape}'>
                         <span class="svg-shuriken">
@@ -125,7 +156,7 @@
                         {$enemy->class_name|escape}
                     </span><!-- no space 
                     --><span class='player-level-category {$enemy->level|level_label|css_classify}'>
-                        {$enemy->level|level_label} [{$enemy->level|escape}]
+                        {$enemy->level|level_label} <span class='ninja-level-number'>{$enemy->level|escape}</span>
                     </span>
                     <span class='health-bar-container'>
                         {include file="health_bar.tpl" health=$enemy->health level=$enemy->level}
@@ -184,7 +215,7 @@
                     </div>
                     </form>
                 </div>
-                <div class='skill-use-area'>
+                <div class='skill-use-area full-width'>
                     <form id="skill_use" class="skill_use" action="/player/use_skill/" method="post" name="skill_use">
                         <div class='parent'>
                         <div class='child btn-group' id='skills-use-list'>
@@ -196,10 +227,10 @@
                         </div>
                     </form>
                 </div>
-                <div class='centered glassbox'>
+                <div class='single-attack-area centered glassbox'>
                     <form id='attack_player' action='/attack' method='post' name='attack_player'>
                         <input id="target" type="hidden" value="{$enemy->id()|escape}" name="target">
-                        <button type="submit" class='btn btn-default'>Strike</button>
+                        <button type="submit" class='act btn btn-default'>Strike</button>
                     </form>
                 </div>
             </div><!-- end of attack-area -->
