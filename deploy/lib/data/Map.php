@@ -3,14 +3,13 @@
 namespace NinjaWars\core\data;
 
 use NinjaWars\core\data;
-use \PDO;
+use PDO;
 
 /**
  * Use for obtaining targets/npcs from the map
  */
 class Map
 {
-
     /**
      * Retrieve the first $limit npcs close to a difficulty
      * Should be deterministic
