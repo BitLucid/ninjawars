@@ -30,14 +30,14 @@ $(function() {
 {if !$smarty.const.LOCAL_JS}{* Skip for local js *}
 <!-- Google Analytics, just add all the tracking info to an array at once -->
 {literal}
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-WWN26L7SKM"></script>
 <script>
-(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
-ga('create', 'UA-707264-2', 'ninjawars.net');
-ga('send', 'pageview');
+  gtag('config', 'G-WWN26L7SKM');
 </script>
 {/literal}
 {/if}
