@@ -122,7 +122,7 @@
 	  		flex-wrap: wrap;
 	  		justify-content: space-between;
 	  	}
-		.ninja-picker-container label {
+		.ninja-picker-container label.class-desc {
 			display: flex;
 			flex-direction: column;
 			align-items: center;
@@ -134,10 +134,22 @@
 			height: 20vw;
 			margin-left: 0.5vw;
 			margin-right: 0.5vw;
+			margin-bottom:2rem;
+			padding-bottom:0.7rem;
 			border: 2px solid #ccc;
 			border-radius: 0.5rem;
 			background-color: #eee;
 			cursor: pointer;
+		}
+		/*for small mobile screens */
+		@media (max-width: 600px) {
+			.ninja-picker-container label.class-desc {
+				width: 100%;
+				height: auto;
+			}
+		}
+		.ninja-picker-container img{
+			max-width:100%;
 		}
 		.ninja-picker-container label:hover {
 			background-color: #ddd;
