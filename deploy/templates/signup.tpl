@@ -178,7 +178,7 @@
       <section style='min-heigth:5rem'>
 	  {* This section is used by signup.js and should only be changed in concert with that script below *}
 	  {* It is also tested via the cypress signup.cy.js script, so changes should be checked by running that *}
-	  	<div style='min-height:6rem'>
+	  	<div style='min-height:6rem' class='centered'>
 			<button
 				class="btn btn-vital" 
 				id='become-a-ninja' 
@@ -187,11 +187,12 @@
 			>
 			Become A Ninja!
 			</button>
-			<input type='hidden' name='token-response' id='token-response' value=''>
+			<input type='hidden' name='g-recaptcha-response' id='g-recaptcha-response' value=''>
 		</div>
-	    <div>
+	    <div class='text-centered'>
 	    	<small>
-				* Note: Add <strong>{$smarty.const.SYSTEM_EMAIL}</strong> to your safe email list ensure you get your confirmation email! 
+				* Note: Add <strong>{$smarty.const.SYSTEM_EMAIL}</strong> to your safe email list<br />
+				 to ensure you get your confirmation email! 
 			</small>
 	    </div>
 
@@ -201,12 +202,22 @@
 
 {/if}
 
+
+<style>
+{literal}
+/* Signup page footer specific styles */
+.help-list {
+	list-style-type: disc;
+}
+{/literal}
+</style>
+
 	<footer>
 		<section class='glassbox'>
 			<h3>Problems?</h3>
 			<div class='hero'>
 
-				<ul>
+				<ul class='help-list'>
 					<li>
 					Lost Your Password? <a href="/assistance">go to reset password</a>
 					</li>
@@ -258,7 +269,7 @@
 				grecaptcha.execute(recaptchaSiteKey, {action: 'submit'}).then(function(token) {
 					console.debug('grecaptcha.execute token', token);
 					// Add your logic to submit to your backend server here.
-					$('#token-response').val(token);
+					$('#g-recaptcha-response').val(token);
 					$('#signup').submit();
 				});
 			});

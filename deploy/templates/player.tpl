@@ -198,7 +198,7 @@ var combatSkillsList = {$json_combat_skills nofilter};
   <section class='player-communications centered'>
 
 	<span id='message-ninja'>
-      <a href='/messages?to={$target_player_obj->name()|escape}'><span class='fa fa-comments'/> Talk to <em class='char-name'>{$target_player_obj->name()|escape}</em>
+      <a href='/messages?to={$target_player_obj->name()|escape}'><i class='fa-solid fa-comments'aria-hidden='true'></i> Talk to <em class='char-name'>{$target_player_obj->name()|escape}</em>
       </a>
     </span>
 

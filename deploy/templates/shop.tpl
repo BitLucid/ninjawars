@@ -45,6 +45,9 @@ var loggedIn = {if $authenticated}true{else}false{/if};
 
 <script src="/js/shop.js"></script>
 
+{if $show_ad}
+{* Because this ad seems to keep breaking stuff *}
+
 <div class='glassbox text-centered'>
 
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9488510237149880"
@@ -59,5 +62,7 @@ var loggedIn = {if $authenticated}true{else}false{/if};
 <script>
      (adsbygoogle = window.adsbygoogle || []).push({});
 </script>
+
+{/if}
 
 </div>

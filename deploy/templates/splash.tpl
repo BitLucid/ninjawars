@@ -17,7 +17,15 @@
 		  <a id='solo-page-login-link' href='/login' class='btn btn-vital'>Continue</a> <a id='solo-page-signup-link' href='/signup' class='btn btn-vital'>New Game</a>
 		</nav>
 		<nav id='top-logo'>
-      <h1>The Ninja Game at <span class='no-wrap'><a href='/intro' target='main'><img src='{cachebust file="/images/nw_bamboo_logo_soft.png"}' alt='NinjaWars' aria-label='NinjaWars' width='200' height='100'></a>.net</span></h1>
+      {* Intentionally avoiding spaces here *}
+      <h1><span class='no-wrap'><a 
+          href='/intro' 
+          target='main'><img 
+          src='{cachebust file="/images/logo/pixel_logo.png"}' 
+          alt='NinjaWars' 
+          aria-label='NinjaWars' 
+          width='135' 
+          height='100'></a><span style='font-size:2rem'>.NET</span></span></h1>
 		</nav>
 
     <nav id='subcategory-bar' class='navigation'>

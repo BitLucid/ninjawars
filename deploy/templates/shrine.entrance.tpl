@@ -1,7 +1,10 @@
 <section class="description glassbox">
 
-  <figure style='float:right;display:inline-block'>
-    <img src='{cachebust file="/images/scenes/shrine_pagoda.jpg"}' class='float-left inline-block' alt='' title='Shrine Pagoda' width='200' height='310'>
+  <figure style='float:left;display:inline-block' class='glassbox'>
+    <img 
+      src='{cachebust file="/images/scenes/shrine_pagoda.jpg"}'
+      alt='' 
+      title='Shrine Pagoda' width='512'>
   </figure>
 
   <p>
