@@ -42,6 +42,7 @@
                 <a class='btn btn-info' href='#aside-section'>Aside</a>
                 <a class='btn btn-info' href='#chat-section'>Chat</a>
                 <a class='btn btn-info' href='#clan-section'>Clan</a>
+                <a class='btn btn-info' href='#clan-list-section'>Clan.list</a>
                 <a class='btn btn-info' href='#healthbar-section'>Healthbar</a>
                 <a class='btn btn-info' href='#typography-section'>Typography</a>
                 <a class='btn btn-info' href='#staff-section'>Staff</a>
@@ -70,6 +71,7 @@
                 <a class='btn btn-info' href='#footer-footerlinks-section'>Footer.footerlinks</a>
                 <a class='btn btn-info' href='#news-section'>News</a>
                 <a class='btn btn-info' href='#interview-section'>Interview</a>
+                <a class='btn btn-info' href='#staff-section'>Staff</a>
                 <a class='btn btn-info' href='#ninjamaster-section'>Ninjamaster</a>
             </div>
         </nav>
@@ -256,6 +258,11 @@
             {assign var="error" value='Some clan error'}
             {assign var="pageSections" value=['info', 'member-list', 'list']}
             {include file="clan.tpl"}
+        </section>
+
+        <section id='clan-list-section'>
+            <h2>Clan List</h2>
+            {include file="clan.list.tpl"}
         </section>
 
         <section id='healthbar-section'>
@@ -494,6 +501,11 @@
         <section id='interview-section'>
             <h2>Interview</h2>
             {include file="interview.tpl"}
+        </section>
+
+        <section id='staff-section'>
+            <h2>Staff</h2>
+            {include file="staff.tpl"}
         </section>
 
         <section id='ninjamaster-section'>
