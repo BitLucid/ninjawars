@@ -20,6 +20,8 @@ var pub_char_info = {if $json_public_char_info}{$json_public_char_info}{else}''{
 {literal} // Only refresh the stats when they're not initially loading and when requested.
 $(function() {
 	if(pub_char_info){
+    const { debug } = console ?? { debug: () => { /* no-op */ } };
+    debug('Refreshing player stats if available stats');
 		NW.refreshStats(pub_char_info); // Refresh the data piped in above.
 	}
 });
@@ -30,7 +32,7 @@ $(function() {
 {if !$smarty.const.LOCAL_JS}{* Skip for local js *}
 <!-- Google Analytics, just add all the tracking info to an array at once -->
 {literal}
-<!-- Google tag (gtag.js) -->
+<!-- Google tag (gtag.js) -- Updated 1/9/2024 -- RR -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-WWN26L7SKM"></script>
 <script>
   window.dataLayer = window.dataLayer || [];

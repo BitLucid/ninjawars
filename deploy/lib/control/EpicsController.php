@@ -12,6 +12,7 @@ use NinjaWars\core\data\Shop;
 use NinjaWars\core\data\Npc;
 use NinjaWars\core\data\Item;
 use NinjaWars\core\control\Combat;
+use model\News as News;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use NinjaWars\core\extensions\StreamedViewResponse;
@@ -71,6 +72,8 @@ class EpicsController extends AbstractController
         $transientClass->enteredCPass = 'dragon';
         $transientClass->enteredClass = 'dragon';
         $signupRequest2    = $transientClass;
+        $news = new News();
+        $all_news = $news->all();
 
         $error            = null;
         $static_nodes = include(ROOT . 'lib/data/raw/nodes.php');
@@ -89,8 +92,9 @@ class EpicsController extends AbstractController
             'myClan'            => $clan,
             'item_costs'        => Shop::itemForSaleCosts(),
             'full_item_costs'   => Shop::fullItems(true),
-            'clans'     => Clan::rankings(),
-            'signupRequest2'     => $signupRequest2,
+            'clans'             => Clan::rankings(),
+            'signupRequest2'    => $signupRequest2,
+            'all_news'          => $all_news,
         ];
 
         return new StreamedViewResponse('UI Epics', 'epics.tpl', $parts);

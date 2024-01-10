@@ -27,6 +27,12 @@ link.href = '/images/ninjamaster/shuriken-favicon.png';
   height: 5rem;
   width: 5rem;
 }
+.admin-nav-float {
+  position: absolute;
+  z-index: 1000;
+  left: 0.5rem;
+  top: 0.5rem;
+}
 </style>
 <div id='admin-favicon'>
   <span>
@@ -38,7 +44,9 @@ link.href = '/images/ninjamaster/shuriken-favicon.png';
 
 {include file="ninjamaster.css.tpl"}
 
-<span style='float:left'><a href='/'><button type='button' class='btn btn-default'><i class='fa fa-home'></i></button></a></span>
+<span class='admin-nav-float'>
+  <a href='/' class='btn btn-default' title='Return Home'><i class='fa fa-home'></i></a>
+</span>
 <div id='admin-actions'>
 
 <h1>Admin Dashboard</h1>
@@ -259,7 +267,7 @@ link.href = '/images/ninjamaster/shuriken-favicon.png';
     <div class='text-center thick'>
 		  <button class='btn btn-primary' id='load-clans'>VIEW CLANS</button>
     </div>
-		<ul id='clan-list-area'>
+		<ul id='clan-list-area' class='carded-area'>
 		</ul>
 	</div>
 </section>
@@ -378,6 +386,15 @@ link.href = '/images/ninjamaster/shuriken-favicon.png';
 			</a></li>
 			<li><a href='https://us-east-1.console.aws.amazon.com/costmanagement/home?region=us-east-1#/home'>
 				Billing
+			</a></li>
+      <li><a href='https://ads.google.com/aw/overview'>
+				Adwords
+			</a></li>
+      <li><a href='https://analytics.google.com/analytics/web/?pli=1#/p289349786/reports/intelligenthome'>
+				Analytics
+			</a></li>
+      <li><a href='https://www.google.com/recaptcha/admin/site/692084162/settings'>
+				Recaptcha
 			</a></li>
 	</nav>
 </section>

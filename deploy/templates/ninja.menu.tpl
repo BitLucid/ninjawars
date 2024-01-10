@@ -17,7 +17,9 @@
           </div>
         </nav>
         <div class='ninja-stats-link thick'>
-          <a href='/stats' target='main' title='Your ninja stats, level, info, etc.'><i class="fa fa-heart"></i> Ninja Stats</a>
+          <a href='/stats' target='main' title='Your ninja stats, level, info, etc.'>
+            <i class="fa fa-heart"></i> Ninja Stats
+          </a>
         </div>
         {if $clan}
         <div>

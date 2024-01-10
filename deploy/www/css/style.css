@@ -1097,17 +1097,6 @@ form#signup .failure {
     color: red;
 }
 
-form#signup label.class-desc {
-    display: block;
-    font-weight: normal;
-    padding: 0;
-    margin: 0;
-}
-
-form#signup .ninja-char-creation .inline-block {
-    vertical-align: top;
-}
-
 form#signup small {
     color: grey;
 }
@@ -1612,6 +1601,15 @@ td.playerTable {
     padding-left: 1em;
     padding-right: 1em;
 }
+
+/* mobile small screens media query */
+@media (max-width: 767px) {
+    .solo-page form#signup {
+        padding-left: 0.1rem;
+        padding-right: 0.1rem;
+    }
+}
+
 
 body.solo-page #solo-container {
     padding: 10px 30px 10px 30px;

@@ -15,16 +15,8 @@ const escape = (unsafe) => {
   return div.innerHTML;
 };
 
-const initializeClans = () => {
-  $('#clan-list-progress').hide();
-  $('#load-clans').on('click', () => {
-    $('#clan-list-progress').show();
-    api.clans().then((response) => {
-      response.json().then((data) => {
-        $('#clan-list-progress').hide();
-        // loop over the clan list and add the data of each clan to it
-        data.clans.forEach((clan) => {
-          $('#clan-list-area').append(`<li class='card'>
+const clanComponent = ({ clan }) => `
+        <li class='card'>
           <div class='glassbox'>
             ${clan.clan_name} 
             ${clan.clan_id} 
@@ -41,8 +33,29 @@ const initializeClans = () => {
               ${escape(JSON.stringify(clan))}
             </details>
           </div>
-            </li>`);
+        </li>
+`;
+
+function sleeper(ms) {
+  return function (x) {
+    return new Promise((resolve) => {
+      setTimeout(() => resolve(x), ms);
+    });
+  };
+}
+
+const initializeClans = () => {
+  $('#clan-list-progress').hide();
+  $('#load-clans').on('click', () => {
+    $('#clan-list-progress').show();
+    api.clans().then(sleeper(1000)).then((response) => {
+      response.json().then((data) => {
+        // loop over the clan list and add the data of each clan to it
+        data.clans.forEach((clan) => {
+          $('#clan-list-area').append(clanComponent({ clan }));
         });
+        $('#clan-list-progress').hide();
+        $('#load-clans').hide();
       });
     });
   });

@@ -30,6 +30,7 @@
                 <a class='btn btn-info' href='#intro-section'>Intro</a>
                 <a class='btn btn-info' href='#intro-small-section'>Intro - Small</a>
                 <a class='btn btn-info' href='#login-section'>Login</a>
+                <a class='btn btn-info' href='#logout-section'>Logout</a>
                 <a class='btn btn-info' href='#signup-section'>Signup</a>
                 <a class='btn btn-info' href='#profile-section'>Profile</a>
                 <a class='btn btn-info' href='#npcs-section'>Npcs</a>
@@ -64,7 +65,11 @@
                 <a class='btn btn-info' href='#list-section'>List</a>
                 <a class='btn btn-info' href='#fight-section'>Fight</a>
                 <a class='btn btn-info' href='#wip-fight-section'>WIP Fight</a>
-                <a class='btn btn-info' href='#footer'>Footer</a>
+                <a class='btn btn-info' href='#footer-section'>Footer</a>
+                <a class='btn btn-info' href='#footer-linkbar-section'>Footer.linkbar</a>
+                <a class='btn btn-info' href='#footer-footerlinks-section'>Footer.footerlinks</a>
+                <a class='btn btn-info' href='#news-section'>News</a>
+                <a class='btn btn-info' href='#interview-section'>Interview</a>
                 <a class='btn btn-info' href='#ninjamaster-section'>Ninjamaster</a>
             </div>
         </nav>
@@ -101,6 +106,13 @@
             {assign var="authenticated" value="0"}
             <div class='login-page'>
                 {include file="login.tpl"}
+            </div>
+        </section>
+
+        <section id='logout-section'>
+            <h2>Logout</h2>
+            <div class='logout-page'>
+                {include file="logout.tpl"}
             </div>
         </section>
 
@@ -453,14 +465,40 @@
             {include file="enemies.attack-next.tpl"}
         </section>
 
-        <section id='footer'>
+
+        <section id='news-section'>
+            <h2>News</h2>
+            {assign var="create_successful" value=null}
+            {assign var="create_role" value=true}
+            {assign var="search_title" value='Bug search/filter'}
+            {assign var="all_news" value=$all_news}
+            {assign var="error" value="Some error string for news page"}
+            {include file="news.tpl"}
+        </section>
+
+        <section id='footer-section'>
             <h2>Footer</h2>
             {include file="footer.tpl"}
         </section>
 
+        <section id='footer-footerlinks-section'>
+            <h2>Footer.footerlinks</h2>
+            {include file="footerlinks.tpl"}
+        </section>
+
+        <section id='footer-linkbar-section'>
+            <h2>Footer.linkbar</h2>
+            {include file="footer.linkbar.tpl"}
+        </section>
+
+        <section id='interview-section'>
+            <h2>Interview</h2>
+            {include file="interview.tpl"}
+        </section>
+
         <section id='ninjamaster-section'>
             <h2>Ninjamaster</h2>
-            <p>Currently commented out</p>
+            <p class='epic-note'>Currently commented out</p>
             {* {include file="ninjamaster.tpl"} *}
         </section>
 
@@ -472,8 +510,8 @@
             </iframe>
         </section>
 
-        <footer style='border-top:thick dashed white;margin-top:3rem;'>
-            <h6>The end</h6>
+        <footer style='border-top:3rem dashed white;margin-top:3rem;'>
+            <h6>END OF TEMPLATE</h6>
         </footer>
     </section>
     {* js script at the top to prevent breaking from templates *}
