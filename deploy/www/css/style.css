@@ -5268,6 +5268,12 @@ input[type='button'].btn-block {
     zoom: 1;
 }
 
+/* From bootstrap 4 */
+.mx-auto {
+    margin-left: auto;
+    margin-right: auto;
+}
+
 /**
  * Media queries for responsive design.
  *
