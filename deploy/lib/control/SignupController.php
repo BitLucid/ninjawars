@@ -525,7 +525,7 @@ class SignupController extends AbstractController
     /**
      * Get the display name from the identity.
      */
-    private function classDisplayNameFromIdentity(string $identity): string
+    private function classDisplayNameFromIdentity(string $identity): string|null
     {
         $classes = $this->class_choices();
         if (!isset($classes[$identity])) {

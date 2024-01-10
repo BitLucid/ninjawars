@@ -55,6 +55,9 @@ describe('signup a new ninja', () => {
     cy.get('input[type=password]').first().type(Cypress.env('TEST_PASSWORD'), { log: false })
     cy.get('input[type=password][name=cpass]').type(Cypress.env('TEST_PASSWORD'), { log: false })
     cy.get('input[name=send_name]').type(randomSendName)
+    // Also pick class
+    cy.get('.ninja-picker-container label').first().click()
+    // Then submit
     cy.get(zSubmitButtonSelector).should('be.visible')
     cy.get(zSubmitButtonSelector).click()
     cy.get('[role=alert]').should('not.exist')
