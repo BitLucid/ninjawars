@@ -51,13 +51,22 @@
 
 	{include file="flash-message.tpl"}
 
-	<div class='glassbox'>
-		<div class="description">
-			<p>You walk down the alley towards a shadowed door on a low stone building with gilt peeling off around it's door. As you enter the small casino, <a href='/npc/attack/guard'>a guard</a> eyes you with caution.</p>
-			<p>No-one else is in the casino.  You walk towards the only table with a wizened old man, missing most of his teeth, behind it. He shows you a shiny coin.</p>
-			<p> The old man says <span class='speech'>Welcome to the Casino, {if $player && $player->name()}{$player->name()|escape}{else}Stranger{/if}!</span>
+	<div class='overall'>
+		<figure class='float-left glassbox'>
+			<img 
+				src='/images/scenes/casino-red.jpg' 
+				width='500'
+				class='img-fluid mx-auto d-block'
+				alt='Working in Fields of Grain' />
+		</figure>
+		<div class='glassbox'>
+			<div class="description">
+				<p>You walk down the alley towards a shadowed door on a low stone building with gilt peeling off around it's door. As you enter the small casino, <a href='/npc/attack/guard'>a guard</a> eyes you with caution.</p>
+				<p>No-one else is in the casino.  You walk towards the only table with a wizened old man, missing most of his teeth, behind it. He shows you a shiny coin.</p>
+				<p> The old man says <span class='speech'>Welcome to the Casino, {if $player && $player->name()}{$player->name()|escape}{else}Stranger{/if}!</span>
 
-			<p class='speech'>Place your bet, call the coin in the air, and let's see who's lucky today!</p>
+				<p class='speech'>Place your bet, call the coin in the air, and let's see who's lucky today!</p>
+			</div>
 		</div>
 	</div>
 

@@ -1027,7 +1027,7 @@ form #become-a-ninja {
 }
 
 fieldset {
-    border: 2px groove #800000;
+    border: 2px groove #230202;
     margin-bottom: 0.5em;
     padding-left: 0.5em;
     padding-bottom: 0.5em;
@@ -1074,8 +1074,8 @@ legend {
     font-family: 'Roboto', Arial, sans-serif;
     padding: 0.2em 0.5em;
     margin-right: 2em;
-    border: 2px solid #800000;
-    background-color: rgba(100, 10, 10, 0.5);
+    border: 2px solid #620303;
+    background-color: rgb(100 10 10 / 35%);
     color: #ffffff;
     font-weight: bolder;
     font-size: 90%;
@@ -5272,6 +5272,19 @@ input[type='button'].btn-block {
 .mx-auto {
     margin-left: auto;
     margin-right: auto;
+}
+
+.float-right {
+    float: right !important;
+}
+
+.float-left {
+    float: left !important;
+}
+
+.mx-thick {
+    margin-left: 2rem;
+    margin-right: 2rem;
 }
 
 /**

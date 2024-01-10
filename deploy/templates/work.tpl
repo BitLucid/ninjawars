@@ -12,6 +12,13 @@
 <div class="description">
 <!-- For google ad targetting -->
 <!-- google_ad_section_start -->
+    <figure class='float-left glassbox'>
+        <img 
+            src='/images/scenes/working_in_fields_smaller.png' 
+            width='500' 
+            class='img-fluid mx-auto d-block'
+            alt='Working in Fields of Grain' />
+    </figure>
     <p>On your way to the foreman's office, you pass by several <a href='/npc/attack/peasant' class='npc click-message'>peasants</a> drenched in sweat from working in the sun all day. 
         <a href='/npc/attack/samurai' target='main' title='A samurai?  Kill him.' id='attack-samurai-link' class='npc click-message'>A foreman in samurai armor</a>
          barely looks up at you as he busies himself with counting coins and smoking a long pipe.</p>

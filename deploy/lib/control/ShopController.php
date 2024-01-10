@@ -23,6 +23,8 @@ class ShopController extends AbstractController
 
     public const MARKUP = 1.5;
     public const DEFAULT_QUANTITY = 1;
+    public $ad_divisor = 10; // Only show the ad 1/10th of the time
+    // because it keeps breaking the page
 
     /**
      * Display the initial shop view
@@ -31,6 +33,7 @@ class ShopController extends AbstractController
      */
     public function index(Container $p_dependencies): StreamedViewResponse
     {
+
         $player = $p_dependencies['current_player'];
         $authenticated = $p_dependencies['session'] ? $p_dependencies['session']->get('authenticated') : false;
         $parts = [
@@ -38,6 +41,7 @@ class ShopController extends AbstractController
             'gold'      => ($player ? $player->gold : 0),
             'item_costs'        => Shop::itemForSaleCosts(),
             'authenticated'     => $authenticated,
+            'show_ad'           => rand(1, $this->ad_divisor) === 1,
         ];
 
         return $this->render($parts);
@@ -107,6 +111,7 @@ class ShopController extends AbstractController
             'gold'              => $gold,
             'item_costs'        => Shop::itemForSaleCosts(),
             'authenticated'     => $authenticated,
+            'show_ad'           => rand(1, $this->ad_divisor) === 1,
         ];
 
         return $this->render($parts);
