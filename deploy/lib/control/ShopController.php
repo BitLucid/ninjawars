@@ -33,7 +33,6 @@ class ShopController extends AbstractController
      */
     public function index(Container $p_dependencies): StreamedViewResponse
     {
-
         $player = $p_dependencies['current_player'];
         $authenticated = $p_dependencies['session'] ? $p_dependencies['session']->get('authenticated') : false;
         $parts = [
