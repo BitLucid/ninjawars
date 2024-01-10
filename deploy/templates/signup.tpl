@@ -187,7 +187,7 @@
 			>
 			Become A Ninja!
 			</button>
-			<input type='hidden' name='token-response' id='token-response' value=''>
+			<input type='hidden' name='g-recaptcha-response' id='g-recaptcha-response' value=''>
 		</div>
 	    <div>
 	    	<small>
@@ -258,7 +258,7 @@
 				grecaptcha.execute(recaptchaSiteKey, {action: 'submit'}).then(function(token) {
 					console.debug('grecaptcha.execute token', token);
 					// Add your logic to submit to your backend server here.
-					$('#token-response').val(token);
+					$('#g-recaptcha-response').val(token);
 					$('#signup').submit();
 				});
 			});

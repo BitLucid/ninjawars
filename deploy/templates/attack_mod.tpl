@@ -26,7 +26,7 @@
 		</a>
 	  {/if}
 	  <a href='/player?player_id={$target->id()|escape:'url'}' style='float:right'>
-	      <span class='fa fa-eye'></span> View <span class='char-name'>{$target->name()|escape}</span>
+	      <i class='fa fa-eye' aria-hidden='true'></i> View <span class='char-name'>{$target->name()|escape}</span>
 </a>
     </nav>
 
