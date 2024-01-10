@@ -54,7 +54,7 @@
   </p>
 {elseif $location eq 1}
   <p>
-    <span class="speech">This black mist weather we have today makes it hard to see some things,</span> one of the Doshin tells you as he palms your gold. He then directs you out through a back alley.
+    <span class="speech">This black fog that has been drifting in makes it hard to see some things,</span> one of the Doshin tells you as he palms your gold. He then directs you out through a back alley.
   </p>
   <p>
     You find yourself in a dark alley. A rat scurries by. To your left lies the main street of the village.

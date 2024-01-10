@@ -17,7 +17,7 @@ describe('signup a newbie ninja', () => {
   afterEach(() => {
   })
 
-  it('allows signup for a randomized ninja', () => {
+  it('allows signup (with random test-strings)', () => {
     cy.visit('/signup')
     // heading should be present on page
     cy.contains('Become a Ninja')

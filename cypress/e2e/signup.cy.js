@@ -10,7 +10,7 @@
 
 const zSubmitButtonSelector = '#become-a-ninja' // change in sister file too
 
-describe('signup a new ninja', () => {
+describe('signup page', () => {
   beforeEach(() => {
     // cy.standardLogin()
   })
@@ -20,7 +20,7 @@ describe('signup a new ninja', () => {
   // For the signup for a randomized ninja test,
   // see the sister file signup-newbie.cy.js
 
-  it('rejects signup for configured user, as should already exist', () => {
+  it('rejects duplicate-player-email signup', () => {
     cy.visit('/signup')
     // heading should be present on page
     cy.contains('Become a Ninja')
@@ -36,7 +36,7 @@ describe('signup a new ninja', () => {
     cy.get('[role=alert]').should('be.visible')
   })
 
-  it('allows custom login of the test user', () => {
+  it('allows login of the user', () => {
     cy.visit('/login')
     cy.customLogin(Cypress.env('TEST_USERNAME'), Cypress.env('TEST_PASSWORD'))
     cy.get('.login-form').should('not.exist')
