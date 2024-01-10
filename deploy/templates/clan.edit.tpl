@@ -18,7 +18,13 @@
       <li>
 {include file="clan.invite.tpl"}
 	  </li>
-      <li><form action="/clan/disband" method="post"><input class="btn btn-warning" type="submit" value="Disband Your Clan"></form></li>
+      <li>
+	  	<form action="/clan/disband" method="post">
+	  		<button class="btn btn-warning" type="submit">
+			  <i class="fa-solid fa-warning" aria-hidden="true"></i> Disband Your Clan
+			</button>
+		</form>
+	  </li>
       <li>
 		  <form id='kick_form' action='/clan/kick' method='get' name='kick_form'>
 			<div>
@@ -42,7 +48,15 @@
       <form action="/clan/update" name="avatar_and_message">
 		<div>
 		  <p>
-		    <strong>Clan Name:</strong> <input id="new_clan_name" type="text" name="new_clan_name" class="textField" {literal}pattern="[A-Za-z0-9_\- ]{3,24}"{/literal} required value="{$clan->getName()|escape}">
+		    <strong>Clan Name:</strong> 
+			<input 
+				id="new_clan_name" 
+				type="text" 
+				name="new_clan_name" 
+				class="textField" 
+				{literal}pattern="[A-Za-z0-9_\- ]{3,24}"{/literal} 
+				required 
+				value="{$clan->getName()|escape}">
 		  </p>
 		  <small class='de-em'>
 		    Clan names must be from 3 to 24 characters, and can only contain letters, numbers, spaces, underscores, or dashes, although you can request exceptions if they are fun.
@@ -50,7 +64,9 @@
 		</div>
 		<div>
 			<p>
-						<strong>Clan Description:</strong> <textarea name="clan-description">{$clan->getDescription()|escape}</textarea>
+						<strong>Clan Description:</strong> 
+						<textarea placeholder='What is your clan theme? What do you do?'
+						name="clan-description">{$clan->getDescription()|escape}</textarea>
 				</p>
 			<small class='de-em'>
 						(500 character limit)

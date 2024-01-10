@@ -39,10 +39,13 @@
                 <a class='btn btn-info' href='#npcs-blockers-section'>Npcs.blockers</a>
                 <a class='btn btn-info' href='#npcs-theif-group-section'>Npcs: Thief Group</a>
                 <a class='btn btn-info' href='#npcs-samurai-section'>Npcs.Samurai</a>
-                <a class='btn btn-info' href='#aside-section'>Aside</a>
                 <a class='btn btn-info' href='#chat-section'>Chat</a>
+                <a class='btn btn-info' href='#aside-section'>Aside</a>
                 <a class='btn btn-info' href='#clan-section'>Clan</a>
                 <a class='btn btn-info' href='#clan-list-section'>Clan.list</a>
+                <a class='btn btn-info' href='#clan-info-section'>Clan.info</a>
+                <a class='btn btn-info' href='#clan-manage-section'>Clan.manage</a>
+                <a class='btn btn-info' href='#clan-edit-section'>Clan.edit</a>
                 <a class='btn btn-info' href='#healthbar-section'>Healthbar</a>
                 <a class='btn btn-info' href='#typography-section'>Typography</a>
                 <a class='btn btn-info' href='#staff-section'>Staff</a>
@@ -263,6 +266,21 @@
         <section id='clan-list-section'>
             <h2>Clan List</h2>
             {include file="clan.list.tpl"}
+        </section>
+
+        <section id='clan-info-section'>
+            <h2>Clan.info</h2>
+            {include file="clan.info.tpl"}
+        </section>
+
+        <section id='clan-manage-section'>
+            <h2>Clan.manage</h2>
+            {include file="clan.manage.tpl"}
+        </section>
+
+        <section id='clan-edit-section'>
+            <h2>Clan.edit</h2>
+            {include file="clan.edit.tpl"}
         </section>
 
         <section id='healthbar-section'>

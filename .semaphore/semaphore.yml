@@ -13,7 +13,7 @@ blocks:
             - '# php version set in the prologue step'
             - '# Get the resources.php file'
             - 'make preconfig '
-            - yarn install --immutable
+            - yarn install --immutable --immutable-cache
             - make build
             - cache store
       prologue:
