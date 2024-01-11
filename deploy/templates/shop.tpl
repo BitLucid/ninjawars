@@ -7,6 +7,14 @@
 <!-- For google ad targetting -->
 <!-- google_ad_section_start -->
 
+  <figure class='float-left glassbox'>
+    <img
+        src='/images/scenes/weaponsmith_bald.png'
+        width='500'
+        class='img-fluid mx-auto d-block'
+        alt='The weapons shop keeper' />
+  </figure>
+
 <div class='description' id='shop-description'>
   {foreach from=$shopSections item=$shopSection}
     <div class='shop-section'>
