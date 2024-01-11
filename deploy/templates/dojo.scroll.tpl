@@ -13,26 +13,30 @@
         justify-content:center;
         align-items:center;
         width:100%;
+        min-height:270px;
     }
     .left-scroll-bookend{
         display:inline-block;
-        background:url(/images/scroll_accent_left.png) no-repeat left;
-        height:100px;
+        fill:currentColor;
+        background:url(/images/svg/shuriken-accent-white.svg) no-repeat left;
+        height:100%;
         padding-left:57px;
         margin:0 auto;
     }
     .right-scroll-bookend{
         vertical-align:middle;
-        background:url(/images/scroll_accent_right.png) no-repeat right;
-        height:100px;
+        fill:currentColor;
+        background:url(/images/svg/shuriken-accent-white.svg) no-repeat right;
+        height:100%;
         min-width:50%;
         padding-right:57px;
         display:inline-block;
         position:relative;        
     }
     #scroll .scroll-interior{
-        background: rgb(158,88,100);
-        background: linear-gradient(0deg, rgba(158,88,100,1) 0%, rgba(221,216,207,1) 100%);
+        background:url(/images/items/ancient-scroll.jpg) no-repeat center;
+        min-height:270px;
+        display:flex;
     }
     #scroll #scroll-title{
         font-family: 'Pacifico', cursive;
@@ -51,6 +55,11 @@
         cursor:pointer;
         -webkit-text-stroke-width: 1px;
         -webkit-text-stroke-color: rgb(194 67 67);
+    }
+    #scroll .scroll-title-area{
+        display:flex;
+        justify-content: center;
+        align-items: center;
     }
     .training-requirements tbody tr:nth-child(odd) {
         background-color: rgba(100, 100, 100, 0.5);
@@ -83,9 +92,11 @@
         <div class='left-scroll-bookend'>
             <div class='right-scroll-bookend'>
                 <div class='scroll-interior'>
-                    <strong id='scroll-title'>
-                        Scroll of training requirements
-                    </strong>
+                    <div class='scroll-title-area'>
+                        <strong id='scroll-title'>
+                            Scroll of training requirements
+                        </strong>
+                    </div>
                 </div>
             </div>
         </div>
