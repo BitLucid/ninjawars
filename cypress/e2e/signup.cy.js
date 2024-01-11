@@ -31,6 +31,9 @@ describe('signup page', () => {
     cy.get('input[type=password][name=cpass]').type(Cypress.env('TEST_PASSWORD'), { log: false })
     const random = (Math.random() + 1).toString(36).substring(7);
     cy.get('input[name=send_name]').type(`cypress-test-user${random}`)
+    // Also pick class
+    cy.get('.ninja-picker-container label').first().click()
+    cy.get('.ninja-picker-container label').last().click()
     cy.get(zSubmitButtonSelector).should('be.visible')
     cy.get(zSubmitButtonSelector).click()
     cy.get('[role=alert]').should('be.visible')

@@ -161,8 +161,14 @@
   	{foreach from=$classes item='class' key='identity'}
 		<label class='class-desc inline-block'>
 			<img src='/images/characters/{$identity}_ninja.jpg' alt='{$identity} icon' class='class-icon quarter-max'>
-			<input type='radio' name='send_class' value='{$identity}' 
-				{if $signupRequest}{if $signupRequest->enteredClass eq $identity}checked='checked'{/if}{/if}>
+			<input type='radio' name='send_class' value='{$identity}' required='required'
+				{if $signupRequest}
+					{* user selected case *}
+					{if $signupRequest->enteredClass eq $identity}checked='checked'{/if}
+					{* unfilled form case *}
+					{if !$signupRequest->enteredClass && $identity eq 'viper'}checked='checked'{/if}
+				{/if}
+				>
 				{$class.name} - {$class.expertise}
 			</label>
   	{/foreach}

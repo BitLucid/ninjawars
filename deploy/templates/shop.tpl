@@ -1,3 +1,20 @@
+<style>
+{literal}
+/* small screen media query */
+/* Grade-A Mobile Browsers (Opera Mobile, Mobile Safari, Android Chrome) */
+@media (max-device-width: 480px) and (max-device-width: 854px) {
+  .shop figure {
+    width:100%;
+    text-align:center;
+  }
+}
+.shop .shop-form{
+  clear:both;
+}
+
+{/literal}
+</style>
+
 <h1>Shop</h1>
 <nav>
 	<a href="/map" class="return-to-location block">Return to the Village</a>
@@ -15,7 +32,7 @@
         alt='The weapons shop keeper' />
   </figure>
 
-<div class='description' id='shop-description'>
+<div class='description glassbox' id='shop-description'>
   {foreach from=$shopSections item=$shopSection}
     <div class='shop-section'>
       {include file="shop.$shopSection.tpl"} {* buy | index *}
@@ -27,7 +44,7 @@
   Your gold: <span class='gold-count fade-in-slow'>石{$gold|number_format|escape}</span>
 </p>
 
-<form id="shop_form" action="/shop/purchase" method="post" name="shop_form">
+<form id="shop_form" class='shop-form' action="/shop/purchase" method="post" name="shop_form">
   <div class='text-centered slightly-padded'>
   {if $authenticated}
     <em class='speech'>How many of these items would you like?</em> <input id="quantity" type="number" min='1' max='99' name="quantity" class="textField">
