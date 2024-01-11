@@ -4,7 +4,7 @@
     <img 
       src='{cachebust file="/images/scenes/shrine_pagoda.jpg"}'
       alt='' 
-      title='Shrine Pagoda' width='512'>
+      title='Shrine Pagoda' width='460'>
   </figure>
 
   <p>
