@@ -432,7 +432,7 @@
             {assign var="recently_active" value=23232323}
             {assign var="stats" value=['player_count'=>2343443, 'rich_haul'=>23232323, 'recently_active'=>23232323]}
             {assign var="duels" value=[['attacker_id'=>23232323, 'attacker'=>'whoever', 'defender'=>'someoneelse', 'defender_id'=>555555, 'won'=>true, 'killpoints'=>23424, 'date'=>'34343434']]}
-            {include file="duel.tpl"}
+            {include file="bath-house.tpl"}
         </section>
 
         <section id='work-section'>

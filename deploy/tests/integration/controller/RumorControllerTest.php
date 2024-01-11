@@ -11,7 +11,7 @@ class RumorControllerTest extends NWTest
         $reflection = new \ReflectionProperty(get_class($response), 'template');
         $reflection->setAccessible(true);
         $response_template = $reflection->getValue($response);
-        $this->assertEquals('duel.tpl', $response_template);
+        $this->assertEquals('bath-house.tpl', $response_template);
     }
 
     public function testIndexIsRenderableEvenIfLoggedOut()
@@ -21,6 +21,6 @@ class RumorControllerTest extends NWTest
         $reflection = new \ReflectionProperty(get_class($response), 'template');
         $reflection->setAccessible(true);
         $response_template = $reflection->getValue($response);
-        $this->assertEquals('duel.tpl', $response_template);
+        $this->assertEquals('bath-house.tpl', $response_template);
     }
 }

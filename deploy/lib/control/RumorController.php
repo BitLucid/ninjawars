@@ -35,7 +35,7 @@ class RumorController extends AbstractController
             'duels'          => $this->notableDuels(),
         ];
 
-        return new StreamedViewResponse('Bath House', 'duel.tpl', $parts, ['quickstat' => false]);
+        return new StreamedViewResponse('Bath House', 'bath-house.tpl', $parts, ['quickstat' => false]);
     }
 
     /**
