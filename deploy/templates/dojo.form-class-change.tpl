@@ -9,5 +9,5 @@
     </div>
 </form>
 {/foreach}
-<a href="/dojo/">Walk away...</a>
+<a href="/dojo/" class='btn btn-secondary' role='button'>Walk away...</a>
 <hr>
