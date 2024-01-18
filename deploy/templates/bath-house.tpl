@@ -42,7 +42,7 @@
 
 <div class='glassbox'>
   {if $stats['rich_haul'] > 0}
-    <p>The attendands mention in your earshot that they heard of someone carrying more than <span class='gold-count'>石{$stats['rich_haul']} gold</span> recently.</p>
+    <p>The attendants mention in your earshot that they heard of someone carrying more than <span class='gold-count'>石{$stats['rich_haul']} gold</span> recently.</p>
   {else}
     <p>The geisha complain about how stingy the patrons have been recently.</p>
   {/if}
