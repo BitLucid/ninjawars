@@ -13,8 +13,8 @@
         alt='Inside The Bath House' />
   </figure>
   You enter the steaming confines of the bath house.
-  A Geisha takes your clothes and concealed weaponry with a knowing smile.
-  Shedding your clothes, you ease into a large copper tub that is filled with steaming water and exotic bath salts.
+  An attendant takes your clothes and concealed weaponry with a knowing smile.
+  Shedding your clothes, you ease into a large tiled tub that is filled with steaming water and exotic bath salts.
   <p>While your tensions melt away, you listen to the conversations around you that carry through the paper thin walls, telling of legendary exploits and dark deeds.</p>
 </div>
 
@@ -42,13 +42,13 @@
 
 <div class='glassbox'>
   {if $stats['rich_haul'] > 0}
-    <p>The geisha mention in your earshot that they heard of someone carrying more than <span class='gold-count'>石{$stats['rich_haul']} gold</span> recently.</p>
+    <p>The attendants mention in your earshot that they heard of someone carrying more than <span class='gold-count'>石{$stats['rich_haul']} gold</span> recently.</p>
   {else}
     <p>The geisha complain about how stingy the patrons have been recently.</p>
   {/if}
 
   <p>
-    From the talk you hear of {$recently_active} traveler{if $recently_active neq 'one'}s{/if} who recently passed through.
+    From the talk you hear of <strong>{$recently_active} traveler{if $recently_active neq 'one'}s{/if}</strong> who recently passed through.
   </p>
 </div>
 
