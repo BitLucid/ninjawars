@@ -45,7 +45,7 @@ class ListController extends AbstractController
 
         if ($searched) {
             if (strlen($searched) == 1 || !$list_by_rank) {
-                $where_clauses[] = " (rankings.uname ilike :searched || '%') ";
+                $where_clauses[] = " (rankings.uname ilike '%' || :searched || '%') ";
                 $params[':searched'] = $searched;
             }
 
