@@ -44,5 +44,19 @@ $(function() {
 {/literal}
 {/if}
 
+<!--  Hotjar Tracking Code for nw.local and ninjawars.net 1/29/2024 -->
+<script>
+{literal}
+    (function(h,o,t,j,a,r){
+        h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+        h._hjSettings={hjid:3844866,hjsv:6};
+        a=o.getElementsByTagName('head')[0];
+        r=o.createElement('script');r.async=1;
+        r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+        a.appendChild(r);
+    })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
+{/literal}
+</script>
+
   </body>
 </html>
