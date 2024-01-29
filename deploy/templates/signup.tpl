@@ -79,7 +79,7 @@
 
 {if !$submit_successful}
 	{* Do not change this without changing the recaptcha in signup.js *}
-	<form id='signup' action="/signup/signup" onSubmit='recFormSubmit' method="post">
+	<form id='signup' action="/signup/signup" method="post">
 
     <fieldset>
      <legend>Create Your Login Info</legend>
@@ -185,15 +185,17 @@
 	  {* This section is used by signup.js and should only be changed in concert with that script below *}
 	  {* It is also tested via the cypress signup.cy.js script, so changes should be checked by running that *}
 	  	<div style='min-height:6rem' class='centered'>
+		  	<input id="g-recaptcha-response" type="hidden" name="g-recaptcha-response" value='INVALID'>
 			<button
 				class="btn btn-vital" 
 				id='become-a-ninja' 
+				data-sitekey="{$smarty.const.RECAPTCHA_SITE_KEY}" 
+				data-callback='recFormSubmit' 
 				type="submit" 
 				name="submit"
 			>
 			Become A Ninja!
 			</button>
-			<input type='hidden' name='g-recaptcha-response' id='g-recaptcha-response' value=''>
 		</div>
 	    <div class='text-centered'>
 	    	<small>
@@ -261,13 +263,33 @@
 	{* see https://www.google.com/recaptcha/admin/site/692084162/settings *}
 	<!-- See staff page for policy information. -->
 	<script src="https://www.recaptcha.net/recaptcha/api.js?render={$smarty.const.RECAPTCHA_SITE_KEY}"></script>
+	{* <script src="https://www.recaptcha.net/recaptcha/api.js"></script> *}
+
 	
 	<script src='/js/signup.js'></script>
 	<script>
 	const recaptchaSiteKey = '{$smarty.const.RECAPTCHA_SITE_KEY}';
 	{literal}
+		const submitButtonId = 'become-a-ninja';
 
+		$(() => {
+			$('#signup').on('submit', recFormSubmit);
+		})
+
+		function recOnSubmit(token) {
+			console.debug('onSubmit token', token);
+			$('#signup button[type=submit]').requestSubmit();
+		}
+
+		// see: https://stackoverflow.com/questions/51507695/google-recaptcha-v3-example-demo
 		function recFormSubmit(e){
+			const { log, debug } = console || { log: () => { /** noop */ }, debug: () => { /** noop */ } };
+			debug('Form submitted');
+			const token = $('#g-recaptcha-response').val();
+			if(token && token !== 'INVALID'){
+				return true;
+			}
+			// Otherwise, get the token and request a validated submit
 			e.preventDefault();
 			e.stopPropagation();
 			console.debug('Running grecaptcha.execute')
@@ -276,7 +298,16 @@
 					console.debug('grecaptcha.execute token', token);
 					// Add your logic to submit to your backend server here.
 					$('#g-recaptcha-response').val(token);
-					$('#signup').submit();
+					debug('token', token);
+					const button = document.getElementById(submitButtonId);
+					const form = document.getElementById('signup');
+					if(form.requestSubmit){
+						// This infinite loops at the moment
+						button && form.requestSubmit(button) || form.requestSubmit();
+					}
+					else {
+						form.submit(); // With no validation
+					}
 				});
 			});
 		}

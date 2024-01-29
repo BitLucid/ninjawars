@@ -13,7 +13,7 @@ const { location: tFrameLocation } = tTop || {};
   // eslint-disable-next-line no-unused-vars
   const { log, debug } = console || { log: () => { /** noop */ }, debug: () => { /** noop */ } };
   debug('iife run on signup.js');
-  // // eslint-disable-next-line eqeqeq
+  // eslint-disable-next-line eqeqeq
   if (tLocation != tFrameLocation) { // Framebreak on the signup page as well.
     if (window.top && window.top.location && window.top.location.href) {
       window.top.location.href = document.location.href;
@@ -22,8 +22,11 @@ const { location: tFrameLocation } = tTop || {};
   $( // on document ready
     () => {
       $('#become-a-ninja').hide().fadeIn(1500);
-      const response = $('#signup input[name=g-recaptcha-response]').val();
-      debug(response);
+      // delay debugging of the response value
+      setTimeout(() => {
+        const response = $('#signup input[name=g-recaptcha-response]').val();
+        debug(['Recaptcha response token delayed val:', response]);
+      }, 4000);
     },
   );
 })();

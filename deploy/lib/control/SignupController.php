@@ -77,14 +77,20 @@ class SignupController extends AbstractController
             $this->validateSignupRequest($signupRequest); // guard method
             // Recaptcha section
 
-            $gRecaptchaResponse = $request->get('token-reponse');
+            $gRecaptchaResponse = $request->get('g-recaptcha-response');
+            debug($request->request->all());
+            if (!$gRecaptchaResponse) {
+                debug('recaptcha token from form: ', $gRecaptchaResponse);
+                error_log('Warning: Signup form client had no Recaptcha info, token: ' . print_r($gRecaptchaResponse, true));
+                throw new \RuntimeException('There was a problem with the form submission, please contact us.', 0);
+            }
             $recaptcha = new \ReCaptcha\ReCaptcha(RECAPTCHA_SECRET_KEY);
             $resp = $recaptcha
-                // ->setExpectedHostname('www.ninjawars.net')
+                //->setExpectedHostname(WEB_ROOT)
                 // Above is needed if "domain/package name validation" disabled at
                 // https://www.google.com/recaptcha/admin/site/352364760
                 ->verify($gRecaptchaResponse, $request->getClientIp());
-            error_log('Signup form client had a Recaptcha response: ' . print_r($gRecaptchaResponse, true) . print_r($resp, true));
+            error_log('Signup form client had a Recaptcha info of token: ' . print_r($gRecaptchaResponse, true) . ' response: ' . print_r($resp, true));
             // compare a random number against the recaptcha quotient to
             // see if recaptcha even gets used
             $divisor = defined('RECAPTCHA_DIVISOR') ? RECAPTCHA_DIVISOR : 1;
@@ -231,6 +237,7 @@ class SignupController extends AbstractController
         $signupRequest->enteredPass       = Filter::toSimple($p_request->get('key') ?? '');
         $signupRequest->enteredCPass      = Filter::toSimple($p_request->get('cpass') ?? '');
         $signupRequest->clientIP          = $p_request->getClientIp();
+        $signupRequest->gRecaptchaResponse      = $p_request->get('g-recaptcha-response') ?? '';
 
         return $signupRequest;
     }
