@@ -30,6 +30,34 @@
     <!-- Plugins go here -->
     <script src='{cachebust file="/js/jquery.timeago.js"}'></script>
 
+
+    <!-- Google Analytics, just add all the tracking info to an array at once -->
+{literal}
+    <!-- Google tag (gtag.js) -- Updated 1/9/2024 -- RR -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-WWN26L7SKM"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+    
+      gtag('config', 'G-WWN26L7SKM');
+    </script>
+{/literal}
+
+    <!--  Hotjar Tracking Code for ninjawars, 1/29/2024-->
+{literal}
+    <script>
+        (function(h,o,t,j,a,r){
+            h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+            h._hjSettings={hjid:3844866,hjsv:6};
+            a=o.getElementsByTagName('head')[0];
+            r=o.createElement('script');r.async=1;
+            r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+            a.appendChild(r);
+        })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
+    </script>
+{/literal}
+
 {if $smarty.const.DEBUG}
     {literal}
     <script type="text/javascript">
@@ -44,6 +72,20 @@
 {if $is_index}
     <script src="{cachebust file="/js/chat.js"}"></script>
 {/if}
+
+<!--  Hotjar Tracking Code for ninjawars, 1/29/2024-->
+{literal}
+<script>
+    (function(h,o,t,j,a,r){
+        h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+        h._hjSettings={hjid:3844866,hjsv:6};
+        a=o.getElementsByTagName('head')[0];
+        r=o.createElement('script');r.async=1;
+        r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+        a.appendChild(r);
+    })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
+</script>
+{/literal}
 
   </head>
   <body {if $body_classes}class='{$body_classes}'{/if}>
