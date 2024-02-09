@@ -87,11 +87,15 @@ a.dull-link#join-link, a.dull-link#continue-link{
     <h1>The Ninja Game at Ninjawars.net</h1>
     <h2>Live by the Shuriken!</h2>
   </div>
-  <div>
-    <p>
-      Arising from the unrest of a lawless period, families of elite peasant warriors banded together to form clans in the more remote mountainous regions. Initially formed as self defense against roving bands of thieves, now they strike back in revolt against the growing threat of unification and subjugation under the rule of the new shogunate that is growing in power and soon will control all the nearby lands.
+
+  <!-- Intro paragraphs -->
+  <div style="max-width: 50%;margin: 0 auto;text-align: start;">
+    <h3>Arising from the unrest of a lawless period...</h3>
+    <p style="margin-bottom: 7rem;font-size: 1.75rem;">
+      ...families of elite peasant warriors banded together to form clans in the more remote mountainous regions. Initially formed as self-defense against roving bands of thieves, now they strike back in revolt against the growing threat of control by the rule of the new shogunate that is growing in power and soon will control all the nearby lands...
     </p>
   </div>
+  
   <div id='progression'>
     <div id='later-progression'>
       <p>Explore the <a class='fade-in' target='main' href='/map'><i class="fa fa-map" aria-hidden="true"></i> map</a> and <a class='fade-in' target='main' href='/enemies#npcs'><i class="fa fa-bolt" aria-hidden="true"></i> attack monsters</a>, gather loot</p>
