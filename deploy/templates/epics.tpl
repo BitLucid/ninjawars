@@ -12,6 +12,14 @@
     <header>
         <h1>UI Story Epics</h1>
 
+        <div class='autorefreshing-area'>
+            <label class="switch">
+                <input id='autorefreshing-toggle' type="checkbox">
+                <span class="slider round"></span>
+            </label>
+            <label for='autorefreshing-toggle'>Autorefreshing</label>
+        </div>
+
         {if $error}
             <div class='parent'>
                 <div class='child error'>
