@@ -48,7 +48,7 @@
   {* Contact us info in the footer here *}
 
   <p>
-    Have fun, and see you in the game.
+    See you in the game, and have fun.
   </p>
 
   {include file="email.footer.tpl"}
