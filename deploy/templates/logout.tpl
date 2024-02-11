@@ -30,12 +30,15 @@
 </h1>
 <section class='glassbox centered thick'>
 	<p class='lead'>
-		Sorry to see you go!  Come back soon!
-		You can return to <a href='/'><i class="fa-solid fa-house"></i> the homepage</a> or <a class='btn btn-primary' href='/login'><i class="fa-solid fa-lock"></i> log in again.</a>
+		Sorry to see you go!  Come back soon!<br />
+		<br />
+		You can:<br />
+		<a href='/'>return to <i class="fa-solid fa-house"></i> the homepage</a> <i class="fa-solid fa-arrow-left"></i> OR <i class="fa-solid fa-arrow-right"></i> <a class='btn btn-primary' href='/login'><i class="fa-solid fa-lock"></i> log in again.</a>
 	</p>
 </section>
-<section id='logout-ads' class='ad-sectionglassbox'>
+<section id='logout-ads' class='ad-section glassbox'>
 <div class='glassbox clearfix well'>
+	{*
 	<h2>Can't get enough ninjas? Try these</h2>
 	<div class='group'>
 		<a href="http://amzn.to/1Ro2VLC" rel='nofollow'>Ninja AD 1460-1650 (Warrior)</a><img src="http://ir-na.amazon-adsystem.com/e/ir?t=bit0d3-20&l=as2&o=1&a=1841765252" width="1" height="1" alt="" style="border:none !important; margin:0px !important;" />
@@ -63,11 +66,12 @@
 		<p>The Ninja Wars movie, amusing, disgusting & weird all at once</p>
 		<a rel="nofollow" href="http://www.amazon.com/gp/product/B0006IINIW/ref=as_li_tl?ie=UTF8&camp=1789&creative=390957&creativeASIN=B0006IINIW&linkCode=as2&tag=bit0d3-20&linkId=A2Z4NQEKGHB7BKBQ"><img src="http://ws-na.amazon-adsystem.com/widgets/q?_encoding=UTF8&ASIN=B0006IINIW&Format=_SL110_&ID=AsinImage&MarketPlace=US&ServiceVersion=20070822&WS=1&tag=bit0d3-20" ></a><img src="http://ir-na.amazon-adsystem.com/e/ir?t=bit0d3-20&l=as2&o=1&a=B0006IINIW" width="1" height="1" alt="" style="border:none !important; margin:0px !important;" />
 	</div>
+	*}
 	<div class='horizontal'>
 		<div class='google-ad group'>
 			<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9488510237149880"
 			crossorigin="anonymous"></script>
-	<!-- NWShopAd -->
+	<!-- NWLogoutAd -->
 	<ins class="adsbygoogle"
 			style="display:block"
 			data-ad-client="ca-pub-9488510237149880"

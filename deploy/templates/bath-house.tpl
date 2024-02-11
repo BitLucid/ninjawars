@@ -32,7 +32,11 @@
 <ul id='duel-log' style='overflow-y: auto;max-height:20rem;'>
 	{foreach item="duel" from=$duels}
   <li>
-  {include file="player-link.tpl" username=$duel.attacker id=$duel.attacker_id} has dueled {include file="player-link.tpl" username=$duel.defender id=$duel.defender_id} and {if $duel.won}won{else}lost{/if} for {$duel.killpoints} killpoints on {$duel.date}
+  {include file="player-link.tpl" username=$duel.attacker id=$duel.attacker_id}
+  has dueled 
+  {include file="player-link.tpl" username=$duel.defender id=$duel.defender_id}
+  and {if $duel.won}<span class='text-success'>won</span>{else}<span class='text-danger'>lost</span>{/if} 
+  for <strong>{$duel.killpoints}</strong> killpoints <time class='chat-time timeago' datetime='{$duel.date|escape}' title='{$duel.date|escape}'>{$duel.date|escape}</time>
   </li>
 	{/foreach}
 </ul>
