@@ -93,6 +93,6 @@
 
 	</section><!-- end of .npc-fight -->
 	<nav>
-		<a class='btn btn-primary attack-again' href='/npc/attack/{$victim|escape|escape:'url'}'>Attack another {$display_name|escape}</a>
+		<a class='btn btn-primary attack-again {if !$survive_fight}thick{/if}' href='/npc/attack/{$victim|escape|escape:'url'}'>Attack another {$display_name|escape}</a>
 	</nav>
   </article>
