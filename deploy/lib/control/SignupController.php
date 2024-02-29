@@ -88,7 +88,7 @@ class SignupController extends AbstractController
             // compare a random number against the recaptcha quotient to
             // see if recaptcha even gets used
             $divisor = defined('RECAPTCHA_DIVISOR') ? RECAPTCHA_DIVISOR : 1;
-            if ($resp->isSuccess() !== true && ($divisor === 1 || rand(1, $divisor) === 1)) {
+            if ($resp->isSuccess() !== true && ($divisor === 1 || true || rand(1, $divisor) === 1)) {
                 error_log('Signup form client had a Recaptcha failure: ' . print_r($resp->getErrorCodes(), true));
                 throw new \RuntimeException('There was a problem with the submission, please wait 10 seconds and try again.', 0);
             }
