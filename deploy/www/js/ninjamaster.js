@@ -8,7 +8,7 @@ import api from './api.js';
 
 import {
   variantStableSeeds, generateStableSeed, seededString, seededRandom,
-  seededInt,
+  seededInt, seededNinjaName,
   // eslint-disable-next-line import/extensions
 } from './seededRandom.js';
 
@@ -30,13 +30,13 @@ const clanComponent = ({ clan }) => `
               ${clan.clan_id} 
               <time class='timeago' datetime='${escape(clan.clan_created_date)}'>${escape(clan.clan_created_date)}</time>
             </div>
+            <div>Founded by ${escape(clan.clan_founder)}</div>
+            <a href='/clan/view?clan_id=${escape(clan.clan_id)}'><i class='fa-solid fa-eye'></i> Clan Page</a>
             <a href='${escape(clan.clan_avatar_url ?? '')}'>Avatar</a>
             <figure>
               <img style='max-height:35rem;max-width:35rem' src='${escape(clan.clan_avatar_url)}' alt='' />
               <figcaption>Clan Avatar: ${clan.clan_avatar_url ? '' : 'X'}</figcaption>
             </figure>
-            Founded by ${escape(clan.clan_founder)}
-            <a href='/clan/view?clan_id=${escape(clan.clan_id)}'><i class='fa-solid fa-eye'></i> Clan Page</a>
             <blockquote>${escape(clan.clan_description)}</blockquote>
             <details>
               <summary>Data Summary</summary>
@@ -77,22 +77,19 @@ const variantSeeds = variantStableSeeds(100);
 
 // Template random clan data, seed is a Math.random equivalent
 const clanData = (seed, dotted = false) => ({
-  clan_name: dotted ? dotString(13) : `Cln ${seededString(seed, 13)}`,
+  clan_name: dotted ? dotString(13) : `Cln ${seededString(seed, 13, 5)}`,
   clan_id: dotted ? dotString(4) : `${1 + seededInt(seed)}`,
   clan_created_date: dotted ? `${dotString(5)} years ago` : '2020-01-01',
   clan_avatar_url: (seededRandom(seed) < 0.5 && !dotted) ? 'https://i.imgur.com/eflshHR.gif' : '',
-  clan_founder: dotted ? dotString(15) : `${seededString(seed, 15)}`,
-  description: dotted ? dotString(30) : `Description ${seededString(seed, 30)}`,
+  clan_founder: dotted ? dotString(15) : `${seededNinjaName(seed)}`,
+  description: dotted ? dotString(30) : `Description ${seededString(seed, 30, 1)}`,
 });
 
 // Display seeded random clans
 const provideInitialTemplate = (num = 7, seeded = true) => {
   // go through the seeds and add a clan card based on seeded data
-  [...Array(num).keys()].map((n) => {
-    console.debug('provideInitialTemplate', n, variantSeeds[n]);
-
+  [...Array(num).keys()].forEach((n) => {
     addClanCard(clanData(variantSeeds[n], !seeded));
-    return variantSeeds[n];
   });
 };
 
@@ -102,7 +99,11 @@ const provideInitialTemplate = (num = 7, seeded = true) => {
 const initializeClans = () => {
   $('#clan-list-progress').hide();
   $('#clan-list-area').append(`
-    Random check: ${seededString(generateStableSeed(), 20)}
+  <code>
+    Random check: ${seededString(generateStableSeed(), 20, 3)}
+    Random check no spaces: ${seededString(generateStableSeed(), 20, 3, { spaces: false })}
+    Random username: ${seededNinjaName(generateStableSeed())}
+  </code>
   `);
   $('#load-clans').on('click', () => {
     $('#clan-list-progress').show();

@@ -143,6 +143,11 @@
 	max-width: 100%;
 }
 
+.carded-area figure img{
+	max-height: 50%;
+	overflow-y: auto;
+}
+
 /* On mouse-over, add a deeper shadow */
 .card:hover {
   box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
