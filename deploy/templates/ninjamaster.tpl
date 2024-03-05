@@ -255,22 +255,10 @@ link.href = '/images/ninjamaster/shuriken-favicon.png';
 	</div>
 </section>
 
-<section id='clan-list' class='special-info'>
-	<header>
-		<h3>Clans</h3>
-	</header>
-	<div class='text-center'>
-		<button class='btn btn-default show-hide-next' type='button'>Show/Hide</button>
-	</div>
-	<div id='clan-list-stats'>
-		<progress id='clan-list-progress' indeterminate=indeterminate></progress>
-    <div class='text-center thick'>
-		  <button class='btn btn-primary' id='load-clans'>VIEW CLANS</button>
-    </div>
-		<ul id='clan-list-area' class='carded-area'>
-		</ul>
-	</div>
-</section>
+<div class='nm-clans-container'>
+
+	{include file="ninjamaster.clans.tpl"}
+</div>
 
 {if $dupes}
 <section id='duplicate-ips' class='glassbox special-info'>

@@ -1,5 +1,6 @@
 <link href='/css/epics.css' rel='stylesheet' type='text/css' />
 <script src='/js/epics.js'></script>
+<script type='module' src='/js/ninjamaster.js'></script>
 <main id='epics'>
     <nav style='float:left'><span>
             <a href='/'><button type='button' class='btn btn-default'><i class='fa fa-home'></i></button></a>
@@ -76,6 +77,8 @@
                 <a class='btn btn-info' href='#interview-section'>Interview</a>
                 <a class='btn btn-info' href='#staff-section'>Staff</a>
                 <a class='btn btn-info' href='#ninjamaster-section'>Ninjamaster</a>
+                <a class='btn btn-info' href='#ninjamaster-items-section'>Ninjamaster.items</a>
+                <a class='btn btn-info' href='#ninjamaster-clans-section'>Ninjamaster.clans</a>
             </div>
         </nav>
     </header>
@@ -530,6 +533,17 @@
             <h2>Ninjamaster</h2>
             <p class='epic-note'>Currently commented out</p>
             {* {include file="ninjamaster.tpl"} *}
+        </section>
+
+        <section id='ninjamaster-items-section'>
+            <h2>Ninjamaster.items</h2>
+            {include file="ninjamaster.css.tpl"}
+            {include file="ninjamaster.items.tpl"}
+        </section>
+
+        <section id='ninjamaster-clans-section'>
+            <h2>Ninjamaster.clans</h2>
+            {include file="ninjamaster.clans.tpl"}
         </section>
 
         <section id='about-section'>

@@ -111,6 +111,9 @@
 .carded-area{
 	display:flex;
 	justify-content: space-around;
+	flex-wrap: wrap; /* allows the cards to wrap onto new lines */
+	gap: 2rem;
+	margin-left:0;
 }
 
 .highlight-box{
@@ -127,12 +130,17 @@
   border: 1px solid #424954;
   border-radius: 0.25rem;
   display:inline-block;
-  max-width: 50vw;
-  height: 25vh;
+  max-width: 45vw;
+  height: 33vh;
   overflow-y: auto;
+  padding: 2rem 1rem;
 }
 .card-50{
 	max-width: 50vw;
+}
+
+.card details{
+	max-width: 100%;
 }
 
 /* On mouse-over, add a deeper shadow */
