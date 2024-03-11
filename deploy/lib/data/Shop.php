@@ -35,7 +35,7 @@ class Shop
     public static function fullItems($administrative = false): array
     {
         if ((defined('DEBUG') && DEBUG) || $administrative) {
-            $sel = 'select item_display_name, item_internal_name, item_cost, image, usage from item order by for_sale DESC, image is not null desc, item_cost asc';
+            $sel = 'select item_display_name, item_internal_name, item_cost, image, usage, for_sale, ignore_stealth, covert, turn_cost, target_damage, turn_change, self_use, plural, other_usable, traits, stock, stock_refresh_rate, stock_refresh_amount from item order by for_sale DESC, image is not null desc, item_cost asc';
         } else {
             return [];
         }
