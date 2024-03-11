@@ -27,10 +27,11 @@ const clanComponent = ({ clan }) => `
           <div class='glassbox'>
             <h4>${clan.clan_name}</h4>
             <div>
-              ${clan.clan_id} 
-              <time class='timeago' datetime='${escape(clan.clan_created_date)}'>${escape(clan.clan_created_date)}</time>
+              id: ${clan.clan_id}
+              <br />
+              Founded <time class='timeago' datetime='${escape(clan.clan_created_date)}'>${escape(clan.clan_created_date)}</time>
             </div>
-            <div>Founded by ${escape(clan.clan_founder)}</div>
+            <div>by ${escape(clan.clan_founder)}</div>
             <a href='/clan/view?clan_id=${escape(clan.clan_id)}'><i class='fa-solid fa-eye'></i> Clan Page</a>
             <a href='${escape(clan.clan_avatar_url ?? '')}'>Avatar</a>
             <figure>

@@ -325,4 +325,20 @@ details[open] summary::before{
 	margin-left: auto;
 	margin-right: auto;
 }
+#admin-actions pre{
+	background-color: inherit;
+	color: inherit;
+}
+#admin-actions .intro pre{
+	border-color: rgba(255, 255, 255, .5);
+}
+#admin-actions pre.spaced{
+	margin-top: 2rem;
+	margin-left: 5vw;
+	margin-right: 5vw;
+}
+#admin-actions .intro{
+	margin-top: 1rem;
+
+}
 </style>

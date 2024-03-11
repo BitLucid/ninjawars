@@ -10,7 +10,7 @@
             <progress id='clan-list-progress' indeterminate=indeterminate></progress>   
         </div>
         <div class='text-center thick'>
-            <button class='btn btn-primary' id='load-clans'>VIEW CLANS</button>
+            <button class='btn btn-primary' id='load-clans'>LOAD CLANS</button>
         </div>
 		<ul id='clan-list-area' class='carded-area'>
 		</ul>
