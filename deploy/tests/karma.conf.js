@@ -58,6 +58,21 @@ module.exports = function karmaConfig(config) {
         type: 'module',
         included: true,
       },
+      {
+        pattern: 'deploy/www/js/api.js',
+        type: 'module',
+        included: true,
+      },
+      {
+        pattern: 'deploy/www/js/util.js',
+        type: 'module',
+        included: true,
+      },
+      {
+        pattern: 'deploy/www/js/seededRandom.js',
+        type: 'module',
+        included: true,
+      },
       { pattern: 'deploy/www/js/nw.js', type: 'module', included: true },
       { pattern: 'deploy/www/js/*.js', included: true },
       { pattern: 'deploy/tests/js/*Spec.js', included: false },
@@ -70,6 +85,11 @@ module.exports = function karmaConfig(config) {
       'deploy/www/js/jquery.linkify.min.js',
       'deploy/www/js/bootstrap.min.js',
       'deploy/www/js/imgur.min.js',
+      // 'deploy/www/js/api.js', // Temporary excludes from here because of import/export keyword
+      'deploy/www/js/seededRandom.js',
+      'deploy/www/js/ninjamaster.js',
+      'deploy/tests/js/NinjamasterSpec.js',
+      'deploy/tests/js/ApiSpec.js',
     ],
 
     // preprocess matching files before serving them to the browser
