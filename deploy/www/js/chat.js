@@ -288,15 +288,12 @@ Chat.domain = function fnChDomain(url) {
 
   if (url && (url.includes('.localurl') || url.includes('localhost'))) {
     const { hostname } = url ? new URL(url) : {};
-    logger.debug('Chat api url found was :', hostname);
     return hostname;
   }
   if (url && url.includes('.local')) {
     const { hostname } = new URL(url);
-    logger.debug('Chat api url found was :', hostname);
     return `chatapi.${hostname}`;
   }
-  logger.debug('Chat api url found was :', standardChatApi);
   return standardChatApi; // Fallback default configured
 };
 
