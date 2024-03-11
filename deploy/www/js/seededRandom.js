@@ -18,7 +18,7 @@ export function seededRandom(seed) {
  * @returns {number}
  */
 export const seededInt = (seed, min = 1, max = 99) => {
-  if (!seed === null || seed === undefined) throw new Error('seededInt requires a seed');
+  if (seed === null || seed === undefined) throw new Error('seededInt requires a seed');
   const ran = seededRandom(seed);
   const minL = Math.ceil(min);
   const maxL = Math.floor(max);
@@ -34,7 +34,7 @@ export const seededInt = (seed, min = 1, max = 99) => {
 export const seededString = (seed, size = 20, rangeMin = null, options = {}) => {
   const { spaces = true } = options ?? {};
   console.debug('seededString', seed, size);
-  if (!seed === null || seed === undefined) throw new Error('seededString requires a seed');
+  if (seed === null || seed === undefined) throw new Error('seededString requires a seed');
   let text = '';
   const possible = `ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789${spaces ? '      ' : ''}`;
   // create a string based on the seed, length
@@ -61,7 +61,7 @@ export const seededNinjaName = (seed) => {
 };
 
 export const seededSize = (seed, min = 1, max = 99) => {
-  if (!seed === null || seed === undefined) throw new Error('seededSize requires a seed');
+  if (seed === null || seed === undefined) throw new Error('seededSize requires a seed');
   const ran = seededRandom(seed);
   const minL = Math.ceil(min);
   const maxL = Math.floor(max);
