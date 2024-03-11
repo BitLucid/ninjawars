@@ -55,6 +55,7 @@ export const seededString = (seed, size = 20, rangeMin = null, options = {}) => 
  * 50% of ninja names will be less than 12 char, but sometimes will be longer
  */
 export const seededNinjaName = (seed) => {
+  console.debug('seededNinjaName', seed);
   const upperBound = seededRandom(seed) < 0.5 ? 12 : 24;
   return seededString(seed, upperBound, 3, { spaces: false });
 };

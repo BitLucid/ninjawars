@@ -7,7 +7,7 @@
 import api from './api.js';
 
 import {
-  variantStableSeeds, generateStableSeed, seededString, seededRandom,
+  variantStableSeeds, seededString, seededRandom,
   seededInt, seededNinjaName,
   // eslint-disable-next-line import/extensions
 } from './seededRandom.js';
@@ -98,13 +98,6 @@ const provideInitialTemplate = (num = 7, seeded = true) => {
  */
 const initializeClans = () => {
   $('#clan-list-progress').hide();
-  $('#clan-list-area').append(`
-  <code>
-    Random check: ${seededString(generateStableSeed(), 20, 3)}
-    Random check no spaces: ${seededString(generateStableSeed(), 20, 3, { spaces: false })}
-    Random username: ${seededNinjaName(generateStableSeed())}
-  </code>
-  `);
   $('#load-clans').on('click', () => {
     $('#clan-list-progress').show();
     api.clans().then(sleeper(1000)).then((response) => {
@@ -167,7 +160,7 @@ const initializeDeactivation = () => {
 $(function initializeNMPage() {
   // Handle the show/hide sections
   $('.show-hide-next')
-    .click(function showHideNext() {
+    .on('click', function showHideNext() {
       $(this).parent().next().slideToggle();
     })
     .html("<span class='slider'><span class='dot'></span></span>");

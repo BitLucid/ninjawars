@@ -537,6 +537,7 @@
 
         <section id='ninjamaster-items-section'>
             <h2>Ninjamaster.items</h2>
+            {assign var="items" value=['shuriken'=>['item_id'=>232323, 'usage'=>'Thow the sharp end at someone', 'other_usable'=>true, 'name'=>'Shuriken', 'item_internal_name'=> 'shuriken', 'item_display_name'=>'Shuriken', 'image'=>'', 'item_cost'=>999, 'count'=>4321], 'shuriken2'=>['item_id'=>2324444, 'usage'=>'Thow the sharp end at someone', 'other_usable'=>true, 'name'=>'Shuriken2', 'item_internal_name'=> 'shuriken', 'item_display_name'=>'Shuriken', 'image'=>'', 'item_cost'=>999, 'count'=>4321]]}
             {include file="ninjamaster.css.tpl"}
             {include file="ninjamaster.items.tpl"}
         </section>
