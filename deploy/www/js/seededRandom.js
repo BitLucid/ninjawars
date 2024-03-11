@@ -19,10 +19,10 @@ export function seededRandom(seed) {
  */
 export const seededInt = (seed, min = 1, max = 99) => {
   if (!seed === null || seed === undefined) throw new Error('seededInt requires a seed');
-  const r = seededRandom(seed);
+  const ran = seededRandom(seed);
   const minL = Math.ceil(min);
   const maxL = Math.floor(max);
-  return Math.floor(r * (maxL - minL + 1)) + minL;
+  return Math.floor(ran * (maxL - minL + 1)) + minL;
 };
 
 /**
@@ -41,7 +41,7 @@ export const seededString = (seed, size = 20, rangeMin = null, options = {}) => 
   let total = size ?? 5;
   // If rangeMin is set, seed a variant of a seeded length
   if (rangeMin !== null) {
-    total = Math.random() * (size - rangeMin) + rangeMin;
+    total = seededRandom(seed) * (size - rangeMin) + rangeMin;
   }
   for (let i = 0; i < total; i += 1) {
     text += possible.charAt(Math.floor(seededRandom(seed + i) * possible.length));
@@ -62,10 +62,10 @@ export const seededNinjaName = (seed) => {
 
 export const seededSize = (seed, min = 1, max = 99) => {
   if (!seed === null || seed === undefined) throw new Error('seededSize requires a seed');
-  const r = seededRandom(seed);
+  const ran = seededRandom(seed);
   const minL = Math.ceil(min);
   const maxL = Math.floor(max);
-  return Math.floor(r * (maxL - minL + 1)) + minL;
+  return Math.floor(ran * (maxL - minL + 1)) + minL;
 };
 
 /**
