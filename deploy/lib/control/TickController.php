@@ -110,7 +110,7 @@ class TickController
             DEITY_NIGHTLY: Deity reset occurred at server date/time: ".date('l jS \of F Y h:i:s A').".\n");
 
         $unconfirmed_message = $this->deity->processUnconfirms();
-        $this->deity->rearrangeStats();
+        $this->deity->rearrangeWorldEnvironment();
         $this->deity->truncateMessages();
         $this->deity->pcsUpdate();
 
