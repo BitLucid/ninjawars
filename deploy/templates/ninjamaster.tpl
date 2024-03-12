@@ -68,6 +68,8 @@ link.href = '/images/ninjamaster/shuriken-favicon.png';
 			<li><a class='' href='/ninjamaster/tools'>Validation Tools</a></li>
 			<li><a class='' href='/ninjamaster/player_tags'>Character Tag List</a></li>
 			<li><a class='' href='/ninjamaster/#item-list-area'>Item List</a></li>
+			<li><a class='' href='/ninjamaster/#clans'>Clans</a></li>
+			<li><a class='' href='/ninjamaster/#api-epics'>Api Epics</a></li>
 			<li><a class='' href='/ninjamaster/#aws-services'>AWS Services</a></li>
 			<li><a class='' href='/epics'>UI Epics</a></li>
 		</ul>
@@ -75,14 +77,15 @@ link.href = '/images/ninjamaster/shuriken-favicon.png';
 </nav>
 
 <div class='hero'>
-	<h2>Welcome Moderators!</h2>
+	<h2>Welcome!</h2>
 	<!-- make this area display with whitespace intact -->
 	<div class='intro'>
 		<pre class='spaced'>{* 
-		*}<p>You have the power to view internal, out-of-character settings, and intimate details of other players, npcs, items, etc.
+		*}<p>You have the power to view internal out-of-character settings, and intimate details of other players, npcs, items, etc.
 			</p>
 			<span class='notice'>Do:</span> Use this power wisely, and for the good of the game.
-			<span class='notice'>Do not:</span> Share this information with regular players, as it might make the game easier and less fun for them.</span>
+			<span class='notice'>Do not:</span> Share this information with regular players, as it might 
+			make the game easier and less fun for them.</span>
 		</pre>
 	</div>
 </div>
@@ -110,6 +113,37 @@ link.href = '/images/ninjamaster/shuriken-favicon.png';
 
 			{if $usage.recent_count lt 10}<span class="alert alert-warning">Warning: Current engagement levels seem to be low, recent logins were: {$usage.recent_count}</span>{else}Player engagement levels at least appear to be within normal bounds.{/if}
 
+
+		</pre>
+		{* To add: Too high of login attempts, too high of activity rates for signups? *}
+	</article>
+</section>
+
+<section class='special-info'>
+	<header>
+	<h2 id='usage-usage'>Infrastructure Health</h2>
+	</header>
+	<article>
+		<pre class='infrastructural-checks spaced'>
+			These checks are manual, but important to click through to every month.
+			High Priority Checks:
+			- Email Sendability Reputation: <a href='https://us-east-1.console.aws.amazon.com/ses/home?region=us-east-1#/reputation'>Emailability Health</a>
+			- Cost Anomalies: <a href='https://us-east-1.console.aws.amazon.com/cost-management/home?region=us-east-1#/anomaly-detection/overview'>Cost Anomalies</a>
+			- AWS infrastructure Alarms: <a href='https://us-east-1.console.aws.amazon.com/cloudwatch/home?region=us-east-1#alarmsV2:'>AWS Infrastructure Alarms</a>
+
+			These checks can be checked once every 3 months, and there are sometimes other alert mechanisms.
+			Medium Priority Checks:
+			- DNS Health checks: <a href='https://us-east-1.console.aws.amazon.com/route53/healthchecks/home?region=us-east-1#/'>DNS Health Checks</a>
+			- AWS Account Health Notices: <a href='https://health.aws.amazon.com/health/home#/account/dashboard/open-issues'>Account Health</a>
+			- Servers health: <a href='https://us-east-1.console.aws.amazon.com/ec2/home?region=us-east-1#Instances:'>Server Instances Health</a>
+			- Cost Management Health: <a href='https://us-east-1.console.aws.amazon.com/costmanagement/home?region=us-east-1#/home'>Cost Management Health</a>
+			- Load Balancer Health: <a href='https://us-east-1.console.aws.amazon.com/ec2/home?region=us-east-1#LoadBalancers:'>Load Balancers Health</a>
+			- Databases Health: <a href='https://us-east-1.console.aws.amazon.com/rds/home?region=us-east-1#databases:'>Databases Health</a>
+
+			Check these just as desired.
+			Low Priority Checks:
+			- Adwords Health: <a href='https://ads.google.com/aw/overview?ocid=8472107'>Adwords Health</a>
+			- Adsense Health: <a href='https://www.google.com/adsense/new/u/0/pub-9488510237149880/home'>Adsense Health</a>
 		</pre>
 		{* To add: Too high of login attempts, too high of activity rates for signups? *}
 	</article>
@@ -430,26 +464,28 @@ link.href = '/images/ninjamaster/shuriken-favicon.png';
 
 <section class='special-info'>
 	<header><h2 id='aws-services'>AWS Services</h2></header>
-	<nav class='glassbox nav nav-pills'>
-			<li><a href='https://us-east-1.console.aws.amazon.com/ses/home?region=us-east-1#/reputation'>
-				AWS Email Reputation Metrics
-			</a></li>
-			<li><a href='https://us-east-1.console.aws.amazon.com/ec2/home?region=us-east-1#Instances:instanceState=running'>
-				Running Instances
-			</a></li>
-			<li><a href='https://us-east-1.console.aws.amazon.com/costmanagement/home?region=us-east-1#/home'>
-				Billing
-			</a></li>
-      <li><a href='https://ads.google.com/aw/overview'>
-				Adwords
-			</a></li>
-      <li><a href='https://analytics.google.com/analytics/web/?pli=1#/p289349786/reports/intelligenthome'>
-				Analytics
-			</a></li>
-      <li><a href='https://www.google.com/recaptcha/admin/site/692084162/settings'>
-				Recaptcha
-			</a></li>
-	</nav>
+	<div class='text-centered'>
+		<nav class='glassbox nav nav-pills'>
+				<li><a href='https://us-east-1.console.aws.amazon.com/ses/home?region=us-east-1#/reputation'>
+					AWS Email Reputation Metrics
+				</a></li>
+				<li><a href='https://us-east-1.console.aws.amazon.com/ec2/home?region=us-east-1#Instances:instanceState=running'>
+					Running Instances
+				</a></li>
+				<li><a href='https://us-east-1.console.aws.amazon.com/costmanagement/home?region=us-east-1#/home'>
+					Billing
+				</a></li>
+		<li><a href='https://ads.google.com/aw/overview'>
+					Adwords
+				</a></li>
+		<li><a href='https://analytics.google.com/analytics/web/?pli=1#/p289349786/reports/intelligenthome'>
+					Analytics
+				</a></li>
+		<li><a href='https://www.google.com/recaptcha/admin/site/692084162/settings'>
+					Recaptcha
+				</a></li>
+		</nav>
+	</div>
 </section>
 
 
@@ -465,6 +501,8 @@ link.href = '/images/ninjamaster/shuriken-favicon.png';
 		<li><a class='' href='/ninjamaster/tools'>Validation Tools</a></li>
 		<li><a class='' href='/ninjamaster/player_tags'>Character Tag List</a></li>
 		<li><a class='' href='/ninjamaster/#item-list-area'>Item List</a></li>
+		<li><a class='' href='/ninjamaster/#clans'>Clans</a></li>
+		<li><a class='' href='/ninjamaster/#api-epics'>Api Epics</a></li>
 		<li><a class='' href='/ninjamaster/#aws-services'>AWS Services</a></li>
 		<li><a class='' href='/epics'>UI Epics</a></li>
         </ul>
