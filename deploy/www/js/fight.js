@@ -71,19 +71,16 @@ const render = () => {
 };
 
 $(() => {
-  debug('next target IIFE run');
-  const nextTarget = (offset = 0) => {
-    debug('Getting next target', offset);
-    return api
-      .nextTarget(offset)
-      .then((res) => res.json())
-      .then((data) => {
-        placeTarget(data);
-        debug('Target health: ', data.health, data);
-        completeLoading();
-        return data;
-      });
-  };
+  debug('Fight.js initialized');
+  const nextTarget = (offset = 0) => api
+    .nextTarget(offset)
+    .then((res) => res.json())
+    .then((data) => {
+      placeTarget(data);
+      debug('Target health: ', data.health, data);
+      completeLoading();
+      return data;
+    });
   // Set initial offset from url, fallback to 0
   setOffset(parseInt(urlParam('offset'), 10) || 0);
   nextTarget(getOffset());
