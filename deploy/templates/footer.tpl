@@ -21,7 +21,6 @@ var pub_char_info = {if $json_public_char_info}{$json_public_char_info}{else}''{
 $(function() {
 	if(pub_char_info){
     const { debug } = console ?? { debug: () => { /* no-op */ } };
-    debug('Refreshing player stats if available stats');
 		NW.refreshStats(pub_char_info); // Refresh the data piped in above.
 	}
 });

@@ -72,7 +72,7 @@
               <div class='centered'>
                 <input tabindex=3 name="login_request" id='request-login' class='btn btn-vital' type="submit" value="Login">
               </div>
-              <div class='centered'>
+              <div class='centered my-thick'>
                 <a tabindex=4 href='/assistance'>forgot?</a>
               </div>
             </div>
@@ -97,4 +97,5 @@
   {* see https://www.google.com/recaptcha/admin/site/692084162/settings *}
   <!-- See staff page for policy information. -->
   <script src="https://www.recaptcha.net/recaptcha/api.js?render={$smarty.const.RECAPTCHA_SITE_KEY}"></script>
+  <script src='/js/login.js'></script>
 </div>

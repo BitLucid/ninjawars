@@ -99,7 +99,7 @@ link.href = '/images/ninjamaster/shuriken-favicon.png';
 			Check below for some standard alerts and warnings about the game's health 
 			based on live statistics.
 
-			{if $usage.new_count eq 0}<span class="alert alert-danger">Danger: Signups appear currently low, at {$usage.new_count|escape} in the last week.</span>{/if}
+			{if $usage.new_count eq 0}<span class="alert alert-danger">Danger: Signups appear low, check signup page health, at {$usage.new_count|escape} in the last week.</span>{/if}
 
 
 
