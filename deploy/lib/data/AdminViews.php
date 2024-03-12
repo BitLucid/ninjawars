@@ -96,6 +96,16 @@ class AdminViews
 
 
     /**
+     * Partially obsfucate an email address for display
+     */
+    private static function redactEmail($email): string
+    {
+        // Redact the email by removing the center of the first part, and the center of the domain
+        return $email != '' ? substr($email, 0, 5) . '...@.....' . substr($email, -5) : $email;
+    }
+
+
+    /**
      * Reformat the character info sets.
      *
      * @return Array
@@ -120,6 +130,10 @@ class AdminViews
             $res[$id]['first'] = $first;
             unset($res[$id]['messages']); // Exclude the messages for length reasons.
             unset($res[$id]['description']); // Ditto
+            // Redactions
+            unset($res[$id]['verification_number']);
+            unset($res[$id]['hash']);
+            $res[$id]['email'] = self::redactEmail($res[$id]['email']);
             $first = false;
         }
 
