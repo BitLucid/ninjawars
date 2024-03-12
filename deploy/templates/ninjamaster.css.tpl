@@ -111,6 +111,9 @@
 .carded-area{
 	display:flex;
 	justify-content: space-around;
+	flex-wrap: wrap; /* allows the cards to wrap onto new lines */
+	gap: 2rem;
+	margin-left:0;
 }
 
 .highlight-box{
@@ -127,12 +130,22 @@
   border: 1px solid #424954;
   border-radius: 0.25rem;
   display:inline-block;
-  max-width: 50vw;
-  height: 25vh;
+  max-width: 45vw;
+  height: 33vh;
   overflow-y: auto;
+  padding: 2rem 1rem;
 }
 .card-50{
 	max-width: 50vw;
+}
+
+.card details{
+	max-width: 100%;
+}
+
+.carded-area figure img{
+	max-height: 50%;
+	overflow-y: auto;
 }
 
 /* On mouse-over, add a deeper shadow */
@@ -311,5 +324,21 @@ details[open] summary::before{
 	min-width: 50rem;
 	margin-left: auto;
 	margin-right: auto;
+}
+#admin-actions pre{
+	background-color: inherit;
+	color: inherit;
+}
+#admin-actions .intro pre{
+	border-color: rgba(255, 255, 255, .5);
+}
+#admin-actions pre.spaced{
+	margin-top: 2rem;
+	margin-left: 5vw;
+	margin-right: 5vw;
+}
+#admin-actions .intro{
+	margin-top: 1rem;
+
 }
 </style>
