@@ -57,10 +57,11 @@ class NinjamasterController extends AbstractController
         $first_char       = null;
         $first_account     = null;
         $first_description = null;
+        $signup_views_limit = 100;
         $dupes            = AdminViews::dupedIps();
         $stats            = AdminViews::highRollers();
         $usage           = AdminViews::recentUsage();
-        $signups           = AdminViews::recentUsage(500);
+        $signups           = AdminViews::recentUsage($signup_views_limit);
         $npcs             = NpcFactory::allNonTrivialNpcs();
         $trivial_npcs      = NpcFactory::allTrivialNpcs();
 
@@ -81,8 +82,11 @@ class NinjamasterController extends AbstractController
             // Get a different first character if an array is specified
             $first_char = $first_char ? $first_char : Player::find((int) reset($char_ids));
             if ($first_char) {
+                // Redact the character info
                 assert($first_char instanceof Player);
-                $first_account     = Account::findByChar($first_char);
+                $first_char = Player::redact($first_char);
+                $initial_first_account     = Account::findByChar($first_char);
+                $first_account = $initial_first_account ? Account::redact($initial_first_account) : null;
                 $char_inventory    = AdminViews::charInventory($first_char);
                 $first_message     = $first_char->messages;
                 $first_description = $first_char->description;
@@ -111,6 +115,7 @@ class NinjamasterController extends AbstractController
             'npcs'              => $npcs,
             'items'             => $items,
             'trivial_npcs'      => $trivial_npcs,
+            'signup_views_limit' => $signup_views_limit,
         ];
 
         return new StreamedViewResponse('Admin Actions', 'ninjamaster.tpl', $parts);
