@@ -10,21 +10,24 @@ var logger = console || {
   log: () => {
     /* no-op */
   },
+  debug: () => {
+    /* no-op */
+  },
 };
 
 function performTalk() {
-  logger.debug('performTalk() run');
   // Cache the last messaged character after send
   if ($('#send-to').val() === '') {
     $('#send-to').val(NW.storage.appState.get('last_messaged', ''));
   }
-  $('#message-form').submit(() => {
+  $('#message-form').on('submit', () => {
     NW.storage.appState.set('last_messaged', $('#send-to').val());
     return true;
   });
 
   // eslint-disable-next-line no-alert
-  $('#delete-messages form').submit(
+  $('#delete-messages form').on(
+    'submit',
     () => window && window.confirm('Delete all messages?'),
   ); // *** boolean return value ***
 
@@ -36,9 +39,9 @@ function performTalk() {
     && focusArea
   ) {
     if (focusArea === 'clan') {
-      $('input#message-clan').focus();
+      $('input#message-clan').trigger('focus');
     } else {
-      $('input#message-to-ninja').focus();
+      $('input#message-to-ninja').trigger('focus');
     }
   }
   return true;

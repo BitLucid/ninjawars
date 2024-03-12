@@ -36,7 +36,6 @@ const kickClanMember = () => window
 
 // eslint-disable-next-line max-statements, max-lines-per-function
 $(() => {
-  console.info('Checking for saved combat configurations.');
   //  Pull var as defined in external template
   // @ts-ignore
   // eslint-disable-next-line camelcase

@@ -41,12 +41,10 @@ if (
   && window.parent.window !== window
   && window.parent.NW
 ) {
-  console.debug('Debug: Reusing existing parent NW object in new page');
   // If the interior page of an iframe, use the already-defined globals from the index.
   // $ = parent.$;
   NW = window.parent.NW;
 } else {
-  console.debug('Debug: Creating new NW object');
   // If the page is standalone, define the objects as needed.
   // $ = jQuery;
   NW = {};

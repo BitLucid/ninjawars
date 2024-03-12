@@ -106,7 +106,6 @@ var Chat = window && typeof window.Chat !== 'undefined' ? window.Chat : {};
 
 // Get all the initial chat messages and render them.
 Chat.getExistingChatMessages = function fnCh() {
-  logger.debug('Existing chat messages requested');
   const since = '1424019122';
 
   $.getJSON(
@@ -116,8 +115,6 @@ Chat.getExistingChatMessages = function fnCh() {
       window.storeChats = data;
 
       if (data && data.new_chats && data.new_chats.chats) {
-        logger.debug('Rendering pre-existing chat messages.');
-
         $.each(data.new_chats.chats, (key, val) => {
           Chat.renderChatMessage(val);
         });
@@ -274,7 +271,6 @@ Chat.chatReady = function fnCCR() {
 // Check whether logged in for chat sending
 Chat.canSend = function fnCCanSend() {
   const $area = Chat.submissionArea();
-  logger.debug('Chat: Logged in or out: ', $area.data('logged-in'));
   return Boolean($area.data('logged-in'));
 };
 
