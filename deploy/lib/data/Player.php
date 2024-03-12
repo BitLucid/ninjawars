@@ -908,10 +908,8 @@ class Player implements Character
         $redacted = clone $char;
         $redacted->vo = clone $char->vo;
         $redacted->vo->email = self::redactEmail($char->vo->email);
-        $redacted->email = self::redactEmail($char->vo->email);
         $redacted->vo->ip = null;
         $redacted->vo->verification_number = null;
-        $redacted->verification_number = null;
         $redacted->vo->confirmed = null;
         $redacted->vo->pname = null;
         $redacted->vo->last_started_attack = null;

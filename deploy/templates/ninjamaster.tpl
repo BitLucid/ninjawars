@@ -77,14 +77,15 @@ link.href = '/images/ninjamaster/shuriken-favicon.png';
 </nav>
 
 <div class='hero'>
-	<h2>Welcome Moderators!</h2>
+	<h2>Welcome!</h2>
 	<!-- make this area display with whitespace intact -->
 	<div class='intro'>
 		<pre class='spaced'>{* 
-		*}<p>You have the power to view internal, out-of-character settings, and intimate details of other players, npcs, items, etc.
+		*}<p>You have the power to view internal out-of-character settings, and intimate details of other players, npcs, items, etc.
 			</p>
 			<span class='notice'>Do:</span> Use this power wisely, and for the good of the game.
-			<span class='notice'>Do not:</span> Share this information with regular players, as it might make the game easier and less fun for them.</span>
+			<span class='notice'>Do not:</span> Share this information with regular players, as it might 
+			make the game easier and less fun for them.</span>
 		</pre>
 	</div>
 </div>
