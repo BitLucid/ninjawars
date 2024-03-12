@@ -82,8 +82,11 @@ class NinjamasterController extends AbstractController
             // Get a different first character if an array is specified
             $first_char = $first_char ? $first_char : Player::find((int) reset($char_ids));
             if ($first_char) {
+                // Redact the character info
                 assert($first_char instanceof Player);
-                $first_account     = Account::findByChar($first_char);
+                $first_char = Player::redact($first_char);
+                $initial_first_account     = Account::findByChar($first_char);
+                $first_account = $initial_first_account ? Account::redact($initial_first_account) : null;
                 $char_inventory    = AdminViews::charInventory($first_char);
                 $first_message     = $first_char->messages;
                 $first_description = $first_char->description;
