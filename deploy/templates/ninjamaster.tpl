@@ -133,6 +133,7 @@ link.href = '/images/ninjamaster/shuriken-favicon.png';
 			These checks can be checked once every 3 months, and there are sometimes other alert mechanisms.
 			Medium Priority Checks:
 			- DNS Health checks: <a href='https://us-east-1.console.aws.amazon.com/route53/healthchecks/home?region=us-east-1#/'>DNS Health Checks</a>
+			- AWS Account Health Notices: <a href='https://health.aws.amazon.com/health/home#/account/dashboard/open-issues'>Account Health</a>
 			- Servers health: <a href='https://us-east-1.console.aws.amazon.com/ec2/home?region=us-east-1#Instances:'>Server Instances Health</a>
 			- Cost Management Health: <a href='https://us-east-1.console.aws.amazon.com/costmanagement/home?region=us-east-1#/home'>Cost Management Health</a>
 			- Load Balancer Health: <a href='https://us-east-1.console.aws.amazon.com/ec2/home?region=us-east-1#LoadBalancers:'>Load Balancers Health</a>
