@@ -92,7 +92,7 @@ a.dull-link#join-link, a.dull-link#continue-link{
   <div style="max-width: 50%;margin: 0 auto;text-align: start;">
     <h3>Arising from the unrest of a lawless period...</h3>
     <p style="margin-bottom: 7rem;font-size: 1.75rem;">
-      ...families of elite peasant warriors banded together to form clans in the more remote mountainous regions. Initially formed as self-defense against roving bands of thieves, now they strike back in revolt against the growing threat of control by the rule of the new shogunate that is growing in power and soon will control all the nearby lands...
+      ...families of elite peasant warriors banded together to form clans in the more remote mountainous regions. Initially formed as self-defense against roving bands of thieves, now they strike back in revolt against the growing threat of outside control. The new shogunate is growing in power and soon will rule all the nearby lands...
     </p>
   </div>
   

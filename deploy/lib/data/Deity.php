@@ -200,7 +200,11 @@ class Deity
         Event::deleteOldEvents();
     }
 
-    public function rearrangeStats()
+    /**
+     * Mainly this is just game leaderboard stuff or who did what in the past day
+     * In the future it could also handle weather, the game time, and other similar things
+     */
+    public function rearrangeWorldEnvironment()
     {
         $logger = $this->logger;
         if ($killer = $logger::findViciousKiller()) {

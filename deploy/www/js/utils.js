@@ -1,4 +1,4 @@
-// eslint-disable-next-line import/prefer-default-export
+/* eslint-disable no-console */
 export const debounce = (func, timeout = 300) => {
   let timer;
   return (...args) => {
@@ -42,19 +42,14 @@ const noop = (_) => {
  * @example logger().debug('hello world');
  */
 export const logger = () => ({
-  // eslint-disable-next-line no-console
+  // console enabled for this file
   ...console,
   // eslint-disable-next-line no-console
   log: canDebug() ? console.log : noop,
-  // eslint-disable-next-line no-console
   info: canDebug() ? console.info : noop,
-  // eslint-disable-next-line no-console
   error: canDebug() ? console.error : noop,
-  // eslint-disable-next-line no-console
   warn: canDebug() ? console.error : noop,
-  // eslint-disable-next-line no-console
   dir: canDebug() ? console.dir : noop,
-  // eslint-disable-next-line no-console
   debug: canDebug() ? console.debug : noop,
 });
 
@@ -62,3 +57,8 @@ export const urlParam = (key) => {
   const urlParams = new URLSearchParams(window && window.location.search);
   return urlParams.get(key);
 };
+
+/**
+ * See seededRandom.js for all the seeded random needs
+ * (e.g. when you want a set of different things that stays by seed)
+ */
