@@ -893,6 +893,31 @@ class Player implements Character
         return self::find($id);
     }
 
+
+    /**
+     * Partially obsfucate an email address for display
+     */
+    private static function redactEmail($email): string
+    {
+        // Redact the email by removing the center of the first part, and the center of the domain
+        return substr($email, 0, 5) . '...@.....' . substr($email, -5);
+    }
+
+    public static function redact(Player $char, $options = [])
+    {
+        $redacted = clone $char;
+        $redacted->vo = clone $char->vo;
+        $redacted->vo->email = self::redactEmail($char->vo->email);
+        $redacted->email = self::redactEmail($char->vo->email);
+        $redacted->vo->ip = null;
+        $redacted->vo->verification_number = null;
+        $redacted->verification_number = null;
+        $redacted->vo->confirmed = null;
+        $redacted->vo->pname = null;
+        $redacted->vo->last_started_attack = null;
+        return $redacted;
+    }
+
     /**
      * Find a char by playable for account
      * @param int|null $account_id
