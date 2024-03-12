@@ -57,10 +57,11 @@ class NinjamasterController extends AbstractController
         $first_char       = null;
         $first_account     = null;
         $first_description = null;
+        $signup_views_limit = 100;
         $dupes            = AdminViews::dupedIps();
         $stats            = AdminViews::highRollers();
         $usage           = AdminViews::recentUsage();
-        $signups           = AdminViews::recentUsage(500);
+        $signups           = AdminViews::recentUsage($signup_views_limit);
         $npcs             = NpcFactory::allNonTrivialNpcs();
         $trivial_npcs      = NpcFactory::allTrivialNpcs();
 
@@ -111,6 +112,7 @@ class NinjamasterController extends AbstractController
             'npcs'              => $npcs,
             'items'             => $items,
             'trivial_npcs'      => $trivial_npcs,
+            'signup_views_limit' => $signup_views_limit,
         ];
 
         return new StreamedViewResponse('Admin Actions', 'ninjamaster.tpl', $parts);
