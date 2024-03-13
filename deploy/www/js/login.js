@@ -36,11 +36,6 @@ const framebreakIfNeeded = () => {
   debug('login.js initialized');
   framebreakIfNeeded();
 
-  $( // on document ready
-    () => {
-
-    },
-  );
-  // Just to verify that the login js got finalized in tests
+  // Just to indicate that the login js got finalized for testing
   loginFinalized = true;
 })();
