@@ -9,7 +9,7 @@ use NinjaWars\core\data\Enemies;
 use NinjaWars\core\data\Player;
 use NinjaWars\core\data\Message;
 use PDO;
-use \PDOStatement;
+use PDOStatement;
 
 /**
  * Api calls
@@ -28,7 +28,7 @@ class Api
     }
 
     /**
-     * Send status events and DM messages to the account 
+     * Send status events and DM messages to the account
      */
     public function sendCommunications($data)
     {
