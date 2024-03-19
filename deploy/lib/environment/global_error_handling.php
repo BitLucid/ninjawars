@@ -1,6 +1,7 @@
 <?php
 
 use NinjaWars\core\extensions\SessionFactory;
+use Nmail as Nmail;
 
 class NWError
 {
@@ -27,7 +28,20 @@ class NWError
             "To: ".ALERTS_EMAIL."\r\n".
             "From: ".SYSTEM_EMAIL."\r\n".
             'X-Mailer: PHP/' . phpversion();
-        mail(ALERTS_EMAIL, 'Ninjawars: Error'.substr($p_errorMsg, 0, 170), $p_errorMsg, $headers);
+        $body = '
+
+        Ninjawars Error Report Information: 
+        ' . $p_errorMsg . '
+        
+        One the date: ' . date('Y-m-d H:i:s') . '
+        ';
+
+        $_from = [SYSTEM_EMAIL => SYSTEM_EMAIL_NAME];
+        $nmail = new Nmail(ALERTS_EMAIL, 'NinjaWars.net: Ninjawars Error Report.' . substr($p_errorMsg, 0, 170), $body, $_from);
+        $nmail->setReplyTo([SUPPORT_EMAIL => SUPPORT_EMAIL_NAME]);
+
+        return (bool) $nmail->send();
+        //mail(ALERTS_EMAIL, 'Ninjawars: Error'.substr($p_errorMsg, 0, 170), $p_errorMsg, $headers);
     }
 
     /**

@@ -50,4 +50,22 @@ class NWTemplate extends Smarty
 
         $this->display('full_template.tpl');
     }
+
+    /**
+     * Render a template without the header and footer.
+     * @param string $template The template file to render.
+     * @return string The rendered template output
+     */
+    public function simpleRender($template, $title = null, $local_vars = [])
+    {
+        $this->assign($local_vars);
+        $this->assign('title', $title);
+        $this->assign('main_template', $template);
+        // Start output buffering
+        ob_start();
+        $this->display('simple_template.tpl');
+        $output = ob_get_contents();
+        ob_end_clean();
+        return $output;
+    }
 }

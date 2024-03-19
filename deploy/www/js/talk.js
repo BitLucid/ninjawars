@@ -1,6 +1,8 @@
 /* Assist sending of messages to clan or individuals */
 /* global NW, refocus, focusArea */
 
+import api from './api.js';
+
 // eslint-disable-next-line no-var
 // var presence = window.presence || {};
 // presence.talk = true;
@@ -23,6 +25,19 @@ function performTalk() {
   $('#message-form').on('submit', () => {
     NW.storage.appState.set('last_messaged', $('#send-to').val());
     return true;
+  });
+
+  let timer = null;
+
+  $('#email-messages').on('click', () => {
+    // Disable the button to prevent double sending
+    $('#email-messages').prop('disabled', true);
+    const resu = api.sendCommunications();
+    // re-enable the button after a delay
+    if (timer) clearTimeout(timer);
+    timer = setTimeout(() => {
+      $('#email-messages').prop('disabled', false);
+    }, 10000);
   });
 
   // eslint-disable-next-line no-alert

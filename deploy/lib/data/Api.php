@@ -4,10 +4,12 @@ namespace NinjaWars\core\data;
 
 use NinjaWars\core\extensions\SessionFactory;
 use NinjaWars\core\data\DatabaseConnection;
+use NinjaWars\core\data\Communication;
 use NinjaWars\core\data\Enemies;
 use NinjaWars\core\data\Player;
 use NinjaWars\core\data\Message;
 use PDO;
+use \PDOStatement;
 
 /**
  * Api calls
@@ -23,6 +25,18 @@ class Api
         $char = Player::find(SessionFactory::getSession()->get('player_id'));
         $target = $char ? Enemies::nextTarget($char, (int) $offset) : null;
         return $char && $target ? $target->publicData() : false;
+    }
+
+    /**
+     * Send status events and DM messages to the account 
+     */
+    public function sendCommunications($data)
+    {
+        $char = Player::find(SessionFactory::getSession()->get('player_id'));
+        ['events' => $events] = Communication::sendEvents(['char' => $char]);
+        // Get events from pdo resultset
+        $final = $events->fetchAll(PDO::FETCH_ASSOC);
+        return ['events' => $final];
     }
 
     /**

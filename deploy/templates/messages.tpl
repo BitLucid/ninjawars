@@ -8,6 +8,10 @@
 
 <section>
 
+  <div id='email-messages'>
+    <button title='Email {$messages_type} Messages' class='btn btn-info' type='submit' name='submit'><i class='fa fa-envelope'></i></button>
+  </div>
+
   <div id='delete-messages'>
     <form method='post' action='/messages/delete_{$current_tab}'>
       <input type='hidden' name='delete' value='1'>
@@ -69,4 +73,4 @@ var refocus = {if $individual_or_clan}true{else}false{/if};
 var focusArea = '{$message_to}';
 </script>
 <!-- Confirmation requirements and refocus setup -->
-<script src='{cachebust file="/js/talk.js"}'></script>
+<script type='module' src='{cachebust file="/js/talk.js"}'></script>
