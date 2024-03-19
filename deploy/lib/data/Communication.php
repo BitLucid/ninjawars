@@ -23,7 +23,9 @@ class Communication
 
 
         $events = self::getEvents($char->id(), 300);
-        self::mailEvents($char, $events);
+
+        $messages = self::getMessages($char->id(), 300);
+        self::mailEvents($char, $events, $messages);
         self::readEvents($char->id()); // mark events as viewed.
 
 
@@ -53,6 +55,28 @@ class Communication
     }
 
     /**
+     * Retrieve messages sent to user
+     *
+     * @param int    $user_id
+     * @param String $limit
+     * @return array
+     */
+    public static function getMessages(int $user_id, $limit = null): PDOStatement
+    {
+        $params = [':to' => $user_id];
+
+        $add_limit = '';
+        if ($limit !== null) {
+            $params[':limit'] = $limit;
+            $add_limit = 'LIMIT :limit';
+        }
+
+        return query("SELECT coalesce(send_from, 0) AS send_from, message, unread, date, uname AS from FROM messages
+            LEFT JOIN players ON send_from = player_id WHERE send_to = :to ORDER BY date DESC
+            " . $add_limit, $params);
+    }
+
+    /**
      * Mark events as read for a given user
      *
      * @param int $user_id
@@ -67,13 +91,17 @@ class Communication
         return true;
     }
 
-    public static function mailEvents(Player $char, $events)
+    /**
+     * @see https://localhost:8765/api?type=sendCommunications&json=1
+     */
+    public static function mailEvents(Player $char, $events, $messages)
     {
         // account by the char
         $account = Account::findByChar($char);
 
         $parts    = [
             'events'   => $events,
+            'messages' => $messages,
             'has_clan' => (bool)Clan::findByMember($char),
             'char'     => $char,
         ];
@@ -83,8 +111,9 @@ class Communication
         $rendered_messages = $template->simpleRender('email.messages.tpl', $parts);
         $rendered_events = $template->simpleRender('events.tpl', $parts);
         $email = $account->active_email;
-        $subject = 'NinjaWars.net: Your Recent Events';
+        $subject = 'NinjaWars.net: Your Recent Game Events';
         $body = $rendered_messages . $rendered_events;
+        debug($body);
         $from = [SYSTEM_EMAIL => SYSTEM_EMAIL_NAME];
         $nmail = new Nmail($email, $subject, $body, $from);
         $nmail->setReplyTo([SUPPORT_EMAIL => SUPPORT_EMAIL_NAME]);

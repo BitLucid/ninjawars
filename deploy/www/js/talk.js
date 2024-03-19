@@ -7,7 +7,7 @@ import api from './api.js';
 // var presence = window.presence || {};
 // presence.talk = true;
 
-// eslint-disable-next-line no-var
+// eslint-disable-next-line no-var, no-unused-vars
 var logger = console || {
   log: () => {
     /* no-op */
@@ -29,15 +29,19 @@ function performTalk() {
 
   let timer = null;
 
+  // Hit the api to send out communications
   $('#email-messages').on('click', () => {
+    if ($('#email-messages').prop('disabled')) return;
     // Disable the button to prevent double sending
     $('#email-messages').prop('disabled', true);
+    // if it's disabled, ignore the click
+    // eslint-disable-next-line no-unused-vars
     const resu = api.sendCommunications();
     // re-enable the button after a delay
     if (timer) clearTimeout(timer);
     timer = setTimeout(() => {
       $('#email-messages').prop('disabled', false);
-    }, 10000);
+    }, 5000);
   });
 
   // eslint-disable-next-line no-alert
