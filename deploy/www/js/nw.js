@@ -185,126 +185,16 @@ $(selector).keyup(function () {
     return false;
   };
 
-  // Display an event.
-  NW.writeLatestEvent = function (event) {
-    const recent = $('#recent-events', window.top.document)
-      .find('#recent-event-attacked-by')
-      .text('You were recently in combat')
-      .end()
-      .find('#view-event-char')
-      .text(event.sender)
-      .attr('href', `player.php?player_id=${event.send_from}`)
-      .end();
-    if (recent && recent.addClass) {
-      if (event.unread) {
-        recent.addClass('message-unread');
-        // if unread, Add the unread class until next update.
-      } else {
-        recent.removeClass('message-unread');
-      }
-
-      recent.show().click(NW.eventsHide);
-    }
-  };
-
-  NW.eventsRead = function () {
-    $('#recent-events', window.top.document).removeClass('message-unread');
-  };
-
-  NW.eventsHide = function () {
-    $('#recent-events', window.top.document).hide();
-  };
-
-  NW.eventsShow = function () {
-    $('#recent-events', window.top.document).show();
-  };
-
-  // Pull the event from the data store and request it be displayed.
-  // eslint-disable-next-line max-statements
-  NW.updateLatestEvent = function () {
-    const hideEventsAfter = 10;
-    let feedback = false;
-    const event = this.getEvent();
-
-    if (!event) {
-      this.feedbackSpeedUp(); // Make the interval to try again shorter.
-    } else if (this.datastore.visibleEventId === event.event_id) {
-      // If the stored data is the same as the latest pulled event...
-      if (this.datastore.eventUpdateCount === undefined) {
-        this.datastore.eventUpdateCount = 1;
-      } else {
-        // eslint-disable-next-line no-plusplus
-        this.datastore.eventUpdateCount++;
-      }
-      if (this.datastore.eventUpdateCount > hideEventsAfter) {
-        NW.eventsHide();
-      }
-      if (!this.datastore.visibleEventRead) {
-        // Makes any unread event marked as read after a second update,
-        // even if it wasn't really read.
-        NW.eventsRead();
-        this.datastore.visibleEventRead = true;
-      }
-    } else {
-      feedback = true;
-      this.datastore.visibleEventId = event.event_id;
-      this.datastore.visibleEventRead = false;
-      this.writeLatestEvent(event);
-    }
-
-    return feedback;
-  };
-
-  // Get the message count initially from the api datastore.
-  NW.getMessageCount = function () {
-    return this.pullArrayValue('unread_messages_count');
-  };
-
-  // Pull an unread message count from the new api storage,
-  // compare it to the stored value, and call the display function as necessary.
-  NW.updateMessageCount = function () {
-    let updated = false;
-    const count = this.getMessageCount();
-
-    if (this.storeArrayValue('unread_messages_count', count)) {
-      updated = true;
-      this.unreadMessageCount(count); // Display a value if changed.
-    }
-
-    return updated;
-  };
-
-  // Update the number of unread messages, displayed on index.
-  NW.unreadMessageCount = function (messageCount) {
-    const recent = $('#messages', window.top.document)
-      .find('.unread-count')
-      .text(messageCount);
-    // if unread, Add the unread class until next update.
-    if (recent && recent.addClass) {
-      if (messageCount > 0) {
-        recent.addClass('message-unread');
-      } else {
-        recent.removeClass('message-unread');
-      }
-    }
-  };
-
-  NW.getEvent = function () {
-    return this.pullFromDataStore('latestEvent');
-  };
-
   NW.getPlayerInfo = function () {
     return this.pullFromDataStore('playerInfo');
   };
 
   // Update display elements that live on the index page.
   NW.updateIndex = function () {
-    const messageUpdated = this.updateMessageCount();
-    const eventUpdated = this.updateLatestEvent();
     // var healthUpdated       = this.getAndUpdateHealth(); // health bar.
 
     // If any changes to data occurred, return true.
-    const res = !!((messageUpdated || eventUpdated) /* || healthUpdated */);
+    const res = false; // || healthUpdated // can be added back here
 
     return res;
   };
@@ -338,11 +228,7 @@ $(selector).keyup(function () {
         'message_id',
         'latestMessage',
         'message_id',
-      )
-      || this.storeArrayValue(
-        'unread_messages_count',
-        data.unread_messages_count,
-      )
+    )
       || this.updateDataStore(
         data.member_counts,
         'active',
@@ -462,6 +348,7 @@ $(selector).keyup(function () {
 
   // Determines the update interval,
   // increases when feedback == false, rebaselines when feedback == true
+  // eslint-disable-next-line max-statements
   NW.getUpdateInterval = function (feedback) {
     const maxInt = 180;
     const min = 20; // Changes push the interval to this minimum.
@@ -487,6 +374,7 @@ $(selector).keyup(function () {
   NW.chainedUpdate = function (chainCounter) {
     let numberOfChains = chainCounter < 1 ? 1 : chainCounter;
 
+    // loggedIn gets set in the footer
     if (this.loggedIn && numberOfChains !== 1) {
       // Skip the heartbeat if logged out, and on the first chain, since it will have just loaded.
       this.checkAPI(); // Check for new information.
