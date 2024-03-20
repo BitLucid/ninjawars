@@ -1,6 +1,7 @@
 <?php
 
 use NinjaWars\core\extensions\SessionFactory;
+
 //use Nmail;
 
 class NWError
