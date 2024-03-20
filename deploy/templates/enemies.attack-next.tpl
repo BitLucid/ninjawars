@@ -194,7 +194,7 @@
                                 <input id="{$skill.skill_internal_name|escape}" type="checkbox" name="{$skill.skill_internal_name|escape}" value="1"> {$skill.skill_display_name|escape}
                                 </label><!-- no space
                             -->{/foreach}<!-- no space
-                            --><input id="target" type="hidden" value="{$enemy->id()|escape}" name="target">
+                            --><input class='attack-target' type="hidden" value="{$enemy->id()|escape}" name="target">
                             <button type="submit" class='btn btn-vital btn-primary'>
                                 <span class='svg-sword'>
                                     {include file='sword.svg.tpl'}
