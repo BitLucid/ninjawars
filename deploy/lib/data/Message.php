@@ -144,6 +144,4 @@ class Message extends \Illuminate\Database\Eloquent\Model
             'unread' => 0
         ]);
     }
-
-
 }

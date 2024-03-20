@@ -274,7 +274,6 @@ class Api
         $items = null;
 
         if ($player) {
-
             $items = query_array(
                 'SELECT item.item_display_name as item, amount FROM inventory join item on inventory.item_type = item.item_id WHERE owner = :user_id ORDER BY item_display_name',
                 [':user_id' => $player->id()]
