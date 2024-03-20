@@ -145,51 +145,5 @@ class Message extends \Illuminate\Database\Eloquent\Model
         ]);
     }
 
-    public static function sendChat($user_id, $msg)
-    {
-        DatabaseConnection::getInstance();
 
-        $msg = trim($msg);
-
-        if ($msg) {
-            $statement = DatabaseConnection::$pdo->prepare("SELECT message FROM chat WHERE sender_id = :sender ORDER BY date DESC LIMIT 1");
-            $statement->bindValue(':sender', $user_id);
-            $statement->execute();
-            $prevMsg = trim($statement->fetchColumn());
-
-            if ($prevMsg != $msg) {
-                $statement = DatabaseConnection::$pdo->prepare("INSERT INTO chat (chat_id, sender_id, message, date) VALUES (default, :sender, :message, now())");
-                $statement->bindValue(':sender', $user_id);
-                $statement->bindValue(':message', $msg);
-                $statement->execute();
-
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * @return int Number of rows deleted
-     */
-    public static function deleteOldMessages()
-    {
-        $statement = query("delete from messages where date < ( now() - '3 months'::interval)");
-        return $statement->rowCount();
-    }
-
-    /**
-     * Deletes old chat messages.
-     */
-    public static function shortenChat($message_limit = 800)
-    {
-        DatabaseConnection::getInstance();
-        // Find the latest 800 messages and delete all the rest;
-        $deleted = DatabaseConnection::$pdo->prepare("DELETE FROM chat WHERE chat_id NOT IN (SELECT chat_id FROM chat ORDER BY date DESC LIMIT :msg_limit)");
-        $deleted->bindValue(':msg_limit', $message_limit);
-        $deleted->execute();
-
-        return (int) $deleted->rowCount();
-    }
 }
