@@ -1,7 +1,7 @@
 <?php
 
 use NinjaWars\core\extensions\SessionFactory;
-use Nmail as Nmail;
+//use Nmail;
 
 class NWError
 {
@@ -23,11 +23,6 @@ class NWError
         if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'POST') {
             $p_errorMsg .= 'POST_DATA: '.print_r($_POST, true)."\r\n";
         }
-        $headers = "MIME-Version: 1.0\r\n".
-            "Content-Type: text/plain; charset=ISO-8859-15\r\n".
-            "To: ".ALERTS_EMAIL."\r\n".
-            "From: ".SYSTEM_EMAIL."\r\n".
-            'X-Mailer: PHP/' . phpversion();
         $body = '
 
         Ninjawars Error Report Information: 

@@ -59,7 +59,7 @@ class CommunicationTest extends \NWTest
         $first_message = reset($messages);
 
         $this->assertGreaterThan(0, count($messages), 'Collection has no results found');
-        $this->assertNotEmpty($first_message->sender);
-        $this->assertGreaterThan(0, strlen($first_message->sender));
+        $this->assertNotEmpty($first_message['sender']);
+        $this->assertGreaterThan(0, strlen($first_message['sender']));
     }
 }
