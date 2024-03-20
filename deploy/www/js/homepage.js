@@ -9,7 +9,7 @@ import api from './api.js';
 // eslint-disable-next-line no-var
 var presence = window.presence || {};
 presence.homepage = true;
-const { debug } = console || { log: () => { }, debug: () => { } };
+const { debug } = console || { log: () => { /* noop */ }, debug: () => { /* noop */ } };
 
 const pollCommunications = async () => {
   if (!(window.NW && window.NW.loggedIn)) return null;
