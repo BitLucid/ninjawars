@@ -20,7 +20,7 @@
 
     {if $login_error_message}
         <!-- This section only gets displayed in the event of an incorrect login -->
-          <div id='login-error' class="error" role='alert'>
+          <div id='login-error' class="error fade-in" role='alert'>
             {* Unescaped error to allow for links. *}
             {$login_error_message}
           </div>
