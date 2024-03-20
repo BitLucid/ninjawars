@@ -79,6 +79,8 @@
                 <a class='btn btn-info' href='#ninjamaster-section'>Ninjamaster</a>
                 <a class='btn btn-info' href='#ninjamaster-items-section'>Ninjamaster.items</a>
                 <a class='btn btn-info' href='#ninjamaster-clans-section'>Ninjamaster.clans</a>
+                <a class='btn btn-info' href='#email-messages-section'>Email.messages</a>
+                <a class='btn btn-info' href='#homepage-unread-section'>Homepage.unread</a>
             </div>
         </nav>
     </header>
@@ -545,6 +547,21 @@
         <section id='ninjamaster-clans-section'>
             <h2>Ninjamaster.clans</h2>
             {include file="ninjamaster.clans.tpl"}
+        </section>
+
+        <section id='email-messages-section'>
+            <h2>Email.messages</h2>
+            {include file="email.messages.tpl"}
+        </section>
+
+        <section id='homepage-unread-section'>
+            <h2>Homepage.unread</h2>
+            <div>
+                <a href="/messages" target="main">
+                <i class='fa fa-envelope'></i> <span class='badge' id='unread-count'>•</span>
+                </a>
+            </div>
+            <script type='module' src='/js/homepage.js'></script>
         </section>
 
         <section id='about-section'>

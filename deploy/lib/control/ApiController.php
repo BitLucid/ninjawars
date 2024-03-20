@@ -8,6 +8,7 @@ use NinjaWars\core\environment\RequestWrapper;
 use NinjaWars\core\data\Api;
 use Symfony\Component\HttpFoundation\Response;
 use PDO;
+use RuntimeException;
 
 /**
  * This is a class that provides a jsonP get api via passing in a callback
@@ -76,7 +77,14 @@ class ApiController extends AbstractController
             } elseif ($type == 'char_search') {
                 $result = $api->charSearch($request->get('term'), $request->get('limit'));
             } else {
-                $result = method_exists($api, $type) ? $api->$type($data) : null;
+                try {
+                    $result = method_exists($api, $type) ? $api->$type($data) : null;
+                } catch (\RuntimeException $e) {
+                    // Examples: https://localhost:8765/api?type=sendCommunications&json=1
+                    $code = $e->getCode() ?? 500;
+                    $headers['Content-Type'] = 'text/javascript; charset=utf8';
+                    return new Response($res, $code, $headers);
+                }
             }
 
             // Default case to create a jsonp response with the callback if there is a callback

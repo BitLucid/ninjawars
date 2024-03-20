@@ -7,6 +7,7 @@ use NinjaWars\core\data\Player;
 use NinjaWars\core\extensions\NWTemplate;
 use Nmail;
 use PDOStatement;
+use NinjaWars\core\UnauthorizedException;
 
 /**
  * Class for generating communications to the account about internal activity
@@ -14,11 +15,11 @@ use PDOStatement;
 
 class Communication
 {
-    public static function sendEvents($data)
+    public static function sendEvents($data): array
     {
         ['char' => $char] = $data;
         if (!($char instanceof Player)) {
-            throw new \InvalidArgumentException('Communication::sendEvents requires a player object');
+            throw new UnauthorizedException('Communication::sendEvents requires a player object', 401);
         }
 
 
@@ -82,7 +83,7 @@ class Communication
      * @param int $user_id
      * @return void
      */
-    public static function readEvents(int $user_id)
+    public static function readEvents(int $user_id): bool
     {
         DatabaseConnection::getInstance();
         $statement = DatabaseConnection::$pdo->prepare("UPDATE events SET unread = 0 WHERE send_to = :to");
@@ -91,10 +92,17 @@ class Communication
         return true;
     }
 
+    public static function unreadCommunications(int $user_id): array
+    {
+        $events = query_item("SELECT count(event_id) FROM events WHERE send_to = :to AND unread = 1", [':to' => $user_id]);
+        $messages = query_item("SELECT count(message_id) FROM messages WHERE send_to = :to AND unread = 1", [':to' => $user_id]);
+        return ['events' => $events, 'messages' => $messages];
+    }
+
     /**
      * @see https://localhost:8765/api?type=sendCommunications&json=1
      */
-    public static function mailEvents(Player $char, $events, $messages)
+    public static function mailEvents(Player $char, $events, $messages): bool
     {
         // account by the char
         $account = Account::findByChar($char);
@@ -113,10 +121,10 @@ class Communication
         $email = $account->active_email;
         $subject = 'NinjaWars.net: Your Recent Game Events';
         $body = $rendered_messages . $rendered_events;
-        debug($body);
         $from = [SYSTEM_EMAIL => SYSTEM_EMAIL_NAME];
         $nmail = new Nmail($email, $subject, $body, $from);
         $nmail->setReplyTo([SUPPORT_EMAIL => SUPPORT_EMAIL_NAME]);
-        $nmail->send();
+        $sent = $nmail->send();
+        return $sent;
     }
 }
