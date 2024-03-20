@@ -8,10 +8,6 @@
 
 <section>
 
-  <div id='email-messages'>
-    <button title='Email {$messages_type} Messages' class='btn btn-info' type='submit' name='submit'><i class='fa fa-envelope'></i></button>
-  </div>
-
   <div id='delete-messages'>
     <form method='post' action='/messages/delete_{$current_tab}'>
       <input type='hidden' name='delete' value='1'>
@@ -66,6 +62,12 @@ id='send-to' name='to' value='{$to|escape}' required='required'></em>
 
   {include file="messages.nav.tpl"}
 </section>
+
+<div class='glassbox'>
+  <div id='email-messages'>
+    <button title='Email {$messages_type} Messages' class='btn btn-default' type='submit' name='submit'><i class='fa fa-envelope'></i> Email These</button>
+  </div>
+</div>
 
 <script>
 // Set the need to refocus on the messaging areas if necessary.

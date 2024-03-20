@@ -551,7 +551,9 @@
 
         <section id='email-messages-section'>
             <h2>Email.messages</h2>
+            <div>
             {include file="email.messages.tpl"}
+            </div>
         </section>
 
         <section id='homepage-unread-section'>

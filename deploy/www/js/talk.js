@@ -1,6 +1,8 @@
 /* Assist sending of messages to clan or individuals */
 /* global NW, refocus, focusArea */
 
+/* eslint max-lines-per-function: ["error", 100] */
+
 import api from './api.js';
 
 // eslint-disable-next-line no-var
@@ -8,7 +10,7 @@ import api from './api.js';
 // presence.talk = true;
 
 // eslint-disable-next-line no-var, no-unused-vars
-var logger = console || {
+const { debug } = console || {
   log: () => {
     /* no-op */
   },
@@ -27,21 +29,27 @@ function performTalk() {
     return true;
   });
 
-  let timer = null;
-
   // Hit the api to send out communications
   $('#email-messages').on('click', () => {
     if ($('#email-messages').prop('disabled')) return;
     // Disable the button to prevent double sending
     $('#email-messages').prop('disabled', true);
+    // Change the button content to a spinner
+    $('#email-messages').children().first().html('<i class="fa fa-spinner fa-spin"></i>');
     // if it's disabled, ignore the click
+
     // eslint-disable-next-line no-unused-vars
-    const resu = api.sendCommunications();
-    // re-enable the button after a delay
-    if (timer) clearTimeout(timer);
-    timer = setTimeout(() => {
+    const resu = api.sendCommunications().then((res) => res.json()).then((data) => {
+      if (data && data.events) {
+        $('#email-messages').children().first().html('<i class="fa fa-check"></i>');
+      } else {
+        debug('Failed to email messages');
+      }
+    }).catch((err) => {
+      debug('Failed to email messages', err);
       $('#email-messages').prop('disabled', false);
-    }, 5000);
+      $('#email-messages').children().first().html('<i class="fa fa-times"></i>');
+    });
   });
 
   // eslint-disable-next-line no-alert

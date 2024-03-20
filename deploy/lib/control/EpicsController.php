@@ -17,8 +17,6 @@ use NinjaWars\core\data\Communication;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use NinjaWars\core\extensions\StreamedViewResponse;
-use NinjaWars\core\environment\RequestWrapper;
-use PDO;
 
 /**
  * Epic Controller for UI Stories
@@ -76,11 +74,7 @@ class EpicsController extends AbstractController
         $signupRequest2    = $transientClass;
         $news = new News();
         $all_news = $news->all();
-        $messages = Communication::getMessages($char->id(), 300);
-        $messages = $messages->fetchAll(PDO::FETCH_ASSOC);
-        // take the first 5 items of messages
-        debug(array_slice($messages, 0, 5));
-        
+        $messages = Communication::formatMessages(Communication::getMessages($char->id(), 300));
 
         $error            = null;
         $static_nodes = include(ROOT . 'lib/data/raw/nodes.php');
