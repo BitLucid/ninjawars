@@ -2,15 +2,18 @@
 
 The source code dojo for the [Ninja Game](http://www.ninjawars.net) @ http://ninjawars.net .
 
-[Codeship Continuous Integration build](https://www.codeship.io/projects/41292)
 
-![Codeship Status for BitLucid/ninjawars](https://codeship.com/projects/7c7b3800-3608-0132-36b5-4e1d56e5e814/status)
+
+[Ninjawars Build Automation](https://tchalvak.semaphoreci.com/projects/ninjawars)
+
+[![Semaphore Build Status](https://tchalvak.semaphoreci.com/badges/ninjawars/branches/master.svg?style=shields&key=7763fdd3-c6ae-47b0-8bef-2f284b53ce10)](https://tchalvak.semaphoreci.com/projects/ninjawars)
+[![Deployment status from DeployBot](https://ninjawars.deploybot.com/badge/02267417970828/83400.svg)](https://deploybot.com)
 
 ## Install
 
-Install your webserver (nginx + php8.0-fpm recommended) & configure it
+Install your webserver (nginx + php8.2-fpm recommended) & configure it
 
-    sudo apt-get install php8.0-cli php8.0-fpm nginx
+    sudo apt-get install php8.2-cli php8.2-fpm nginx
 
 On your database server, install postgresql & configure it
 
@@ -62,7 +65,7 @@ Ninjwars is deployed helpfully via Deploybot https://ninjawars.deploybot.com/
 Triggered by pull request merges.
 
 -   Vetted by continuous integration here:
--   https://app.codeship.com/home
+-   https://tchalvak.semaphoreci.com/projects/ninjawars
 -   It gets deployed currently to the aws servers here:
 -   https://console.aws.amazon.com/ec2/v2/home?region=us-east-1#Instances:instanceState=running
 -   Loadbalanced behind balancers here:

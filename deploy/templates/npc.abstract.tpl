@@ -1,70 +1,17 @@
-{literal}
-<style>
-article#fight{
-	font-size:110%;
-}
-article#fight nav{
-	margin-top:1.5em;
-	margin-left:8%;
-	margin-right:10%;
-}
-#rewards p{
-	display:inline-block;
-	font-weight:bold;
-}
-#rewards p + p{
-	margin-left:3em;
-}
-.money{
-    color:gold;
-    color:rgba(255,215,0,.7);
-}
-.npc-fight{
-	width:80%;margin:0 10%;
-}
-#fight .npc-avatar{
-	float:left;margin:0.5em 1em 0.5em 0.5em;text-align:center;
-}
-.damage-amount{
-	background-color:rgba(130, 0, 0, .5);
-	border-radius:0.5rem;
-	display:inline-block;
-	padding:0 .3em;
-}
-.damage.miss{
-	color: #006100;
-}
-.damage.nick{
-	color:#ffe1ad;
-}
-.damage.wound{
-	color:#dd164f;
-}
-.damage.savage{
-	color:red;
-	background-color:#2f2b2b;
-}
-.damage.obliterate{
-	color:white;
-	background-color:#800040;
-	font-weight:bold;
-}
-.damage.kill{
-	color:black;
-	background-color:#cd124d;
-	font-weight:bold;
-}
-</style>
-{/literal}
+<link href="/css/npcs.css" rel="stylesheet" type="text/css" />
 
-
-  <article id='fight'>
+  <article id='fight' class='encounter-overall'>
 	<h2>{$display_name|escape}</h2>
 
 	<section class='npc-fight'>
 	{if $image_path}
 		<figure class='npc-avatar'>
-		  <img src='{cachebust file=$image_path}' alt='A {$race}' title='A {$race}'>
+		  <img 
+		  	src='{cachebust file=$image_path}'
+		    alt='A {$race}' 
+			title='A {$race}'
+			style='max-width: 450px;'
+			>
 		</figure>
 	{/if}
 
@@ -74,7 +21,7 @@ article#fight nav{
 	{if $is_quick or $npco->hasTrait('defender')}
 	The {$race|escape} sees you and prepares to defend!
 	{/if}
-	{if $is_stronger}
+	{if $much_stronger}
 	The {$race|escape} seems stronger than you!
 	{/if}
 
@@ -110,24 +57,32 @@ article#fight nav{
 		{if $is_weaker}<p>The {if $is_villager}villager{/if}{if !$is_villager}{$race|escape}{/if} is no match for you!</p>{/if}
 		{if $kill_npc}<p class='ninja-notice fade-in'>You kill the {$display_name|escape}!</p>
 			{if $added_bounty}
-			<div class='bounty-notice'>{if $is_villager}<p>You have slain a member of the village!</p>{/if} <em class='money'>{$added_bounty}</div>
+				<div class='bounty-notice'>
+					{if $is_villager}<p>You have slain a member of the village!</p>{/if} 
+					<em class='money'>{$added_bounty}</em> bounty added.
+				</div>
 			{/if}
 		{else}
 			{if $is_weaker}
 			<p class='ninja-notice target-escape'>The {$display_name|escape} flees from you and escapes!</p>
 			{else}
-				{if $is_stronger}
-				<p class='you-escape'>You are unable to kill the {$display_name|escape}, so you escape instead!</p>
+				{if $much_stronger}
+				<p class='you-escape' title='They had {$enemy_strength|escape} strength'>You are unable to end the {$display_name|escape}, so you escape instead!</p>
 				{else}
-				 <p>You fight to a standstill and neither wins.</p>
+				 <p title='They had {$npc_health} health'>You fight to a standstill and neither wins.</p>
 				{/if}
+			{/if}
+			{if $tagline}
+				<p><em>{$tagline}</em></p>
 			{/if}
 
 		{/if}
 
 		<section id='rewards'>
 		{if $received_gold}<p>You gather <span class='gold'>{$received_gold} gold</span>.</p>{/if}
-		{foreach from=$received_display_items item=display_item}<p>You obtained <span class='obtained-item'>{$display_item}</span>!</p>{/foreach}
+		{foreach from=$received_display_items item=display_item}
+			<p>You obtained <span class='obtained-item'>{$display_item}</span>!</p>
+		{/foreach}
 		&nbsp;
 		</section>
 
@@ -138,6 +93,6 @@ article#fight nav{
 
 	</section><!-- end of .npc-fight -->
 	<nav>
-		<a class='btn btn-primary attack-again' href='/npc/attack/{$victim|escape|escape:'url'}'>Attack another {$display_name|escape}</a>
+		<a class='btn btn-primary attack-again {if !$survive_fight}thick{/if}' href='/npc/attack/{$victim|escape|escape:'url'}'>Attack another {$display_name|escape}</a>
 	</nav>
   </article>

@@ -1,7 +1,11 @@
 <?php
 
-class SetupTest extends \PHPUnit\Framework\TestCase {
-    public function testRequiredConstants() {
+declare(strict_types=1);
+
+class SetupTest extends \PHPUnit\Framework\TestCase
+{
+    public function testRequiredConstants()
+    {
         // Main Resources constants
         $this->assertTrue(defined('DATABASE_HOST'));
         $this->assertTrue(defined('DATABASE_USER'));
@@ -19,6 +23,7 @@ class SetupTest extends \PHPUnit\Framework\TestCase {
         $this->assertTrue(defined('TEMPLATE_LIBRARY_PATH'));
         $this->assertTrue(defined('COMPILED_TEMPLATE_PATH'));
         $this->assertTrue(defined('LOGS'));
+        $this->assertTrue(defined('GAME_LOGS'));
         $this->assertTrue(defined('CONNECTION_STRING'));
 
         // Derived constants

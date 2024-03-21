@@ -20,14 +20,16 @@ use NinjaWars\core\control\ShopController;
 /**
  * The ninjamaster/admin info
  */
-class NinjamasterController extends AbstractController {
+class NinjamasterController extends AbstractController
+{
     public const ALIVE = false;
     public const PRIV  = false;
 
     /**
      * Check user authentication as an admin before continuing.
      */
-    private function checkAuth(Container $p_dependencies) {
+    private function checkAuth(Container $p_dependencies)
+    {
         if (!$p_dependencies['current_player'] || !$p_dependencies['current_player']->isAdmin()) {
             return new RedirectResponse(WEB_ROOT);
         } else {
@@ -40,7 +42,8 @@ class NinjamasterController extends AbstractController {
      *
      * Includes player viewing, account duplicates checking, npc balacing
      */
-    public function index(Container $p_dependencies): Response {
+    public function index(Container $p_dependencies): Response
+    {
         $request = RequestWrapper::$request;
         $authed = $this->checkAuth($p_dependencies);
         if ($authed instanceof RedirectResponse) {
@@ -54,9 +57,11 @@ class NinjamasterController extends AbstractController {
         $first_char       = null;
         $first_account     = null;
         $first_description = null;
+        $signup_views_limit = 100;
         $dupes            = AdminViews::dupedIps();
         $stats            = AdminViews::highRollers();
         $usage           = AdminViews::recentUsage();
+        $signups           = AdminViews::recentUsage($signup_views_limit);
         $npcs             = NpcFactory::allNonTrivialNpcs();
         $trivial_npcs      = NpcFactory::allTrivialNpcs();
 
@@ -64,7 +69,7 @@ class NinjamasterController extends AbstractController {
 
         $initial_char_ids = $request->get('view');
         $char_ids  = $initial_char_ids ? preg_split("/[,\s]+/", $initial_char_ids) : null;
-        $char_name = trim($request->get('char_name'));
+        $char_name = $request->get('char_name') ? trim($request->get('char_name')) : null;
 
         if ($char_name) { // View a target non-self character
             $first_char = Player::findByName($char_name);
@@ -77,8 +82,11 @@ class NinjamasterController extends AbstractController {
             // Get a different first character if an array is specified
             $first_char = $first_char ? $first_char : Player::find((int) reset($char_ids));
             if ($first_char) {
+                // Redact the character info
                 assert($first_char instanceof Player);
-                $first_account     = Account::findByChar($first_char);
+                $first_char = Player::redact($first_char);
+                $initial_first_account     = Account::findByChar($first_char);
+                $first_account = $initial_first_account ? Account::redact($initial_first_account) : null;
                 $char_inventory    = AdminViews::charInventory($first_char);
                 $first_message     = $first_char->messages;
                 $first_description = $first_char->description;
@@ -95,6 +103,7 @@ class NinjamasterController extends AbstractController {
             'error'             => $error,
             'stats'             => $stats,
             'usage'             => $usage,
+            'signups'           => $signups,
             'first_char'        => $first_char,
             'first_description' => $first_description,
             'first_message'     => $first_message,
@@ -106,6 +115,7 @@ class NinjamasterController extends AbstractController {
             'npcs'              => $npcs,
             'items'             => $items,
             'trivial_npcs'      => $trivial_npcs,
+            'signup_views_limit' => $signup_views_limit,
         ];
 
         return new StreamedViewResponse('Admin Actions', 'ninjamaster.tpl', $parts);
@@ -114,7 +124,8 @@ class NinjamasterController extends AbstractController {
     /**
      * Pull the items for administrative review
      */
-    public function items($p_dependencies) {
+    public function items($p_dependencies)
+    {
         $authed = $this->checkAuth($p_dependencies);
         if ($authed instanceof RedirectResponse) {
             return $authed;
@@ -129,7 +140,8 @@ class NinjamasterController extends AbstractController {
      *
      * @return Response
      */
-    public function tools(Container $p_dependencies): Response {
+    public function tools(Container $p_dependencies): Response
+    {
         $authed = $this->checkAuth($p_dependencies);
         if ($authed instanceof RedirectResponse) {
             return $authed;
@@ -142,7 +154,8 @@ class NinjamasterController extends AbstractController {
      *
      * @return Response
      */
-    public function player_tags(Container $p_dependencies): Response {
+    public function player_tags(Container $p_dependencies): Response
+    {
         $authed = $this->checkAuth($p_dependencies);
         if ($authed instanceof RedirectResponse) {
             return $authed;
@@ -156,7 +169,8 @@ class NinjamasterController extends AbstractController {
     /**
      * Get the tag of player activity/score
      */
-    private function playerSize(): array {
+    private function playerSize(): array
+    {
         $res = [];
         $sel = "SELECT 
             (level - 3 - round(days/100)) AS sum, 
@@ -188,7 +202,8 @@ class NinjamasterController extends AbstractController {
      * @param int $p_max
      * @return int
      */
-    private function calculatePlayerSize($p_rank, $p_max): int {
-        return (int) floor(((($p_rank-1 < 1 ? 0 : $p_rank-1)) / $p_max)*10)+1;
+    private function calculatePlayerSize($p_rank, $p_max): int
+    {
+        return (int) floor(((($p_rank - 1 < 1 ? 0 : $p_rank - 1)) / $p_max) * 10) + 1;
     }
 }

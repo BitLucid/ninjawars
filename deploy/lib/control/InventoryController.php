@@ -18,7 +18,8 @@ use PDO;
 /**
  * Control the display of items and gold (and maybe some day armor) for a char
  */
-class InventoryController extends AbstractController {
+class InventoryController extends AbstractController
+{
     public const PRIV          = true;
     public const ALIVE         = false;
     public const GIVE_COST     = 1;
@@ -30,7 +31,8 @@ class InventoryController extends AbstractController {
      *
      * @return StreamedViewResponse
      */
-    public function index(Container $p_dependencies) {
+    public function index(Container $p_dependencies)
+    {
         $char      = $p_dependencies['current_player'];
         $inv       = Inventory::of($char, 'self');
         $inventory = [];
@@ -42,7 +44,7 @@ class InventoryController extends AbstractController {
 
         foreach ($inv as $item) {
             // Special format for display and looping
-            $item['display']  = $item['item_display_name'].$item['plural'];
+            $item['display']  = $item['item_display_name'] . $item['plural'];
             $item['self_use'] = (bool) $item['self_use'];
             $inventory[$item['item_id']] = $item;
         }
@@ -66,7 +68,8 @@ class InventoryController extends AbstractController {
      *
      * @return StreamedViewResponse|RedirectResponse
      */
-    public function give(Container $p_dependencies) {
+    public function give(Container $p_dependencies)
+    {
         $slugs  = $this->parseSlugs();
         $player = $p_dependencies['current_player'];
         $target = $this->findPlayer($slugs['in_target']);
@@ -75,7 +78,7 @@ class InventoryController extends AbstractController {
             $item    = $this->findItem($slugs['item_in']);
             $article = self::getIndefiniteArticle($item->getName());
         } catch (\InvalidArgumentException $e) {
-            return new RedirectResponse(WEB_ROOT.'inventory?error=noitem');
+            return new RedirectResponse(WEB_ROOT . 'inventory?error=noitem');
         }
 
         $display_message = null;
@@ -86,7 +89,7 @@ class InventoryController extends AbstractController {
             $error = 3;
         } else {
             $error = 0;
-            $display_message = "__TARGET__ will receive your ".$item->getName().".";
+            $display_message = "__TARGET__ will receive your " . $item->getName() . ".";
             $mail_message    = "You have been given $article $item by $player.";
 
             $this->transferOwnership($player, $target, $item, self::GIVE_QUANTITY);
@@ -118,7 +121,8 @@ class InventoryController extends AbstractController {
      *
      * @return StreamedViewResponse|RedirectResponse
      */
-    public function selfUse(Container $p_dependencies) {
+    public function selfUse(Container $p_dependencies)
+    {
         $slugs           = $this->parseSlugs();
         $player          = $p_dependencies['current_player'];
         $inventory       = new Inventory($player);
@@ -132,7 +136,7 @@ class InventoryController extends AbstractController {
             $item = $this->findItem($slugs['item_in']);
             $article = self::getIndefiniteArticle($item->getName());
         } catch (\InvalidArgumentException $e) {
-            return new RedirectResponse(WEB_ROOT.'inventory?error=noitem');
+            return new RedirectResponse(WEB_ROOT . 'inventory?error=noitem');
         }
 
         if ($this->itemCount($player, $item) < 1) {
@@ -196,7 +200,8 @@ class InventoryController extends AbstractController {
      * @note
      * /use/ is aliased to useItem externally because use is a php reserved keyword
      */
-    public function useItem(Container $p_dependencies) {
+    public function useItem(Container $p_dependencies)
+    {
         $slugs           = $this->parseSlugs();
         $target          = $this->findPlayer($slugs['in_target']);
         $player          = $p_dependencies['current_player'];
@@ -215,7 +220,7 @@ class InventoryController extends AbstractController {
             $item    = $this->findItem($slugs['item_in']);
             $article = $item ? self::getIndefiniteArticle($item->getName()) : '';
         } catch (\InvalidArgumentException $e) {
-            return new RedirectResponse(WEB_ROOT.'inventory?error=noitem');
+            return new RedirectResponse(WEB_ROOT . 'inventory?error=noitem');
         }
 
         if (empty($target)) {
@@ -242,7 +247,7 @@ class InventoryController extends AbstractController {
                 $result = $this->applyItemEffects($player, $target, $item);
 
                 if ($result['success']) {
-                    $message_to_target = "$attacker_label has used $article ".$item->getName()." on you$result[notice]";
+                    $message_to_target = "$attacker_label has used $article " . $item->getName() . " on you$result[notice]";
                     Event::create($player->id(), $target->id(), str_replace('  ', ' ', $message_to_target));
                     $inventory->remove($item->identity(), 1);
 
@@ -293,7 +298,8 @@ class InventoryController extends AbstractController {
     /**
      * @return void
      */
-    private function transferOwnership(Player $giver, Player $recipient, Item $item, int $quantity) {
+    private function transferOwnership(Player $giver, Player $recipient, Item $item, int $quantity)
+    {
         $giver_inventory = new Inventory($giver);
         $taker_inventory = new Inventory($recipient);
         $taker_inventory->add($item->identity(), $quantity);
@@ -307,7 +313,8 @@ class InventoryController extends AbstractController {
      * @note
      * Slow and speed effects are exclusive.
      */
-    private function applyItemEffects(Player $user, Player $target, Item $item) {
+    private function applyItemEffects(Player $user, Player $target, Item $item)
+    {
         $success       = true;
         $notice        = null;
         $message       = '';
@@ -317,7 +324,7 @@ class InventoryController extends AbstractController {
         $bonus = $this->calculateBonus($user, $target);
 
         if ($item->hasEffect('wound')) {
-            $item->setTargetDamage(rand(1, $item->getMaxDamage()));
+            $item->setTargetDamage(rand(1, $item->getMaxDamage() ?? 0));
 
             if ($item->hasEffect('slice')) {
                 $item->setTargetDamage(rand(1, max(9, $user->getStrength() - 4)) + $bonus);
@@ -359,12 +366,12 @@ class InventoryController extends AbstractController {
         }
 
         if ($item->hasEffect('slow')) {
-            $item->setTurnChange(-1*$this->caltropTurnLoss($target, $bonus));
+            $item->setTurnChange(-1 * $this->caltropTurnLoss($target, $bonus));
             $turns_change = $item->getTurnChange();
 
             if ($target->hasStatus(SLOW)) {
                 // If the effect is already in play, it will have a decreased effect.
-                $turns_change = ceil($turns_change*0.3);
+                $turns_change = ceil($turns_change * 0.3);
                 $extra_message = "__TARGET__ is already moving slowly.";
             } elseif ($target->hasStatus(FAST)) {
                 $target->subtractStatus(FAST);
@@ -378,7 +385,7 @@ class InventoryController extends AbstractController {
                 $extra_message .= " You fail to take any turns from __TARGET__.";
             }
 
-            $notice = " lose ".abs($turns_change)." turns.";
+            $notice = " lose " . abs($turns_change) . " turns.";
             $target->subtractTurns(-1 * $turns_change);
         } elseif ($item->hasEffect('speed')) {
             $item->setTurnChange($item->getMaxTurnChange());
@@ -386,7 +393,7 @@ class InventoryController extends AbstractController {
 
             if ($target->hasStatus(FAST)) {
                 // If the effect is already in play, it will have a decreased effect.
-                $turns_change = ceil($turns_change*0.5);
+                $turns_change = ceil($turns_change * 0.5);
                 $extra_message = "__TARGET__ is already moving quickly.";
             } elseif ($target->hasStatus(SLOW)) {
                 $target->subtractStatus(SLOW);
@@ -401,16 +408,16 @@ class InventoryController extends AbstractController {
         }
 
         if ($item->getTargetDamage() > 0) { // HP Altering
-            $extra_message .= " __TARGET__ takes ".$item->getTargetDamage()." damage.";
+            $extra_message .= " __TARGET__ takes " . $item->getTargetDamage() . " damage.";
 
             if ($user->id() === $target->id()) {
-                $message .= "You take ".$item->getTargetDamage()." damage!";
+                $message .= "You take " . $item->getTargetDamage() . " damage!";
             } else {
-                if (strlen($notice) > 0) {
+                if ($notice !== null && strlen($notice) > 0) {
                     $notice .= " You also"; // Join multiple targetResult messages.
                 }
 
-                $notice .= " take ".$item->getTargetDamage()." damage!";
+                $notice .= " take " . $item->getTargetDamage() . " damage!";
             }
 
             $target->harm($item->getTargetDamage());
@@ -424,7 +431,7 @@ class InventoryController extends AbstractController {
                 if ($turns_change === 0) {
                     $message .= "__TARGET__ did not lose any turns!";
                 } else {
-                    $message .= "__TARGET__ has lost ".abs($turns_change)." turns!";
+                    $message .= "__TARGET__ has lost " . abs($turns_change) . " turns!";
                 }
 
                 if ($target->turns <= 0) {
@@ -465,7 +472,8 @@ class InventoryController extends AbstractController {
     /**
      * Get the slugs and parameter values.
      */
-    private function parseSlugs(): array {
+    private function parseSlugs(): array
+    {
         $url_part = $_SERVER['REQUEST_URI'];
         $path     = parse_url($url_part, PHP_URL_PATH);
         $slugs    = explode('/', trim($path, '/'));
@@ -481,18 +489,20 @@ class InventoryController extends AbstractController {
      *
      * @return void
      */
-    private function sendKillMails(Player $attacker, Player $target, $attacker_label, $article, $item, $loot) {
+    private function sendKillMails(Player $attacker, Player $target, $attacker_label, $article, $item, $loot)
+    {
         $target_email_msg = "You have been killed by $attacker_label with $article $item and lost $loot gold.";
         Event::create(($attacker->name() === $attacker_label ? $attacker->id() : 0), $target->id(), $target_email_msg);
 
-        $user_email_msg = "You have killed ".$target->name()." with $article $item and received $loot gold.";
+        $user_email_msg = "You have killed " . $target->name() . " with $article $item and received $loot gold.";
         Event::create($target->id(), $attacker->id(), $user_email_msg);
     }
 
     /**
      * Get the count of how many of an item a player has.
      */
-    private function itemCount(Player $player, Item $item): int {
+    private function itemCount(Player $player, Item $item): int
+    {
         $statement = query(
             "SELECT sum(amount) FROM inventory WHERE item_type = :item AND owner = :owner",
             [
@@ -508,7 +518,8 @@ class InventoryController extends AbstractController {
     /**
      * Benefits for near-equivalent levels.
      */
-    private function calculateBonus(Player $user, Player $target): int {
+    private function calculateBonus(Player $user, Player $target): int
+    {
         $bonus    = 0;
         $distance = abs($target->level - $user->level);
 
@@ -525,7 +536,8 @@ class InventoryController extends AbstractController {
      * @note
      * Caltrops used to be ice scrolls.
      */
-    private function caltropTurnLoss(Player $target, int $bonus): int {
+    private function caltropTurnLoss(Player $target, int $bonus): int
+    {
         $min = 1;
         $max = 0;
 
@@ -549,7 +561,8 @@ class InventoryController extends AbstractController {
      *
      * @return Player|null
      */
-    private function findPlayer($token) {
+    private function findPlayer($token)
+    {
         if (Filter::toNonNegativeInt($token)) {
             $target = Player::find(Filter::toNonNegativeInt($token));
         } else {
@@ -564,7 +577,8 @@ class InventoryController extends AbstractController {
      *
      * @return Item
      */
-    private function findItem($token): Item {
+    private function findItem($token): Item
+    {
         if ($token == (int) $token && is_numeric($token) && $token) {
             $item = Item::find($token);
         } elseif (is_string($token) && $token) {
@@ -579,7 +593,8 @@ class InventoryController extends AbstractController {
     /**
      * @return StreamedViewResponse
      */
-    private function render($parts) {
+    private function render($parts)
+    {
         $options = [
             'body_classes' => 'inventory',
             'quickstat'    => 'viewinv',
@@ -591,7 +606,8 @@ class InventoryController extends AbstractController {
     /**
      * @return StreamedViewResponse
      */
-    private function renderUse($parts) {
+    private function renderUse($parts)
+    {
         $options = [
             'body_classes' => 'inventory-use',
             'quickstat'    => 'player',
@@ -603,7 +619,13 @@ class InventoryController extends AbstractController {
     /**
      * Get the language pluralization of an item's word
      */
-    public static function getIndefiniteArticle($p_noun): string {
-        return str_replace(' '.$p_noun, '', shell_exec('perl '.LIB_ROOT.'third-party/lingua-a.pl "'.escapeshellcmd($p_noun).'"'));
+    public static function getIndefiniteArticle($p_noun): string
+    {
+        // This does strip down to just alphanumeric before running, hmmm.
+        $word = $p_noun ? preg_replace("/[^[:alnum:]]/u", '', $p_noun) : '';
+        preg_match('/^[a-z]/i', $word, $matches); // Captures 90% of the cases,
+        // Doesn't get things like university and hour and things, but better than
+        // a raw shellexec call to a perl script.
+        return $matches && count($matches) ? 'an' : 'a';
     }
 }

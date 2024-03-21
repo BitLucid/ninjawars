@@ -1,13 +1,12 @@
 # Purpose of PR:
 
-> ---
--
--
--
+> 
 
 ## Before
 
 ## After
+
+## For Non-Hotfixes:
 
 ## _Attached Screenshot of my change:_
 

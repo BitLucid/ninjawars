@@ -3,7 +3,8 @@
 use NinjaWars\core\data\Item;
 use NinjaWars\core\data\Player;
 
-class ItemTest extends \NWTest {
+class ItemTest extends \NWTest
+{
     /*
         public function setUp(){
             parent::setUp();
@@ -14,18 +15,21 @@ class ItemTest extends \NWTest {
         }
     */
 
-    public function testInstantiatingABlankItem() {
+    public function testInstantiatingABlankItem()
+    {
         $item = new Item();
         $this->assertTrue($item instanceof Item);
     }
 
-    public function testAnyItemAtAllExists() {
+    public function testAnyItemAtAllExists()
+    {
         $identity = query_item('select item_internal_name from item limit 1');
         $item = Item::findByIdentity($identity);
         $this->assertTrue($item instanceof Item);
     }
 
-    public function testSomeItemsExist() {
+    public function testSomeItemsExist()
+    {
         /*
         $lantern = Item::findByIdentity('lantern');
         $shuriken = Item::findByIdentity('shuriken');
@@ -38,13 +42,15 @@ class ItemTest extends \NWTest {
         }
     }
 
-    public function testRetrievingAShuriken() {
+    public function testRetrievingAShuriken()
+    {
         $shuriken = Item::findByIdentity('shuriken');
         $this->assertTrue($shuriken instanceof Item);
         $this->assertEquals('shuriken', $shuriken->identity());
     }
 
-    public function testTessenAndKunaiHaveSomeMaxDamage() {
+    public function testTessenAndKunaiHaveSomeMaxDamage()
+    {
         $tessen = Item::findByIdentity('tessen');
         $this->assertNotEmpty($tessen->identity());
         $this->assertGreaterThan(0, $tessen->getMaxDamage());
@@ -53,7 +59,8 @@ class ItemTest extends \NWTest {
     }
 
     // Random damage check helper function
-    public function itemRandomDamageSum($item, $iterations=1000) {
+    public function itemRandomDamageSum($item, $iterations = 1000)
+    {
         $sum = 0;
         $i = $iterations;
         while ($i > 0) {
@@ -63,13 +70,15 @@ class ItemTest extends \NWTest {
         return $sum;
     }
 
-    public function testKunaiHasSomeRandomDamage() {
+    public function testKunaiHasSomeRandomDamage()
+    {
         $kunai = Item::findByIdentity('kunai');
         $sum = $this->itemRandomDamageSum($kunai);
         $this->assertGreaterThan(0, $sum);
     }
 
-    public function testWeaponsHaveSomeRandomDamage() {
+    public function testWeaponsHaveSomeRandomDamage()
+    {
         // Special cases:  Shuriken...
         $this->assertGreaterThan(0, $this->itemRandomDamageSum(Item::findByIdentity('kunai')));
         $this->assertGreaterThan(0, $this->itemRandomDamageSum(Item::findByIdentity('ono')));
@@ -78,84 +87,99 @@ class ItemTest extends \NWTest {
         $this->assertGreaterThan(0, $this->itemRandomDamageSum(Item::findByIdentity('tetsubo')));
     }
 
-    public function testItemThatExistsHasATypeAndIdentity() {
+    public function testItemThatExistsHasATypeAndIdentity()
+    {
         $item = Item::findByIdentity('shuriken');
         $this->assertEquals('shuriken', $item->identity());
         $this->assertGreaterThan(0, $item->getType());
     }
 
-    public function testThatAShurikenHasSliceEffect() {
+    public function testThatAShurikenHasSliceEffect()
+    {
         $item = Item::findByIdentity('shuriken');
         $this->assertGreaterThan(0, $item->hasEffect('slice'));
     }
 
-    public function testThatAShurikenIsUsableOnOthers() {
+    public function testThatAShurikenIsUsableOnOthers()
+    {
         $item = Item::findByIdentity('shuriken');
         $this->assertTrue($item->isOtherUsable());
     }
 
-    public function testThatShurikenDoesNotIgnoreStealth() {
+    public function testThatShurikenDoesNotIgnoreStealth()
+    {
         $item = Item::findByIdentity('shuriken');
         $this->assertFalse($item->ignoresStealth());
     }
 
-    public function testThatShurikensArentSelfUsable() {
+    public function testThatShurikensArentSelfUsable()
+    {
         $item = Item::findByIdentity('shuriken');
         $this->assertFalse($item->isSelfUsable());
     }
 
-    public function testThatCaltropsIdeallyCauseNegativeTurnChange() {
+    public function testThatCaltropsIdeallyCauseNegativeTurnChange()
+    {
         $item = Item::findByIdentity('caltrops');
         $this->assertLessThan(0, $item->getMaxTurnChange());
     }
 
-    public function testBuffItemsIgnoreStealth() {
+    public function testBuffItemsIgnoreStealth()
+    {
         foreach (['mirror', 'prayerwheel', 'shell', 'lantern'] as $ident) {
             $item = Item::findByIdentity($ident);
             $this->assertTrue($item->ignoresStealth());
         }
     }
 
-    public function testMeitoNamedKatanaIgnoresStealth() {
+    public function testMeitoNamedKatanaIgnoresStealth()
+    {
         $item = Item::findByIdentity('meito');
         $this->assertTrue($item->ignoresStealth());
     }
 
-    public function testShurikenHasSomeMaxDamageWhenTargetted() {
+    public function testShurikenHasSomeMaxDamageWhenTargetted()
+    {
         $shuriken = Item::findByIdentity('shuriken');
         $this->assertGreaterThan(0, $shuriken->getMaxDamage(new Player()));
     }
 
 
-    public function testShurikenHasSomeIntegerDamage() {
+    public function testShurikenHasSomeIntegerDamage()
+    {
         $shuriken = Item::findByIdentity('shuriken');
         $this->assertGreaterThan(-1, $shuriken->getRandomDamage());
         $this->assertTrue((bool)is_int($shuriken->getRandomDamage()));
     }
 
 
-    public function testAmanitaHasSomeTurnChange() {
+    public function testAmanitaHasSomeTurnChange()
+    {
         $amanita = Item::findByIdentity('amanita');
         $this->assertGreaterThan(0, $amanita->getMaxTurnChange());
     }
 
-    public function testInitialAmanitaHasSomeTurnChange() {
+    public function testInitialAmanitaHasSomeTurnChange()
+    {
         $amanita = Item::findByIdentity('amanita');
         $this->assertGreaterThan(1, $amanita->getMaxTurnChange());
     }
 
-    public function testDimMakHasSomeIntegerDamage() {
+    public function testDimMakHasSomeIntegerDamage()
+    {
         $item = Item::findByIdentity('dimmak');
         $this->assertGreaterThan(-1, $item->getRandomDamage());
         $this->assertTrue((bool)is_int($item->getRandomDamage()));
     }
 
-    public function testDimMakHasAnIdentity() {
+    public function testDimMakHasAnIdentity()
+    {
         $item = Item::findByIdentity('dimmak');
         $this->assertEquals('dimmak', $item->identity());
     }
 
-    public function testItemPluralNameExists() {
+    public function testItemPluralNameExists()
+    {
         $caltrop = Item::findByIdentity('caltrops');
         $shuriken = Item::findByIdentity('shuriken');
         $this->assertInstanceOf('NinjaWars\core\data\Item', $caltrop);

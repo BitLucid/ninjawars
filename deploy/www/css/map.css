@@ -17,8 +17,15 @@
     text-align: center;
     min-height: 1.2rem;
     font-size: 1.5rem;
+    /*
     background-color: black;
     background-color: rgba(0, 0, 0, 0.8);
+    */
+    text-shadow:
+        0.07em 0 black,
+        0 0.07em black,
+        -0.07em 0 black,
+        0 -0.07em black;
     margin-left: 5%;
     margin-top: 20%;
     border-radius: 0.6rem;
@@ -26,6 +33,7 @@
 }
 
 @media only screen and (min-width: 768px) {
+
     /* Tablets */
     #map .details {
         font-size: 2.1rem;
@@ -33,6 +41,7 @@
 }
 
 @media only screen and (min-width: 1224px) {
+
     /* Desktops and Laptops */
     #map .details {
         width: 66%;
@@ -50,77 +59,103 @@
     background-color: #807f6f;
 }
 
+#map .node {
+    background-repeat: no-repeat;
+    background-size: auto;
+}
+
 #map .node.building {
     background-color: #753700;
 }
 
 #map .node.doshin {
     background-repeat: no-repeat;
-    background-color: #6e4623;
+    background-color: #223a18;
+    background-image: url(/images/nodes/doshin.png);
+    background-size: 100% 100%;
 }
 
 #map .node.dojo {
     background-repeat: no-repeat;
-    background-color: rgb(58, 26, 4);
+    background-color: #223a18;
+    background-image: url(/images/nodes/dojo.png);
+    background-size: 100% 100%;
 }
 
 #map .node.shrine {
     background-repeat: no-repeat;
-    background-color: #085e5e;
+    background-image: url(/images/nodes/shrine_short.png);
+    background-size: 100% 100%;
+    background-color: #223a18;
 }
 
 #map .node.grass {
-    background-color: rgb(27, 43, 31);
-    background-image: url(/images/nodes/grass.jpg);
+    background-color: #223a18;
+    background-image: url(/images/nodes/grass.png);
     background-size: 100% 100%;
 }
 
 #map .node.dirt {
-    background-color: rgb(90, 77, 34);
-    background-image: url(/images/nodes/lightdirt.jpg);
+    background-color: #223a18;
+    background-image: url(/images/nodes/dirt.png);
     background-size: 100% 100%;
 }
 
 #map .node.rice-field {
-    background-color: rgb(27, 43, 31);
-    /*background-image: url(/images/nodes/lightdirt.jpg);*/
-    background-image: url(/images/nodes/grass.jpg);
+    background-color: #223a18;
+    background-image: url(/images/nodes/rice-field.png);
+    background-size: 100% 100%;
+}
+
+#map .node.wheat-field {
+    background-color: #223a18;
+    background-image: url(/images/nodes/wheat-field.png);
     background-size: 100% 100%;
 }
 
 #map .node.casino {
     background-repeat: no-repeat;
-    background-color: rgb(181, 157, 85);
+    background-color: #223a18;
+    background-image: url(/images/nodes/casino.png);
+    background-size: 100% 100%;
 }
 
 #map .node.weapons-shop {
     background-repeat: no-repeat;
     background-color: #753700;
+    background-image: url(/images/nodes/shop.png);
+    background-size: 100% 100%;
 }
 
 #map .node.forest {
-    background-color: hsl(91.2, 15%, 32.7%);
+    background-color: #223a18;
+    background-image: url(/images/nodes/forest.png);
+    background-size: 100% 100%;
 }
 
 #map .node.north-south-road {
-    background-color: rgb(55, 55, 55);
-    background-image: url(/images/nodes/darkgranite.jpg);
+    background-color: #223a18;
+    background-image: url(/images/nodes/north-south-road.png);
     background-size: 100% 100%;
 }
 
 #map .node.west-east-road,
 #map .node.east-west-road {
-    background-color: rgb(65, 65, 65);
-    background-image: url(/images/nodes/darkgranite.jpg);
+    background-color: #223a18;
+    background-image: url(/images/nodes/east-west-road.png);
     background-size: 100% 100%;
 }
 
 #map .node.bath-house {
-    background-color: #800040;
+    background-color: #223a18;
+    background-image: url(/images/nodes/bath-house.png);
+    background-size: 100% 100%;
 }
 
 #map .node.village-square {
-    background-color: #dd164f;
+    background-color: #906845;
+    background-image: url(/images/nodes/village-square.png);
+    background-size: 100% 100%;
 }
 
 #map .area-name {

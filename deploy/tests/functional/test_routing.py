@@ -121,7 +121,7 @@ class TestRouting:
     def test_urls_by_title(self):
         root = self.root()
         assert root is not None
-        pages = {'signup': 'Become a Ninja', 'login': 'Login',
+        pages = {'signup': 'New Game', 'login': 'Login',
                  "clan": "Clan List", "list": "Ninja List",
                  'map.php': 'Map', 'staff': 'Staff',
                  'village': 'Chat', 'enemies': 'Fight',

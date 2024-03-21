@@ -2,11 +2,17 @@
 
 use NinjaWars\core\data\NpcFactory;
 
+/**
+ * Note that 1+stamina*5 is health, plus 2*stamina if armored.
+ */
+
 // Npc matrix planning document: https://docs.google.com/spreadsheet/ccc?key=0AkoUgtBBP00HdGZ1eUhaekhTb1dnZVh3ZlpoRExWdGc#gid=0
+// Also see: https://localhost:8765/ninjamaster/#npc-list-stats for a comparison of the different difficulty levels
+// and where the different npcs fall on the scale.
 NpcFactory::$data = [
     'firefly'   => [ // Baseline weakest mob
         'name'     => 'Firefly',
-        'img'      => 'firefly.png',
+        'img'      => 'firefly.jpg',
         'strength' => 0,
         'stamina'  => 0,
         'damage'   => 0,
@@ -15,9 +21,9 @@ NpcFactory::$data = [
     ],
     'fireflies' => [
         'name'     => 'Fireflies',
-        'img'      => 'fireflies.png',
+        'img'      => 'fireflies.jpg',
         'strength' => 0,
-        'stamina'  => 1,
+        'stamina'  => 2,
         'damage'   => 0,
         'race'     => 'insect',
     ],
@@ -94,7 +100,7 @@ NpcFactory::$data = [
         'stamina'   => 100,
         'race'      => 'tengu',
         'inventory' => [
-            'tetsubo'=>'.05',
+            'tetsubo' => '.05',
         ],
         'traits'    => [
             'flying',
@@ -131,14 +137,13 @@ NpcFactory::$data = [
     ],
     'thief2'          => [
         'name'      => 'Thief',
-        'strength'  => 17,
+        'strength'  => 16,
         'stamina'   => 10,
-        'speed'     => 10,
+        'speed'     => 11,
         'race'      => 'human',
         'img'       => 'thief.png',
         'inventory' => [
-            'shuriken' => '1',
-
+            'shuriken' => '.9',
         ],
         'gold'      => 40,
         'traits'    => [
@@ -147,135 +152,145 @@ NpcFactory::$data = [
             'gang',
             'defender',
         ],
+        'tagline'   => 'Beware the Ninja Thieves, they have entered this world to steal from all!',
     ],
-] + (
-    !defined('DEBUG') || !DEBUG ? [] :
-    [
-        'peasant2'      => [
-            'name'       => 'Peasant',
-            'race'       => 'human',
-            'img'        => 'fighter.png',
-            'strength'   => 5,
-            'stamina'    => 5,
-            'speed'      => 5,
-            'ki'         => 1,
-            'damage'     => 1,
-            'gold'       => 20,
-            'bounty_mod' => 1,
-            'traits'     => [
-                'villager',
-                'sometimes_disguised_ninja',
-            ],
-            'inventory'  => [
-                'kunai'    => '.01',
-                'shuriken' => '.01',
-            ],
+    'peasant2'      => [
+        'name'       => 'Peasant',
+        'race'       => 'human',
+        'img'        => 'fighter.png',
+        'strength'   => 5,
+        'stamina'    => 5,
+        'speed'      => 5,
+        'ki'         => 1,
+        'damage'     => 1,
+        'gold'       => 20,
+        'bounty_mod' => 1,
+        'traits'     => [
+            'villager',
+            'sometimes_disguised_ninja',
         ],
-        'merchant2'     => [
-            'name'         => 'Merchant',
-            'race'         => 'human',
-            'strength'     => 10,
-            'stamina'      => 20,
-            'speed'        => 10,
-            'ki'           => 1,
-            'damage'       => 15,
-            'gold'         => 50,
-            'bounty_mod'   => 5,
-            'img'          => 'merchant.png',
-            'inventory'    => [
-                'phosphor' => '.3',
-            ],
-            'traits'       => [
-                'villager',
-                'rich',
-            ],
+        'inventory'  => [
+            'kunai'    => '.01',
+            'shuriken' => '.04',
         ],
-        'guard2'        => [
-            'name'       => 'Guard',
-            'short'      => 'is a member of the ashigaru foot soldiers, hired for various tasks',
-            'race'       => 'human',
-            'strength'   => 30,
-            'stamina'    => 30,
-            'speed'      => 12,
-            'ki'         => 1,
-            'damage'     => 0,
-            'gold'       => 50,
-            'bounty_mod' => 10,
-            'img'        => 'guard.png',
-            'inventory'  => [
-                'ginsengroot' => '.2',
-            ],
-            'traits'     => [
-                'partial_match_strength',
-            ],
     ],
-        'monk'          => [
-            'name'      => 'Monk',
-            'strength'  => 10,
-            'stamina'   => 10,
-            'speed'     => 10,
-            'ki'        => 30,
-            'race'      => 'human',
-            'inventory' => [
-                'prayerwheel' => '.2',
-            ],
-            'traits'    => [
-                'deflection',
-                'defensive',
-                'self_heal',
-            ],
+    'merchant2'     => [
+        'name'         => 'Merchant',
+        'race'         => 'human',
+        'strength'     => 10,
+        'stamina'      => 15,
+        'speed'        => 10,
+        'ki'           => 1,
+        'damage'       => 15,
+        'gold'         => 50,
+        'bounty_mod'   => 5,
+        'img'          => 'merchant.png',
+        'inventory'    => [
+            'phosphor' => '.05',
         ],
-        'geisha'        => [
-            'name'       => 'Geisha',
-            'strength'   => 5,
-            'stamina'    => 10,
-            'speed'      => 15,
-            'ki'         => 10,
-            'gold'       => 20,
-            'bounty_mod' => 50,
-            'race'       => 'human',
-            'inventory'  => [
-                'sake'   => '.2',
-                'mirror' => '.01',
-                'kimono' => '.01',
-                'tessen' => '.01',
-            ],
-            'traits'    => [
-                'packdynamic',
-                'guarded',
-                'villager',
-            ],
+        'traits'       => [
+            'villager',
+            'rich',
         ],
-        'koi'           => [
-            'name'      => 'Koi',
-            'short'     => 'swims through the water',
-            'img'       => 'koi.jpg',
-            'strength'  => 0,
-            'speed'     => 5,
-            'stamina'   => 2,
-            'damage'    => 1,
-            'race'      => 'fish',
-            'inventory' => [
-                'sushi' => '.3',
-            ],
+    ],
+    'guard2'        => [
+        'name'       => 'Guard',
+        'short'      => 'is a member of the ashigaru foot soldiers, hired for various tasks',
+        'race'       => 'human',
+        'strength'   => 30,
+        'stamina'    => 30,
+        'speed'      => 12,
+        'ki'         => 1,
+        'damage'     => 0,
+        'gold'       => 50,
+        'bounty_mod' => 10,
+        'img'        => 'guard.png',
+        'inventory'  => [
+            'ginsengroot' => '.11',
         ],
-        'chicken'       => [
-            'name'     => 'Chicken',
-            'short'    => 'saunters around like it owns the place',
-            'strength' => 1,
-            'speed'    => 5,
-            'damage'   => 0,
-            'race'     => 'bird',
+        'traits'     => [
+            'partial_match_strength',
+        ],
+    ],
+    'monk'          => [
+        'name'      => 'Monk',
+        'strength'  => 10,
+        'stamina'   => 10,
+        'speed'     => 10,
+        'ki'        => 30,
+        'race'      => 'human',
+        'img'       => 'monk.jpg',
+        'inventory' => [
+            'prayerwheel' => '.2',
+            'bambooflute' => '.1',
+        ],
+        'traits'    => [
+            'villager',
+            'deflection',
+            'defensive',
+            'self_heal',
+        ],
+    ],
+    'geisha'        => [
+        'name'       => 'Geisha',
+        'strength'   => 5,
+        'stamina'    => 10,
+        'speed'      => 15,
+        'ki'         => 10,
+        'gold'       => 20,
+        'bounty_mod' => 50,
+        'race'       => 'human',
+        'img'       => 'geisha.jpg',
+        'inventory'  => [
+            'sake'   => '.2',
+            'mirror' => '.01',
+            'kimono' => '.01',
+            'tessen' => '.01',
+        ],
+        'traits'    => [
+            'villager',
+            'packdynamic',
+            'guarded',
+        ],
+    ],
+    'koi'           => [
+        'name'      => 'Koi',
+        'short'     => 'swims through the water',
+        'img'       => 'koi.jpg',
+        'strength'  => 0,
+        'speed'     => 5,
+        'stamina'   => 2,
+        'damage'    => 1,
+        'race'      => 'fish',
+        'inventory' => [
+            'sushi' => '.3',
+        ],
+    ],
+    'chicken'       => [
+        'name'     => 'Chicken',
+        'short'    => 'saunters around like it owns the place',
+        'img'       => 'chicken.jpg',
+        'strength' => 1,
+        'speed'    => 5,
+        'damage'   => 0,
+        'race'     => 'bird',
         'traits'    => [
             'escaper',
             'flying',
         ],
+        'inventory' => [
+            'egg' => '.3',
         ],
+    ],
+] + (
+    !defined('DEBUG') || !DEBUG ? [] :
+    [
         'bees'          => [
             'name'     => 'Swarm of Bees',
             'short'    => 'swarms and buzzes through the air',
             'strength' => 13,
             'speed'    => 30,
+            'stamina'  => 4,
             'damage'   => 6,
             'gold'     => 0,
             'race'     => 'insect',
@@ -294,12 +309,12 @@ NpcFactory::$data = [
             'strength' => 3,
             'speed'    => 25,
             'damage'   => 3,
-        'stamina'  => 3,
+            'stamina'  => 3,
             'race'     => 'bird',
-        'traits'    => [
-            'escaper',
-            'flying',
-        ],
+            'traits'    => [
+                'escaper',
+                'flying',
+            ],
         ],
         'kingfisher'    => [
             'name'     => 'Kingfisher',
@@ -308,10 +323,10 @@ NpcFactory::$data = [
             'speed'    => 30,
             'damage'   => 3,
             'race'     => 'bird',
-        'traits'    => [
-            'escaper',
-            'flying',
-        ],
+            'traits'    => [
+                'escaper',
+                'flying',
+            ],
         ],
         'horse'         => [
             'name'     => 'Horse',
@@ -382,7 +397,7 @@ NpcFactory::$data = [
         'hitodama'      => [
             'name'   => 'Hitodama',
             'short'  => 'are spirit orbs of fire',
-            'img'    => 'hitodama.gif',
+            'img'    => 'hitodama.jpg',
             'race'   => 'kami',
             'traits' => [
                 'wispy',
@@ -442,7 +457,7 @@ NpcFactory::$data = [
             'short' => 'is a muscled creature that lies wait in the shadows',
             'race'  => 'yokai',
             'img'   => 'shoukera.jpg',
-            'traits'=>[
+            'traits' => [
                 'claws',
                 'stealthy',
             ]
@@ -452,7 +467,7 @@ NpcFactory::$data = [
             'short' => 'is a clawed beast',
             'race'  => 'yokai',
             'img'   => 'waira.jpg',
-            'traits'=>[
+            'traits' => [
                 'claws',
             ]
         ],
@@ -481,8 +496,8 @@ NpcFactory::$data = [
             'short' => 'is a one eyed monk',
             'img'   => 'aobouzu.jpg',
             'race'  => 'yokai',
-            'inventory'=>[
-                'prayerwheel'=>'.01',
+            'inventory' => [
+                'prayerwheel' => '.01',
 
             ]
         ],
@@ -491,7 +506,7 @@ NpcFactory::$data = [
             'short' => 'is a storm demon',
             'img'   => 'akashita.jpg',
             'race'  => 'kami',
-            'traits'=> [
+            'traits' => [
                 'flying',
             ]
         ],
@@ -524,8 +539,8 @@ NpcFactory::$data = [
                 'trickster',
                 'steals',
             ],
-            'inventory'=>[
-                'charcoal'=>'.33'
+            'inventory' => [
+                'charcoal' => '.33'
             ]
         ],
         'yurei'         => [
@@ -540,15 +555,15 @@ NpcFactory::$data = [
         ],
         'oni'           => [
             'name'     => 'Oni',
-            'strength' => 25,
-            'stamina'  => 5,
-            'speed'    => 15,
-            'ki'       => 10,
+            'strength' => 50,
+            'stamina'  => 10,
+            'speed'    => 30,
+            'ki'       => 20,
             'short'    => 'a horned demon',
-            'img'      => 'hokusai-oni.jpg',
+            'img'      => 'attacking_wandering_oni.jpg',
             'race'     => 'oni',
             'inventory' => [
-                'tetsubo'=>'.01',
+                'tetsubo' => '.01',
             ],
             'traits'   => [
                 'demonic',
@@ -566,8 +581,7 @@ NpcFactory::$data = [
             'short'    => 'a slimy toad',
             'img'      => 'matsuoto-hoji-toad.jpg',
             'race'     => 'animal',
-            'inventory' => [
-            ],
+            'inventory' => [],
             'traits'   => [
                 'amphibious',
             ],

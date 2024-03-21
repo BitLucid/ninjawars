@@ -8,7 +8,8 @@ namespace NinjaWars\core\control;
 use NinjaWars\core\data\Player;
 use NinjaWars\core\data\Character;
 
-class Combat {
+class Combat
+{
     public const BOUNTY_MAX        = 5000;
     public const BOUNTY_MULTIPLIER = 1;
     public const BOUNTY_MIN        = 25;
@@ -19,12 +20,13 @@ class Combat {
      *
      * @return int
      */
-    public static function killpointsFromDueling(Player $attacker, Player $target) {
+    public static function killpointsFromDueling(Player $attacker, Player $target)
+    {
         $power_difference = ($target->difficulty() - $attacker->difficulty());
 
-        $multiplier = max(0, min(4, ceil($power_difference/50)));
+        $multiplier = max(0, min(4, ceil($power_difference / 50)));
 
-        return self::KILLPOINTS_MIN+$multiplier;
+        return self::KILLPOINTS_MIN + $multiplier;
     }
 
     /**
@@ -32,7 +34,8 @@ class Combat {
      *
      * @return string
      */
-    public static function runBountyExchange(Player $user, $defender, $bounty_mod=0) {
+    public static function runBountyExchange(Player $user, $defender, $bounty_mod = 0)
+    {
         assert($defender instanceof Character); // 'cause can't typehint interfaces
 
         if ($defender instanceof Player && $defender->bounty > 0) {
@@ -67,19 +70,20 @@ class Combat {
     /**
      * Based on the percent damage done, determine the damage class.
      */
-    public static function determineDamageClass(int $damage, int $current_health): string {
+    public static function determineDamageClass(int $damage, int $current_health): string
+    {
         if ($damage === 0) {
             return 'miss';
         }
         $damage_tiers = [
-            'kill'=>100,
-            'obliterate'=>90,
-            'savage'=>50,
-            'wound'=>15,
-            'nick'=>0,
+            'kill' => 100,
+            'obliterate' => 90,
+            'savage' => 50,
+            'wound' => 15,
+            'nick' => 0,
         ];
-        $percent = floor($damage/$current_health * 100);
-        foreach ($damage_tiers as $class=>$tier) {
+        $percent = floor($damage / $current_health * 100);
+        foreach ($damage_tiers as $class => $tier) {
             if ($percent >= $tier) {
                 return $class;
             }

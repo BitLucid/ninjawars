@@ -5,6 +5,8 @@
 import api from './api.js';
 import { logger, urlParam } from './utils.js';
 
+const { debug, log } = logger();
+
 // State handling for the current place
 const [getOffset, setOffset] = [
   () => (localStorage && JSON.parse(localStorage.getItem('offset'))) || 0,
@@ -69,18 +71,16 @@ const render = () => {
 };
 
 $(() => {
-  const nextTarget = (offset = 0) => {
-    logger().log('Getting next target', offset);
-    return api
-      .nextTarget(offset)
-      .then((res) => res.json())
-      .then((data) => {
-        placeTarget(data);
-        logger().log('Target health: ', data.health, data);
-        completeLoading();
-        return data;
-      });
-  };
+  debug('Fight.js initialized');
+  const nextTarget = (offset = 0) => api
+    .nextTarget(offset)
+    .then((res) => res.json())
+    .then((data) => {
+      placeTarget(data);
+      debug('Target health: ', data.health, data);
+      completeLoading();
+      return data;
+    });
   // Set initial offset from url, fallback to 0
   setOffset(parseInt(urlParam('offset'), 10) || 0);
   nextTarget(getOffset());

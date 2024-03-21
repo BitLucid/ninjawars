@@ -1,5 +1,5 @@
 version: v1.0
-name: Initial Pipeline
+name: Run All Parts
 agent:
   machine:
     type: e1-standard-2
@@ -10,16 +10,78 @@ blocks:
       jobs:
         - name: Install and Cache
           commands:
-            - checkout
-            - cache restore
-            - yarn install
+            - '# php version set in the prologue step'
+            - '# Get the resources.php file'
+            - 'make preconfig '
+            - yarn install --immutable --immutable-cache
+            - make build
             - cache store
-  - name: Test
+      prologue:
+        commands:
+          - checkout
+          - cache restore
+          - sem-version php 8.2.5
+          - nvm install --lts
+          - sem-version node --lts
+          - corepack enable
+          - ./configure
+      secrets:
+        - name: Tchalvak COMPOSER_AUTH with github pat
+        - name: Tchalvak Github Ratelimit Avoidance Token Readonly
+    dependencies: []
+  - name: JS Tests
     task:
       jobs:
-        - name: test and build
+        - name: test after build
           commands:
-            - checkout
-            - cache restore
-            - yarn install
-            - '# yarn test'
+            - '# Setup steps in the prologue'
+            - yarn test
+      prologue:
+        commands:
+          - checkout
+          - cache restore
+          - sem-version php 8.2.5
+          - nvm install --lts
+          - sem-version node --lts
+          - corepack enable
+          - yarn install --immutable
+          - ./configure
+          - make preconfig
+          - make js-deps
+          - make build
+      secrets:
+        - name: Tchalvak COMPOSER_AUTH with github pat
+        - name: Tchalvak Github Ratelimit Avoidance Token Readonly
+    dependencies:
+      - Setup
+    run:
+      when: change_in('/deploy/www/js/')
+  - name: PHP test and build
+    dependencies:
+      - Setup
+    task:
+      secrets:
+        - name: Tchalvak AWS
+        - name: Tchalvak COMPOSER_AUTH with github pat
+        - name: Tchalvak Github Ratelimit Avoidance Token Readonly
+        - name: Tchalvak Github Token
+      env_vars:
+        - name: AWS_PROFILE
+          value: tchalvak
+      jobs:
+        - name: PHP unit-tests
+          commands:
+            - echo "install happens in the prologue step"
+            - php --version
+            - make build
+            - ./composer.phar unit-test
+      prologue:
+        commands:
+          - checkout
+          - cache restore
+          - cp -upn ./deploy/resources.build.php ./deploy/resources.php
+          - ./configure
+          - make preconfig
+          - sem-version php 8.2.5
+    run:
+      when: change_in('/deploy')

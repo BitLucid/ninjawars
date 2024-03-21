@@ -1,6 +1,20 @@
-main#epics #stories > section {
+main#epics #stories>section {
     display: none;
+    /* For initial js to prevent FOUC */
 }
 
 main#epics .pop {
+    background-color: #db90de;
+}
+
+main#epics #stories>section>h2:first-child {
+    background-color: #db90de;
+}
+
+main#epics .epic-note {
+    padding: 0.1rem 1rem 0.1rem;
+    background-color: #db90de;
+    color: black;
+    border-radius: 0.5rem;
+    border: thin solid #77117b;
 }

@@ -2,11 +2,15 @@
 
 use NinjaWars\core\extensions\SessionFactory;
 
-class NWError {
+//use Nmail;
+
+class NWError
+{
     /**
      * Send out error information, about as much as possible
      */
-    public static function sendErrorEmail($p_errorMsg) {
+    public static function sendErrorEmail($p_errorMsg)
+    {
         $session = SessionFactory::getSession();
         if ($session->has('account_id')) {
             $p_errorMsg .= "Error Occured for accountID ".$session->get('account_id')."\r\n";
@@ -20,18 +24,27 @@ class NWError {
         if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'POST') {
             $p_errorMsg .= 'POST_DATA: '.print_r($_POST, true)."\r\n";
         }
-        $headers = "MIME-Version: 1.0\r\n".
-            "Content-Type: text/plain; charset=ISO-8859-15\r\n".
-            "To: ".ALERTS_EMAIL."\r\n".
-            "From: ".SYSTEM_EMAIL."\r\n".
-            'X-Mailer: PHP/' . phpversion();
-        mail(ALERTS_EMAIL, 'Ninjawars: Error'.substr($p_errorMsg, 0, 170), $p_errorMsg, $headers);
+        $body = '
+
+        Ninjawars Error Report Information: 
+        ' . $p_errorMsg . '
+        
+        One the date: ' . date('Y-m-d H:i:s') . '
+        ';
+
+        $_from = [SYSTEM_EMAIL => SYSTEM_EMAIL_NAME];
+        $nmail = new Nmail(ALERTS_EMAIL, 'NinjaWars.net: Ninjawars Error Report.' . substr($p_errorMsg, 0, 170), $body, $_from);
+        $nmail->setReplyTo([SUPPORT_EMAIL => SUPPORT_EMAIL_NAME]);
+
+        return (bool) $nmail->send();
+        //mail(ALERTS_EMAIL, 'Ninjawars: Error'.substr($p_errorMsg, 0, 170), $p_errorMsg, $headers);
     }
 
     /**
      * Display the error page with 500 error code, redirect if page errored part-way through.
      */
-    public static function showErrorPage() {
+    public static function showErrorPage()
+    {
         if (headers_sent()) {
             echo "<script type='text/javascript'>location.href = 'error.html';</script>";
         } else {
@@ -40,7 +53,8 @@ class NWError {
         }
     }
 
-    public static function exceptionHandler($e) {
+    public static function exceptionHandler($e)
+    {
         $msg = "Exception message: ".$e."\r\n\r\n";
         error_log($e);
         self::sendErrorEmail($msg);
@@ -48,7 +62,8 @@ class NWError {
         exit(1);
     }
 
-    public static function errorHandler($errno, $errstr, $errfile, $errline) {
+    public static function errorHandler($errno, $errstr, $errfile, $errline)
+    {
         switch ($errno) {
             case E_NOTICE:
             case E_USER_NOTICE:

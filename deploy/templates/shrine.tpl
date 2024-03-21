@@ -7,6 +7,7 @@
 <section class='action-area'>
 {foreach from=$shrineSections item="part"}
 	<div>
+	{* e.g. see shrine.entrance.tpl for description and image *}
 	{include file="shrine.$part.tpl"}
 	</div>
 {/foreach}

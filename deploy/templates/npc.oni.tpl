@@ -1,19 +1,29 @@
-<style>
-.oni figure{
-	border:thin solid rgba(55, 55, 55, 0.5);padding:1em;margin-bottom:0.5em;text-align:center;
-}
-.oni .npc-image{
-	max-width:450px;
-}
-</style>
-<div class='oni glassbox'>
-	<figure><img class='npc-image' src='{cachebust file="/images/scenes/Oni_pelted_by_beans.jpg"}'></figure>
-	<div class='ninja-error'>An Oni attacks you as you wander!</div>
-	<p>
-	  The Oni eats some of your soul before {if $victory}you kill it{else}it escapes into the wilderness{/if}.
-	{if $victory}
-	  <br>
-	  The Oni's body bursts into flame upon death. A {if $multiple_rewards}pile of {$item->getPluralName()} lie{else}{$item->getName()} lies{/if} in the ashes...
-	{/if}
-	</p>
+<link href="/css/npcs.css" rel="stylesheet" type="text/css" />
+
+<div class='encounter-overall oni'>
+	<figure>
+		<img class='npc-image' 
+			src='{cachebust file="/images/characters/attacking_wandering_oni.jpg"}'>
+	</figure>
+	<section class='encounter-container'>
+		<div class='encounter-content'>
+			<h3>A Wandering Oni Attacks!</h3>
+			<div class='centered'>
+				<div class='danger-text'>⚔️ Beware! An Oni emerges from the shadows, 
+				launching a ferocious attack upon you! ⚔️</div>
+			</div>
+			<p class='combat-text'>
+			The Oni devours some fragments of your soul, leaving you weakened and 
+		    vulnerable. {if $victory}But, in a swift and skilled move, 
+			you manage to strike it down.{else}However, 
+			it cunningly escapes into the dark wilderness, 
+		    leaving you in uncertainty.{/if}
+			{if $victory}
+				<br>
+				🔥 Victory is yours! The Oni's body ignites into flames, and amidst the ashes lies
+				{if $multiple_rewards}a trove of <span class='obtained-item'>{$item->getPluralName()}</span>{else}a valuable <span class='obtained-item'>{$item->getName()}</span>{/if}.
+			{/if}
+			</p>
+		</div>
+	</section>
 </div>

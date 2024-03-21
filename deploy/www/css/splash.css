@@ -11,13 +11,21 @@
     margin-right: 1em;
     font-size: x-large;
 }
+
+/* Due to specificity, seperated for color */
+.splash #top-logo h1 {
+    color: #cac4c4;
+}
+
 .splash #menu-map-head {
     margin-right: 0.5em;
 }
+
 .splash .doshin-image {
     width: 8px;
     height: 8px;
 }
+
 .splash #top-logo h1 {
     display: inline-block;
     font: 40px/45px 'Aclonica', 'edding-780-1', 'edding-780-2', Charcoal,
@@ -28,19 +36,26 @@
     background-color: transparent;
     border: none;
 }
+
 .splash #feedback-link {
     font-size: larger;
     margin-bottom: 1rem;
 }
+
 .splash #news-housing {
     height: 80px;
 }
+
 .splash #chat-housing {
     height: 250px;
 }
 
 .splash .boxes {
     padding: 0;
+}
+
+.grecaptcha-badge {
+    visibility: hidden;
 }
 
 /* Medium and Large screen modifications */

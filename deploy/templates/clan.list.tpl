@@ -1,5 +1,10 @@
 <section id='clan-tags'>
-<h4 id='clan-tags-title'>Clans in the Area</h4>
+	<figure class='text-centered'>
+		<img src='/images/scenes/clanhalls.jpg' 
+			alt='Scene of different clanhalls' 
+			class='rounded mx-auto d-block'/>
+	</figure>
+	<h4 id='clan-tags-title'>Clans in the Area</h4>
 	<ul>
 {foreach from=$clans key=clan_id item=clan}
 		<li class='clan-tag size{$clan.score}'>

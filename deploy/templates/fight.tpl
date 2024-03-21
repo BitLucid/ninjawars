@@ -1,6 +1,6 @@
-<h1>Fight</h1>
+<h1 role='heading'>Fight</h1>
 <link rel="stylesheet" type="text/css" href="{cachebust file="/css/enemies.css"}" media="Screen" />
-<script src='{cachebust file="/js/fightConfig.js"}'></script>
+<script src='{cachebust file="/js/fight.js"}' type='module'></script>
 
 
 {if $logged_in}
@@ -28,7 +28,7 @@
       <span class='enemy-stats-box'>
         {include file="health_bar.tpl" health=$loop_enemy.health level=$loop_enemy.level}
       </span>
-      <em title='Level {$loop_enemy.level}'>{$loop_enemy.level}</em>
+      <em title='Level {$loop_enemy.level}'>{$loop_enemy.level}</em>&nbsp;
       <form name='remove-enemy-form' id='remove-enemy-form' action="/enemies/delete" method='POST'>
         <input type='hidden' name='remove_enemy' value='{$loop_enemy.player_id|escape}'>
           <button type='submit' class='remove-enemy-button' title='Remove {$loop_enemy.uname|escape} from your hitlist'>

@@ -5,7 +5,6 @@ namespace NinjaWars\core\control;
 use Pimple\Container;
 use NinjaWars\core\control\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use NinjaWars\core\data\DatabaseConnection;
 use NinjaWars\core\data\Enemies;
 use NinjaWars\core\data\Player;
 use NinjaWars\core\data\SkillDAO;
@@ -15,13 +14,12 @@ use NinjaWars\core\extensions\SessionFactory;
 use NinjaWars\core\extensions\StreamedViewResponse;
 use NinjaWars\core\environment\RequestWrapper;
 use NinjaWars\core\extensions\NWLogger;
-use NWError;
-use PDO;
 
 /**
  * Display ninja & monsters to potentially pick fights with
  */
-class ConsiderController extends AbstractController {
+class ConsiderController extends AbstractController
+{
     public const ALIVE       = false;
     public const PRIV        = false;
     public const ENEMY_LIMIT = 20;
@@ -29,14 +27,16 @@ class ConsiderController extends AbstractController {
     /**
      * Show the intial consider page
      */
-    public function index(Container $p_dependencies): StreamedViewResponse {
+    public function index(Container $p_dependencies): StreamedViewResponse
+    {
         return $this->render($this->configure());
     }
 
     /**
      * Search for enemies to remember.
      */
-    public function search(Container $p_dependencies): StreamedViewResponse {
+    public function search(Container $p_dependencies): StreamedViewResponse
+    {
         $enemy_match = RequestWrapper::getPostOrGet('enemy_match');
         $current_player = $p_dependencies['current_player'];
         $found_enemies = ($enemy_match && $current_player ? Enemies::search($current_player, $enemy_match) : []);
@@ -54,7 +54,8 @@ class ConsiderController extends AbstractController {
     /**
      * Display just the next ninja to attack
      */
-    public function nextEnemy(Container $p_dependencies): StreamedViewResponse {
+    public function nextEnemy(Container $p_dependencies): StreamedViewResponse
+    {
         $char             = Player::find(SessionFactory::getSession()->get('player_id'));
         $shift = max(0, min(300, (int) RequestWrapper::get('shift')));
         $char_info        = ($char ? $char->data() : []);
@@ -95,13 +96,14 @@ class ConsiderController extends AbstractController {
             'combat_skills'    => $combat_skills,
             'targeted_skills'  => $targeted_skills,
         ];
-        return new StreamedViewResponse('Fight Next Enemy', 'enemies.attack-next.tpl', $parts, ['quickstat'=>false]);
+        return new StreamedViewResponse('Fight Next Enemy', 'enemies.attack-next.tpl', $parts, ['quickstat' => false]);
     }
 
     /**
      * Add an enemy to pc's list if valid.
      */
-    public function addEnemy(Container $p_dependencies): RedirectResponse {
+    public function addEnemy(Container $p_dependencies): RedirectResponse
+    {
         $enemy_id = (int) RequestWrapper::getPostOrGet('add_enemy');
         if ($enemy_id) {
             Enemies::add($p_dependencies['current_player'], $enemy_id);
@@ -114,7 +116,8 @@ class ConsiderController extends AbstractController {
     /**
      * Take an enemy off a pc's list.
      */
-    public function deleteEnemy(Container $p_dependencies): RedirectResponse {
+    public function deleteEnemy(Container $p_dependencies): RedirectResponse
+    {
         Enemies::remove($p_dependencies['current_player'], RequestWrapper::getPostOrGet('remove_enemy'));
         return new RedirectResponse('/enemies');
     }
@@ -122,7 +125,8 @@ class ConsiderController extends AbstractController {
     /**
      * Bring together all the parts for the main display
      */
-    private function configure(): array {
+    private function configure(): array
+    {
         $shift = max(0, min(300, (int) RequestWrapper::get('shift')));
         $char             = Player::find(SessionFactory::getSession()->get('player_id'));
         $peers            = ($char ? Enemies::getNearbyPeers($char->id()) : []);
@@ -176,7 +180,8 @@ class ConsiderController extends AbstractController {
     /**
      * Render the parts, since the template is always currently the same.
      */
-    private function render(array $parts): StreamedViewResponse {
+    private function render(array $parts): StreamedViewResponse
+    {
         return new StreamedViewResponse('Fight', 'fight.tpl', $parts, ['quickstat' => false]);
     }
 }

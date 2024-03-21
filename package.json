@@ -1,6 +1,6 @@
 {
   "name": "ninjawars",
-  "version": "1.18.0",
+  "version": "1.20.2",
   "description": "The Ninja Game at ninjawars.net",
   "main": "deploy/www/js/nw.js",
   "directories": {
@@ -9,7 +9,8 @@
   "scripts": {
     "lint": "eslint --ext .jsx,.js deploy/www/js",
     "prepare-unit-test-ci": "echo 'no-op for now'",
-    "start": "yarn time && make build && yarn time",
+    "build": "yarn time && make build && yarn time",
+    "start": "yarn time && echo 'Not yet static serving' && npx serve deploy/www && yarn time",
     "post-deploy": "php deploy/deployed_scripts/resetcache.php",
     "watch": "livereload ./deploy/* ./deploy/www/* ./deploy/templates/* ./deploy/lib/control/* --debug",
     "security-check": "yarn audit",
@@ -17,13 +18,15 @@
     "prettier": "npx prettier --write .",
     "browse": "xdg-open https://localhost:8765",
     "browse:epics": "xdg-open https://localhost:8765/epics",
-    "browse:repo": "xdg-open https://github.com/BitLucid/ninjawars/",
+    "browse:repo": "xdg-open https://github.com/BitLucid/ninjawars/pulls",
     "browse:deploybot": "xdg-open https://ninjawars.deploybot.com/",
+    "browse:ninjamaster": "xdg-open https://localhost:8765/ninjamaster",
     "repo": "yarn browse:repo",
     "unit-test": "test",
     "cypress:install": "y add -D cypress",
-    "cypress": "yarn cypress open",
-    "test": "karma start deploy/tests/karma.conf.js --single-run"
+    "cypress": "npx cypress open",
+    "test": "karma start deploy/tests/karma.conf.js --single-run",
+    "test:watch": "karma start deploy/tests/karma.conf.js"
   },
   "repository": {
     "type": "git",
@@ -41,29 +44,30 @@
     "url": "https://github.com/BitLucid/ninjawars/issues"
   },
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=18.18.0"
   },
   "homepage": "https://github.com/BitLucid/ninjawars#readme",
   "devDependencies": {
-    "@types/eslint": "^8.4.6",
-    "@types/jquery": "^3.5.14",
-    "eslint": "^8.31.0",
+    "@types/eslint": "^8.56.1",
+    "@types/jquery": "^3.5.29",
+    "cypress": "^13.6.6",
+    "eslint": "^8.57.0",
     "eslint-config-airbnb": "^19.0.4",
-    "eslint-plugin-import": "^2.26.0",
-    "eslint-plugin-jsx-a11y": "^6.6.1",
-    "eslint-plugin-react": "^7.31.8",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-jsx-a11y": "^6.8.0",
+    "eslint-plugin-react": "^7.34.0",
     "eslint-plugin-react-hooks": "4.6.0",
     "husky": "^8.0.3",
-    "jasmine-core": "^4.4.0",
-    "karma": "^6.4.1",
-    "karma-chrome-launcher": "^3.1.1",
+    "jasmine-core": "^5.1.1",
+    "karma": "^6.4.3",
+    "karma-chrome-launcher": "^3.2.0",
     "karma-jasmine": "^5.1.0",
     "karma-requirejs": "^1.1.0",
     "karma-sinon": "^1.0.5",
-    "prettier": "2.8.4",
-    "puppeteer": "^17.1.3",
+    "prettier": "3.2.4",
+    "puppeteer": "^22.4.0",
     "requirejs": "^2.3.6",
-    "sinon": "^15.0.1"
+    "sinon": "^17.0.1"
   },
-  "packageManager": "yarn@3.3.1"
+  "packageManager": "yarn@4.0.2"
 }

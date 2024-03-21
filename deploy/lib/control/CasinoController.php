@@ -14,7 +14,8 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 /**
  * Handles all user commands for the in-game Casino
  */
-class CasinoController extends AbstractController {
+class CasinoController extends AbstractController
+{
     public const PRIV      = false;
     public const ALIVE     = true;
     public const REWARD    = 'phosphor';
@@ -27,7 +28,8 @@ class CasinoController extends AbstractController {
      * @param Container
      * @return Array
      */
-    public function index(Container $p_dependencies) {
+    public function index(Container $p_dependencies)
+    {
         $player = $p_dependencies['current_player'] ?? new Player();
 
         $error = RequestWrapper::getPostOrGet('error');
@@ -52,7 +54,8 @@ class CasinoController extends AbstractController {
      * If the player bets within ~1% of the maximum bet, they will receive a
      * reward item
      */
-    public function bet(Container $p_dependencies) {
+    public function bet(Container $p_dependencies)
+    {
         $player = $p_dependencies['current_player'];
 
         if (!$player) {
@@ -73,7 +76,7 @@ class CasinoController extends AbstractController {
 
                 $player->setGold($player->gold + $bet);
 
-                if ($bet >= round(self::MAX_BET*0.99)) {
+                if ($bet >= round(self::MAX_BET * 0.99)) {
                     // within about 1% of the max bet & you win, you get a reward item.
                     $inventory = new Inventory($player);
                     $inventory->add(self::REWARD, 1);
@@ -100,7 +103,8 @@ class CasinoController extends AbstractController {
      * @param p_parts Array Hash of variables to render
      * @return Response
      */
-    private function render($p_parts) {
+    private function render($p_parts)
+    {
         $p_parts['maxBet'] = self::MAX_BET;
 
         return new StreamedViewResponse('Casino', 'casino.tpl', $p_parts, [ 'quickstat' => 'player' ]);

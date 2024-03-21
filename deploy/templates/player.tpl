@@ -50,8 +50,8 @@
     </nav>
 
   {if $viewing_player_obj && $viewing_player_obj->isAdmin()}
-    <a style='font-size:small;float:right;' href='/ninjamaster/?view={$target_player_obj->id()|escape}'>
-      Admin <i class="fas fa-eye"></i>
+    <a style='font-size:small;float:right;background:#333;padding:1rem;' href='/ninjamaster/?view={$target_player_obj->id()|escape}'>
+      <i class="fa-solid fa-lock"></i> <i class="fa-solid fa-eye"></i>
     </a>
   {/if}
 
@@ -70,7 +70,7 @@
                 {$target_player_obj->class_name|escape}
             </span>&nbsp;
             <span class='player-level-category {$target_player_obj->level|level_label|css_classify}'>
-              {$target_player_obj->level|level_label} [{$target_player_obj->level|escape}]
+              {$target_player_obj->level|level_label} <span class='ninja-level-number'>{$target_player_obj->level|escape}</span>
             </span>
           </div>
           {if $target_player_obj}
@@ -97,10 +97,12 @@
 {if !$self}
   <section id='player-interact'>
 	{if $attack_error}
-    <div class='ninja-error centered'>Cannot Attack: {$attack_error}</div>
+    <div class='ninja-error centered fade-in'>
+      Cannot Attack: {$attack_error}
+    </div>
     {if $i_am_dead}
       <div class='glassbox'>
-        <a href='/shrine/heal_and_resurrect' target='main' title='Fully heal and resurrect' class='btn btn-default ninja-info centered'>⛩ Heal</a>
+        <a href='/shrine/heal_and_resurrect' target='main' title='Fully heal and resurrect' class='btn btn-default ninja-info centered'><i class="fa-solid fa-torii-gate"></i> Heal</a>
       </div>
     {/if}
   </section>
@@ -130,7 +132,7 @@ var combatSkillsList = {$json_combat_skills nofilter};
                     <input id="{$skill.skill_internal_name|escape}" type="checkbox" name="{$skill.skill_internal_name|escape}" value="1"> {$skill.skill_display_name|escape}
                   </label><!-- no space
 		-->{/foreach}<!-- no space
-                  --><input id="target" type="hidden" value="{$target_player_obj->id()|escape}" name="target">
+                  --><input class='attack-target' type="hidden" value="{$target_player_obj->id()|escape}" name="target">
                   <label class='attack-player-trigger btn btn-vital'  title='Attack or Duel this ninja for a base cost of {getTurnCost skillName="attack"} turn'>
                       <input class='attack-player-image' type='image' value='Attack' name='attack-player-shuriken' src='{cachebust file="/images/50pxShuriken.png"}' alt='Attack'><span id='attack-text'>Attack</span>
                   </label>
@@ -156,7 +158,8 @@ var combatSkillsList = {$json_combat_skills nofilter};
                     <option value="{$item.item_id|escape}">{$item.name|escape} ({$item.count|escape})</option>
             {/if}
             {if $item@last}
-                  </select><!-- No space between --><input type="submit" value="Use Item" class="btn btn-default" style="border-top-left-radius:0;border-bottom-left-radius:0">
+                  </select><!-- No space between 
+                  --><input type="submit" value="Use Item" class="btn btn-default" style="border-top-left-radius:0;border-bottom-left-radius:0">
             {/if}
         {foreachelse}
 				  <div id='no-items' class='ninja-notice'>
@@ -195,7 +198,7 @@ var combatSkillsList = {$json_combat_skills nofilter};
   <section class='player-communications centered'>
 
 	<span id='message-ninja'>
-      <a href='/messages?to={$target_player_obj->name()|escape}'><span class='fa fa-comments'/> Talk to <em class='char-name'>{$target_player_obj->name()|escape}</em>
+      <a href='/messages?to={$target_player_obj->name()|escape}'><i class='fa-solid fa-comments'aria-hidden='true'></i> Talk to <em class='char-name'>{$target_player_obj->name()|escape}</em>
       </a>
     </span>
 
@@ -253,7 +256,7 @@ var combatSkillsList = {$json_combat_skills nofilter};
     <details class='player-profile'>
       <summary><span class='fa fa-eye'></span></summary>
       <p class='centered profile-message'>
-        {$target_player_obj->messages|trim|escape|replace_urls|nl2br}
+        {$target_player_obj->messages|nw_trim|escape|replace_urls|nl2br}
       </p>
     </details>
 {/if}

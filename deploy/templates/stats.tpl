@@ -17,7 +17,7 @@
 </style>
 
 
-<h1><i class="fas fa-heart"></i> Ninja Stats for {$char->name()|escape}</h1>
+<h1 role='heading'><i class="fas fa-heart"></i> Ninja Stats for {$char->name()|escape}</h1>
 
 <div id='content' class='your-stats'>
 
@@ -50,7 +50,7 @@
       <li>
         Level:
         <span class='player-level-category {$char->level|level_label|css_classify}'>
-          {$char->level|level_label} [{$char->level|escape}]
+          {$char->level|level_label} <span class='ninja-level-number'>{$char->level|escape}</span>
         </span>
       </li>
       <li><span class='physical'>Strength: {$char->getStrength()|escape}</span><span class='physical'>Speed: {$char->getSpeed()|escape}</span><span class='physical'>Stamina: {$char->getStamina()|escape}</span></li>

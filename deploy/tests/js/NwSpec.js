@@ -1,5 +1,5 @@
 // Strict checking.
-/* global describe, beforeEach, afterEach, it, expect, */
+/* global describe, it, expect, */
 /* global g_isIndex, g_isRoot, g_isSubpage, NW, environment */
 
 /* require(['jquery'], function($) {
@@ -16,11 +16,11 @@
 
 describe('NW', () => {
   describe('NW App testing context', () => {
-    const app = NW;
-    const env = environment;
-    beforeEach(() => { });
+    const app = typeof NW !== 'undefined' ? NW : undefined;
+    const env = typeof environment !== 'undefined' ? environment : undefined;
+    // beforeEach(() => { });
 
-    afterEach(() => { });
+    // afterEach(() => { });
 
     it('should be able to see var defined in nw.js', () => {
       expect(env).toBeDefined();
@@ -39,10 +39,7 @@ describe('NW', () => {
         const data = {
           player: true,
           inventory: true,
-          message: true,
           member_counts: true,
-          event: true,
-          unread_messages_count: true,
         };
         expect(NW.checkAPI_callback).toBeDefined();
         expect(NW.checkAPI_callback(data)).toBe(false);

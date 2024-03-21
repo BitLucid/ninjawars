@@ -10,8 +10,10 @@ use NinjaWars\core\Filter;
 /**
  * Class to house static methods for killing characters of players with multis
  */
-class CloneKill {
-    public static function searchForChar($search) {
+class CloneKill
+{
+    public static function searchForChar($search)
+    {
         if ($search instanceof Player) {
             return $search;
         }
@@ -23,7 +25,8 @@ class CloneKill {
         return null;
     }
 
-    public static function canKill($clone1, $clone2) {
+    public static function canKill($clone1, $clone2)
+    {
         // Search for characters matching the criteria
         $char1 = self::searchForChar($clone1);
         $char2 = self::searchForChar($clone2);
@@ -50,7 +53,7 @@ class CloneKill {
         // TODO: Reject inoperative characters
         // TODO: You can't clone kill yourself..
 
-        $host= gethostname();
+        $host = gethostname();
         $server_ip = gethostbyname($host);
 
         $untouchable_ips = ['127.0.0.1', '173.203.99.229', $server_ip, '', null];
@@ -75,7 +78,8 @@ class CloneKill {
      * Perform the effects of a clonekill.
      * @return string outcome or false
      */
-    public static function kill(Player $self, Player $clone1, Player $clone2) {
+    public static function kill(Player $self, Player $clone1, Player $clone2)
+    {
         if (self::canKill($clone1, $clone2)) {
             $today = date("F j, Y, g:i a");
             $clone1_health = $clone1->health;

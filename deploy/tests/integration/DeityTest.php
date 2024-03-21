@@ -3,16 +3,20 @@
 use NinjaWars\core\data\Deity;
 use NinjaWars\core\data\GameLog;
 
-class DeityTest extends NWTest {
-    public function setUp(): void {
+class DeityTest extends NWTest
+{
+    public function setUp(): void
+    {
         parent::setUp();
     }
 
-    public function tearDown(): void {
+    public function tearDown(): void
+    {
         parent::tearDown();
     }
 
-    public function testDeityReranking() {
+    public function testDeityReranking()
+    {
         $logger = new GameLog();
         // rerank the deity rankings list
         $deity = new Deity($logger);

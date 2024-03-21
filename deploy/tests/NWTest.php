@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Pimple\Container;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use NinjaWars\core\extensions\SessionFactory;
@@ -8,15 +10,19 @@ use NinjaWars\core\data\Player;
 use NinjaWars\core\environment\RequestWrapper;
 use Symfony\Component\HttpFoundation\Request;
 
-class NWTest extends \PHPUnit\Framework\TestCase {
+class NWTest extends \PHPUnit\Framework\TestCase
+{
     protected $m_dependencies;
+    public ?string $name = null;
 
-    public static function setUpBeforeClass(): void {
+    public static function setUpBeforeClass(): void
+    {
     }
 
     /**
      */
-    public function setUp(): void {
+    public function setUp(): void
+    {
         parent::setUp();
         $this->m_dependencies = new Container();
 
@@ -32,7 +38,8 @@ class NWTest extends \PHPUnit\Framework\TestCase {
     /**
      * If you want to test the logged out state, have dependencies without the current_player.
      */
-    public function mockLogout(): Container {
+    public function mockLogout(): Container
+    {
         SessionFactory::getSession()->invalidate();
         RequestWrapper::inject(new Request());
         $container = new Container();
@@ -42,7 +49,8 @@ class NWTest extends \PHPUnit\Framework\TestCase {
         return $container;
     }
 
-    public function tearDown(): void {
+    public function tearDown(): void
+    {
         $this->m_dependences = null;
         parent::tearDown();
     }
@@ -50,7 +58,8 @@ class NWTest extends \PHPUnit\Framework\TestCase {
     /**
      * Create a mock login, with real created account and character
      */
-    public function login() {
+    public function login()
+    {
         SessionFactory::init(new MockArraySessionStorage());
         $this->char = TestAccountCreateAndDestroy::char();
         SessionFactory::getSession()->set('authenticated', true);
@@ -62,7 +71,8 @@ class NWTest extends \PHPUnit\Framework\TestCase {
     /**
      * Destroy the mock login.
      */
-    public function loginTearDown() {
+    public function loginTearDown()
+    {
         $session = SessionFactory::getSession();
         $session->invalidate();
         RequestWrapper::inject(new Request());

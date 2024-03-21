@@ -12,15 +12,25 @@
 <div class="description">
 <!-- For google ad targetting -->
 <!-- google_ad_section_start -->
-    <p>On your way to the foreman's office, you pass by several <a href='/npc/attack/peasant' class='npc click-message'>peasants</a> drenched in sweat from working in the sun all day.</p>
-    <p><a href='/npc/attack/samurai' target='main' title='A samurai?  Kill him.' id='attack-samurai-link' class='npc click-message'>A foreman in samurai armor</a> barely looks up at you as he busies himself with counting coins and smoking a long pipe.</p>
+    <figure class='float-left glassbox'>
+        <img 
+            src='/images/scenes/working_in_fields_smaller.png' 
+            width='500' 
+            class='img-fluid mx-auto d-block'
+            alt='Working in Fields of Grain' />
+    </figure>
+    <p>On your way to the foreman's office, you pass by several <a href='/npc/attack/peasant' class='npc click-message'>peasants</a> drenched in sweat from working in the sun all day. 
+        <a href='/npc/attack/samurai' target='main' title='A samurai?  Kill him.' id='attack-samurai-link' class='npc click-message'>A foreman in samurai armor</a>
+         barely looks up at you as he busies himself with counting coins and smoking a long pipe.</p>
     <p class='speech'>So, how much work can we expect from you?</p>
 <!-- google_ad_section_end -->
 </div>
 {else}
 <div class="description">
     <p>
-        On your way back from the fields, you pass by a few young children
+    As you step onto the dusty path, the scorching sun beats down relentlessly, casting long shadows across the fields of golden grain. 
+The air is thick with the earthy scent of freshly tilled soil, and the sounds of laborers toiling in the distance create a rhythmic melody that echoes through air.
+        You pass by a few young children
         chasing grasshoppers.</p>
     <p>You see a <a href='/npc/attack/viper' class='npc'>Viper</a> in the tall grass.</p>
 
@@ -64,17 +74,13 @@ To earn pay for your work you must first <a href="/signup">become a citizen of t
 </section>
 <hr style='margin-top:3rem' />
 
-<div class='inline-block glassbox'>
-    <SCRIPT charset="utf-8" type="text/javascript" src="https://ws-na.amazon-adsystem.com/widgets/q?rt=ss_ssw&ServiceVersion=20070822&MarketPlace=US&ID=V20070822%2FUS%2Fbit0d3-20%2F8003%2F0e21130c-3468-4f24-bbd7-acaeb7142afc&Operation=GetScriptTemplate"> </SCRIPT> <NOSCRIPT><A HREF="https://ws-na.amazon-adsystem.com/widgets/q?rt=ss_ssw&ServiceVersion=20070822&MarketPlace=US&ID=V20070822%2FUS%2Fbit0d3-20%2F8003%2F0e21130c-3468-4f24-bbd7-acaeb7142afc&Operation=NoScript">Amazon.com Widgets</A></NOSCRIPT>
-</div>
-
 
 <!-- Google Ad -->
 <!-- Google ad not working currently, so commented out -->
 
 <script type='text/javascript'>
 var userStore = {if $authenticated}true{else}false{/if};
-var recommendedTurns = {$recommended_to_work};
+var recommendedTurns = parseInt("{$recommended_to_work|to_integer}") ?? 1;
 {literal}
 $(function () {
     $('#attack-peasant-link').click(function () {

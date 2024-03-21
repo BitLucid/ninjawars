@@ -14,6 +14,7 @@ COMPONENTS=$(WWW)components/
 JS=$(WWW)js/
 CSS=$(WWW)css/
 DBROLE=developers
+GITHUB_ACCESS_TOKEN=
 
 -include CONFIG
 
@@ -25,15 +26,18 @@ ifndef TESTFILE
 	TESTFILE=
 endif
 
-build: dep create-structure link-deps
+build: create-structure dep link-deps check-vendors-installed
 
+# Note that the vendor creation in the below is not the same
+# as the RELATIVE_VENDOR env var, which is pathing related
 create-structure:
 	mkdir -p $(JS)
+	mkdir -p deploy/$(VENDOR)
+	rm -rf vendor
+	ln -s deploy/vendor vendor
 	rm -rf ./deploy/templates/compiled/* ./deploy/templates/cache/*
-	mkdir -p ./deploy/templates/compiled ./deploy/templates/cache ./deploy/resources/logs/
-	chmod -R ugo+rwX ./deploy/templates/compiled ./deploy/templates/cache
-	touch ./deploy/resources/logs/deity.log
-	touch ./deploy/resources/logs/emails.log
+	mkdir -p ./deploy/templates/compiled ./deploy/templates/cache ./deploy/resources/logs/ /tmp/game_logs/
+	chmod -R ugo+rwX ./deploy/templates/compiled ./deploy/templates/cache /tmp/game_logs/
 
 
 link-deps:
@@ -45,11 +49,27 @@ link-deps:
 	@ln -sf "$(RELATIVE_VENDOR)twbs/bootstrap/dist/js/bootstrap.min.js" "$(JS)"
 
 
-dep:
+dep: js-deps
+	@echo "NW step: dep: composer validate then composer install"
+	@$(COMPOSER) validate
 	@$(COMPOSER) install
 
 
+check-vendors-installed:
+# Throw error if the vendor directories are not installed
+	@ls vendor/ && cd deploy && ls vendor/ && cd ..
+
+refresh-vendor:
+	rm -rf vendor
+	ln -sf deploy/vendor vendor
+
 check: pre-test
+
+checkbase:
+	@echo "If the following fails, check that /vendor and /deploy/vendor are symlinked, and that composer install has run"
+	php ./deploy/checkbase.php
+	php deploy/resources.php
+	php deploy/lib/base.inc.php
 
 js-deps:
 	node -v
@@ -59,19 +79,39 @@ js-deps:
 	corepack enable
 	yarn install --immutable
 
-install: build start-chat writable
+resources-file:
+	sed -i "0,/postgres/{s/postgres/${DBUSER}/}" deploy/resources.build.php
+	sed -i "s|/srv/ninjawars/|../..|g" deploy/tests/karma.conf.js
+	ln -sf resources.build.php deploy/resources.php
+
+preconfig: composer-ratelimit-check resources-file
+	@echo "NW step: Setting up composer github access token to avoid ratelimit."
+ifndef COMPOSER
+$(error COMPOSER is not set)
+endif
+ifndef GITHUB_ACCESS_TOKEN
+$(error GITHUB_ACCESS_TOKEN is not set)
+endif
+ifndef COMPOSER_AUTH
+$(error COMPOSER_AUTH is not set)
+endif
+	@$(COMPOSER) --version
+
+postcheck:
 	@echo "Don't forget to update webserver configs as necessary."
 	@echo "Including updating the php to retain login sessions longer."
-	cp -u -p ./deploy/resources.build.php ./deploy/resources.php
-	echo "Note that this does not overwrite existing resources.php"
 	php ./deploy/check.php
 	echo "Check that the webserver user has permissions to the script!"
 
+install: preconfig build postcheck
+
+install-admin: preconfig build start-chat writable postcheck
+
+
 writable:
-	chown ${WEBUSER} ./deploy/resources/logs/*
-	mkdir -p ./deploy/templates/compiled ./deploy/templates/cache ./deploy/resources/logs/
-	chown ${WEBUSER} ./deploy/resources/logs/*
-	chmod -R ugo+rw ./deploy/templates/compiled ./deploy/templates/cache ./deploy/resources/logs/*
+	mkdir -p ./deploy/templates/compiled ./deploy/templates/cache /tmp/game_logs/ ./deploy/resources/logs/
+	chmod -R ugo+rw ./deploy/templates/compiled ./deploy/templates/cache
+	chmod -R ugo+rw /tmp/game_logs/ || true
 
 
 install-system:
@@ -84,7 +124,7 @@ install-system:
 	# PHP!
 	echo "Installing php cli"
 	apt-get -y install php8.2-cli
-	apt-get -y install php8.2-fpm php8.2-xml php8.2-pgsql php8.2-curl php8.2-mbstring
+	apt-get -y install php8.2-fpm php8.2-xml php8.2-pgsql php8.2-curl php8.2-mbstring php8.2-intl
 	phpenmod xml pgsql curl mbstring
 	# Note that xml is what installs the ext-dom
 	apt install curl 
@@ -106,9 +146,9 @@ install-database-client:
 	apt install postgresql-client
 
 start-chat:
-	touch ./deploy/resources/logs/ninjawars.chat-server.log
-	chown ${WEBUSER} ./deploy/resources/logs/ninjawars.chat-server.log
-	nohup php bin/chat-server.php > ./deploy/resources/logs/ninjawars.chat-server.log 2>&1 &
+	touch /tmp/game_logs/ninjawars.chat-server.log
+	chmod ugo+rw /tmp/game_logs/ninjawars.chat-server.log
+	nohup php bin/chat-server.php > /tmp/game_logs/ninjawars.chat-server.log 2>&1 &
 
 browse:
 	xdg-open https://localhost:8765
@@ -124,6 +164,36 @@ test-one:
 test-one-no-watch:
 	php ./vendor/bin/phpunit $(TESTFILE)
 
+
+create-artifact:
+	echo "Creating an artifact for future deployment"
+	echo "Make sure to make dep to build deployable composer and node assets before this"
+	echo "Currently node_modules is not directly included in the artifact, as we just use it for tests for now"
+	mkdir -p ./deploy/artifacts
+	tar -czv -X artifacts-exclude-list.txt -f ./deploy/artifacts/ninjawars-`date +\%F-hour-\%H-min-\%M-sec-\%S-milisec-\%3N`.tar.gz ./composer.json ./composer.lock ./.nvmrc ./.phpver ./.yarnrc.yml ./package.json ./yarn.lock ./Makefile ./deploy/
+	echo "Artifact created, see ./deploy/artifacts/ for the latest,"
+	echo "Note the high importance of overwriting the resources.php config file in the final"
+
+clean-artifacts:
+	rm -rf ./deploy/artifacts/*
+	rm -rf ./nw-artifact
+
+send-artifacts:
+	aws s3 sync  --include '*.tar.gz' ./deploy/artifacts/ s3://ninjawars-deployment-artifacts/
+
+expand-local-artifact:
+	echo "unzipping the latest tar to the local nw-artifact directory"
+	mkdir -p ./nw-artifact
+	tar -xzvf ./deploy/artifacts/*.tar.gz -C ./nw-artifact
+	mkdir -p ./nw-artifact/deploy/templates/compiled ./nw-artifact/deploy/templates/cache /tmp/game_logs/ ./nw-artifact/deploy/resources/logs/
+	chmod -R ugo+rw ./nw-artifact/deploy/templates/compiled ./nw-artifact/deploy/templates/cache
+	chmod -R ugo+rw /tmp/game_logs/ || true
+	ls ./nw-artifact
+
+browse-artifact:
+	xdg-open https://nw-artifact.local
+	
+
 watch:
 	./vendor/bin/phpunit-watcher watch
 
@@ -137,6 +207,7 @@ pre-test:
 	psql -lqt | cut -d \| -f 1 | grep -w $(DBNAME)
 	php deploy/check.php
 	@echo "To test one test use ./vendor/bin/phpunit --filter methodName deploy/tests/something/file.php"
+	@$(COMPOSER) validate
 
 test: pre-test test-main test-functional test-js post-test
 
@@ -148,7 +219,6 @@ check-for-syntax-errors:
 	@find "./deploy/www/" -name "*.php" -exec php -l {} \;|grep -v "No syntax errors" || true
 
 test-unit: check-for-syntax-errors
-
 	@$(TEST_RUNNER) $(CC_FLAG) --testsuite Unit
 
 test-quick: check-for-syntax-errors
@@ -179,6 +249,7 @@ test-ratchets:
 	python3 -m pytest deploy/tests/functional/test_ratchets.py
 
 test-cleanup:
+	# Sometimes partial test runs create problem ninja accounts, this is how to clean all that up
 	psql nw -c "delete from accounts where account_id in (select account_id from accounts join account_players ap on accounts.account_id = ap._account_id join players on ap._player_id = players.player_id where uname like 'phpunit_%')"
 	psql nw -c "delete from players where uname like 'phpunit_%'"
 
@@ -194,10 +265,10 @@ clean:
 	@rm -f "$(JS)jquery.linkify.js"
 	@rm -f "$(JS)jquery-linkify.min.js"
 	@rm -f "/tmp/nw"
-	@cd ./deploy/templates/cache && rm -v ./(".gitkeep") && cd -
-	@rm -rf ./deploy/templates/compiled ./deploy/resources/logs/deity.log ./deploy/resources/logs/emails.log
+	@rm -rf ./deploy/templates/cache/* && touch ./deploy/templates/cache/.gitkeep
+	@rm -rf ./deploy/templates/compiled/* ./deploy/resources/logs/deity.log ./deploy/resources/logs/emails.log
 	@rm -rf ./deploy/www/index.html ./deploy/www/intro.html ./deploy/www/login.html ./deploy/www/signup.html
-	@echo "Cleaned up"
+	@echo "Cleaned up, you will want to re: make build to get the js files back"
 
 dist-clean: clean
 	@rm -rf "$(VENDOR)"*
@@ -209,7 +280,11 @@ dist-clean: clean
 
 
 clear-vendor:
-	cd deploy && rm -rf vendor/* && mkdir -p vendor && cd ..
+	rm -rf vendor deploy/vendor
+	@echo "vendor and deploy/vendor cleared, you will want to re: make create-structure to get the directories back"
+
+	
+
 
 clear-cache:
 	php ./deploy/lib/control/util/clear_cache.php
@@ -251,45 +326,70 @@ backup-live-db:
 
 web-start:
 	#permission error is normal and recoverable
-	sudo service nginx reload
+	service nginx reload
 	sleep 0.5
 	ps waux | grep nginx
 
 web-stop:
-	sudo service nginx reload
+	service nginx reload
 	sleep 0.5
 	ps waux | grep nginx
 	# server may be stopped now
 
 web-reload:
-	sudo service nginx reload
+	service nginx reload
 	sleep 0.5
 	ps waux | grep nginx
 
 restart-webserver:
-	sudo service nginx reload
+	service nginx reload
 	sleep 0.5
 	ps waux | grep nginx
 
-ci-pre-configure:
+post-deploy-restart: # for deploybot after deployment
+	sh /srv/ninjawars/deploy/cron/queued_restart.sh
+
+link-vendor:
+	rm -rf ./vendor
+	ln -sf ./deploy/vendor ./vendor
+
+ci-pre-configure: composer-ratelimit-check resources-file
 	# Set php version
-	# Versions available: https://documentation.codeship.com/basic/languages-frameworks/php/#versions-and-setup
-	phpenv local 8.0
-	@echo "Removing xdebug on CI, by default."
-	rm -f /home/rof/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini
-	ln -s `pwd` /tmp/root
+	sem-version php 8.0
+	#@echo "Removing xdebug on CI, by default."
+	#rm -f /home/rof/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini
+	#ln -s `pwd` /tmp/root
 	#precache composer for ci
-	@$(COMPOSER) config -g github-oauth.github.com $(GITHUB_ACCESS_TOKEN)
-	@$(COMPOSER) install --prefer-dist --no-interaction
+	@echo "Github access token set by environment var COMPOSER_AUTH"
+	@$(COMPOSER) install --verbose --prefer-dist --no-progress --no-interaction --no-dev --optimize-autoloader
 	# Set up the resources file, replacing first occurance of strings with their build values
-	sed -i "0,/postgres/{s/postgres/${DBUSER}/}" deploy/resources.build.php
-	sed -i "s|/srv/ninjawars/|../..|g" deploy/tests/karma.conf.js
-	ln -s resources.build.php deploy/resources.php
 	#Switch from python2 to python3
 	which python3
 	rm -rf ${HOME}/.virtualenv
 	which python3
 	virtualenv -p /usr/bin/python3 "${HOME}/.virtualenv"
+
+deployment-post-upload: composer-ratelimit-check
+	chmod u+x ./composer.phar
+	php -v && nvm -v && nvm install && nvm use && node -v # Reflects the .nvmrc file
+	corepack enable # allows simple, reliable yarn usage
+	echo "Github access token set by environment var COMPOSER_AUTH"
+	./composer.phar install --prefer-dist --no-interaction --optimize-autoloader
+
+composer-ratelimit-setup:
+	@echo "Exporting a COMPOSER_AUTH env var"
+	@export COMPOSER_AUTH=$(COMPOSER_AUTH)
+
+deployment-final-check: check-vendors-installed
+
+composer-ratelimit-check:
+	@echo "Will error if composer_AUTH not available to use"
+ifndef COMPOSER_AUTH
+$(error COMPOSER_AUTH is not set)
+endif
+
+
+
 
 python-install:
 	which python3

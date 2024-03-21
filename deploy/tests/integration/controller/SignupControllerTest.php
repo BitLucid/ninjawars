@@ -8,51 +8,64 @@ use NinjaWars\core\control\SignupController;
 use NinjaWars\core\extensions\SessionFactory;
 use NinjaWars\core\environment\RequestWrapper;
 
-class SignupControllerTest extends NWTest {
+class SignupControllerTest extends NWTest
+{
     private $char_id;
-    private $fake_email = 'new@local.host';
-    private $fake_user = 'signup-test-user';
+    private $fake_email = 'new@localhost.host';
+    private $fake_ninja_name = 'signup-test-ninja';
+    private $known_good_uname = 'KnownGood';
 
-    public function setUp(): void {
+    public function setUp(): void
+    {
         parent::setUp();
         SessionFactory::init(new MockArraySessionStorage());
-        $this->char_id = TestAccountCreateAndDestroy::create_testing_account($this->fake_user);
+        TestAccountCreateAndDestroy::destroy($this->known_good_uname);
+        TestAccountCreateAndDestroy::destroy($this->fake_ninja_name, $this->fake_email);
+        $this->char_id = TestAccountCreateAndDestroy::create_testing_account(true, ['name' => $this->fake_ninja_name]);
         SessionFactory::getSession()->set('player_id', $this->char_id);
     }
 
-    public function tearDown(): void {
-        TestAccountCreateAndDestroy::destroy($this->fake_user);
+    public function tearDown(): void
+    {
+        TestAccountCreateAndDestroy::destroy($this->known_good_uname);
+        TestAccountCreateAndDestroy::destroy($this->fake_ninja_name, $this->fake_email);
         $session = SessionFactory::getSession();
         $session->invalidate();
         parent::tearDown();
     }
 
-    public function testInstantiation() {
+    public function testInstantiation()
+    {
         $controller = new SignupController();
         $this->assertInstanceOf(SignupController::class, $controller);
     }
 
-    public function testBlacklist() {
+    public function testBlacklist()
+    {
         $this->assertIsArray(SignupController::getBlacklistedEmails());
     }
 
-    public function testWhitelist() {
+    public function testWhitelist()
+    {
         $this->assertIsArray(SignupController::getWhitelistedEmails());
     }
 
-    public function testSignupIndexRuns() {
+    public function testSignupIndexRuns()
+    {
         $controller = new SignupController();
         $response = $controller->index($this->m_dependencies);
         $this->assertNotEmpty($response);
     }
 
-    public function testSignupIndexRunsEvenIfLoggedOut() {
+    public function testSignupIndexRunsEvenIfLoggedOut()
+    {
         $controller = new SignupController();
         $response = $controller->index($this->mockLogout());
         $this->assertNotEmpty($response);
     }
 
-    public function testEmptySignupFails() {
+    public function testEmptySignupFails()
+    {
         RequestWrapper::inject(new Request([]));
         $controller = new SignupController();
         $response = $controller->signup($this->m_dependencies);
@@ -65,7 +78,8 @@ class SignupControllerTest extends NWTest {
     /**
      * Test that the error message is correct for mismatched passwords
      */
-    public function testMismatchPasswordFailsCorrectly() {
+    public function testMismatchPasswordFailsCorrectly()
+    {
         RequestWrapper::inject(new Request([
             'key'   => 'password1',
             'cpass' => 'password2',
@@ -83,7 +97,8 @@ class SignupControllerTest extends NWTest {
     /**
      * Test that the error message is correct for missing name
      */
-    public function testMissingNameFailsCorrectly() {
+    public function testMissingNameFailsCorrectly()
+    {
         RequestWrapper::inject(new Request([
             'key'        => 'password1',
             'cpass'      => 'password1',
@@ -102,7 +117,8 @@ class SignupControllerTest extends NWTest {
     /**
      * Test that the error message is correct
      */
-    public function testInvalidNameFailsCorrectly() {
+    public function testInvalidNameFailsCorrectly()
+    {
         RequestWrapper::inject(new Request([
             'key'        => 'password1',
             'cpass'      => 'password1',
@@ -122,7 +138,8 @@ class SignupControllerTest extends NWTest {
     /**
      * Test that the error message is correct
      */
-    public function testInvalidPasswordFailsCorrectly() {
+    public function testInvalidPasswordFailsCorrectly()
+    {
         RequestWrapper::inject(new Request([
             'key'        => 'p',
             'cpass'      => 'p',
@@ -142,7 +159,8 @@ class SignupControllerTest extends NWTest {
     /**
      * Test that the error message is correct
      */
-    public function testDuplicateEmailFailsCorrectly() {
+    public function testDuplicateEmailFailsCorrectly()
+    {
         $account = Account::findByChar(Player::find($this->char_id));
         $original_email = $account->active_email;
         $account->active_email = $this->fake_email;
@@ -171,12 +189,13 @@ class SignupControllerTest extends NWTest {
     /**
      * Test that the error message is correct
      */
-    public function testInvalidEmailFailsCorrectly() {
+    public function testInvalidEmailFailsCorrectly()
+    {
         RequestWrapper::inject(new Request([
             'key'        => 'password1',
             'cpass'      => 'password1',
             'send_email' => 'new email',
-            'send_name'  => 'KnownGood',
+            'send_name'  => $this->known_good_uname,
         ]));
 
         $controller = new SignupController();
@@ -185,22 +204,24 @@ class SignupControllerTest extends NWTest {
         $reflection->setAccessible(true);
         $response_data = $reflection->getValue($response);
         $this->assertNotEmpty($response_data['error']);
-        $this->assertStringContainsString('to be valid', $response_data['error']);
+        $this->assertStringContainsString('must be valid', $response_data['error']);
     }
 
     /**
      * Test that the error message is correct
      */
-    public function testDupeNameFailsCorrectly() {
+    public function testDupeNameFailsCorrectly()
+    {
+        // Forcing the name to become taken
         $player = Player::find($this->char_id);
-        $player->uname = 'KnownGood';
+        $player->uname = $this->known_good_uname;
         $player->save();
 
         RequestWrapper::inject(new Request([
             'key'        => 'password1',
             'cpass'      => 'password1',
             'send_email' => $this->fake_email,
-            'send_name'  => 'KnownGood',
+            'send_name'  => $this->known_good_uname,
         ]));
 
         $controller = new SignupController();
@@ -215,7 +236,8 @@ class SignupControllerTest extends NWTest {
     /**
      * Test that the error message is correct
      */
-    public function testReservedNameFailsCorrectly() {
+    public function testReservedNameFailsCorrectly()
+    {
         RequestWrapper::inject(new Request([
             'key'        => 'password1',
             'cpass'      => 'password1',
@@ -232,12 +254,13 @@ class SignupControllerTest extends NWTest {
         $this->assertStringContainsString('already in use', $response_data['error']);
     }
 
-    public function testInvalidClassFailsCorrectly() {
+    public function testInvalidClassFailsCorrectly()
+    {
         RequestWrapper::inject(new Request([
             'key'        => 'password1',
             'cpass'      => 'password1',
             'send_email' => $this->fake_email,
-            'send_name'  => 'KnownGood',
+            'send_name'  => $this->known_good_uname,
             'send_class' => 'KnownBad',
         ]));
 
@@ -250,8 +273,9 @@ class SignupControllerTest extends NWTest {
         $this->assertStringContainsString('proper class', $response_data['error']);
     }
 
-    public function testSuccessfulSignup() {
-        $uname = 'KnownGood';
+    public function testSuccessfulSignup()
+    {
+        $uname = $this->known_good_uname;
         $email = $this->fake_email;
 
         RequestWrapper::inject(new Request([
@@ -267,9 +291,6 @@ class SignupControllerTest extends NWTest {
         $account = Account::findByEmail($email);
         $player = Player::findByName($uname);
 
-        $this->assertNotNull($player);
-        $this->assertNotNull($account);
-
         $query_relationship = 'SELECT count(*) FROM account_players WHERE _account_id = :id1 AND _player_id = :id2';
 
         if ($account && $player) {
@@ -278,22 +299,20 @@ class SignupControllerTest extends NWTest {
             $relationship_count = 0;
         }
 
-        $delete_player = 'DELETE FROM players WHERE player_id = :id';
-        $delete_account = 'DELETE FROM accounts WHERE account_id = :id';
-        $delete_relationship = 'DELETE FROM account_players WHERE _account_id = :id1 OR _player_id = :id2';
+        TestAccountCreateAndDestroy::destroy($uname, $email);
 
-        query($delete_player, [':id' => $player->id()]);
-        query($delete_account, [':id' => $account->id()]);
-        query($delete_relationship, [':id1' => $account->id(), ':id2' => $player->id()]);
 
         $reflection = new \ReflectionProperty(get_class($response), 'data');
         $reflection->setAccessible(true);
         $response_data = $reflection->getValue($response);
+        $this->assertNotNull($player);
+        $this->assertNotNull($account);
         $this->assertTrue($response_data['submit_successful'], 'Signup() returned error: '.$response_data['error']);
         $this->assertEquals($relationship_count, 1);
     }
 
-    public function testSuccessfulSignupResultsInNoConfirmation() {
+    public function testSuccessfulSignupResultsInNoConfirmation()
+    {
         $uname = 'KnownGood';
         $email = 'thisshouldnevergotoarealperson77748348@hotmail.com';
         // Due to the nature of hotmail, hotmail emails are listed
@@ -309,11 +328,9 @@ class SignupControllerTest extends NWTest {
         $controller = new SignupController();
         $response = $controller->signup($this->m_dependencies);
 
+
         $account = Account::findByEmail($email);
         $player = Player::findByName($uname);
-
-        $this->assertNotNull($player, 'Player was not created');
-        $this->assertNotNull($account, 'Account was not created');
 
         $query_relationship = 'SELECT count(*) FROM account_players WHERE _account_id = :id1 AND _player_id = :id2';
         $account_unconfirmed = null;
@@ -325,19 +342,56 @@ class SignupControllerTest extends NWTest {
             $relationship_count = 0;
         }
 
-        $delete_player = 'DELETE FROM players WHERE player_id = :id';
-        $delete_account = 'DELETE FROM accounts WHERE account_id = :id';
-        $delete_relationship = 'DELETE FROM account_players WHERE _account_id = :id1 OR _player_id = :id2';
+        TestAccountCreateAndDestroy::destroy($uname, $email);
 
-        query($delete_player, [':id' => $player->id()]);
-        query($delete_account, [':id' => $account->id()]);
-        query($delete_relationship, [':id1' => $account->id(), ':id2' => $player->id()]);
 
+        // Get the data from the response
         $reflection = new \ReflectionProperty(get_class($response), 'data');
         $reflection->setAccessible(true);
         $response_data = $reflection->getValue($response);
+
+        $this->assertNotNull($player, 'Player was not created during signup no confirmation bool test');
+        $this->assertNotNull($account, 'Account was not created during signup no confirmation bool test');
+
         $this->assertTrue($response_data['submit_successful'], 'Signup() returned error: '.$response_data['error']);
         $this->assertEquals($relationship_count, 1);
         $this->assertTrue($account_unconfirmed);
+    }
+
+    public function testSuccessfulSignupWithWhitelistedEmailResultsInConfirmation()
+    {
+        $uname = 'KnownGood';
+        $email = 'example@gmail.com';
+        // Due to the nature of gmail, gmail emails are whitelisted
+        // such that they will be preconfirmed.  This leaves an account not needing confirmation.
+
+        RequestWrapper::inject(new Request([
+            'key'        => 'password1',
+            'cpass'      => 'password1',
+            'send_email' => $email,
+            'send_name'  => $uname,
+        ]));
+
+        $controller = new SignupController();
+        $response = $controller->signup($this->m_dependencies);
+
+        // Get the data from the response
+        $reflection = new \ReflectionProperty(get_class($response), 'data');
+        $reflection->setAccessible(true);
+        $response_data = $reflection->getValue($response);
+
+
+
+        $account = Account::findByEmail($email);
+        $player = Player::findByName($uname);
+        TestAccountCreateAndDestroy::destroy($uname, $email);
+        $this->assertTrue($response_data['submit_successful'], 'Signup() returned error: ' . $response_data['error']);
+        $this->assertNotEmpty($account);
+        $this->assertNotEmpty($player);
+        $this->assertGreaterThan(0, $account->id());
+        $this->assertGreaterThan(0, $player->id());
+        $this->assertEquals($account->account_identity, $email);
+        //debug($account);
+        $this->assertTrue($account->isConfirmed(), 'Account should have become preconfirmed with gmail, but it was not!');
     }
 }

@@ -43,6 +43,9 @@ Email Ninjawars Staff
     <div class="container">
       <div class="row text-center">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <figure class='centered'>
+          <img src="{cachebust file="/images/team/staff-scribes.jpg"}" alt="Just some scribes working for the daimyo" class="img-fluid mx-auto d-block">
+        </figure>
           <h3>Team</h3>
             <hr class='accent'>
         </div>
@@ -51,7 +54,7 @@ Email Ninjawars Staff
 
 <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
           <div class="team-wrapper">
-            <div class="team-inner" style="background-image: url('{cachebust file="/images/team/tchalvak-smaller.jpg"}')" >
+            <div class="team-inner" style="background-image: url('{cachebust file="/images/team/tchalvak.jpg"}')" >
               <a href="https://github.com/tchalvak" target="_blank" > <i class="fab fa-github" ></i></a>
             </div>
             <div class="bio">
@@ -110,6 +113,10 @@ Email Ninjawars Staff
     <li> Some pixel art by Roy Ronalds </li>
     <li>Alegion - the original for the Koi photograph Background - <a
 href='http://alegion.deviantart.com/'>alegion.deviantart.com/</a></li>
+    <li>This site is protected by reCAPTCHA and the Google
+    <a href="https://policies.google.com/privacy">Privacy Policy</a> and
+    <a href="https://policies.google.com/terms">Terms of Service</a> apply.
+    </li>
   </ul>
 </section>
 

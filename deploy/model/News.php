@@ -20,17 +20,19 @@ use PDO;
  * @property int author_id the player_id of the author
  * @property string author The player name of the author
  */
-class News {
+class News
+{
     /**
      *  Get the data for the first author of a news post
      *
      */
-    public function firstAuthor() {
+    public function firstAuthor()
+    {
         $query = 'select uname, player_id from players 
 			left join account_players on _player_id = player_id 
 			left join account_news on account_news._account_id = account_players._account_id 
 			where _news_id = :id limit 1';
-        return !$this->id ? null : query_row($query, [':id'=>[$this->id, \PDO::PARAM_INT]]);
+        return !$this->id ? null : query_row($query, [':id' => [$this->id, \PDO::PARAM_INT]]);
     }
 
     /**
@@ -43,11 +45,12 @@ class News {
      * @throws InvalidArgumentException
      * @return News
      */
-    public function createPost($title = '', $content = '', $authorId = 0, $tags = '') {
+    public function createPost($title = '', $content = '', $authorId = 0, $tags = '')
+    {
         // Validate the account
         $author = Account::findById($authorId);
 
-        if (! ($author instanceof Account)) {
+        if (!($author instanceof Account)) {
             throw new \InvalidArgumentException('Account not found');
         }
 
@@ -66,7 +69,8 @@ class News {
      * Create a news post and save it's author
      * @return int news_id
      */
-    public function save() {
+    public function save()
+    {
         if (!isset($this->id)) {
             if (!$this->authorFull || !$this->authorFull->id()) {
                 throw new \InvalidArgumentException('Cannot save a news post without an author.');
@@ -74,14 +78,14 @@ class News {
             // Return id during insert
             $stmt = insert_query(
                 'insert into news (title, content, tags) values (:title, :content, :tags) returning news_id',
-                [':title'=>$this->title, ':content'=>$this->content, ':tags'=>$this->tags]
+                [':title' => $this->title, ':content' => $this->content, ':tags' => $this->tags]
             );
             $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
             $this->id = reset($data)['news_id'] ?? null;
             // Add the author association as well.
             insert_query(
                 'insert into account_news (_account_id, _news_id) values (:aid, :nid)',
-                [':aid'=>$this->authorFull->id(), ':nid'=>$this->id]
+                [':aid' => $this->authorFull->id(), ':nid' => $this->id]
             );
             return $this->id;
         } else {
@@ -97,7 +101,8 @@ class News {
      *
      * @return array
      */
-    public static function availableTags() {
+    public static function availableTags()
+    {
         $normalized_tags = [];
         $tags = query('select tags from news group by tags');
         foreach ($tags as $tag_line) {
@@ -114,7 +119,8 @@ class News {
      *
      * @return String of standard fields
      */
-    public static function fields() {
+    public static function fields()
+    {
         return implode(
             ', ',
             ['news_id', 'news_id as id', 'title', 'content', 'created', 'updated', 'tags', 'uname as author', 'player_id as author_id']
@@ -126,7 +132,8 @@ class News {
      *
      * @return string
      */
-    public static function authorJoined() {
+    public static function authorJoined()
+    {
         return ' left join account_news on account_news._news_id = news.news_id 
 			left join account_players on account_players._account_id = account_news._account_id 
 			left join players on players.player_id = account_players._player_id ';
@@ -138,12 +145,13 @@ class News {
      * @param string $tag some tag
      * @return \stdClass[] of news entries
      */
-    public static function findByTag($tag = '') {
+    public static function findByTag($tag = '')
+    {
         $news = query_array(
             'select '.static::fields().' from news '.static::authorJoined().' 
 				where tags like \'%\' || :tag || \'%\' 
 				order by news_id desc',
-            [':tag'=>$tag]
+            [':tag' => $tag]
         );
 
         if (empty($news)) {
@@ -161,11 +169,12 @@ class News {
      * @param int $id
      * @return object
      */
-    public static function findById(int $id) {
+    public static function findById(int $id)
+    {
         $news = query_row(
             'select '.static::fields().' from news '.static::authorJoined().' 
 				where news_id = :id',
-            [':id'=>$id]
+            [':id' => $id]
         );
         return (object) $news;
     }
@@ -175,7 +184,8 @@ class News {
      *
      * @return \stdClass[] of news entries
      */
-    public static function all() {
+    public static function all()
+    {
         $news = query_array('select '.static::fields().' from news '.static::authorJoined().' 
 			order by news_id desc');
 
@@ -194,7 +204,8 @@ class News {
      * @throws InvalidArgumentException
      * @return \stdClass Single news object
      */
-    public static function last() {
+    public static function last()
+    {
         $news = query_row('select '.static::fields().' from news '.static::authorJoined().' 
 			order by news_id desc limit 1');
 

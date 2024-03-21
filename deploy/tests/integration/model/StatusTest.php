@@ -5,8 +5,11 @@
 use model\Status;
 use NinjaWars\core\data\Player;
 
-class TestStatus extends NWTest {
-    public function setUp(): void {
+class TestStatus extends NWTest
+{
+    private ?int $char_id = null;
+    public function setUp(): void
+    {
         parent::setUp();
         $this->char_id = TestAccountCreateAndDestroy::char_id();
         $status = new Status();
@@ -17,28 +20,33 @@ class TestStatus extends NWTest {
         $this->assertGreaterThan(0, $status->id);
     }
 
-    public function tearDown(): void {
+    public function tearDown(): void
+    {
         // Delete testing news.
-        //query('delete from statuses where _player_id = :id', [':id'=>$this->char_id]);
-        //TestAccountCreateAndDestroy::destroy();
-        //unset($this->char_id);
+        query('delete from statuses where _player_id = :id', [':id' => $this->char_id]);
+        TestAccountCreateAndDestroy::destroy();
+        unset($this->char_id);
         parent::tearDown();
     }
 
-    public function testStatusCanInstantiate() {
+    public function testStatusCanInstantiate()
+    {
         $obj = new Status();
         $this->assertTrue($obj instanceof Status);
     }
 
-    public function testStatusClassHasASaveMethod() {
+    public function testStatusClassHasASaveMethod()
+    {
         $this->assertTrue(is_callable('Status', 'save'), 'No save method found on object!');
     }
 
-    public function testCanAddStatusViaStaticMethod() {
-        $id = Status::refreshStatusEffect('weakenedt', Player::find($this->char_id), 434, true); // Allow refresh
+    public function testCanAddStatusViaStaticMethod()
+    {
+        $id = Status::refreshStatusEffect('weakened', Player::find($this->char_id), 434, true); // Allow refresh
         $this->assertGreaterThan(0, $id);
     }
-    public function testCanAddStatusViaStaticMethodAndStaticCheckhasTextStatusAfter() {
+    public function testCanAddStatusViaStaticMethodAndStaticCheckhasTextStatusAfter()
+    {
         $name = 'weakenedt';
         $char = Player::find($this->char_id);
         $id = Status::refreshStatusEffect($name, $char, 10, true); // Allow refresh
@@ -48,14 +56,16 @@ class TestStatus extends NWTest {
         $this->assertGreaterThan(0, $found, 'Status was not found after being created.');
     }
 
-    public function testStatusCanBeFound() {
+    public function testStatusCanBeFound()
+    {
         $status_id = Status::refreshStatusEffect('weakenedt', Player::find($this->char_id), 434, true); // Allow refresh
         $status = Status::find($status_id);
         $this->assertGreaterThan(0, $status->id);
         $this->assertGreaterThan(0, mb_strlen($status->name));
     }
 
-    public function testStatusCanBeFoundByCharacter() {
+    public function testStatusCanBeFoundByCharacter()
+    {
         $char = Player::find($this->char_id);
         $char->addTextStatus('unit_test', 10, true);
         $statuses = Status::findStatusesByNinja($this->char_id);
@@ -71,13 +81,15 @@ class TestStatus extends NWTest {
         $this->assertEquals('unit_test', $status->name);
     }
 
-    public function testAddAnArbitraryStatusToACharacter() {
+    public function testAddAnArbitraryStatusToACharacter()
+    {
         $char = Player::find($this->char_id);
         $char->addTextStatus('poison', 300, true); // Refresh if necessary
         $this->assertTrue($char->hasTextStatus('poison'));
     }
 
-    public function testCharacterHasStatus() {
+    public function testCharacterHasStatus()
+    {
         $char = Player::find($this->char_id);
         $char->addTextStatus('teste', 555, true); // Refresh if necessary
         $this->assertTrue($char->hasTextStatus('teste'));

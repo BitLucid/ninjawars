@@ -1,9 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 use NinjaWars\core\extensions\NWTemplate;
 
-class SmartyTemplateTest extends \PHPUnit\Framework\TestCase {
-    public function testSyntaxAll() {
+class SmartyTemplateTest extends \PHPUnit\Framework\TestCase
+{
+    public function testSyntaxAll()
+    {
         chdir("deploy");
         $engine = new NWTemplate();
 

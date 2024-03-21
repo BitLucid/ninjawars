@@ -16,13 +16,15 @@ use NinjaWars\core\environment\RequestWrapper;
 /**
  * Allows creation of news and displaying of news by admins
  */
-class NewsController extends AbstractController {
+class NewsController extends AbstractController
+{
     public const ALIVE = false;
     public const PRIV  = false;
 
     protected $pc = null;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->pc = Player::find(SessionFactory::getSession()->get('player_id'));
     }
 
@@ -32,7 +34,8 @@ class NewsController extends AbstractController {
      * @param Player|null $pc
      * @return boolean
      */
-    private function hasCreateRole($pc) {
+    private function hasCreateRole($pc)
+    {
         if (!($pc instanceof Player)) {
             throw new InvalidArgumentException('No account permissions');
         }
@@ -45,7 +48,8 @@ class NewsController extends AbstractController {
      *
      * @return StreamedViewResponse
      */
-    public function index() {
+    public function index()
+    {
         $request = RequestWrapper::$request;
         $view = 'news.tpl';
         $create_successful = (bool) $request->get('create_successful');
@@ -86,7 +90,8 @@ class NewsController extends AbstractController {
      *
      * @return StreamedViewResponse
      */
-    public function create() {
+    public function create()
+    {
         try {
             $create_role = $this->hasCreateRole($this->pc);
         } catch (InvalidArgumentException $e) {
@@ -116,7 +121,8 @@ class NewsController extends AbstractController {
      *
      * @return RedirectResponse
      */
-    public function store() {
+    public function store()
+    {
         $request = RequestWrapper::$request;
 
         try {

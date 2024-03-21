@@ -13,14 +13,22 @@
 		<div id='logo-placeholder'>
       &nbsp; <!-- Spacer div for the main shuriken linkback logo -->
 		</div>
-		<nav role='navigation' id='top-bar' class='navigation'>
-		  <a id='solo-page-login-link' href='/login' class='btn btn-vital'>Log in</a> <a id='solo-page-signup-link' href='/signup' class='btn btn-vital'>Signup</a>
+		<nav id='top-bar' class='navigation'>
+		  <a id='solo-page-login-link' href='/login' class='btn btn-vital'>Continue</a> <a id='solo-page-signup-link' href='/signup' class='btn btn-vital'>New Game</a>
 		</nav>
 		<nav id='top-logo'>
-      <h1>The Ninja Game at <span class='no-wrap'><a href='/intro' target='main'><img src='{cachebust file="/images/nw_bamboo_logo_soft.png"}' alt='NinjaWars' width='200' height='100'></a>.net</span></h1>
+      {* Intentionally avoiding spaces here *}
+      <h1><span class='no-wrap'><a 
+          href='/intro' 
+          target='main'><img 
+          src='{cachebust file="/images/logo/pixel_logo.png"}' 
+          alt='NinjaWars' 
+          aria-label='NinjaWars' 
+          width='135' 
+          height='100'></a><span style='font-size:2rem'>.NET</span></span></h1>
 		</nav>
 
-    <nav role='navigation' id='subcategory-bar' class='navigation'>
+    <nav id='subcategory-bar' class='navigation'>
       <ul id='ninjas-subcategory'>
         <li><a href="/list" target="main">Ninjas</a></li>
         <li><a href="/clan" target="main">Clans</a></li>
@@ -47,7 +55,8 @@
     </div><!-- End of core -->
 
 <!-- Version: {$version} -->
-
+<!-- See staff page for policy information. -->
+<script src="https://www.recaptcha.net/recaptcha/api.js?render={$smarty.const.RECAPTCHA_SITE_KEY}"></script>
 {literal}
 <script>
 if (top.location != location) { // Framebreak on the splash page to prevent any issues.

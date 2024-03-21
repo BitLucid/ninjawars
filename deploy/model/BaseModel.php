@@ -5,7 +5,8 @@ namespace model;
 /**
  * Base Model class that other models should inherit from
  */
-abstract class BaseModel {
+abstract class BaseModel
+{
     /**
      * Load any additional data to a model class
      */

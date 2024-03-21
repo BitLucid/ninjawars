@@ -33,8 +33,8 @@
           {$single_news->created|date_format:"%A, %B %e, %Y"}
         </time>
       {else}
-      <time class='timeago' datetime='{$smarty.now}' title='{$smarty.now|date_format:"%A, %B %e, %Y"}'>
-        {$smarty.now|date_format:"%A, %B %e, %Y"}
+      <time class='timeago' datetime='' title='Unknown posting date'>
+        unknown
       </time>
       {/if} by 
       <a target="main" href="/player?player_id={$single_news->author_id}">

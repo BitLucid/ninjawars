@@ -19,7 +19,8 @@ use PDO;
 
 /**
  */
-class LoginController extends AbstractController {
+class LoginController extends AbstractController
+{
     public const ALIVE = false;
     public const PRIV  = false;
 
@@ -28,7 +29,8 @@ class LoginController extends AbstractController {
      * @param  Container $dependencies
      * @return RedirectResponse
      */
-    public function requestLogin(Container $p_dependencies): RedirectResponse {
+    public function requestLogin(Container $p_dependencies): RedirectResponse
+    {
         $request             = RequestWrapper::$request;
         $login_error_message = $request->get('error'); // Error to display after unsuccessful login and redirection.
         $pass                = $request->request->get('pass');
@@ -53,7 +55,8 @@ class LoginController extends AbstractController {
      * Display standard login page.
      * @return StreamedViewResponse
      */
-    public function index(Container $p_dependencies): StreamedViewResponse | RedirectResponse {
+    public function index(Container $p_dependencies): StreamedViewResponse | RedirectResponse
+    {
         $login_error_message = RequestWrapper::getPostOrGet('error'); // Error to display after unsuccessful login and redirection.
 
         $stored_username = (isset($_COOKIE['username']) ? $_COOKIE['username'] : null);
@@ -77,15 +80,17 @@ class LoginController extends AbstractController {
      * Render the concrete elements of the response
      * @return StreamedViewResponse
      */
-    private function render($title, $parts) {
-        return new StreamedViewResponse($title, 'login.tpl', $parts, ['body_classes'=>'login-page']);
+    private function render($title, $parts)
+    {
+        return new StreamedViewResponse($title, 'login.tpl', $parts, ['body_classes' => 'login-page']);
     }
 
     /**
      * Perform all the login functionality for the login page as requested.
      * @return string
      */
-    public function performLogin(string $username_requested, string $pass): string {
+    public function performLogin(string $username_requested, string $pass): string
+    {
         $request = RequestWrapper::$request;
 
         $user_agent = (isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : null);
@@ -93,7 +98,7 @@ class LoginController extends AbstractController {
         $login_attempt_info = [
             'username'        => $username_requested,
             'user_agent'      => $user_agent,
-            'ip'              => $request->getClientIp(),
+            'ip'              => ($request ? $request->getClientIp() : null),
             'successful'      => 0,
             'additional_info' => $_SERVER
         ];
@@ -117,7 +122,8 @@ class LoginController extends AbstractController {
     /**
      * Simply store whatever authentication info is passed in.
      */
-    public static function store_auth_attempt(array $info): void {
+    public static function store_auth_attempt(array $info): void
+    {
         // Simply log the attempts in the database.
         $additional_info = null;
 
@@ -156,7 +162,8 @@ class LoginController extends AbstractController {
      *
      * @return array
      */
-    private function loginUser(string $dirty_user, string $p_pass): array {
+    private function loginUser(string $dirty_user, string $p_pass): array
+    {
         $success = false;
         $login_error = 'That password/username combination was incorrect.';
         // Just checks whether the username and password are correct.
@@ -170,7 +177,7 @@ class LoginController extends AbstractController {
                     // *** Set return values ***
                     $success = true;
                     $login_error = null;
-                } else {	// *** Account was not activated yet ***
+                } else {    // *** Account was not activated yet ***
                     $success = false;
                     $login_error = "You must confirm your account before logging in, check your email. <a href='/assistance'>You can request another confirmation email here.</a>";
                 }
@@ -197,7 +204,8 @@ class LoginController extends AbstractController {
      * @param Player  $player
      * @return void
      */
-    private function createGameSession(Account $account, Player $player): void {
+    private function createGameSession(Account $account, Player $player): void
+    {
         $_COOKIE['username'] = $player->name();
 
         $session = SessionFactory::getSession();
@@ -228,8 +236,10 @@ class LoginController extends AbstractController {
      *
      * @return Array
      */
-    private function authenticate(string $dirty_login, string $p_pass, bool $limit_login_attempts = true): array {
-        $filter_pattern = "/[^\w\d\s_\-\.\@\:\/]/";
+    private function authenticate(string $dirty_login, string $p_pass, bool $limit_login_attempts = true): array
+    {
+        // Only allows very simple email addresses, otherwise rejects
+        $filter_pattern = "/[^\w\d\s_\-\+\.\@\:\/]/";
         $login          = strtolower(preg_replace($filter_pattern, "", (string)$dirty_login));
         $rate_limit     = false;
         $pass           = (string)$p_pass;

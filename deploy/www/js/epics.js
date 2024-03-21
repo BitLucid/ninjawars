@@ -20,6 +20,7 @@ $(() => {
     } else {
       $('.expose-area-error').show();
     }
+    // @ts-ignore
     window.location.hash = href;
   });
   if (hash) {

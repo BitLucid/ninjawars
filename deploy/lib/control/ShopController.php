@@ -16,19 +16,23 @@ use Pimple\Container;
 /**
  * Handles all user actions related to the in-game Shop
  */
-class ShopController extends AbstractController {
+class ShopController extends AbstractController
+{
     public const ALIVE = true;  // *** must be alive to access the shop ***
     public const PRIV  = false; // *** do not need to be logged in ***
 
     public const MARKUP = 1.5;
     public const DEFAULT_QUANTITY = 1;
+    public $ad_divisor = 10; // Only show the ad 1/10th of the time
+    // because it keeps breaking the page
 
     /**
      * Display the initial shop view
      *
      * @return Array
      */
-    public function index(Container $p_dependencies): StreamedViewResponse {
+    public function index(Container $p_dependencies): StreamedViewResponse
+    {
         $player = $p_dependencies['current_player'];
         $authenticated = $p_dependencies['session'] ? $p_dependencies['session']->get('authenticated') : false;
         $parts = [
@@ -36,6 +40,7 @@ class ShopController extends AbstractController {
             'gold'      => ($player ? $player->gold : 0),
             'item_costs'        => Shop::itemForSaleCosts(),
             'authenticated'     => $authenticated,
+            'show_ad'           => rand(1, $this->ad_divisor) === 1,
         ];
 
         return $this->render($parts);
@@ -48,7 +53,8 @@ class ShopController extends AbstractController {
      * @param item string The identity of the item to purchase
      * @return Array
      */
-    public function buy(Container $p_dependencies): StreamedViewResponse {
+    public function buy(Container $p_dependencies): StreamedViewResponse
+    {
         $request           = RequestWrapper::$request;
         $in_quantity       = $request->get('quantity');
         $in_item           = $request->get('item');
@@ -104,18 +110,20 @@ class ShopController extends AbstractController {
             'gold'              => $gold,
             'item_costs'        => Shop::itemForSaleCosts(),
             'authenticated'     => $authenticated,
+            'show_ad'           => rand(1, $this->ad_divisor) === 1,
         ];
 
         return $this->render($parts);
     }
 
     /**
-     * Generates the view spec hash for displaying a template
+     * Generates the view arguments for displaying the shop template
      *
      * @param p_parts Array Name/Value pairings to pass to the view
      * @return StreamedViewResponse
      */
-    private function render($p_parts) {
+    private function render($p_parts)
+    {
         return new StreamedViewResponse('Shop', 'shop.tpl', $p_parts, [ 'quickstat' => 'viewinv' ]);
     }
 }

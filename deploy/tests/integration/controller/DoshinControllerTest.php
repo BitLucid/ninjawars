@@ -7,8 +7,10 @@ use NinjaWars\core\extensions\SessionFactory;
 use NinjaWars\core\control\DoshinController;
 use NinjaWars\core\data\Player;
 
-class DoshinControllerTest extends NWTest {
-    public function setUp(): void {
+class DoshinControllerTest extends NWTest
+{
+    public function setUp(): void
+    {
         parent::setUp();
         // Mock the post request.
         $request = new Request([], []);
@@ -16,43 +18,50 @@ class DoshinControllerTest extends NWTest {
         $this->login();
     }
 
-    public function tearDown(): void {
+    public function tearDown(): void
+    {
         RequestWrapper::inject(new Request([]));
         $this->loginTearDown();
         parent::tearDown();
     }
 
-    public function testInstantiateDoshinController() {
+    public function testInstantiateDoshinController()
+    {
         $doshin = new DoshinController();
         $this->assertInstanceOf('NinjaWars\core\control\DoshinController', $doshin);
     }
 
-    public function testDoshinIndex() {
+    public function testDoshinIndex()
+    {
         $doshin = new DoshinController();
         $output = $doshin->index($this->m_dependencies);
         $this->assertNotEmpty($output);
     }
 
-    public function testDoshinIndexCanRenderEventLoggedOut() {
+    public function testDoshinIndexCanRenderEventLoggedOut()
+    {
         $doshin = new DoshinController();
         // Clone the deps but act as logged out by removing the existing account_id.
         $output = $doshin->index($this->mockLogout());
         $this->assertNotEmpty($output);
     }
 
-    public function testDoshinOfferBounty() {
+    public function testDoshinOfferBounty()
+    {
         $doshin = new DoshinController();
         $output = $doshin->offerBounty($this->m_dependencies);
         $this->assertNotEmpty($output);
     }
 
-    public function testBribeCallInDoshinController() {
+    public function testBribeCallInDoshinController()
+    {
         $doshin = new DoshinController();
         $output = $doshin->offerBounty($this->m_dependencies);
         $this->assertNotEmpty($output);
     }
 
-    public function testDoshinOfferSomeBountyOnATestPlayer() {
+    public function testDoshinOfferSomeBountyOnATestPlayer()
+    {
         $target_id = TestAccountCreateAndDestroy::create_alternate_testing_account(true);
         $this->char->setGold(434343);
         $this->char->save();
@@ -74,7 +83,8 @@ class DoshinControllerTest extends NWTest {
         $this->assertEquals(600, $new_bounty);
     }
 
-    public function testBribeDownABounty() {
+    public function testBribeDownABounty()
+    {
         $char_id = $this->char->id();
         $target_id = TestAccountCreateAndDestroy::char_id_2();
         $this->char->setGold(434343);
@@ -86,7 +96,7 @@ class DoshinControllerTest extends NWTest {
         $this->assertEquals(400, $this->char->bounty);
 
         $request = new Request([
-            'bribe'=>300
+            'bribe' => 300
         ]);
         RequestWrapper::inject($request);
 
@@ -103,8 +113,9 @@ class DoshinControllerTest extends NWTest {
         $this->assertGreaterThan(0, $current_bounty);
     }
 
-    public function testOfferOfBadNegativeBribe() {
-        $request = new Request(['bribe'=>-40]);
+    public function testOfferOfBadNegativeBribe()
+    {
+        $request = new Request(['bribe' => -40]);
         RequestWrapper::inject($request);
 
         $bounty_set = 4444;

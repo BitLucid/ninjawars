@@ -21,7 +21,8 @@ use Constants;
  * @package     Attack
  * @author      Roy Ronalds <roy.ronalds@gmail.com>
  */
-class AttackLegal {
+class AttackLegal
+{
     /**#@+
      * @access private
      */
@@ -53,10 +54,11 @@ class AttackLegal {
      * @param Player $p_target   The target
      * @param array  $params     The further conditions of the attack.
      */
-    public function __construct(Player $p_attacker, Player $p_target, $params = []) {
+    public function __construct(Player $p_attacker, Player $p_target, $params = [])
+    {
         $this->target   = null;
         $this->error    = null;
-        $defaults = ['required_turns'=>null, 'ignores_stealth'=>null, 'self_use'=>null, 'clan_forbidden'=>null];
+        $defaults = ['required_turns' => null, 'ignores_stealth' => null, 'self_use' => null, 'clan_forbidden' => null];
         $this->params = array_merge($defaults, $params);
 
         if ($this->params['required_turns'] === null) {
@@ -70,7 +72,8 @@ class AttackLegal {
     /**
      * Run this after the check.
      */
-    public function getError() {
+    public function getError()
+    {
         return $this->error;
     }
 
@@ -80,10 +83,11 @@ class AttackLegal {
      * @todo cleanup the allowable IP addresses logic
      * @return bool
      */
-    public function sameDomain(Player $target, Player $self): bool {
+    public function sameDomain(Player $target, Player $self): bool
+    {
         // Get all the various ips that shouldn't be matches, and prevent them from being a problem.
         $server_addr = isset($_SERVER['SERVER_ADDR']) ? $_SERVER['SERVER_ADDR'] : null;
-        $host= gethostname();
+        $host = gethostname();
         $active_ip = gethostbyname($host);
         $allowable = array_merge(['127.0.0.1', $server_addr, $active_ip], Constants::$trusted_proxies);
 
@@ -104,7 +108,8 @@ class AttackLegal {
      *
      * @return bool
      */
-    private function isNotHittingRateLimit(Player $attacker): bool {
+    private function isNotHittingRateLimit(Player $attacker): bool
+    {
         $attackIntervalLimit = '.25'; // Originally .2
         $lastAttackQuery = "SELECT player_id FROM players
             WHERE player_id = :char_id
@@ -127,7 +132,8 @@ class AttackLegal {
     /**
      * Update the last attack datetime to be able to rate limit check next time
      */
-    public function updateLastAttack(Player $attacker): bool {
+    public function updateLastAttack(Player $attacker): bool
+    {
         // updates the timestamp of the last_attacked column to slow excessive attacks.
         $query = "UPDATE players SET last_started_attack = now() WHERE player_id = :char_id";
         $updated = !!update_query($query, [':char_id' => intval($attacker->id())]);
@@ -139,7 +145,8 @@ class AttackLegal {
      *
      * @return boolean
      */
-    public function iAmDead(): bool {
+    public function iAmDead(): bool
+    {
         return $this->attacker->health < 1;
     }
 
@@ -148,7 +155,8 @@ class AttackLegal {
      * @param bool $update_timer
      * @return boolean
      */
-    public function check(bool $update_timer = true): bool {
+    public function check(bool $update_timer = true): bool
+    {
         $attacker = $this->attacker;
         $target   = $this->target;
 

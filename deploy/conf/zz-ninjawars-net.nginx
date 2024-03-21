@@ -1,12 +1,13 @@
 server{
 	listen 80;
 	server_name ninjawars.net;
-    return 301          http://www.ninjawars.net$request_uri;
+    return 301          https://www.ninjawars.net$request_uri;
 }
 
 server {
 	listen 80;
-	server_name www.ninjawars.net nw.remote ssl.ninjawars.net;
+	server_name www.ninjawars.net play.ninjawars.net nw.remote multivac.ninjawars.net multivac2.ninjawars.net ssl.ninjawars.net;
+	
 
 	root /srv/ninjawars/deploy/www;
 	charset utf-8;
@@ -75,7 +76,7 @@ server {
 	location ~ \.php$ {
 		# fastcgi param stuff now set by [HOST=] sections in php.ini.
 		#fastcgi_param PHP_VALUE "session.cookie_domain=www.ninjawars.net \n date.timezone=America/New_York \n default_charset=UTF-8 \n";
-		fastcgi_pass unix:/var/run/php/php5.6-fpm.sock;
+		fastcgi_pass unix:/run/php/php8.2-fpm.sock;
 		fastcgi_param SCRIPT_FILENAME $document_root/front-controller.php;
 		include fastcgi_params;
 	}
@@ -83,7 +84,7 @@ server {
 	location @php {
 		# fastcgi param stuff now set by [HOST=] sections in php.ini.
 		#fastcgi_param PHP_VALUE "session.cookie_domain=www.ninjawars.net \n date.timezone=America/New_York \n default_charset=UTF-8 \n";
-		fastcgi_pass unix:/var/run/php/php5.6-fpm.sock;
+		fastcgi_pass unix:/run/php/php8.2-fpm.sock;
 		fastcgi_param SCRIPT_FILENAME $document_root/front-controller.php;
 		include fastcgi_params;
 	}

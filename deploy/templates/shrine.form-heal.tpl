@@ -9,7 +9,7 @@
     <div>
       <div><em class='speech slide-in-from-left'>How much healing do you need?</em></div>
       <input type="hidden" value="max" name="heal_points">
-      <input type="submit" value="Full Heal" class="btn btn-primary">
+      <input type="submit" value="Heal To Full" class="btn btn-primary">
     </div>
   </form>
 </div>

@@ -25,9 +25,16 @@ table .char-title td{
 	<a href="/map" class="return-to-location block">Return to the Village</a>
 </nav>
 
-<div class="description">
+<div class="description glassbox">
+  <figure class='float-left glassbox'>
+    <img 
+        src='/images/scenes/dojo-courtyard.jpg' 
+        width='500' 
+        class='img-fluid mx-auto d-block'
+        alt='Training in the Dojo Courtyard' />
+  </figure>
   <p>
-    You walk up the steps to the grandest building in the village. The dojo trains many respected ninja.
+    Approaching the most majestic structure in the village, you ascend the steps leading to a magnificent pagoda adorned with jade tiles and freshly painted red wooden beams. Within its walls, a prestigious dojo hones the skills of numerous esteemed ninja.
   </p>
   <p>
     As you approach, you can hear the sounds of fighting coming from the wooden doors in front of you.

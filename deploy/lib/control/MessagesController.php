@@ -12,8 +12,10 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use NinjaWars\core\extensions\SessionFactory;
 use NinjaWars\core\extensions\StreamedViewResponse;
 use NinjaWars\core\environment\RequestWrapper;
+use NinjaWars\core\data\Communication;
 
-class MessagesController extends AbstractController {
+class MessagesController extends AbstractController
+{
     public const PRIV  = true;
     public const ALIVE = false;
 
@@ -22,7 +24,8 @@ class MessagesController extends AbstractController {
      *
      * @param Container
      */
-    public function sendPersonal(Container $p_dependencies) {
+    public function sendPersonal(Container $p_dependencies)
+    {
         $request = RequestWrapper::$request;
 
         if ((int) $request->get('target_id')) {
@@ -34,7 +37,7 @@ class MessagesController extends AbstractController {
         }
 
         if ($recipient) {
-            Message::create([
+            Communication::createMessage([
                 'send_from' => $p_dependencies['session']->get('player_id'),
                 'send_to'   => $recipient->id(),
                 'message'   => $request->get('message', null),
@@ -52,13 +55,14 @@ class MessagesController extends AbstractController {
      *
      * @param Container
      */
-    public function sendClan(Container $p_dependencies) {
+    public function sendClan(Container $p_dependencies)
+    {
         $message = RequestWrapper::getPostOrGet('message');
         $type = 1;
         $sender = $p_dependencies['current_player'];
         $clan = Clan::findByMember($sender);
         $target_id_list = $clan->getMemberIds();
-        Message::sendToGroup($sender, $target_id_list, $message, $type);
+        Communication::sendToGroup($sender, $target_id_list, $message, $type);
 
         return new RedirectResponse('/messages?command=clan&individual_or_clan=1&informational='.rawurlencode('Message sent to clan.'));
     }
@@ -68,16 +72,17 @@ class MessagesController extends AbstractController {
      *
      * @param Container
      */
-    public function viewPersonal(Container $p_dependencies) {
+    public function viewPersonal(Container $p_dependencies)
+    {
         $request       = RequestWrapper::$request;
         $type          = 0;
         $page          = max(1, (int) $request->get('page'));
         $limit         = 25;
         $offset        = ($page - 1) * $limit;
         $ninja         = $p_dependencies['current_player'];
-        $message_count = Message::countByReceiver($ninja, $type); // To count all the messages
+        $message_count = Communication::countByReceiver($ninja->id(), $type); // To count all the messages
 
-        Message::markAsRead($ninja, $type); // mark messages as read for next viewing.
+        Communication::readMessages($ninja->id(), $type); // mark messages as read for next viewing.
 
         $parts = array_merge(
             $this->configure(),
@@ -86,7 +91,7 @@ class MessagesController extends AbstractController {
                 'informational' => $request->get('informational'),
                 'has_clan'      => (bool)Clan::findByMember($ninja),
                 'current_tab'   => 'messages',
-                'messages'      => Message::findByReceiver($ninja, $type, $limit, $offset),
+                'messages'      => Communication::formatMessages(Communication::getMessages($ninja->id(), $limit, $offset, $type)),
                 'current_page'  => $page,
                 'pages'         => ceil($message_count / $limit),
             ]
@@ -100,20 +105,22 @@ class MessagesController extends AbstractController {
      *
      * @param Container
      */
-    public function viewClan(Container $p_dependencies) {
+    public function viewClan(Container $p_dependencies)
+    {
         $ninja         = $p_dependencies['current_player'];
         $page          = max(1, (int) RequestWrapper::getPostOrGet('page'));
         $limit         = 25;
         $offset        = ($page - 1) * $limit;
         $type          = 1; // Clan chat or normal messages.
-        $message_count = Message::countByReceiver($ninja, $type); // To count all the messages
+        $message_count = Communication::countByReceiver($ninja->id(), $type); // To count all the messages
 
-        Message::markAsRead($ninja, $type); // mark messages as read for next viewing.
+        Communication::readEvents($ninja->id(), $type); // mark messages as read for next viewing.
+        $messages = Communication::formatMessages(Communication::getMessages($ninja->id(), $limit, $offset, $type));
 
         $parts = array_merge(
             $this->configure(),
             [
-                'messages'      => Message::findByReceiver($ninja, $type, $limit, $offset),
+                'messages'      => $messages,
                 'message_count' => $message_count,
                 'pages'         => ceil($message_count / $limit),
                 'current_page'  => $page,
@@ -130,8 +137,11 @@ class MessagesController extends AbstractController {
      *
      * @param Container
      */
-    public function deletePersonal(Container $p_dependencies) {
-        Message::deleteByReceiver($p_dependencies['current_player'], 0);
+    public function deletePersonal(Container $p_dependencies)
+    {
+        if ($p_dependencies['current_player'] instanceof Player) {
+            Communication::deleteByReceiver($p_dependencies['current_player']->id(), 0);
+        }
 
         return new RedirectResponse('/messages?command=personal&informational='.rawurlencode('Messages deleted'));
     }
@@ -141,8 +151,11 @@ class MessagesController extends AbstractController {
      *
      * @param Container
      */
-    public function deleteClan(Container $p_dependencies) {
-        Message::deleteByReceiver($p_dependencies['current_player'], 1);
+    public function deleteClan(Container $p_dependencies)
+    {
+        if ($p_dependencies['current_player'] instanceof Player) {
+            Communication::deleteByReceiver($p_dependencies['current_player']->id(), 1);
+        }
 
         return new RedirectResponse('/messages?command=clan&informational='.rawurlencode('Messages deleted'));
     }
@@ -150,7 +163,8 @@ class MessagesController extends AbstractController {
     /**
      * Pulls the initial data required to be initialized in the template.
      */
-    public function configure() {
+    public function configure()
+    {
         $request = RequestWrapper::$request;
 
         return [
@@ -180,7 +194,8 @@ class MessagesController extends AbstractController {
         ];
     }
 
-    public function render($parts, $title='Messages') {
+    public function render($parts, $title = 'Messages')
+    {
         return new StreamedViewResponse($title, 'messages.tpl', $parts, ['quickstat' => true]);
     }
 }

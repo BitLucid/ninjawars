@@ -15,18 +15,21 @@ use Constants;
 /**
  * Log a player out via post, then redirect to logout landing page
  */
-class LogoutController extends AbstractController {
+class LogoutController extends AbstractController
+{
     public const ALIVE = false;
     public const PRIV  = false;
 
-    public function index(): RedirectResponse {
+    public function index(): RedirectResponse
+    {
         $session = SessionFactory::getSession();
         $session->clear();
         $session->invalidate();
         return new RedirectResponse('/logout/loggedout');
     }
 
-    public function loggedout(): StreamedViewResponse {
+    public function loggedout(): StreamedViewResponse
+    {
         return new StreamedViewResponse('Logged Out', 'logout.tpl');
     }
 }

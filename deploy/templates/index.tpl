@@ -28,12 +28,12 @@
           <li><a href="/inventory" target="main">Inventory</a></li>
           <li><a href="/skill" target="main">Skills</a></li>
           <li><a href="/clan" target="main"><i class='fa fa-users' aria-hidden='true'></i><span class='hidden-sm hidden-md'> Clans</span></a></li>
-          <li class='hidden-sm'><a href="/shrine" target="main">⛩ Shrine</a></li>
+          <li class='hidden-sm'><a href="/shrine" target="main"><i class="fa-solid fa-torii-gate"></i> Shrine</a></li>
           <li class='hidden-sm'><a href="/shop" target="main">石 Shop</a></li>
           <li class='hidden-sm hidden-md'><a href="/work" target="main"><i class="fab fa-pagelines"></i> Work</a></li>
           <li class='hidden-sm hidden-md'><a href="/doshin" target="main"><i class='fa fa-bullseye' aria-hidden='true'></i> <span class='hidden-md hidden-sm'>Hunt</span></a></li>
-          <li><a href="/events" title='Events' target="main"><i class="far fa-clock" aria-hidden="true"></i> <span class='hidden-sm hidden-md'>Events</span></a></li>
-          <li><a href="/messages" target="main"><i class='fa fa-envelope'></i> <span class='badge'>{$unread_message_count}</span></a></li>
+          <li><a href="/events" title='Events' target="main"><i class="far fa-clock" aria-hidden="true"></i> <span class='hidden-sm hidden-md hidden-lg'>Events</span></a></li>
+          <li><a href="/messages" target="main"><i class='fa fa-envelope'></i> <span class='badge' id='unread-count'>•</span></a></li>
         </ul>
 
         <div class='chat-show-hide-container'>
@@ -48,7 +48,7 @@
 
 
       <div class='health-container'>
-          <div class='health-bar' data-json="{$ninja|@json_encode|escape|escape:'quotes' nofilter}"></div>
+          <div class='health-bar' data-json="{$ninja|@nw_json_encode|escape|escape:'quotes' nofilter}"></div>
       </div>
     </nav>
 
@@ -71,5 +71,5 @@
       <!-- End of sidebar-column -->
       </section><!-- end of core-->
 
-<script src='/js/homepage.js'></script>
+<script type='module' src='/js/homepage.js'></script>
 <!-- Version: {$version|escape} -->

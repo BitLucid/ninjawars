@@ -13,7 +13,8 @@ use NinjaWars\core\environment\RequestWrapper;
 /**
  * Display the ninja list as a whole
  */
-class ListController extends AbstractController {
+class ListController extends AbstractController
+{
     public const ALIVE = false;
     public const PRIV  = false;
 
@@ -23,7 +24,8 @@ class ListController extends AbstractController {
      * @param Container $p_dependencies
      * @return Response
      */
-    public function index(Container $p_dependencies) {
+    public function index(Container $p_dependencies)
+    {
         $request      = RequestWrapper::$request;
         $session      = $p_dependencies['session'];
         $searched     = $request->get('searched', null); // Don't filter the search setting
@@ -43,7 +45,7 @@ class ListController extends AbstractController {
 
         if ($searched) {
             if (strlen($searched) == 1 || !$list_by_rank) {
-                $where_clauses[] = " (rankings.uname ilike :searched || '%') ";
+                $where_clauses[] = " (rankings.uname ilike '%' || :searched || '%') ";
                 $params[':searched'] = $searched;
             }
 
@@ -119,7 +121,8 @@ class ListController extends AbstractController {
      * @param int   $offset
      * @return array An array of decorated ninja
      */
-    private function getFormattedNinjaRows($where_clauses, $params, $record_limit, $offset) {
+    private function getFormattedNinjaRows($where_clauses, $params, $record_limit, $offset)
+    {
         // Get the ninja information to create the lists.
         $sel = "SELECT rank_id, rankings.uname, class.class_name as class, class.identity as class_identity, class.theme as class_theme, rankings.level, rankings.alive, rankings.days, clan_player._clan_id AS clan_id, clan.clan_name, players.player_id
             FROM rankings LEFT JOIN clan_player ON player_id = _player_id LEFT JOIN clan ON clan_id = _clan_id
@@ -138,7 +141,7 @@ class ListController extends AbstractController {
 
         foreach ($ninja_infos as $a_player) { // Format each of the ninja rows
             $ninja_rows[] = $this->formatNinjaRow($a_player);
-            $ninja_rows[$ninja_count]['odd_or_even'] = (($ninja_count+1) % 2 ? "odd" : "even");
+            $ninja_rows[$ninja_count]['odd_or_even'] = (($ninja_count + 1) % 2 ? "odd" : "even");
             $ninja_count++;
         }
 
@@ -150,7 +153,8 @@ class ListController extends AbstractController {
      *
      * @param array $a_player
      */
-    private function formatNinjaRow(array $a_player) {
+    private function formatNinjaRow(array $a_player)
+    {
         return [
             'alive_class'   => ($a_player['alive'] == 1 ? "AliveRow" : "DeadRow"),
             'player_rank'   => $a_player['rank_id'],
@@ -159,7 +163,7 @@ class ListController extends AbstractController {
             'level'         => $a_player['level'],
             'class'         => $a_player['class'],
             'class_theme'   => $a_player['class_theme'],
-            'class_identity'=> $a_player['class_identity'],
+            'class_identity' => $a_player['class_identity'],
             'clan_id'       => $a_player['clan_id'],
             'clan_name'     => $a_player['clan_name'],
             'alive'         => ($a_player['alive'] ? "&nbsp;" : "Dead"), // alive/dead display

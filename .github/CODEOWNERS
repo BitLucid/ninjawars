@@ -3,7 +3,6 @@
 package.json @tchalvak
 composer.json @tchalvak
 yarn.lock @tchalvak
-deploy/resources.template.php @tchalvak
 deploy/resources.build.php @tchalvak
 amplify.yml @tchalvak
 amplify/ @tchalvak

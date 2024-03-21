@@ -7,5 +7,5 @@ The <span class='black-robed-monk'>black monk</span> offers to give you power ov
         <input type="submit" value="Obtain Dim Mak" class="formButton">
     </div>
 </form>
-<a href="/dojo/">Walk away...</a>
+<a href="/dojo/" class='btn btn-secondary' role='button'>Walk away...</a>
 <hr>

@@ -5,7 +5,8 @@ namespace NinjaWars\core\data;
 /**
  * Npcs and Players should both implement this interface.
  */
-interface Character {
+interface Character
+{
     /**
      * @return int
      */
@@ -24,12 +25,12 @@ interface Character {
     /**
      * @return int
      */
-    public function maxDamage(Character $char=null);
+    public function maxDamage(Character $char = null);
 
     /**
      * @return int
      */
-    public function damage(Character $char=null);
+    public function damage(Character $char = null);
 
     /**
      * @return int

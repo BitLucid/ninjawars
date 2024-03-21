@@ -14,7 +14,8 @@ use NinjaWars\core\environment\RequestWrapper;
  * The controller for effects of a work request and the default index display
  * of the page and initial form
  */
-class WorkController extends AbstractController {
+class WorkController extends AbstractController
+{
     public const ALIVE = true;
     public const PRIV  = false;
 
@@ -27,7 +28,8 @@ class WorkController extends AbstractController {
      * @param Container
      * @return StreamedViewResponse
      */
-    public function requestWork(Container $p_dependencies) {
+    public function requestWork(Container $p_dependencies)
+    {
         $earned = 0;
         $worked = Filter::toNonNegativeInt(RequestWrapper::getPostOrGet('worked')); // No negative work.
         $char   = $p_dependencies['current_player'];
@@ -46,7 +48,7 @@ class WorkController extends AbstractController {
         }
 
         $parts = [
-            'recommended_to_work' => $worked,
+            'recommended_to_work' => (int) ($worked ?? self::DEFAULT_RECOMMENDED_TO_WORK),
             'worked'              => $worked,
             'work_multiplier'     => self::WORK_MULTIPLIER,
             'authenticated'       => $p_dependencies['session']->get('authenticated', false),
@@ -65,7 +67,8 @@ class WorkController extends AbstractController {
      * @param Container
      * @return StreamedViewResponse
      */
-    public function index(Container $p_dependencies) {
+    public function index(Container $p_dependencies)
+    {
         $char = $p_dependencies['current_player'];
         $authenticated = $p_dependencies['session'] ? $p_dependencies['session']->get('authenticated', false) : false;
 
@@ -90,7 +93,8 @@ class WorkController extends AbstractController {
     /**
      * @return StreamedViewResponse
      */
-    private function render($parts) {
+    private function render($parts)
+    {
         return new StreamedViewResponse('Working in the Village', 'work.tpl', $parts, ['quickstat' => 'player']);
     }
 }

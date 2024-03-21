@@ -11,6 +11,7 @@ use NinjaWars\core\environment\RequestWrapper;
 use NinjaWars\core\extensions\NWTemplate;
 use NinjaWars\core\extensions\StreamedViewResponse;
 use Symfony\Component\HttpFoundation\Request;
+// use ReCaptcha\ReCaptcha;
 use Nmail;
 
 /**
@@ -21,15 +22,17 @@ use Nmail;
  * email confirmation requirements and creating a one-button ninja creation
  * system.
  */
-class SignupController extends AbstractController {
+class SignupController extends AbstractController
+{
     public const ALIVE    = false;
     public const PRIV     = false;
     public const TEMPLATE = 'signup.tpl';
-    public const TITLE    = 'Become a Ninja';
+    public const TITLE    = 'New Game';
 
     private $classes;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->classes = $this->class_choices();
     }
 
@@ -38,10 +41,14 @@ class SignupController extends AbstractController {
      *
      * @return Response
      */
-    public function index(Container $p_dependencies) {
+    public function index(Container $p_dependencies)
+    {
         RequestWrapper::init();
         $request = RequestWrapper::$request;
         $signupRequest = $this->buildSignupRequest($request);
+        if (!RECAPTCHA_SITE_KEY) {
+            throw new \RuntimeException('ERROR: 8324: Recaptcha site key not set, please set it in resources.template.php', 0);
+        }
 
         $parts = [
             'submit_successful' => false,
@@ -51,7 +58,7 @@ class SignupController extends AbstractController {
             'signupRequest'     => $signupRequest,
         ];
 
-        $options = ['quickstat' => false, 'body_classes'=>'signup-page'];
+        $options = ['quickstat' => false, 'body_classes' => 'signup-page'];
 
         return new StreamedViewResponse(self::TITLE, self::TEMPLATE, $parts, $options);
     }
@@ -61,12 +68,32 @@ class SignupController extends AbstractController {
      *
      * @return Response
      */
-    public function signup(Container $p_dependencies) {
+    public function signup(Container $p_dependencies)
+    {
         $request = RequestWrapper::$request;
         $signupRequest = $this->buildSignupRequest($request);
 
         try {
             $this->validateSignupRequest($signupRequest); // guard method
+            // Recaptcha section
+
+            $gRecaptchaResponse = $request->get('token-reponse');
+            $recaptcha = new \ReCaptcha\ReCaptcha(RECAPTCHA_SECRET_KEY);
+            $resp = $recaptcha
+                // ->setExpectedHostname('www.ninjawars.net')
+                // Above is needed if "domain/package name validation" disabled at
+                // https://www.google.com/recaptcha/admin/site/352364760
+                ->verify($gRecaptchaResponse, $request->getClientIp());
+            error_log('Signup form client had a Recaptcha response: ' . print_r($gRecaptchaResponse, true) . print_r($resp, true));
+            // compare a random number against the recaptcha quotient to
+            // see if recaptcha even gets used
+            $divisor = defined('RECAPTCHA_DIVISOR') ? RECAPTCHA_DIVISOR : 1;
+            if ($resp->isSuccess() !== true && ($divisor === 1 || rand(1, $divisor) === 1)) {
+                error_log('Signup form client had a Recaptcha failure: ' . print_r($resp->getErrorCodes(), true));
+                throw new \RuntimeException('There was a problem with the submission, please wait 10 seconds and try again.', 0);
+            }
+            // Recaptcha always gets run, but the validation isn't always utilized,
+            // mainly it's ignored mostly in local development environments
             $response = $this->doWork($signupRequest);
         } catch (\RuntimeException $e) {
             $response = $this->renderException($e, $signupRequest);
@@ -76,13 +103,17 @@ class SignupController extends AbstractController {
     }
 
     /**
-     * Implementation of the signup logic.
+     * Implementation of the signup logic after validation
+     * Creates the account and ninja, sends the confirmation email
+     * for example, so only should be done after the initial request
+     * is fully vetted as valid.
      *
      * @param SignupRequest $p_request
      * @return Response
      * @throw \Runtimeexception account creation failed
      */
-    private function doWork($p_request) {
+    private function doWork($p_request)
+    {
         $preconfirm = self::preconfirm_some_emails($p_request->enteredEmail);
         $confirm = rand(1000, 9999); //generate confirmation code
 
@@ -92,7 +123,7 @@ class SignupController extends AbstractController {
             'send_pass'   => $p_request->enteredPass,
             'send_class'  => $p_request->enteredClass,
             'preconfirm'  => $preconfirm,
-            'confirm'     => $confirm,
+            'verification_number'     => $confirm,
             'referred_by' => $p_request->enteredReferral,
             'ip'          => $p_request->clientIP,
         ];
@@ -103,18 +134,18 @@ class SignupController extends AbstractController {
         if ($account_id) {
             $sent = $this->sendSignupEmail($account_id, $p_request->enteredEmail, $p_request->enteredName, $confirm, $p_request->enteredClass);
 
-            if (!$sent && !DEBUG) {
+            if (!$sent && defined('DEBUG') && !DEBUG) {
                 throw new \RuntimeException('There was a problem sending your signup to that email address.', 4);
             }
         } else {
             throw new \RuntimeException('No account_id came back from creation', 4);
         }
 
-        if ($preconfirm) {
+        if ($preconfirm) { // Some emails get auto-confirmed.
             $completedPhase = 4;
 
             $account = Account::findById($account_id);
-            $account->confirmed = 1;
+            $account->setConfirmed(true);
             $account->setOperational(true);
             $account->save();
 
@@ -139,7 +170,7 @@ class SignupController extends AbstractController {
             'error'             => '',
         ];
 
-        $options = ['quickstat' => false, 'body_classes'=>'signup-page'];
+        $options = ['quickstat' => false, 'body_classes' => 'signup-page'];
 
         return new StreamedViewResponse(self::TITLE, self::TEMPLATE, $parts, $options);
     }
@@ -151,7 +182,8 @@ class SignupController extends AbstractController {
      * @return boolean
      * @throws \RuntimeException SignUp request invalid
      */
-    private function validateSignupRequest($p_request) {
+    private function validateSignupRequest($p_request)
+    {
         if ($p_request->enteredPass !== $p_request->enteredCPass) {
             throw new \RuntimeException('Your password entries did not match. Please try again.', 0);
         }
@@ -189,20 +221,16 @@ class SignupController extends AbstractController {
      * @param Request $p_request
      * @return SignupRequest
      */
-    private function buildSignupRequest($p_request) {
+    private function buildSignupRequest($p_request)
+    {
         $signupRequest                    = new \stdClass();
         $signupRequest->enteredName       = Filter::toSimple(trim($p_request->get('send_name') ?? ''));
         $signupRequest->enteredEmail      = Filter::toSimple(trim($p_request->get('send_email') ?? ''));
-        $signupRequest->enteredClass      = strtolower(trim($p_request->get('send_class') ?? ''));
+        $signupRequest->enteredClass      = Filter::toSimple(strtolower(trim($p_request->get('send_class') ?? '')));
         $signupRequest->enteredReferral   = trim($p_request->get('referred_by', $p_request->get('referrer')) ?? '');
         $signupRequest->enteredPass       = Filter::toSimple($p_request->get('key') ?? '');
         $signupRequest->enteredCPass      = Filter::toSimple($p_request->get('cpass') ?? '');
         $signupRequest->clientIP          = $p_request->getClientIp();
-
-        // Fallback to key for class
-        if (!$signupRequest->enteredClass) {
-            $signupRequest->enteredClass = key($this->classes);
-        }
 
         return $signupRequest;
     }
@@ -214,18 +242,19 @@ class SignupController extends AbstractController {
      * @param SignupRequest $p_request
      * @return Response
      */
-    private function renderException(\Exception $p_exception, $p_request) {
+    private function renderException(\Exception $p_exception, $p_request)
+    {
         $parts = [
             'classes'           => $this->class_choices(),
             'submitted'         => true,
             'error'             => $p_exception->getMessage(),
             'completedPhase'    => $p_exception->getCode(),
             'submit_successful' => false,
-            'class_display'     => '',
+            'class_display'     => $this->classDisplayNameFromIdentity(strtolower($p_request->enteredClass)),
             'signupRequest'     => $p_request,
         ];
 
-        $options = ['quickstat' => false, 'body_classes'=>'signup-page'];
+        $options = ['quickstat' => false, 'body_classes' => 'signup-page'];
 
         return new StreamedViewResponse(self::TITLE, self::TEMPLATE, $parts, $options);
     }
@@ -236,8 +265,11 @@ class SignupController extends AbstractController {
      * @todo Move this to a model
      * @return String[][] An array of class attributes indexed by class key
      */
-    private function class_choices() {
-        $activeClasses = query_array('SELECT identity, class_name, class_note AS expertise FROM class WHERE class_active');
+    private function class_choices(): array
+    {
+        $activeClasses = query_array('SELECT 
+            identity, class_name, class_note AS expertise
+             FROM class WHERE class_active'); // Filters out classes like mantis perhaps
         $classes = [];
 
         foreach ($activeClasses as $loopClass) {
@@ -256,7 +288,8 @@ class SignupController extends AbstractController {
      * @param SignupRequest $p_request
      * @return boolean
      */
-    private function validate_signup_phase0($p_request) {
+    private function validate_signup_phase0($p_request)
+    {
         return (
             $p_request->enteredName &&
             $p_request->enteredPass &&
@@ -272,7 +305,8 @@ class SignupController extends AbstractController {
      * @param String $enteredEmail
      * @return String|null
      */
-    private function validate_signup_phase3($enteredName, $enteredEmail) {
+    private function validate_signup_phase3($enteredName, $enteredEmail)
+    {
         $name_available  = $this->ninjaNameAvailable($enteredName);
         $email_error     = $this->validateEmail($enteredEmail);
 
@@ -291,16 +325,17 @@ class SignupController extends AbstractController {
      * @param String $enteredClass
      * @return boolean
      */
-    private function validate_signup_phase4($enteredClass) {
-        return (bool)query_item('SELECT identity FROM class WHERE class_active AND identity = :id', [':id'=>$enteredClass]);
+    private function validate_signup_phase4($enteredClass)
+    {
+        return (bool) $this->classDisplayNameFromIdentity($enteredClass);
     }
 
     /**
      * Return 1 if the email is a blacklisted email, 0 otherwise.
      */
-    public static function preconfirm_some_emails($email) {
+    public static function preconfirm_some_emails($email)
+    {
         // Made the default be to auto-confirm players.
-        $res = 1;
         $blacklisted_by = self::getBlacklistedEmails();
         $whitelisted_by = self::getWhitelistedEmails();
 
@@ -317,7 +352,7 @@ class SignupController extends AbstractController {
             }
         }
 
-        return $res;
+        return 1;
     }
 
     /**
@@ -325,10 +360,11 @@ class SignupController extends AbstractController {
      *
      * @return String|null
      */
-    private function validate_password($password_to_hash) {
+    private function validate_password($password_to_hash)
+    {
         $error = null;
 
-        if (strlen($password_to_hash) < 3 || strlen($password_to_hash) > 500) {	// *** Why is there a max length to passwords? ***
+        if (strlen($password_to_hash) < 3 || strlen($password_to_hash) > 500) {    // *** Why is there a max length to passwords? ***
             $error = 'Phase 2 Incomplete: Passwords must be at least 3 characters long.';
         }
 
@@ -341,12 +377,13 @@ class SignupController extends AbstractController {
      * @param String $send_name
      * @return String|null
      */
-    private function validate_username($send_name) {
+    private function validate_username($send_name)
+    {
         $error = null;
         $format_error = Account::usernameIsValid($send_name);
 
         if ($format_error !== null && $format_error !== false) {
-            $error = 'Phase 1 Incomplete: Ninja name: '.$error;
+            $error = 'Phase 1 Incomplete: Ninja name: ' . $error;
         }
 
         return $error;
@@ -358,7 +395,8 @@ class SignupController extends AbstractController {
      * @todo move to a model
      * @return String[]
      */
-    public static function getWhitelistedEmails() {
+    public static function getWhitelistedEmails()
+    {
         return ['@gmail.com'];
     }
 
@@ -368,7 +406,8 @@ class SignupController extends AbstractController {
      * @todo move to a model
      * @return String[]
      */
-    public static function getBlacklistedEmails() {
+    public static function getBlacklistedEmails()
+    {
         return [
             '@hotmail.com',
             '@hotmail.co.uk',
@@ -381,11 +420,12 @@ class SignupController extends AbstractController {
         ];
     }
 
-    private function validateEmail($email) {
+    private function validateEmail($email)
+    {
         $error = null;
         if (!Account::emailIsValid($email)) {
             $error = 'Phase 3 Incomplete: The email address ('
-                .htmlentities($email).') must not contain spaces and must contain an @ symbol and a domain name to be valid.';
+                . htmlentities($email) . ') must be valid, including no spaces, have an @ symbol and domain name.';
         } elseif (Account::findByEmail($email) !== null) {
             $error = 'Phase 3 Incomplete: There is already an account using that email.  If that account is yours, you can request a password reset to gain access again.';
         }
@@ -396,7 +436,8 @@ class SignupController extends AbstractController {
     /**
      * Check for reserved or already in use by another player.
      */
-    private function ninjaNameAvailable($ninja_name) {
+    private function ninjaNameAvailable($ninja_name)
+    {
         $reserved = [
             'SysMsg',
             'NewUserList',
@@ -419,7 +460,8 @@ class SignupController extends AbstractController {
     /**
      * Sends out the confirmation email to the chosen email address.
      */
-    private function sendSignupEmail($account_id, $signup_email, $signup_name, $confirm, $class_identity) {
+    private function sendSignupEmail($account_id, $signup_email, $signup_name, $confirm, $class_identity)
+    {
         $class_display = $this->classDisplayNameFromIdentity($class_identity);
 
         $template_vars = [
@@ -449,29 +491,47 @@ class SignupController extends AbstractController {
     /**
      * Create the account and the initial ninja for that account.
      */
-    private function createAccountAndNinja($params=[]) {
-        $confirm = (int) $params['confirm'];
+    private function createAccountAndNinja($params = [])
+    {
+        $verification_number = (int) $params['verification_number'];
+        $confirmed = (int) $params['preconfirm'];
         $ip      = (isset($params['ip']) ? $params['ip'] : null);
 
         $class_id = query_item(
             'SELECT class_id FROM class WHERE identity = :class_identity',
-            [ ':class_identity' => $params['send_class'] ]
+            [':class_identity' => $params['send_class']]
         );
 
         $ninja = new Player();
         $ninja->uname               = $params['send_name'];
-        $ninja->verification_number = $confirm;
+        $ninja->verification_number = $verification_number;
         $ninja->active              = (int) $params['preconfirm'];
         $ninja->_class_id           = $class_id;
+        $ninja->email               = $params['send_email'];
         $ninja->save();
 
-        return Account::create($ninja->id(), $params['send_email'], $params['send_pass'], $confirm, 0, 1, $ip);
+        return Account::create(
+            $ninja->id(), // Ninja id, so it's okay
+            $params['send_email'],
+            $params['send_pass'],
+            $verification_number,
+            $confirmed,
+            0,
+            1,
+            $ip
+        );
     }
 
     /**
      * Get the display name from the identity.
      */
-    private function classDisplayNameFromIdentity($identity) {
-        return query_item('SELECT class_name from class where identity = :identity', [':identity'=>$identity]);
+    private function classDisplayNameFromIdentity(string $identity): string|null
+    {
+        $classes = $this->class_choices();
+        if (!isset($classes[$identity])) {
+            return null;
+        } else {
+            return $classes[$identity]['name'];
+        }
     }
 }

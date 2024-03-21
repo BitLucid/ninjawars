@@ -1,4 +1,4 @@
-<div class="dropdown btn-group">
+<div class="dropdown btn-group" role='menu'>
     <!-- Link or button to toggle dropdown -->
     <span id='index-avatar' class='dropdown-toggle inline-block' data-toggle="dropdown">
         {include file="gravatar.tpl" gurl=$ninja->avatarUrl()}
@@ -33,13 +33,15 @@
         {/if}
         <li class="divider"></li>
         {if $ninja->isAdmin()}
-            <li><a href='/ninjamaster'><button class='btn btn-default' type='button'>Ninjamaster</button></a></li>    
+            <li><a href='/ninjamaster' class='inline-block px-thick'>
+                <i class="fa-solid fa-screwdriver-wrench"></i> Ninjamaster
+            </a></li>    
         {/if}
         <li><a href="/account" target="main" title='Your player account info, email, password, etc.' tabindex="-1"><i
                     class="fa fa-cog"></i> Account Info</a></li>
         <li class="divider"></li>
         <li><a href="/shrine/heal_and_resurrect" target="main" title='Fully heal and resurrect if necessary'
-                tabindex="-1">⛩ Heal</a>
+                tabindex="-1"><i class="fa-solid fa-torii-gate"></i> Heal</a>
         <li class="divider"></li>
         <!-- Recent Events count and target will get put in here via javascript -->
         <div id='recent-events' class="boxes active" style='display:none'>
@@ -50,9 +52,13 @@
             </div>
         </div><!-- End of recent events -->
         <li class="divider"></li>
-        <li><a target='main' href='/intro'><i class="fa fa-question-circle" tabindex="-1"></i> Intro Guide</a></li>
+        <li>
+            <a target='main' href='/intro'>
+                <i class="fa fa-question-circle" tabindex="-1"></i> Intro Guide
+            </a>
+        </li>
         <li class="logout-item">
-            <form method='post' action='/logout'>
+            <form method='post' action='/logout' class='px-thick'>
                 <input type='submit' name='logout' value='Logout' class='btn btn-default'>
             </form>
         </li>

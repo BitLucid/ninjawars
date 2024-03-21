@@ -93,9 +93,11 @@
 
 	<nav class='attack-nav' style='padding-left:2rem'>
 	{if $reuse && !$attack_error}
-		<a class='attack-again thick btn btn-primary' href="/skill/{if $self_use}self_{/if}use/{$act|escape:'url'}/{if $targetObj->id()}{$targetObj->id()|escape:'url'}/{/if}">
-			Use {$act} again
-		</a>
+		<div>
+			<a class='attack-again thick btn btn-primary' href="/skill/{if $self_use}self_{/if}use/{$act|escape:'url'}/{if $targetObj->id()}{$targetObj->id()|escape:'url'}/{/if}">
+				Use {$act} again
+			</a>
+		</div>
 	{/if}
 		<a href='/enemies' class='btn btn-default return-to-location'>
 			Return to the Fight

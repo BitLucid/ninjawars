@@ -5,7 +5,8 @@
  * @param Array $p_params Dictionary provided by Smarty
  * @return String
  */
-function smarty_function_cachebust($p_params) {
+function smarty_function_cachebust($p_params)
+{
     $file = ROOT."/www/$p_params[file]";
 
     if (is_file($file)) {

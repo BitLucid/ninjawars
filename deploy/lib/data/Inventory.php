@@ -11,21 +11,25 @@ use Traversable;
 /**
  * Inventory for characters
  */
-class Inventory implements IteratorAggregate {
+class Inventory implements IteratorAggregate
+{
     private $char  = null;
 
-    public function __construct(Player $char) {
+    public function __construct(Player $char)
+    {
         $this->char = $char;
     }
 
-    public function getIterator(): Traversable {
+    public function getIterator(): Traversable
+    {
         return new ArrayIterator(self::of($this->char));
     }
 
     /**
      * Get inventory as flat array
      */
-    public function toArray() {
+    public function toArray()
+    {
         return self::of($this->char);
     }
 
@@ -35,7 +39,8 @@ class Inventory implements IteratorAggregate {
      * @param string $identity
      * @param int    $quantity
      */
-    public function add(string $identity, int $quantity = 1): void {
+    public function add(string $identity, int $quantity = 1): void
+    {
         $quantity = (int)$quantity;
 
         if ($quantity > 0 && !empty($identity)) {
@@ -73,7 +78,8 @@ class Inventory implements IteratorAggregate {
     /**
      * Decrease the number of an items in a ninja's inventory
      */
-    public function remove(string $identity, int $quantity = 1): void {
+    public function remove(string $identity, int $quantity = 1): void
+    {
         DatabaseConnection::getInstance();
         $statement = DatabaseConnection::$pdo->prepare("UPDATE inventory SET amount = greatest(0, amount - :quantity) 
             WHERE owner = :user 
@@ -88,8 +94,9 @@ class Inventory implements IteratorAggregate {
     /**
      * Get inventory list of a character
      */
-    public static function of(Player $ch, string $sort=null): array {
-        if ($sort==='self') {
+    public static function of(Player $ch, string $sort = null): array
+    {
+        if ($sort === 'self') {
             $order = "ORDER BY self_use DESC, item_display_name";
         } else {
             $order = "ORDER BY item_internal_name = 'shuriken' DESC, other_usable desc, item_display_name";
@@ -106,24 +113,26 @@ class Inventory implements IteratorAggregate {
             FROM inventory join item on item_type = item.item_id
             WHERE owner = :owner ".$order;
 
-        return query_array($sql, [':owner'=>[$ch->id(), PDO::PARAM_INT]]);
+        return query_array($sql, [':owner' => [$ch->id(), PDO::PARAM_INT]]);
     }
 
     /**
      * Pull the counts of all items a player has.
      */
-    public function counts(): array {
+    public function counts(): array
+    {
         $sql = "SELECT item_display_name AS name, amount AS count, item_internal_name, item_type, item.item_id, other_usable
             FROM inventory join item on item_type = item.item_id
             WHERE owner = :owner ORDER BY item_internal_name = 'shuriken' DESC, item_display_name";
-        return query_array($sql, [':owner'=>[$this->char->id(), PDO::PARAM_INT]]);
+        return query_array($sql, [':owner' => [$this->char->id(), PDO::PARAM_INT]]);
     }
 
     /**
      * Get just the item count of a specific item.
      * @return int
      */
-    public function amount(string $identity): int {
+    public function amount(string $identity): int
+    {
         $items_count = $this->counts();
         foreach ($items_count as $item) {
             if ($item['item_internal_name'] === $identity) {
@@ -137,7 +146,8 @@ class Inventory implements IteratorAggregate {
      * Get the info of a specific item
      * @return array Of info for an item
      */
-    public function infoFor(string $identity): ?array {
+    public function infoFor(string $identity): ?array
+    {
         $items_count = $this->counts();
         foreach ($items_count as $item) {
             if ($item['item_internal_name'] === $identity) {

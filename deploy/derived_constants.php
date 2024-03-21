@@ -22,7 +22,7 @@ define('TEMPLATE_PATH', SERVER_ROOT.'templates/'); // ** For templates.
 define('TEMPLATE_PLUGIN_PATH', SERVER_ROOT.'lib/plugins/'); // ** For template plugins.
 // COMPILED_TEMPLATE_PATH is kept in resources since it requires write permissions.
 
-define('LOCAL_JS', (DEBUG||OFFLINE));
+define('LOCAL_JS', (DEBUG || OFFLINE));
 define('MAX_MSG_LENGTH', 750);
 define('MAX_CLAN_MSG_LENGTH', MAX_MSG_LENGTH - strlen('clan: '));
 
@@ -46,7 +46,7 @@ define('TURN_REGEN_THRESHOLD', 100);
 define('KI_REGEN_PER_TICK', 1);
 define('KI_REGEN_TIMEOUT', '6 minutes');
 
-define('MINOR_REVIVE_THRESHOLD', 15);
+define('MINOR_REVIVE_THRESHOLD', 12);
 define('MAJOR_REVIVE_PERCENT', 1);
 
 define('DEITY_LOG_CHANCE_DIVISOR', 60);

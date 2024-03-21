@@ -8,8 +8,10 @@ use Smarty;
 /**
  * Wrap smarty and do a little bit more
  */
-class NWTemplate extends Smarty {
-    public function __construct() {
+class NWTemplate extends Smarty
+{
+    public function __construct()
+    {
         parent::__construct();
         $this->caching = 0;
 
@@ -24,7 +26,8 @@ class NWTemplate extends Smarty {
     /**
      * Displays a template wrapped in the header and footer as needed.
      */
-    public function displayPage($template, $title=null, $local_vars=[], $options=null) {
+    public function displayPage($template, $title = null, $local_vars = [], $options = null)
+    {
         // Updates the quickstat via javascript if requested.
         $quickstat        = isset($options['quickstat']) ? $options['quickstat'] : null;
         $quickstat        = ($quickstat ? $quickstat : (isset($local_vars['quickstat']) ? $local_vars['quickstat'] : null));
@@ -46,5 +49,23 @@ class NWTemplate extends Smarty {
         $this->assign('main_template', $template);
 
         $this->display('full_template.tpl');
+    }
+
+    /**
+     * Render a template without the header and footer.
+     * @param string $template The template file to render.
+     * @return string The rendered template output
+     */
+    public function simpleRender($template, $title = null, $local_vars = [])
+    {
+        $this->assign($local_vars);
+        $this->assign('title', $title);
+        $this->assign('main_template', $template);
+        // Start output buffering
+        ob_start();
+        $this->display('simple_template.tpl');
+        $output = ob_get_contents();
+        ob_end_clean();
+        return $output;
     }
 }

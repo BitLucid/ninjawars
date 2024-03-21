@@ -17,11 +17,13 @@ use NinjaWars\core\extensions\StreamedViewResponse;
 use NinjaWars\core\environment\RequestWrapper;
 use Pimple\Container;
 
-class PlayerController extends AbstractController {
+class PlayerController extends AbstractController
+{
     public const PRIV  = false;
     public const ALIVE = false;
 
-    public function index(Container $p_dependencies): StreamedViewResponse {
+    public function index(Container $p_dependencies): StreamedViewResponse
+    {
         $request   = RequestWrapper::$request;
         $target    = $request->get('player');
         $target_id = $request->get('player_id');
@@ -47,13 +49,13 @@ class PlayerController extends AbstractController {
             $targeted_skills       = null;
             $template              = 'player.tpl';
             $viewed_name_for_title = $target_player_obj->name();
-            $viewing_player_obj    = $p_dependencies['current_player']?? null;
+            $viewing_player_obj    = $p_dependencies['current_player'] ?? null;
             $viewing_self          = $viewing_player_obj && $target_player_obj ? $target_player_obj->id() === $viewing_player_obj->id() : null;
             $i_am_dead = null;
 
             $kills_today = query_item(
                 'SELECT sum(killpoints) FROM levelling_log WHERE _player_id = :player_id AND killsdate = CURRENT_DATE AND killpoints > 0',
-                [':player_id'=>$target_player_obj->id()]
+                [':player_id' => $target_player_obj->id()]
             );
 
             $rank_spot = (new NinjaMeta($target_player_obj))->ranking();
@@ -61,7 +63,7 @@ class PlayerController extends AbstractController {
             if ($viewing_player_obj !== null) {
                 $viewers_clan   = Clan::findByMember($viewing_player_obj);
                 $self           = ($viewing_player_obj->id() === $target_player_obj->id());
-                $params         = ['required_turns'=>0, 'ignores_stealth'=>true];
+                $params         = ['required_turns' => 0, 'ignores_stealth' => true];
                 $AttackLegal    = new AttackLegal($viewing_player_obj, $target_player_obj, $params);
                 $AttackLegal->check(false); // Just for display only check, so don't update rate limiter
                 $i_am_dead = $AttackLegal->iAmDead();
@@ -128,7 +130,8 @@ class PlayerController extends AbstractController {
      * like a final url of /item/use/shuriken/tchalvak
      * from a starting url of http://nw.local/player/use_item/?item=shuriken&target=tchalvak
      */
-    public function use_item() {
+    public function use_item()
+    {
         $request = RequestWrapper::$request;
         $target = $request->get('target_id');
         $item_in = $request->get('item');
@@ -144,7 +147,8 @@ class PlayerController extends AbstractController {
      * like a final url of /skill/use/firebolt/tchalvak
      * from a starting url of http://nw.local/player/use_skill/?act=firebolt&target=tchalvak
      */
-    public function use_skill() {
+    public function use_skill()
+    {
         $request = RequestWrapper::$request;
         $target = $request->get('target');
         $act = $request->get('act');
