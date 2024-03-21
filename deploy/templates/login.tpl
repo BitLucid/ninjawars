@@ -6,7 +6,9 @@
     flex-direction:column;
     justify-content: space-between;
   }
+  /* This expands the moddle section to fill most of the space */
   .three-bar > div, .three-bar > section{
+    min-height: 50vh;
     flex:1;
   }
   .grecaptcha-badge { 

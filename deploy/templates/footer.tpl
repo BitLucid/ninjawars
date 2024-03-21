@@ -14,6 +14,9 @@
 {/if}
 
 <script type="text/javascript">
+{literal}
+var NW = NW || {};
+{/literal}
 NW.loggedIn = {if $logged_in}true{else}false{/if};
 var pub_char_info = {if $json_public_char_info}{$json_public_char_info}{else}''{/if};
 {if !$is_index && $quickstat}
@@ -31,7 +34,7 @@ $(function() {
 {if !$smarty.const.LOCAL_JS}{* Skip for local js *}
 <!-- Google Analytics, just add all the tracking info to an array at once -->
 {literal}
-<!-- Google tag (gtag.js) -- Updated 1/9/2024 -- RR -->
+<!-- Google tag (gtag.js) Updated 1/9/2024 RR -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-WWN26L7SKM"></script>
 <script>
   window.dataLayer = window.dataLayer || [];

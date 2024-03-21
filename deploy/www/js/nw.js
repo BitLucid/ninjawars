@@ -26,12 +26,12 @@ const environment = 'NW App context'; // For testing
 // Guarantee that there is a console to prevent errors while debugging.
 if (window.console === undefined) {
   window.console = {
-    log() { /* no-op */ },
-    info() { /* no-op */ },
-    error() { /* no-op */ },
-    warn() { /* no-op */ },
-    assert() { /* no-op */ },
-    debug() { /* no-op */ },
+    log: () => { /* no-op */ },
+    info: () => { /* no-op */ },
+    error: () => { /* no-op */ },
+    warn: () => { /* no-op */ },
+    assert: () => { /* no-op */ },
+    debug: () => { /* no-op */ },
   };
 }
 
@@ -477,6 +477,7 @@ $(() => {
     $('body').addClass('solo-page'); // Add class to solo-page bodies.
     // Displays the link back to main page for any lone subpages not in iframes.
   }
+  console.debug('NW App context initialized');
 });
 
 // html5 arbitrary tag hack --RR
