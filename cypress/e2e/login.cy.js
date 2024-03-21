@@ -8,9 +8,9 @@
 // getting started guide:
 // https://on.cypress.io/introduction-to-cypress
 
-const zSubmitButtonSelector = '#become-a-ninja' // change in sister file too
+const zSubmitButtonSelector = '#become-a-ninja' // change in sister file too!
 
-describe('signup page', () => {
+describe('login page', () => {
   beforeEach(() => {
     // cy.standardLogin()
   })
@@ -19,6 +19,14 @@ describe('signup page', () => {
 
   // For the signup for a randomized ninja test,
   // see the sister file signup-newbie.cy.js
+
+  it('allows login of the user', () => {
+    cy.visit('/login')
+    cy.customLogin(Cypress.env('TEST_USERNAME'), Cypress.env('TEST_PASSWORD'))
+    cy.get('.login-form').should('not.exist')
+    cy.log('Checking for the incorrect username/password alert...')
+    cy.get('[role=alert]').should('not.exist')
+  })
 
   it('rejects duplicate-player-email signup', () => {
     cy.visit('/signup')
@@ -37,14 +45,6 @@ describe('signup page', () => {
     cy.get(zSubmitButtonSelector).should('be.visible')
     cy.get(zSubmitButtonSelector).click()
     cy.get('[role=alert]').should('be.visible')
-  })
-
-  it('allows login of the user', () => {
-    cy.visit('/login')
-    cy.customLogin(Cypress.env('TEST_USERNAME'), Cypress.env('TEST_PASSWORD'))
-    cy.get('.login-form').should('not.exist')
-    cy.log('Checking for the incorrect username/password alert...')
-    cy.get('[role=alert]').should('not.exist')
   })
 
 });

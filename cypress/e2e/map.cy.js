@@ -8,7 +8,8 @@
 
 describe('check map loads', () => {
   beforeEach(() => {
-    cy.standardLogin()
+    // Not logging in on map currently
+    // cy.standardLogin()
   })
   afterEach(() => {
   })
