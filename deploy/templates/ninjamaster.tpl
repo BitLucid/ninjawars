@@ -191,6 +191,7 @@ link.href = '/images/ninjamaster/shuriken-favicon.png';
 			<h3>Account Info</h3>
 			<dl class='left-aligned'>
 				<dt>Account Identity</dt><dd>{$first_account->identity()|escape}</dd>
+				<dt>Account Id</dt><dd>{$first_account->id()|escape}</dd>
 				<dt>Active Email</dt><dd>{$first_account->getActiveEmail()|escape}</dd>
 				<dt>Karma Total</dt><dd>{$first_account->getKarmaTotal()|escape}</dd>
 				<dt>Last Login</dt><dd><time class='timeago' datetime='{$first_account->getLastLogin()|escape}'>{$first_account->getLastLogin()|escape}</time></dd>

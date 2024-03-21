@@ -117,7 +117,7 @@ class ShopController extends AbstractController
     }
 
     /**
-     * Generates the view spec hash for displaying a template
+     * Generates the view arguments for displaying the shop template
      *
      * @param p_parts Array Name/Value pairings to pass to the view
      * @return StreamedViewResponse

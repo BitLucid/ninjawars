@@ -19,7 +19,13 @@ const { debug } = console || {
   },
 };
 
-function performTalk() {
+/**
+ * On the messages page, caches last messaged
+ * and provides interaction functionality for
+ * js actions on the page
+ * @returns {boolean}
+ */
+const performTalk = () => {
   // Cache the last messaged character after send
   if ($('#send-to').val() === '') {
     $('#send-to').val(NW.storage.appState.get('last_messaged', ''));
@@ -72,7 +78,9 @@ function performTalk() {
     }
   }
   return true;
-}
+};
+
+window.performTalk = performTalk;
 
 $(() => {
   performTalk();

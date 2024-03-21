@@ -38,4 +38,5 @@ const framebreakIfNeeded = () => {
 
   // Just to indicate that the login js got finalized for testing
   loginFinalized = true;
+  debug('login.js finalized');
 })();

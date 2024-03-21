@@ -259,10 +259,6 @@ class Api
         );
     }
 
-    public function unreadCount()
-    {
-    }
-
     /**
      * Generally for the homepage display pieces
      */
