@@ -15,6 +15,10 @@
     <!-- Bootstrap 3.4.1 core CSS -->
     <link href="/css/bootstrap.min.css" rel="stylesheet">
     <link href="/css/style.css" rel="stylesheet">
+    <script
+        src="https://js.sentry-cdn.com/7df405cef72d484e9853b187e258b3ea.min.js"
+        crossorigin="anonymous"
+    ></script>
     <script src="https://kit.fontawesome.com/9d4bd8fe2e.js" crossorigin="anonymous"></script>
     <link rel="manifest" href="/manifest.json">
 
