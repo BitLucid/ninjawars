@@ -12,6 +12,7 @@ presence.homepage = true;
 const { debug } = console || { log: () => { /* noop */ }, debug: () => { /* noop */ } };
 
 const pollCommunications = async () => {
+  // skipcq: JS-W1044
   if (!(window.NW && window.NW.loggedIn)) return null;
   try {
     const comm = await api.unreadCommunications();

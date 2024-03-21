@@ -281,7 +281,6 @@ class Api
             'inventory'             => [
                 'inv'   => 1,
                 'items' => $items,
-                'hash'  => md5(strtotime("now")),
             ],
             'member_counts'         => $this->playerCount(),
         ];
