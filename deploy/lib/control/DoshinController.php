@@ -246,7 +246,7 @@ class DoshinController extends AbstractController
     }
 
     /**
-     * Returns a view spec hash for rendering a template
+     * Returns a view combination for rendering a template
      *
      * @param Array     $parts Hash of variables to pass to the view
      * @param Container $deps  Pass the pimple container

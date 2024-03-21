@@ -132,7 +132,7 @@ var combatSkillsList = {$json_combat_skills nofilter};
                     <input id="{$skill.skill_internal_name|escape}" type="checkbox" name="{$skill.skill_internal_name|escape}" value="1"> {$skill.skill_display_name|escape}
                   </label><!-- no space
 		-->{/foreach}<!-- no space
-                  --><input id="target" type="hidden" value="{$target_player_obj->id()|escape}" name="target">
+                  --><input class='attack-target' type="hidden" value="{$target_player_obj->id()|escape}" name="target">
                   <label class='attack-player-trigger btn btn-vital'  title='Attack or Duel this ninja for a base cost of {getTurnCost skillName="attack"} turn'>
                       <input class='attack-player-image' type='image' value='Attack' name='attack-player-shuriken' src='{cachebust file="/images/50pxShuriken.png"}' alt='Attack'><span id='attack-text'>Attack</span>
                   </label>

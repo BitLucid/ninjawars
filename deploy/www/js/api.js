@@ -24,6 +24,8 @@ const apiMethods = {
   latestChatId: () => fetch('/api?type=latestChatId&json=1'),
   latestEvent: () => fetch('/api?type=latestEvent&json=1'),
   charSearch: (term, limit) => fetch(`/api?type=char_search&json=1&term=${encodeURIComponent(JSON.stringify(term))}&limit=${encodeURIComponent(JSON.stringify(limit))}`),
+  sendCommunications: () => fetch('/api?type=sendCommunications&json=1'),
+  unreadCommunications: () => fetch('/api?type=unreadCommunications&json=1'),
 };
 
 /*

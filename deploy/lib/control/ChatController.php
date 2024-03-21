@@ -3,7 +3,7 @@
 namespace NinjaWars\core\control;
 
 use NinjaWars\core\control\AbstractController;
-use NinjaWars\core\data\Message;
+use NinjaWars\core\data\Communication;
 use NinjaWars\core\Filter;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use NinjaWars\core\extensions\SessionFactory;
@@ -35,7 +35,7 @@ class ChatController extends AbstractController
 
         if (!empty($message)) {
             if ($char_id) {
-                Message::sendChat($char_id, $message);
+                Communication::sendChat($char_id, $message);
             } else {
                 $error = 'You must be logged in to chat.';
             }

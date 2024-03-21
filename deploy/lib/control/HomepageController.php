@@ -50,11 +50,6 @@ class HomepageController extends AbstractController
         $playerInfo = $ninja ? $ninja->data() : [];
         $clan = $ninja ? Clan::findByMember($ninja) : null;
 
-        $unreadCount = Message::where([
-            'send_to' => $ninja->id(),
-            'unread'  => 1,
-        ])->count();
-
         // Assign these vars to the template.
         $parts = [
             'main_src'             => '/intro',
@@ -63,7 +58,6 @@ class HomepageController extends AbstractController
             'ninja'                => $ninja,
             'player_info'          => $playerInfo,
             'clan'                 => $clan,
-            'unread_message_count' => $unreadCount,
         ];
 
         return new StreamedViewResponse('Live by the Shuriken', 'index.tpl', $parts, ['is_index' => true]);

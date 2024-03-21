@@ -63,10 +63,16 @@ id='send-to' name='to' value='{$to|escape}' required='required'></em>
   {include file="messages.nav.tpl"}
 </section>
 
+<div class='glassbox'>
+  <div id='email-messages'>
+    <button title='Email {$messages_type} Messages' class='btn btn-default' type='submit' name='submit'><i class='fa fa-envelope'></i> Email These</button>
+  </div>
+</div>
+
 <script>
 // Set the need to refocus on the messaging areas if necessary.
 var refocus = {if $individual_or_clan}true{else}false{/if};
 var focusArea = '{$message_to}';
 </script>
 <!-- Confirmation requirements and refocus setup -->
-<script src='{cachebust file="/js/talk.js"}'></script>
+<script type='module' src='{cachebust file="/js/talk.js"}'></script>

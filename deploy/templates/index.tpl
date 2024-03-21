@@ -33,7 +33,7 @@
           <li class='hidden-sm hidden-md'><a href="/work" target="main"><i class="fab fa-pagelines"></i> Work</a></li>
           <li class='hidden-sm hidden-md'><a href="/doshin" target="main"><i class='fa fa-bullseye' aria-hidden='true'></i> <span class='hidden-md hidden-sm'>Hunt</span></a></li>
           <li><a href="/events" title='Events' target="main"><i class="far fa-clock" aria-hidden="true"></i> <span class='hidden-sm hidden-md hidden-lg'>Events</span></a></li>
-          <li><a href="/messages" target="main"><i class='fa fa-envelope'></i> <span class='badge'>{$unread_message_count}</span></a></li>
+          <li><a href="/messages" target="main"><i class='fa fa-envelope'></i> <span class='badge' id='unread-count'>•</span></a></li>
         </ul>
 
         <div class='chat-show-hide-container'>
@@ -71,5 +71,5 @@
       <!-- End of sidebar-column -->
       </section><!-- end of core-->
 
-<script src='/js/homepage.js'></script>
+<script type='module' src='/js/homepage.js'></script>
 <!-- Version: {$version|escape} -->

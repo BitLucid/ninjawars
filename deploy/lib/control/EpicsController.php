@@ -13,10 +13,10 @@ use NinjaWars\core\data\Npc;
 use NinjaWars\core\data\Item;
 use NinjaWars\core\control\Combat;
 use model\News as News;
+use NinjaWars\core\data\Communication;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use NinjaWars\core\extensions\StreamedViewResponse;
-use NinjaWars\core\environment\RequestWrapper;
 
 /**
  * Epic Controller for UI Stories
@@ -74,6 +74,7 @@ class EpicsController extends AbstractController
         $signupRequest2    = $transientClass;
         $news = new News();
         $all_news = $news->all();
+        $messages = Communication::formatMessages(Communication::getMessages($char->id(), 300));
 
         $error            = null;
         $static_nodes = include(ROOT . 'lib/data/raw/nodes.php');
@@ -95,6 +96,7 @@ class EpicsController extends AbstractController
             'clans'             => Clan::rankings(),
             'signupRequest2'    => $signupRequest2,
             'all_news'          => $all_news,
+            'messages'          => $messages,
         ];
 
         return new StreamedViewResponse('UI Epics', 'epics.tpl', $parts);

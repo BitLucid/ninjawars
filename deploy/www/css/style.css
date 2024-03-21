@@ -817,9 +817,13 @@ a {
     text-decoration: none;
     font-weight: bolder;
     font-family: verdana, arial, helvetica, sans-serif;
-    color: #008080;
+    color: #008d8d;
     /*font-family: Arial Black, Impact, Tahoma Bold, sans-serif;*/
     /*CadetBlue/YellowGreen/Turquoise/Tomatoe/SteelBlue/SlateBlue/Sienna/Brown/Chartreuse/Crimson*/
+}
+
+#map a {
+    color: #00aaaa;
 }
 
 a:hover {
@@ -1403,7 +1407,16 @@ fieldset#details textarea+textarea {
 }
 
 #skills-list legend+p {
-    color: #555555;
+    color: #ababab;
+    font-style: italic;
+}
+
+#skills-list .skill-description {
+    font-style: italic;
+}
+
+#skills-list .skill-description strong {
+    font-style: normal;
 }
 
 .playerTable th {
@@ -2261,7 +2274,6 @@ a#skip-to-bottom {
 
 .login-page .line {
     margin-bottom: 0.5em;
-    font-size: larger;
 }
 
 #login-form {
@@ -2282,7 +2294,9 @@ a#skip-to-bottom {
 }
 
 #login-bottom-bar-container #login-problems-resources {
-    padding: 0 auto 0;
+    /* center with no padding */
+    margin: 0 auto;
+    padding: 0;
     text-align: center;
     background-color: rgba(30, 30, 30, 0.7);
 }

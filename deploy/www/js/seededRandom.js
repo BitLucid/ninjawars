@@ -33,7 +33,6 @@ export const seededInt = (seed, min = 1, max = 99) => {
  */
 export const seededString = (seed, size = 20, rangeMin = null, options = {}) => {
   const { spaces = true } = options ?? {};
-  console.debug('seededString', seed, size);
   if (seed === null || seed === undefined) throw new Error('seededString requires a seed');
   let text = '';
   const possible = `ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789${spaces ? '      ' : ''}`;
@@ -55,7 +54,6 @@ export const seededString = (seed, size = 20, rangeMin = null, options = {}) => 
  * 50% of ninja names will be less than 12 char, but sometimes will be longer
  */
 export const seededNinjaName = (seed) => {
-  console.debug('seededNinjaName', seed);
   const upperBound = seededRandom(seed) < 0.5 ? 12 : 24;
   return seededString(seed, upperBound, 3, { spaces: false });
 };

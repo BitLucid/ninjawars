@@ -5,7 +5,6 @@ namespace NinjaWars\core\control;
 use Pimple\Container;
 use NinjaWars\core\control\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use NinjaWars\core\data\DatabaseConnection;
 use NinjaWars\core\data\Enemies;
 use NinjaWars\core\data\Player;
 use NinjaWars\core\data\SkillDAO;
@@ -15,8 +14,6 @@ use NinjaWars\core\extensions\SessionFactory;
 use NinjaWars\core\extensions\StreamedViewResponse;
 use NinjaWars\core\environment\RequestWrapper;
 use NinjaWars\core\extensions\NWLogger;
-use NWError;
-use PDO;
 
 /**
  * Display ninja & monsters to potentially pick fights with

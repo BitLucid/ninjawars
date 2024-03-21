@@ -4,9 +4,9 @@ namespace NinjaWars\core\data;
 
 use NinjaWars\core\extensions\SessionFactory;
 use NinjaWars\core\data\DatabaseConnection;
+use NinjaWars\core\data\Communication;
 use NinjaWars\core\data\Enemies;
 use NinjaWars\core\data\Player;
-use NinjaWars\core\data\Message;
 use PDO;
 
 /**
@@ -23,6 +23,28 @@ class Api
         $char = Player::find(SessionFactory::getSession()->get('player_id'));
         $target = $char ? Enemies::nextTarget($char, (int) $offset) : null;
         return $char && $target ? $target->publicData() : false;
+    }
+
+    /**
+     * Send status events and DM messages to the account
+     */
+    public function sendCommunications($data)
+    {
+        $char = Player::find(SessionFactory::getSession()->get('player_id'));
+        ['events' => $events] = Communication::sendEvents(['char' => $char]);
+        // Get events from pdo resultset
+        $final = $events->fetchAll(PDO::FETCH_ASSOC);
+        return ['events' => $final];
+    }
+
+    public function unreadCommunications()
+    {
+        $char = Player::find(SessionFactory::getSession()->get('player_id'));
+        if (!$char) {
+            throw new \RuntimeException('Not logged in', 401);
+        }
+        ['messages' => $unread_messages, 'events' => $unread_events] = Communication::unreadCommunications($char->id());
+        return ['messages' => $unread_messages, 'events' => $unread_events];
     }
 
     /**
@@ -160,7 +182,7 @@ class Api
         if (SessionFactory::getSession()->get('authenticated', false)) {
             $msg     = trim($msg);
             $player  = Player::find(SessionFactory::getSession()->get('player_id'));
-            $success = Message::sendChat($player->id(), $msg);
+            $success = Communication::sendChat($player->id(), $msg);
 
             if (!$success) {
                 return false;
@@ -237,31 +259,17 @@ class Api
         );
     }
 
+    /**
+     * Generally for the homepage display pieces
+     */
     public function index()
     {
         DatabaseConnection::getInstance();
 
         $player          = Player::find(SessionFactory::getSession()->get('player_id'));
-        $events          = [];
-        $messages        = [];
-        $unread_messages = null;
-        $unread_events   = null;
         $items = null;
 
         if ($player) {
-            $events = DatabaseConnection::$pdo->prepare("SELECT event_id, message AS event, date, send_to, send_from, unread, uname AS sender FROM events JOIN players ON player_id = send_from WHERE send_to = :userID and unread = 1 ORDER BY date DESC");
-            $events->bindValue(':userID', $player->id());
-            $events->execute();
-
-            $unread_events = $events->rowCount();
-
-            $messages = DatabaseConnection::$pdo->prepare("SELECT message_id, message, date, send_to, send_from, unread, uname AS sender FROM messages JOIN players ON player_id = send_from WHERE send_to = :userID1 AND send_from != :userID2 and unread = 1 ORDER BY date DESC");
-            $messages->bindValue(':userID1', $player->id());
-            $messages->bindValue(':userID2', $player->id());
-            $messages->execute();
-
-            $unread_messages = $messages->rowCount();
-
             $items = query_array(
                 'SELECT item.item_display_name as item, amount FROM inventory join item on inventory.item_type = item.item_id WHERE owner = :user_id ORDER BY item_display_name',
                 [':user_id' => $player->id()]
@@ -270,15 +278,11 @@ class Api
 
         return [
             'player'                => ($player ? $player->publicData() : []),
-            'unread_messages_count' => $unread_messages,
-            'message'               => (!empty($messages) ? $messages->fetch() : null),
             'inventory'             => [
                 'inv'   => 1,
                 'items' => $items,
                 'hash'  => md5(strtotime("now")),
             ],
-            'unread_events_count'   => $unread_events,
-            'event'                 => (!empty($events) ? $events->fetch() : null),
             'member_counts'         => $this->playerCount(),
         ];
     }

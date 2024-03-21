@@ -158,11 +158,7 @@ class ApiControllerTest extends NWTest
 
         $this->helperPropertyExists('player', $payload);
         $this->helperPropertyExists('inventory', $payload);
-        $this->helperPropertyExists('event', $payload);
-        $this->helperPropertyExists('message', $payload);
         $this->helperPropertyExists('member_counts', $payload);
-        $this->helperPropertyExists('unread_messages_count', $payload);
-        $this->helperPropertyExists('unread_events_count', $payload);
     }
 
     public function testPlayer()

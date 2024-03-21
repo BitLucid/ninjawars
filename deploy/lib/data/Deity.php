@@ -4,7 +4,7 @@ namespace NinjaWars\core\data;
 
 use NinjaWars\core\data\DatabaseConnection;
 use NinjaWars\core\data\Event;
-use NinjaWars\core\data\Message;
+use NinjaWars\core\data\Communication;
 use NinjaWars\core\data\Player;
 use PDO;
 use debug;
@@ -234,7 +234,7 @@ class Deity
      */
     public function shortenChat()
     {
-        return Message::shortenChat();
+        return Communication::shortenChat();
     }
 
     /**

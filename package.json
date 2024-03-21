@@ -25,7 +25,8 @@
     "unit-test": "test",
     "cypress:install": "y add -D cypress",
     "cypress": "npx cypress open",
-    "test": "karma start deploy/tests/karma.conf.js --single-run"
+    "test": "karma start deploy/tests/karma.conf.js --single-run",
+    "test:watch": "karma start deploy/tests/karma.conf.js"
   },
   "repository": {
     "type": "git",
