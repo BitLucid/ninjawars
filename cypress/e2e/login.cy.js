@@ -15,6 +15,7 @@ describe('login page', () => {
     // cy.standardLogin()
   })
   afterEach(() => {
+    // Here for any future use
   })
 
   // For the signup for a randomized ninja test,
