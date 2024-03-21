@@ -5,8 +5,8 @@ namespace NinjaWars\core\control;
 use Pimple\Container;
 use NinjaWars\core\Filter;
 use NinjaWars\core\control\AbstractController;
-use NinjaWars\core\data\Message;
 use NinjaWars\core\data\Clan;
+use NinjaWars\core\data\Communication;
 use NinjaWars\core\data\Player;
 use NinjaWars\core\extensions\SessionFactory;
 use NinjaWars\core\extensions\StreamedViewResponse;
@@ -321,7 +321,7 @@ class ClanController extends AbstractController
         $clan    = Clan::findByMember($player);
 
         if (!$this->playerIsLeader($player, $clan)) {
-            throw new \Exception('You may not update a clan you are not a leader of.');
+            throw new \RuntimeException('You may not update a clan you are not a leader of.', 403);
         }
 
         $new_clan_avatar_url  = $request->get('clan-avatar-url');
@@ -386,6 +386,11 @@ class ClanController extends AbstractController
     {
         $player = $p_dependencies['current_player'];
         $clan   = Clan::findByMember($player);
+        if (!$this->playerIsLeader($player, $clan)) {
+            //throw new \RuntimeException('You may not update a clan you are not a leader of.', 403);
+            // return 403 error page
+            return new StreamedViewResponse('Forbidden', '403.tpl', ['error' => 'You may not update a clan you are not a leader of.'], ['http_response_code' => 403]);
+        }
 
         return $this->render([
             'clan'      => $clan,
@@ -414,7 +419,7 @@ class ClanController extends AbstractController
             if ($myClan) {
                 $target_id_list = $myClan->getMemberIds();
 
-                Message::sendToGroup($player, $target_id_list, $message, 1);
+                Communication::sendToGroup($player, $target_id_list, $message, 1);
 
                 $parts = [
                     'clan'           => $myClan,
