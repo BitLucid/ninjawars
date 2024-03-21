@@ -12,6 +12,14 @@
   .grecaptcha-badge { 
     visibility: hidden; 
   }
+  /* media query for mobile */
+  @media (max-width: 767px) {
+    .shade-box .row{
+      margin-right: 0;
+      margin-left: 0;
+      padding: 2rem;
+    }
+  }
 {/literal}
 </style>
 <div class='three-bar'>
@@ -39,7 +47,7 @@
       <div class='shade-box'>
         <form id="login-form" class="form-horizontal" action="/login/login_request" method="post">
           <input type="hidden" name="ref" value="{isset($referrer) && $referrer|escape}" />
-            <div class='row'>
+            <div class='row top-buffer'>
             <label>
               <div class='line'>
                 <span class='left-side'>Email or ninja name</span>
