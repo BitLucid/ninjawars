@@ -5,6 +5,7 @@
 
 const { location: lLocation, top: lTop } = window;
 const { location: lFrameLocation } = lTop || {};
+const topNW = lTop && lTop.NW;
 // eslint-disable-next-line no-unused-vars
 const loginInitialized = true;
 let loginFinalized = false;
@@ -20,7 +21,7 @@ const framebreakIfNeeded = () => {
     return;
   }
   // eslint-disable-next-line eqeqeq
-  if (lLocation != lFrameLocation) { // Framebreak
+  if (lLocation != lFrameLocation && topNW !== null) { // Framebreak
     if (window.top && window.top.location && window.top.location.href) {
       window.top.location.href = document.location.href;
     }
