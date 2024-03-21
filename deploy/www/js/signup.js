@@ -4,7 +4,7 @@
 // @ts-check
 
 // const { location: tLocation, top: tTop } = window;
-// const { location: tFrameLocation } = tTop || {};
+// const { location: tFrameLocation } = tTop ?? {};
 // const topNW = tTop && tTop.NW;
 // eslint-disable-next-line no-unused-vars
 const { log, debug } = console || { log: () => { /** noop */ }, debug: () => { /** noop */ } };
