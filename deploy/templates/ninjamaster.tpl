@@ -127,23 +127,24 @@ link.href = '/images/ninjamaster/shuriken-favicon.png';
 		<pre class='infrastructural-checks spaced'>
 			These checks are manual, but important to click through to every month.
 			High Priority Checks:
-			- Email Sendability Reputation: <a href='https://us-east-1.console.aws.amazon.com/ses/home?region=us-east-1#/reputation'>Emailability Health</a>
-			- Cost Anomalies: <a href='https://us-east-1.console.aws.amazon.com/cost-management/home?region=us-east-1#/anomaly-detection/overview'>Cost Anomalies</a>
-			- AWS infrastructure Alarms: <a href='https://us-east-1.console.aws.amazon.com/cloudwatch/home?region=us-east-1#alarmsV2:'>AWS Infrastructure Alarms</a>
+
+			★ Email Sendability Reputation: <a href='https://us-east-1.console.aws.amazon.com/ses/home?region=us-east-1#/reputation'>Emailability Health</a>
+			★ Cost Anomalies: <a href='https://us-east-1.console.aws.amazon.com/cost-management/home?region=us-east-1#/anomaly-detection/overview'>Cost Anomalies</a>
+			★ AWS infrastructure Alarms: <a href='https://us-east-1.console.aws.amazon.com/cloudwatch/home?region=us-east-1#alarmsV2:'>AWS Infrastructure Alarms</a>
 
 			These checks can be checked once every 3 months, and there are sometimes other alert mechanisms.
 			Medium Priority Checks:
-			- DNS Health checks: <a href='https://us-east-1.console.aws.amazon.com/route53/healthchecks/home?region=us-east-1#/'>DNS Health Checks</a>
-			- AWS Account Health Notices: <a href='https://health.aws.amazon.com/health/home#/account/dashboard/open-issues'>Account Health</a>
-			- Servers health: <a href='https://us-east-1.console.aws.amazon.com/ec2/home?region=us-east-1#Instances:'>Server Instances Health</a>
-			- Cost Management Health: <a href='https://us-east-1.console.aws.amazon.com/costmanagement/home?region=us-east-1#/home'>Cost Management Health</a>
-			- Load Balancer Health: <a href='https://us-east-1.console.aws.amazon.com/ec2/home?region=us-east-1#LoadBalancers:'>Load Balancers Health</a>
-			- Databases Health: <a href='https://us-east-1.console.aws.amazon.com/rds/home?region=us-east-1#databases:'>Databases Health</a>
+			• DNS Health checks: <a href='https://us-east-1.console.aws.amazon.com/route53/healthchecks/home?region=us-east-1#/'>DNS Health Checks</a>
+			• AWS Account Health Notices: <a href='https://health.aws.amazon.com/health/home#/account/dashboard/open-issues'>Account Health</a>
+			• Servers health: <a href='https://us-east-1.console.aws.amazon.com/ec2/home?region=us-east-1#Instances:'>Server Instances Health</a>
+			• Cost Management Health: <a href='https://us-east-1.console.aws.amazon.com/costmanagement/home?region=us-east-1#/home'>Cost Management Health</a>
+			• Load Balancer Health: <a href='https://us-east-1.console.aws.amazon.com/ec2/home?region=us-east-1#LoadBalancers:'>Load Balancers Health</a>
+			• Databases Health: <a href='https://us-east-1.console.aws.amazon.com/rds/home?region=us-east-1#databases:'>Databases Health</a>
 
 			Check these just as desired.
 			Low Priority Checks:
-			- Adwords Health: <a href='https://ads.google.com/aw/overview?ocid=8472107'>Adwords Health</a>
-			- Adsense Health: <a href='https://www.google.com/adsense/new/u/0/pub-9488510237149880/home'>Adsense Health</a>
+			• Adwords Health: <a href='https://ads.google.com/aw/overview?ocid=8472107'>Adwords Health</a>
+			• Adsense Health: <a href='https://www.google.com/adsense/new/u/0/pub-9488510237149880/home'>Adsense Health</a>
 		</pre>
 		{* To add: Too high of login attempts, too high of activity rates for signups? *}
 	</article>
