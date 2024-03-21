@@ -23,6 +23,24 @@
    width:10px;height:9px;
 }
 
+/* media query for small screens */
+@media (max-width: 768px) {
+  #chat-and-switch #chat-input{
+    width: 100%;
+    padding-left: 0;
+  }
+  #chat-and-switch #chat-button-box{
+    width: 100%;
+    padding-left: 0;
+  }
+  #chat-and-switch #chat-button{
+    width: 100%;
+    margin-top: 1rem;
+    margin-right: 0;
+    margin-left: 0;
+  }
+}
+
 </style>
 
           <div id='index-chat'>

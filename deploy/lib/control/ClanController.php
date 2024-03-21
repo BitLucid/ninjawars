@@ -216,14 +216,20 @@ class ClanController extends AbstractController
 
         $message = 'The leader to this clan is inactive, try another.';
         if (!empty($leader)) {
-            $available = $this->sendClanJoinRequest($p_dependencies['session']->get('player_id'), $clanID);
-            $message = "Your request to join {$clan->getName()} has been sent to $leader[uname]";
+            $char_id = $p_dependencies['session']->get('player_id');
+            if ($char_id === null) {
+                $error = 'You must be logged in to join a clan.';
+            } else {
+                $available = $this->sendClanJoinRequest($char_id, $clanID);
+                $message = "Your request to join {$clan->getName()} has been sent to $leader[uname]";
+            }
         }
 
         return $this->render([
             'action_message' => $message,
             'title'          => 'Viewing a clan',
             'clan'           => $clan,
+            'error'          => $error ?? null,
             'pageSections'      => [
                 'reminder-no-clan',
                 'info',

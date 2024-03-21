@@ -249,6 +249,7 @@ test-ratchets:
 	python3 -m pytest deploy/tests/functional/test_ratchets.py
 
 test-cleanup:
+	# Sometimes partial test runs create problem ninja accounts, this is how to clean all that up
 	psql nw -c "delete from accounts where account_id in (select account_id from accounts join account_players ap on accounts.account_id = ap._account_id join players on ap._player_id = players.player_id where uname like 'phpunit_%')"
 	psql nw -c "delete from players where uname like 'phpunit_%'"
 
@@ -386,8 +387,6 @@ composer-ratelimit-check:
 ifndef COMPOSER_AUTH
 $(error COMPOSER_AUTH is not set)
 endif
-
-	
 
 
 

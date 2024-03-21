@@ -3,10 +3,10 @@
 <section id='clan-page-section' class='clan' style='margin-top:2rem;margin-bottom:2rem;'>
 
 	<nav class="navigation" rel="nav">
-	<ul class="menu">
-		<li><a href="/clan/list">Clan List</a></li>
+	<ul class="menu nav nav-tabs justify-content-center">
+<li class='nav-item'><a class='nav-link {if !isset($clan_id)}active{/if}' href="/clan/list">Clan List</a></li>
 	{if isset($myClan)}
-		<li><a href="/clan/view?clan_id={$myClan->id|escape}">My Clan</a></li>
+		<li class='nav-item'><a class='nav-link {if isset($clan_id)}active{/if}' href="/clan/view?clan_id={$myClan->id|escape}">My Clan</a></li>
 	{/if}
 	</ul>
 	</nav>
