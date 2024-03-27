@@ -114,8 +114,8 @@ class MessagesController extends AbstractController
         $type          = 1; // Clan chat or normal messages.
         $message_count = Communication::countByReceiver($ninja->id(), $type); // To count all the messages
 
-        Communication::readEvents($ninja->id(), $type); // mark messages as read for next viewing.
         $messages = Communication::formatMessages(Communication::getMessages($ninja->id(), $limit, $offset, $type));
+        Communication::readMessages($ninja->id(), $type); // mark messages as read for next viewing.
 
         $parts = array_merge(
             $this->configure(),
