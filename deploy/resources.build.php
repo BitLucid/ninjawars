@@ -27,6 +27,7 @@ define('ALERTS_EMAIL', SUPPORT_EMAIL);
 define('RECAPTCHA_SITE_KEY', '6LfCXUApAAAAAE1mAtknayTQDVGcj76sSQbtUF8t');
 define('RECAPTCHA_SECRET_KEY', 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
 define('RECAPTCHA_DIVISOR', 9999); // Default to 1 if not defined
+define('SIGNUP_EMAIL_SENDOUT_DIVISOR', 20); // Temporarily decrease the chance of signup email being sent out
 
 define('FACEBOOK_APP_ID', '30479872633'); // Non-confidential id for the facebook app
 define('FACEBOOK_APP_SECRET', 'mooMooIAmACow'); // Secret! string for facebook login auth stuff.
