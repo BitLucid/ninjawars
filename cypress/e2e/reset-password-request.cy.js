@@ -19,14 +19,14 @@ describe('reset-password page', () => {
   it('allows entering email to request reset via email', () => {
     cy.visit('/password')
     cy.get('input[type=email]').type(`${Cypress.env('TEST_USERNAME')}`)
-    cy.get('button[type=submit]').click()
+    cy.get('input[type=submit]').click()
     cy.get('[role=alert]').should('be.visible')
   })
 
   it('allows entering ninja name to request reset via email', () => {
     cy.visit('/password')
-    cy.get('input[type=email]').type('glassbox')
-    cy.get('button[type=submit]').click()
+    cy.get('input[type=text]').type('glassbox')
+    cy.get('input[type=submit]').click()
     cy.get('[role=alert]').should('be.visible')
   })
 

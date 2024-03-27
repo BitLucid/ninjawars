@@ -8,12 +8,12 @@ footer.password-reset{
 <h1>Request a password reset</h1>
 
 {if $error}
-	<div class='parent'>
+	<div class='parent' role='alert'>
 		<div class='child error glassbox thick fade-in'>{$error|escape}</div>
 	</div>
 {/if}
 {if $message}
-	<div class='parent'>
+	<div class='parent' role='alert'>
 		<div class='child bg-success glassbox thick fade-in'>{$message|escape}</div>
 	</div>
 {/if}
