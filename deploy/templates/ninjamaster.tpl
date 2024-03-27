@@ -64,11 +64,10 @@ link.href = '/images/ninjamaster/shuriken-favicon.png';
 		<ul class='nav nav-pills'>
 			<li><a class='' href='/ninjamaster/#npc-list-stats'>Npc List</a></li>
 			<li><a class='' href='/ninjamaster/#char-list'>Character List</a></li>
-			<li><a class='' href='/ninjamaster/#clans'>Clans</a></li>
+			<li><a class='' href='/ninjamaster/#clan-list'>Clans</a></li>
 			<li><a class='' href='/ninjamaster/tools'>Validation Tools</a></li>
 			<li><a class='' href='/ninjamaster/player_tags'>Character Tag List</a></li>
 			<li><a class='' href='/ninjamaster/#item-list-area'>Item List</a></li>
-			<li><a class='' href='/ninjamaster/#clans'>Clans</a></li>
 			<li><a class='' href='/ninjamaster/#api-epics'>Api Epics</a></li>
 			<li><a class='' href='/ninjamaster/#aws-services'>AWS Services</a></li>
 			<li><a class='' href='/epics'>UI Epics</a></li>
@@ -84,7 +83,7 @@ link.href = '/images/ninjamaster/shuriken-favicon.png';
 		*}<p>You have the power to view internal out-of-character settings, and intimate details of other players, npcs, items, etc.
 			</p>
 			<span class='notice'>Do:</span> Use this power wisely, and for the good of the game.
-			<span class='notice'>Do not:</span> Share this information with regular players, as it might 
+			<span class='notice'>Do not:</span> Share this information with other players, as it might 
 			make the game easier and less fun for them.</span>
 		</pre>
 	</div>
@@ -96,7 +95,7 @@ link.href = '/images/ninjamaster/shuriken-favicon.png';
 	</header>
 	<article>
 		<pre class='hi-pri-warnings spaced'>
-			Check below for some standard alerts and warnings about the game's health 
+			Alerts and warnings about the game's health 
 			based on live statistics.
 
 			{if $usage.new_count eq 0}<span class="alert alert-danger">Danger: Signups appear low, check signup page health, at {$usage.new_count|escape} in the last week.</span>{/if}
@@ -107,7 +106,7 @@ link.href = '/images/ninjamaster/shuriken-favicon.png';
 
 
 
-			{if $usage.recent_count lt 5}<span class="alert alert-danger">Danger: Recent logins in the last 7 days are at a low level of {$usage.recent_count}, check the login system!</span>{else}Login system seems to be functioning normally.{/if}
+			{if $usage.recent_count lt 5}<span class="alert alert-danger">Danger: Recent logins in the last week are at a low level of {$usage.recent_count}, check the login system!</span>{else}Login system seems to be functioning normally.{/if}
 
 
 
@@ -466,27 +465,32 @@ link.href = '/images/ninjamaster/shuriken-favicon.png';
 
 <section class='special-info'>
 	<header><h2 id='aws-services'>AWS Services</h2></header>
-	<div class='text-centered'>
-		<nav class='glassbox nav nav-pills'>
-				<li><a href='https://us-east-1.console.aws.amazon.com/ses/home?region=us-east-1#/reputation'>
-					AWS Email Reputation Metrics
-				</a></li>
-				<li><a href='https://us-east-1.console.aws.amazon.com/ec2/home?region=us-east-1#Instances:instanceState=running'>
-					Running Instances
-				</a></li>
-				<li><a href='https://us-east-1.console.aws.amazon.com/costmanagement/home?region=us-east-1#/home'>
-					Billing
-				</a></li>
-		<li><a href='https://ads.google.com/aw/overview'>
-					Adwords
-				</a></li>
-		<li><a href='https://analytics.google.com/analytics/web/?pli=1#/p289349786/reports/intelligenthome'>
-					Analytics
-				</a></li>
-		<li><a href='https://www.google.com/recaptcha/admin/site/692084162/settings'>
-					Recaptcha
-				</a></li>
-		</nav>
+	<div class='text-center'>
+		<button class='btn btn-default show-hide-next' type='button'>Show/Hide</button>
+	</div>
+	<div>
+		<div class='text-centered'>
+			<nav class='glassbox nav nav-pills'>
+					<li><a href='https://us-east-1.console.aws.amazon.com/ses/home?region=us-east-1#/reputation'>
+						AWS Email Reputation Metrics
+					</a></li>
+					<li><a href='https://us-east-1.console.aws.amazon.com/ec2/home?region=us-east-1#Instances:instanceState=running'>
+						Running Instances
+					</a></li>
+					<li><a href='https://us-east-1.console.aws.amazon.com/costmanagement/home?region=us-east-1#/home'>
+						Billing
+					</a></li>
+			<li><a href='https://ads.google.com/aw/overview'>
+						Adwords
+					</a></li>
+			<li><a href='https://analytics.google.com/analytics/web/?pli=1#/p289349786/reports/intelligenthome'>
+						Analytics
+					</a></li>
+			<li><a href='https://www.google.com/recaptcha/admin/site/692084162/settings'>
+						Recaptcha
+					</a></li>
+			</nav>
+		</div>
 	</div>
 </section>
 
@@ -503,7 +507,7 @@ link.href = '/images/ninjamaster/shuriken-favicon.png';
 		<li><a class='' href='/ninjamaster/tools'>Validation Tools</a></li>
 		<li><a class='' href='/ninjamaster/player_tags'>Character Tag List</a></li>
 		<li><a class='' href='/ninjamaster/#item-list-area'>Item List</a></li>
-		<li><a class='' href='/ninjamaster/#clans'>Clans</a></li>
+		<li><a class='' href='/ninjamaster/#clan-list'>Clans</a></li>
 		<li><a class='' href='/ninjamaster/#api-epics'>Api Epics</a></li>
 		<li><a class='' href='/ninjamaster/#aws-services'>AWS Services</a></li>
 		<li><a class='' href='/epics'>UI Epics</a></li>

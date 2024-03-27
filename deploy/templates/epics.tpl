@@ -81,6 +81,7 @@
                 <a class='btn btn-info' href='#ninjamaster-clans-section'>Ninjamaster.clans</a>
                 <a class='btn btn-info' href='#email-messages-section'>Email.messages</a>
                 <a class='btn btn-info' href='#homepage-unread-section'>Homepage.unread</a>
+                <a class='btn btn-info' href='#password-reset-section'>Password.reset</a>
             </div>
         </nav>
     </header>
@@ -564,6 +565,18 @@
                 </a>
             </div>
             <script type='module' src='/js/homepage.js'></script>
+        </section>
+
+        <section id='password-reset-section'>
+            <h2>Password.reset</h2>
+            {assign var="message" value='Some message here'}
+            {assign var="token" value='xxxxxxxxxxxxxxxxxx'}
+            <div>
+            {include file="reset.password.request.tpl"}
+            </div>
+            <div>
+            {include file="reset.password.tpl"}
+            </div>
         </section>
 
         <section id='about-section'>

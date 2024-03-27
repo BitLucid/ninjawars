@@ -2,27 +2,32 @@
 .assistance-area{
     margin-left:1em;
 }
+
+.assistance-area .thick{
+    margin-top:5rem;
+    margin-bottom:5rem;
+}
 </style>
 <h1>Account Assistance</h1>
 <section class='assistance-area'>
 {if $error}
-    <p class="error">
+    <p class="error fade-in">
     {if $error eq 'invalidemail'}
         The submitted email was invalid.
     {elseif $error eq 'nouser'}
         No user with that email exists.
         Please <a href="/signup">sign up</a> for an account, or <a href="/staff">contact us</a> if you have other account issues.
     {elseif $error eq 'alreadyconfirmed'}
-        That account is already confirmed. If you are having problems logging in, please <a href="/staff">Contact Us</a>.
+        That account may already be confirmed. If you are having problems logging in, please <a href="/staff">Contact Us</a>.
     {elseif $error eq 'emailfail'}
         There was a problem sending to that email.
     {/if}
     </p>
 {elseif $password_request}
-        <h2>Sending Account Information Email</h2>
+        <h2>Sending Account Information Email...</h2>
         <div class='parent'>
-            <div class='child bg-success inline-block'>
-            Your account information has been resent to your email.
+            <div class='child bg-success inline-block fade-in'>
+                Your account information has been resent to your email.
             </div>
         </div>
 {elseif $confirmation_request}
@@ -39,38 +44,42 @@
     </p>
 {/if}
 
-    <h2>Need your password reset?</h2>
-    <div class='parent'>
-        <div class='child'>
-            <a href='/password/' class='btn btn-primary'>Request A Password Reset</a>
+    <div class='thick'>
+        <h2>Need your password reset?</h2>
+        <div class='parent'>
+            <div class='child'>
+                <a href='/password/' class='btn btn-primary'>Request A Password Reset</a>
+            </div>
         </div>
     </div>
 
-
-    <h2>Resend Confirmation Email</h2>
-    <div class='parent'>
-        <form class='child' action="/assistance" method="post">
-            <p>Submit your email address and we will resend your confirmation email:</p>
-            <input id="email" type="email" title="Your account email" placeholder='you@gmail.com' maxlength="50" name="email" class="textField">
-            <input type='hidden' name='confirmation_request' value='1'>
-            <button type="submit" value="Resend Confirm Code" class="formButton">Resend Confirm Code</button>
-        </form>
+    <div class='thick'>
+        <h2>Resend Confirmation Email</h2>
+        <div class='parent'>
+            <form class='child' action="/assistance" method="post">
+                <p>Submit your email address and we will resend your confirmation email:</p>
+                <input id="email" type="email" title="Your account email" placeholder='you@gmail.com' maxlength="50" name="email" class="textField">
+                <input type='hidden' name='confirmation_request' value='1'>
+                <button type="submit" value="Resend Confirm Code" class="formButton">Resend Confirm Code</button>
+            </form>
+        </div>
     </div>
 
-
-    <h2>Resend Account Information</h2>
-    <div class='parent'>
-        <form class='child' action="/assistance" method="post">
-            <p>Submit your account email to check for existing ninja name, class, and level information:</p>
-            <input id="email" type="email" title="Please enter the email you set your account up with" maxlength="50" name="email" class="textField" placeholder='you@gmail.com'>
-            <input type='hidden' name='password_request' value='1'>
-            <button type="submit" value="Resend Account Info" class="formButton">Resend Account Info</button>
-        </form>
+    <div class='thick'>
+        <h2>Resend Account Information</h2>
+        <div class='parent'>
+            <form class='child' action="/assistance" method="post">
+                <p>Submit your account email to check for existing ninja name, class, and level information:</p>
+                <input id="email" type="email" title="Please enter the email you set your account up with" maxlength="50" name="email" class="textField" placeholder='you@gmail.com'>
+                <input type='hidden' name='password_request' value='1'>
+                <button type="submit" value="Resend Account Info" class="formButton">Resend Account Info</button>
+            </form>
+        </div>
     </div>
 
-    <nav>
-        <a href="/assistance">Return to the Account Assistance Page</a><br>
-        <a href="/">Return to the Ninjawars Homepage</a>
+    <nav class='thick'>
+        <a href="/assistance"><i class='fa fa-arrow-left'></i> Return to the Account Assistance Page</a><br>
+        <a href="/"><i class='fa fa-home'></i> Return to the Ninjawars Homepage</a>
     </nav>
     <h3>For Other Issues</h3>
         <p>For other issues, please <a href='/staff'>contact us</a>.<p>
