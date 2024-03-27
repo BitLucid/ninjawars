@@ -21,8 +21,8 @@ footer.password-reset{
 	<form method='post' action='/password/post_email'>
 		{* Need CSRF here! *}
 		<label>Email: <input type='email' name='email' value='{$email|default:''|escape}' placeholder='Your email'></label>
-		<label>Or Ninja name: <input type='text' name='ninja_name' value='{$ninja_name|default:''|escape}' placeholder='Your ninja name'></label>
-		<input type='submit' name='request' value='Request'>
+		<span style='padding:0 7rem'><label>Or Ninja name: <input type='text' name='ninja_name' value='{$ninja_name|default:''|escape}' placeholder='Your ninja name'></label></span>
+		<div class='glassbox'><input type='submit' name='request' value='Request'></div>
 	</form>
 </div>
 </section>

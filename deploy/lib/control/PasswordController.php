@@ -40,7 +40,7 @@ class PasswordController extends AbstractController
 
         // Construct the email with Nmail, and then just send it.
         $subject = 'NinjaWars: Your password reset request';
-        $nmail = new Nmail($email, $subject, $rendered, SUPPORT_EMAIL);
+        $nmail = new Nmail($email, $subject, $rendered, SYSTEM_EMAIL, ['replyto' => SUPPORT_EMAIL]);
 
         return (bool) $nmail->send();
     }
@@ -104,8 +104,10 @@ class PasswordController extends AbstractController
 
                 if ($this->sendEmail($p_request->nonce, $account)) {
                     $message = 'Your reset email was sent!';
+                    error_log('Password reset email sent to ' . $account->getActiveEmail());
                 } else {
                     $error = 'Sorry, there was a problem sending to your account!  Please contact support.';
+                    error_log('SIGNUP ERROR: Password reset email failed to send to ' . $account->getActiveEmail());
                 }
             }
         }
