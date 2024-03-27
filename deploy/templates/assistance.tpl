@@ -11,14 +11,14 @@
 <h1>Account Assistance</h1>
 <section class='assistance-area'>
 {if $error}
-    <p class="error">
+    <p class="error fade-in">
     {if $error eq 'invalidemail'}
         The submitted email was invalid.
     {elseif $error eq 'nouser'}
         No user with that email exists.
         Please <a href="/signup">sign up</a> for an account, or <a href="/staff">contact us</a> if you have other account issues.
     {elseif $error eq 'alreadyconfirmed'}
-        That account is already confirmed. If you are having problems logging in, please <a href="/staff">Contact Us</a>.
+        That account may already be confirmed. If you are having problems logging in, please <a href="/staff">Contact Us</a>.
     {elseif $error eq 'emailfail'}
         There was a problem sending to that email.
     {/if}
