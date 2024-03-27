@@ -406,7 +406,7 @@ class Player implements Character
     public function isAdmin(): bool
     {
         $name = strtolower($this->name() ?? '');
-        if ($name == 'tchalvak' || $name == 'beagle' || $name == 'mr_deadpool') {
+        if ($name == 'tchalvak' || $name == 'beagle') {
             return true;
         }
 
