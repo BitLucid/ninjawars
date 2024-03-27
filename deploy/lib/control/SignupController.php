@@ -139,6 +139,8 @@ class SignupController extends AbstractController
                 if (!$sent && defined('DEBUG') && !DEBUG) {
                     throw new \RuntimeException('There was a problem sending your signup to that email address.', 4);
                 }
+            } else {
+                error_log('Signup email not sent, preconfirm: ' . $preconfirm . ' and SIGNUP_EMAIL_SENDOUT_DIVISOR: ' . SIGNUP_EMAIL_SENDOUT_DIVISOR);
             }
         } else {
             throw new \RuntimeException('No account_id came back from creation', 4);
