@@ -193,6 +193,7 @@ link.href = '/images/ninjamaster/shuriken-favicon.png';
 				<dt>Account Identity</dt><dd>{$first_account->identity()|escape}</dd>
 				<dt>Account Id</dt><dd>{$first_account->id()|escape}</dd>
 				<dt>Active Email</dt><dd>{$first_account->getActiveEmail()|escape}</dd>
+	<dt>Type</dt><dd>{$first_account->getType()|escape}{if $first_account->getType() eq 1} Moderator{elseif $first_account->getType() eq 2} Admin{else} - Standard Account{/if}</dd>
 				<dt>Karma Total</dt><dd>{$first_account->getKarmaTotal()|escape}</dd>
 				<dt>Last Login</dt><dd><time class='timeago' datetime='{$first_account->getLastLogin()|escape}'>{$first_account->getLastLogin()|escape}</time></dd>
 				<dt>Last Login Failure</dt><dd><time class='timeago' datetime='{$first_account->getLastLoginFailure()|escape}'>{$first_account->getLastLoginFailure()|escape}</time></dd>
