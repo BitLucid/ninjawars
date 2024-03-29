@@ -48,7 +48,7 @@ class Nmail
         string $subject = null,
         string $body = null,
         array|string $from = null,
-        ?array $extras = null,
+        ?array $extras = null, // like replyto
         $transport = null
     ) {
         $this->to      = $to;

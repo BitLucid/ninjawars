@@ -95,22 +95,32 @@ link.href = '/images/ninjamaster/shuriken-favicon.png';
 	</header>
 	<article>
 		<pre class='hi-pri-warnings spaced'>
-			Alerts and warnings about the game's health 
-			based on live statistics.
+			Alerts and warnings about the game's health based on live statistics.
 
-			{if $usage.new_count eq 0}<span class="alert alert-danger">Danger: Signups appear low, check signup page health, at {$usage.new_count|escape} in the last week.</span>{/if}
-
+			Operational Health:
 
 
-			{if $usage.new_count lt 10}<span class="alert alert-warning">Warning: Recruiting of new players is low, at {$usage.new_count|escape} in the last week.</span>{else}Recruitment of new players seems normal at {$usage.new_count|escape} in the last period.{/if}
+			{if $usage.new_count eq 0}<span class="alert alert-danger"><i class="fa-solid fa-tornado"></i> Danger: Signups appear low, check signup page health, at {$usage.new_count|escape} in the last week.</span>{else}<i class="fa-solid fa-sun"></i> Signup system seems to be functioning normally.{/if}
 
 
 
-			{if $usage.recent_count lt 5}<span class="alert alert-danger">Danger: Recent logins in the last week are at a low level of {$usage.recent_count}, check the login system!</span>{else}Login system seems to be functioning normally.{/if}
+			{if $usage.recent_count lt 5}<span class="alert alert-danger"><i class="fa-solid fa-tornado"></i> Danger: Recent logins in the last week are at a low level of {$usage.recent_count}, check the login system!</span>{else}<i class="fa-solid fa-sun"></i> Login system seems to be functioning normally.{/if}
 
 
 
-			{if $usage.recent_count lt 10}<span class="alert alert-warning">Warning: Current engagement levels seem to be low, recent logins were: {$usage.recent_count}</span>{else}Player engagement levels at least appear to be within normal bounds.{/if}
+
+			Social Engagement Health:
+
+
+			{if $usage.new_count lt 10}<span class="alert alert-warning"><i class="fa-solid fa-cloud-sun-rain"></i> Warning: Recruiting of new players is low, signups are at {$usage.new_count|escape} in the last week.</span>{else}<i class="fa-solid fa-sun"></i> Recruitment of new players seems normal at {$usage.new_count|escape} in the last period.{/if}
+
+
+
+			{if $usage.recent_count lt 10}<span class="alert alert-warning"><i class="fa-solid fa-cloud-sun-rain"></i> Warning: Current engagement levels seem to be low, recent logins were: {$usage.recent_count}</span>{else}<i class="fa-solid fa-sun"></i> Player engagement levels at least appear to be within normal bounds.{/if}
+			
+
+
+			{if $usage.last_hour_attacks_count lt 5}<span class="alert alert-info"> Info: Combat in the last hour seems low, recent attacks were: {$usage.last_hour_attacks_count}</span>{else}<i class="fa-solid fa-sun"></i> Combat occurrances appear to be within normal activity bounds.{/if}
 
 
 		</pre>
@@ -193,9 +203,10 @@ link.href = '/images/ninjamaster/shuriken-favicon.png';
 				<dt>Account Identity</dt><dd>{$first_account->identity()|escape}</dd>
 				<dt>Account Id</dt><dd>{$first_account->id()|escape}</dd>
 				<dt>Active Email</dt><dd>{$first_account->getActiveEmail()|escape}</dd>
+	<dt>Type</dt><dd>{$first_account->getType()|escape}{if $first_account->getType() eq 1} Moderator{elseif $first_account->getType() eq 2} Admin{else} - Standard Account{/if}</dd>
 				<dt>Karma Total</dt><dd>{$first_account->getKarmaTotal()|escape}</dd>
-				<dt>Last Login</dt><dd><time class='timeago' datetime='{$first_account->getLastLogin()|escape}'>{$first_account->getLastLogin()|escape}</time></dd>
-				<dt>Last Login Failure</dt><dd><time class='timeago' datetime='{$first_account->getLastLoginFailure()|escape}'>{$first_account->getLastLoginFailure()|escape}</time></dd>
+				<dt><i class="fa-solid fa-person-running"></i> Last Login</dt><dd><time class='timeago' datetime='{$first_account->getLastLogin()|escape}'>{$first_account->getLastLogin()|escape}</time></dd>
+				<dt><i class="fa-solid fa-door-closed"></i> Last Login Failure</dt><dd><time class='timeago' datetime='{$first_account->getLastLoginFailure()|escape}'>{$first_account->getLastLoginFailure()|escape}</time></dd>
 				<dt>Operational</dt><dd>{if $first_account->isOperational()}true{else}false{/if}</dd>
 				<dt>Confirmed</dt><dd>{if $first_account->isConfirmed()}1{else}0{/if}</dd>
                 <dt>Created</dt><dd><time class="created-time timeago" datetime="{$first_account->created_date|escape}" title="{$first_account->created_date|escape}">
@@ -300,17 +311,24 @@ link.href = '/images/ninjamaster/shuriken-favicon.png';
 			Recent new players in 7 days: <span class='{if $signups.new_count lt 5}warning notice{/if}{if $signups.new_count gt 50}warning notice{/if}'>{$signups.new_count}</span>
 		</p>
 		<div>Recent new player accounts created: {$signups.new_count}</div>
-		<div>Showing the latest {count($signups.new)|escape} signups:</div>
-		<p class='alert alert-info'>Watch out for spam accounts in this list</p>
-		<p class='alert alert-info'>Generally Viper-xxxx are just temporary testing accounts, though.</p>
+		<div><em>(Showing the latest {count($signups.new)|escape} signups:)</em></div>
+		<p class='alert alert-info'>Info: Watch out for spam accounts in this list with totally random non-human names.</p>
+		<p class='alert alert-info'>Note: Generally Viper-xxxx are just temporary testing accounts, though.</p>
 		<div>
 			<ul>
 				{foreach from=$signups.new item='nsChar'}
 					<li>
-						<button type='button' class='btn btn-danger deactivate-character' data-char-id="{$nsChar.player_id}">
+						<button 
+							type='button' 
+							class='btn btn-danger deactivate-character' 
+							data-char-id="{$nsChar.player_id}" 
+							data-char-last-login="{if $nsChar.last_login}1{else}0{/if}"
+						>
 							Deactivate {$nsChar.uname|escape}
 						</button>
-						<a href='?view={$nsChar.player_id|escape}'>{$nsChar.uname|escape}</a> <time class='timeago' datetime='{$nsChar.created_date|escape}'>{$nsChar.created_date|escape}</time> 
+							<a href='?view={$nsChar.player_id|escape}'>view {$nsChar.uname|escape}</a> 
+							<em>Created {if !isset($nsChar.created_date)}(unknown){/if} <time class='timeago' datetime='{$nsChar.created_date|escape}'>{$nsChar.created_date|escape}</time> </em>
+							<em>Last login: {if isset($nsChar.last_login)}<time class='timeago' datetime='{$nsChar.last_login|escape}'>{$nsChar.last_login|escape}</time>{/if}</em>
 					</li>
 				{/foreach}
 			</ul>
@@ -344,23 +362,6 @@ link.href = '/images/ninjamaster/shuriken-favicon.png';
 
 	{include file="ninjamaster.clans.tpl"}
 </div>
-
-{if $dupes}
-<section id='duplicate-ips' class='glassbox special-info'>
-	<header><h3>Duplicate Ips</h3></header>
-	<div class='text-center'>
-		<button class='btn btn-default show-hide-next' type='button'>Show/Hide</button>
-	</div>
-	<div>
-		<p class='alert alert-info'>These are players who have logged in from the same IP address, and thus MAY be the same person/multiaccounters.</p>
-		<p>Generally we want to allow the players to report and find multiplayers as it comes up.</p>
-		<p class='alert alert-warning'>Currently a bug causes the load balancer to give all logins the load balancer's ip, so this list should not be trusted.</p>
-		{foreach from=$dupes item='dupe'}
-		<a href='/ninjamaster/?view={$dupe.player_id|escape}' class='char-name'>{$dupe.uname|escape}</a> :: IP <strong class='ip'>{$dupe.last_ip|escape}</strong> :: days {$dupe.days|escape}<br>
-		{/foreach}
-	</div>
-</section>
-{/if}
 
 <section class='special-info npc-list'>
 	<header><h2 id='npc-list-stats'>Npc list raw info</h2></header>
@@ -462,6 +463,23 @@ link.href = '/images/ninjamaster/shuriken-favicon.png';
 {include file="ninjamaster.items.tpl"}
 	</div>
 </section>
+
+{if $dupes}
+	<section id='duplicate-ips' class='glassbox special-info'>
+		<header><h3>Duplicate Ips</h3></header>
+		<div class='text-center'>
+			<button class='btn btn-default show-hide-next' type='button'>Show/Hide</button>
+		</div>
+		<div>
+			<p class='alert alert-info'>These are players who have logged in from the same IP address, and thus MAY be the same person/multiaccounters.</p>
+			<p>Generally we want to allow the players to report and find multiplayers as it comes up.</p>
+			<p class='alert alert-warning'>Currently a bug causes the load balancer to give all logins the load balancer's ip, so this list should not be trusted.</p>
+			{foreach from=$dupes item='dupe'}
+			<a href='/ninjamaster/?view={$dupe.player_id|escape}' class='char-name'>{$dupe.uname|escape}</a> :: IP <strong class='ip'>{$dupe.last_ip|escape}</strong> :: days {$dupe.days|escape}<br>
+			{/foreach}
+		</div>
+	</section>
+	{/if}
 
 <section class='special-info'>
 	<header><h2 id='aws-services'>AWS Services</h2></header>

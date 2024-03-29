@@ -24,10 +24,15 @@ class AdminViews
         );
         $data['recent_count'] = query_item("select count(player_id) from players left join account_players on player_id = _player_id left join accounts on _account_id = account_id where active = 1 and accounts.last_login > (now() - interval '7 days')");
         $data['new'] = query_array(
-            'select player_id, uname, accounts.created_date from players left join account_players on player_id = _player_id left join accounts on _account_id = account_id where active = 1 order by accounts.created_date desc limit :limit',
+            'select player_id, uname, accounts.created_date, accounts.last_login, accounts.operational, accounts.confirmed from players left join account_players on player_id = _player_id left join accounts on _account_id = account_id where active = 1 order by accounts.created_date desc limit :limit',
             [':limit' => $limit]
         );
         $data['new_count'] = query_item("select count(player_id) from players left join account_players on player_id = _player_id left join accounts on _account_id = account_id where active = 1 and accounts.created_date > (now() - interval '7 days')");
+        $data['last_hour_attacks'] = query_array(
+            'select player_id, uname, accounts.created_date, accounts.last_login, accounts.operational, accounts.confirmed from players left join account_players on player_id = _player_id left join accounts on _account_id = account_id where active = 1 and players.last_started_attack > (now() - interval \'1 hour\') order by players.last_started_attack desc limit :limit',
+            [':limit' => $limit]
+        );
+        $data['last_hour_attacks_count'] = query_item("select count(player_id) from players left join account_players on player_id = _player_id left join accounts on _account_id = account_id where active = 1 and players.last_started_attack > (now() - interval '1 hour')");
         return $data;
     }
 

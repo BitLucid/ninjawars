@@ -33,7 +33,9 @@
 		Sorry to see you go!  Come back soon!<br />
 		<br />
 		You can:<br />
-		<a href='/'>return to <i class="fa-solid fa-house"></i> the homepage</a> <i class="fa-solid fa-arrow-left"></i> OR <i class="fa-solid fa-arrow-right"></i> <a class='btn btn-primary' href='/login'><i class="fa-solid fa-lock"></i> log in again.</a>
+		<div class='thick' style='font-size:larger'>
+			<a href='/'>return to <i class="fa-solid fa-house"></i> the homepage</a> <span style='margin-left:5rem;margin-right:5rem'><i class="fa-solid fa-arrow-left"></i> OR <i class="fa-solid fa-arrow-right"></i> </span> <a class='btn btn-primary' href='/login'><i class="fa-solid fa-lock"></i> log in again.</a>
+		</div>
 	</p>
 </section>
 <section id='logout-ads' class='ad-section glassbox'>
