@@ -3,6 +3,7 @@
 
 /* eslint max-lines-per-function: ["error", 100] */
 
+// eslint-disable-next-line import/extensions
 import api from './api.js';
 
 // eslint-disable-next-line no-var
@@ -61,6 +62,7 @@ const performTalk = () => {
   // eslint-disable-next-line no-alert
   $('#delete-messages form').on(
     'submit',
+    // eslint-disable-next-line no-alert
     () => window && window.confirm('Delete all messages?'),
   ); // *** boolean return value ***
 
