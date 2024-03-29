@@ -13,9 +13,12 @@ var NW = (window && window.NW) ? window.NW : {};
 
 // A different instance of jquery is currently used in the iframe and outside.
 
+// eslint-disable-next-line max-len
+const checkClass = (element, className) => element && element.classList && element.classList.contains(className);
+
 // eslint-disable-next-line camelcase
 const g_isIndex = window.location.pathname.substring(1) === 'index.php'
-  || $('body').hasClass('main-body');
+  || checkClass(document && document.body, 'main-body');
 // This line requires and makes use of the $ jQuery var!
 const g_isLive = window.location.host !== 'localhost';
 const g_isRoot = window.location.pathname === '/';

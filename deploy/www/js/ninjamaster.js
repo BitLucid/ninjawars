@@ -101,7 +101,7 @@ const initializeClans = () => {
   $('#clan-list-progress').hide();
   $('#load-clans').on('click', () => {
     $('#clan-list-progress').show();
-    api.clans().then(sleeper(1000)).then((response) => {
+    api.clans().then(sleeper(100)).then((response) => {
       clearClanCards();
       response.json().then((data) => {
         // loop over the clan list and add the data of each clan to it
@@ -123,6 +123,19 @@ const initializeClans = () => {
   }
 };
 
+const performDeactivation = (charId) => api.deactivateChar(charId);
+
+const doubleCheckDeactivation = ({ lastLogin }) => {
+  if (lastLogin) {
+    // eslint-disable-next-line no-alert
+    const result = window.confirm('Are you sure? This character has a last_login');
+    if (result === false) {
+      return false;
+    }
+  }
+  return true;
+};
+
 const initializeDeactivation = () => {
   $('#start-deactivate').on('click', () => {
     $('#start-deactivate').hide();
@@ -132,8 +145,9 @@ const initializeDeactivation = () => {
   // So that we can turn off problematic characters
   $('#deactivate-character').on('click', function () {
     const charId = $(this).data('char-id');
-    api.deactivateChar(charId).then(() => {
-      // eslint-disable-next-line no-unused-expressions
+    const charqactive = $(this).data('char-last-login');
+    doubleCheckDeactivation({ last_login: charqactive });
+    performDeactivation(charId).then(() => {
       window?.location?.reload();
     });
   });
@@ -142,8 +156,9 @@ const initializeDeactivation = () => {
   $('button.deactivate-character').on('click', function () {
     const refer = $(this);
     const charId = $(this).data('char-id');
-    api.deactivateChar(charId).then(() => {
-      // eslint-disable-next-line no-unused-expressions
+    const charqactive = $(this).data('char-last-login');
+    doubleCheckDeactivation({ lastLogin: charqactive });
+    performDeactivation(charId).then(() => {
       refer.parent().hide();
     });
   });
@@ -160,12 +175,12 @@ const initializeDeactivation = () => {
 
 $(function initializeNMPage() {
   // Handle the show/hide sections
+  $('.show-hide-next').parent().next().toggle();
   $('.show-hide-next')
     .on('click', function showHideNext() {
       $(this).parent().next().slideToggle();
     })
     .html("<span class='slider'><span class='dot'></span></span>");
-  $('.show-hide-next').parent().next().toggle();
 
   initializeClans();
 

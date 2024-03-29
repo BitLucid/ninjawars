@@ -62,6 +62,9 @@ class Api
         } else {
             $char = Player::find($char_id);
             if ($char) {
+                if ($char->isAdmin()) {
+                    return ['error' => 'Cannot deactivate an admin character.'];
+                }
                 $chars_deactivated = Account::deactivateSingleCharacter($char);
                 $accounts_deactivated = Account::deactivateByCharacter($char);
             }

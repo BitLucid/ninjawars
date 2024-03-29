@@ -399,9 +399,10 @@ class Player implements Character
 
 
     /**
-     * @return boolean
+     * @return boolean Check of whether a player is an admin OR A MOD
      * hardcoded hack at the moment
      * @note To be replaced by an in-database account toggle eventually
+     * Note:
      */
     public function isAdmin(): bool
     {
