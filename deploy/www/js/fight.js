@@ -5,6 +5,7 @@
 import api from './api.js';
 import { logger, urlParam } from './utils.js';
 
+// eslint-disable-next-line no-unused-vars
 const { debug, log } = logger();
 
 // State handling for the current place

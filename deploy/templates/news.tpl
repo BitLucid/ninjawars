@@ -1,6 +1,8 @@
 <link rel="stylesheet" type="text/css" href="{cachebust file="/css/news.css"}">
 <section id='news-list'>
-  <h1>News</h1>
+  <header>
+    <h1 role='heading'>News</h1>
+  </header>
 {if isset($create_successful) and $create_successful}
   <div class='parent'>
     <div class='success-notice child'>

@@ -83,10 +83,10 @@ a.dull-link#join-link, a.dull-link#continue-link{
 </style>
 
 <section>
-  <div id='main-page-headings'>
+  <header id='main-page-headings'>
     <h1>The Ninja Game at Ninjawars.net</h1>
     <h2>Live by the Shuriken!</h2>
-  </div>
+  </header>
 
   <!-- Intro paragraphs -->
   <div style="margin: 0 auto;text-align: start;">

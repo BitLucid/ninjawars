@@ -5,6 +5,7 @@
 
 // eslint-disable-next-line no-unused-vars
 const loginInitialized = true;
+// eslint-disable-next-line no-unused-vars
 let loginFinalized = false;
 
 /**
