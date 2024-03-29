@@ -9,4 +9,5 @@ if [ -f /tmp/queued_restart.pid ]; then
     service php8.3-fpm restart
     echo "reloaded nginx and restarted php-fpm"
     rm /tmp/queued_restart.pid
+    touch /tmp/last_queue_restart_date
 fi
