@@ -23,6 +23,8 @@ https://www.ninjawars.net
 <br /><br />
 The most recently deployed features are likely here:
 <br /><br />
+https://ninjawars.deploybot.com/
+<br /><br />
 https://github.com/BitLucid/ninjawars/pulls?q=is%3Apr+is%3Aclosed
 <br /><br />
 If you have any questions or concerns, please contact the development team.
