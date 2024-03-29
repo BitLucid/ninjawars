@@ -8,7 +8,6 @@ require_once(dirname(__DIR__ . '..') . '/lib/base.inc.php');
 
 use Nmail;
 
-
 function sendDeploymentEmail($subject, $message)
 {
     $nmail = new NMail(SUPPORT_EMAIL, $subject, $message, SYSTEM_EMAIL);
