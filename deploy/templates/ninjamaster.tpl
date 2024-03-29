@@ -102,7 +102,7 @@ link.href = '/images/ninjamaster/shuriken-favicon.png';
 
 
 
-			{if $usage.new_count lt 10}<span class="alert alert-warning">Warning: Recruiting of new players is low, at {$usage.new_count|escape} in the last week.</span>{else}Recruitment of new players seems normal at {$usage.new_count|escape} in the last period.{/if}
+			{if $usage.new_count lt 10}<span class="alert alert-warning">Warning: Recruiting of new players is low, signups are at {$usage.new_count|escape} in the last week.</span>{else}Recruitment of new players seems normal at {$usage.new_count|escape} in the last period.{/if}
 
 
 

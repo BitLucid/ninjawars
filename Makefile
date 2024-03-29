@@ -349,6 +349,13 @@ restart-webserver:
 post-deploy-restart: # for deploybot after deployment
 	sh /srv/ninjawars/deploy/cron/queued_restart.sh
 
+post-deploy-queue-restart:
+	touch /tmp/queued_restart.pid
+	touch /tmp/queued_restart.last
+
+post-deploy: post-deploy-queue-restart deployment-final-email
+	echo "Email sent, post deployment complete"
+
 link-vendor:
 	rm -rf ./vendor
 	ln -sf ./deploy/vendor ./vendor
@@ -381,6 +388,9 @@ composer-ratelimit-setup:
 	@export COMPOSER_AUTH=$(COMPOSER_AUTH)
 
 deployment-final-check: check-vendors-installed
+
+deployment-final-email:
+	php ./deploy/deployed_scripts/deployment_email.php
 
 composer-ratelimit-check:
 	@echo "Will error if composer_AUTH not available to use"
