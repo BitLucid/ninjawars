@@ -15,6 +15,7 @@ describe('signup a newbie ninja', () => {
     // cy.standardLogin()
   })
   afterEach(() => {
+    // Here for any future cleanup needs
   })
 
   it('allows signup (with random test-strings)', () => {

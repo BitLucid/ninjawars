@@ -249,6 +249,7 @@ test-ratchets:
 	python3 -m pytest deploy/tests/functional/test_ratchets.py
 
 test-cleanup:
+	# Sometimes partial test runs create problem ninja accounts, this is how to clean all that up
 	psql nw -c "delete from accounts where account_id in (select account_id from accounts join account_players ap on accounts.account_id = ap._account_id join players on ap._player_id = players.player_id where uname like 'phpunit_%')"
 	psql nw -c "delete from players where uname like 'phpunit_%'"
 
@@ -348,6 +349,13 @@ restart-webserver:
 post-deploy-restart: # for deploybot after deployment
 	sh /srv/ninjawars/deploy/cron/queued_restart.sh
 
+post-deploy-queue-restart:
+	touch /tmp/queued_restart.pid
+	touch /tmp/queued_restart.last
+
+post-deploy: post-deploy-queue-restart deployment-final-email
+	echo "Email sent, post deployment complete"
+
 link-vendor:
 	rm -rf ./vendor
 	ln -sf ./deploy/vendor ./vendor
@@ -381,13 +389,14 @@ composer-ratelimit-setup:
 
 deployment-final-check: check-vendors-installed
 
+deployment-final-email:
+	php ./deploy/deployed_scripts/deployment_email.php
+
 composer-ratelimit-check:
 	@echo "Will error if composer_AUTH not available to use"
 ifndef COMPOSER_AUTH
 $(error COMPOSER_AUTH is not set)
 endif
-
-	
 
 
 

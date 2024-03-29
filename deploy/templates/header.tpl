@@ -12,13 +12,17 @@
 
     <title>{$title|escape} - The Ninja Wars Ninja Game</title>
 
-    <!-- Bootstrap core CSS -->
+    <!-- Bootstrap 3.4.1 core CSS -->
     <link href="/css/bootstrap.min.css" rel="stylesheet">
     <link href="/css/style.css" rel="stylesheet">
+    <script
+        src="https://js.sentry-cdn.com/7df405cef72d484e9853b187e258b3ea.min.js"
+        crossorigin="anonymous"
+    ></script>
     <script src="https://kit.fontawesome.com/9d4bd8fe2e.js" crossorigin="anonymous"></script>
     <link rel="manifest" href="/manifest.json">
 
-    <!-- Bootstrap core JavaScript
+    <!-- Bootstrap 3.4.1 core JavaScript
     ================================================== -->
     <!-- Google jquery CDN version, sync composer component for tests if changed -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>

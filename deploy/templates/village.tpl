@@ -18,7 +18,9 @@
 
 <section id='full-chat' class='dont-break-out'>
 
-	<h1>Chat Board</h1>
+  <header>
+	  <h1>Chat Board</h1>
+  </header>
 
 	{if $error}<div class='error'>{$error}</div>{/if}
 

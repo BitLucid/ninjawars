@@ -6,11 +6,23 @@
     flex-direction:column;
     justify-content: space-between;
   }
+  /* This expands the moddle section to fill most of the space */
   .three-bar > div, .three-bar > section{
     flex:1;
   }
+  .three-bar > .login-section{
+    min-height: 50vh;
+  }
   .grecaptcha-badge { 
     visibility: hidden; 
+  }
+  /* media query for mobile */
+  @media (max-width: 767px) {
+    .shade-box .row{
+      margin-right: 0;
+      margin-left: 0;
+      padding: 2rem;
+    }
   }
 {/literal}
 </style>
@@ -20,7 +32,7 @@
 
     {if $login_error_message}
         <!-- This section only gets displayed in the event of an incorrect login -->
-          <div id='login-error' class="error" role='alert'>
+          <div id='login-error' class="error fade-in" role='alert'>
             {* Unescaped error to allow for links. *}
             {$login_error_message}
           </div>
@@ -39,7 +51,7 @@
       <div class='shade-box'>
         <form id="login-form" class="form-horizontal" action="/login/login_request" method="post">
           <input type="hidden" name="ref" value="{isset($referrer) && $referrer|escape}" />
-            <div class='row'>
+            <div class='row top-buffer'>
             <label>
               <div class='line'>
                 <span class='left-side'>Email or ninja name</span>
@@ -72,7 +84,7 @@
               <div class='centered'>
                 <input tabindex=3 name="login_request" id='request-login' class='btn btn-vital' type="submit" value="Login">
               </div>
-              <div class='centered'>
+              <div class='centered my-thick'>
                 <a tabindex=4 href='/assistance'>forgot?</a>
               </div>
             </div>
@@ -97,4 +109,5 @@
   {* see https://www.google.com/recaptcha/admin/site/692084162/settings *}
   <!-- See staff page for policy information. -->
   <script src="https://www.recaptcha.net/recaptcha/api.js?render={$smarty.const.RECAPTCHA_SITE_KEY}"></script>
+  <script src='/js/login.js'></script>
 </div>

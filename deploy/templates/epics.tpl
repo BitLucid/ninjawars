@@ -1,5 +1,6 @@
 <link href='/css/epics.css' rel='stylesheet' type='text/css' />
 <script src='/js/epics.js'></script>
+<script type='module' src='/js/ninjamaster.js'></script>
 <main id='epics'>
     <nav style='float:left'><span>
             <a href='/'><button type='button' class='btn btn-default'><i class='fa fa-home'></i></button></a>
@@ -84,6 +85,11 @@
                 <a class='btn btn-info' href='#interview-section'>Interview</a>
                 <a class='btn btn-info' href='#staff-section'>Staff</a>
                 <a class='btn btn-info' href='#ninjamaster-section'>Ninjamaster</a>
+                <a class='btn btn-info' href='#ninjamaster-items-section'>Ninjamaster.items</a>
+                <a class='btn btn-info' href='#ninjamaster-clans-section'>Ninjamaster.clans</a>
+                <a class='btn btn-info' href='#email-messages-section'>Email.messages</a>
+                <a class='btn btn-info' href='#homepage-unread-section'>Homepage.unread</a>
+                <a class='btn btn-info' href='#password-reset-section'>Password.reset</a>
             </div>
         </nav>
     </header>
@@ -538,6 +544,47 @@
             <h2>Ninjamaster</h2>
             <p class='epic-note'>Currently commented out</p>
             {* {include file="ninjamaster.tpl"} *}
+        </section>
+
+        <section id='ninjamaster-items-section'>
+            <h2>Ninjamaster.items</h2>
+            {assign var="items" value=['shuriken'=>['item_id'=>232323, 'usage'=>'Thow the sharp end at someone', 'other_usable'=>true, 'name'=>'Shuriken', 'item_internal_name'=> 'shuriken', 'item_display_name'=>'Shuriken', 'image'=>'', 'item_cost'=>999, 'count'=>4321], 'shuriken2'=>['item_id'=>2324444, 'usage'=>'Thow the sharp end at someone', 'other_usable'=>true, 'name'=>'Shuriken2', 'item_internal_name'=> 'shuriken', 'item_display_name'=>'Shuriken', 'image'=>'', 'item_cost'=>999, 'count'=>4321]]}
+            {include file="ninjamaster.css.tpl"}
+            {include file="ninjamaster.items.tpl"}
+        </section>
+
+        <section id='ninjamaster-clans-section'>
+            <h2>Ninjamaster.clans</h2>
+            {include file="ninjamaster.clans.tpl"}
+        </section>
+
+        <section id='email-messages-section'>
+            <h2>Email.messages</h2>
+            <div>
+            {include file="email.messages.tpl"}
+            </div>
+        </section>
+
+        <section id='homepage-unread-section'>
+            <h2>Homepage.unread</h2>
+            <div>
+                <a href="/messages" target="main">
+                <i class='fa fa-envelope'></i> <span class='badge' id='unread-count'>•</span>
+                </a>
+            </div>
+            <script type='module' src='/js/homepage.js'></script>
+        </section>
+
+        <section id='password-reset-section'>
+            <h2>Password.reset</h2>
+            {assign var="message" value='Some message here'}
+            {assign var="token" value='xxxxxxxxxxxxxxxxxx'}
+            <div>
+            {include file="reset.password.request.tpl"}
+            </div>
+            <div>
+            {include file="reset.password.tpl"}
+            </div>
         </section>
 
         <section id='about-section'>

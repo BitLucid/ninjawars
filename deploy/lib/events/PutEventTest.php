@@ -50,6 +50,7 @@ class PutEventTest extends NWTest
             'html' => '<h1>Simple Title for in body</h1><p>Some html of the email body that is sent in: Test event fired via lambda email sendout nwEmailSendout function</p>',
             //'to' => $dirty_email,
         ];
+        error_log('Expect an error on the lack of a from address here: ');
         $errorOrNone = validateEmailIncomingConfig($config);
         $this->assertIsString($errorOrNone);
     }

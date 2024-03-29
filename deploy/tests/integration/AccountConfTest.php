@@ -180,7 +180,7 @@ class AccountConfTest extends NWTest
         $controller = new LoginController();
         $res = $controller->performLogin($email, $this->test_password);
         $this->assertNotEmpty($account, 'No account was created');
-        $this->assertNotEquals(true, $account->operational, 'Account was confirmed despite not using an autoconfirm email');
+        $this->assertNotEquals(true, $account->confirmed, 'Account was confirmed despite not using an autoconfirm email');
         $this->assertNotEquals('', $res, 'No error string returned from login returned, indicating the login was able to continue');
         $this->assertNotEmpty($res, 'No error string returned from login returned, indicating the login was able to continue');
     }
@@ -190,7 +190,7 @@ class AccountConfTest extends NWTest
     {
         $player = Player::findByName($this->test_ninja_name);
         $account = Account::findByChar($player);
-        $account->confirmed = 1;
+        $account->setConfirmed(true);
         $account->save();
 
         $active_string = query_item(

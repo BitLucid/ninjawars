@@ -1,9 +1,16 @@
 /* eslint-disable func-names */
 /* eslint-disable prefer-arrow-callback */
 /* Functions for ninjamaster */
+/* eslint max-lines: ["error", 200] */
 
 // eslint-disable-next-line import/extensions
 import api from './api.js';
+
+import {
+  variantStableSeeds, seededString, seededRandom,
+  seededInt, seededNinjaName,
+  // eslint-disable-next-line import/extensions
+} from './seededRandom.js';
 
 // eslint-disable-next-line no-var
 var presence = window.presence || {};
@@ -18,24 +25,29 @@ const escape = (unsafe) => {
 const clanComponent = ({ clan }) => `
         <li class='card'>
           <div class='glassbox'>
-            ${clan.clan_name} 
-            ${clan.clan_id} 
-            <time class='timeago' datetime='${escape(clan.clan_created_date)}'>${escape(clan.clan_created_date)}</time>
+            <h4>${clan.clan_name}</h4>
+            <div>
+              id: ${clan.clan_id}
+              <br />
+              Founded <time class='timeago' datetime='${escape(clan.clan_created_date)}'>${escape(clan.clan_created_date)}</time>
+            </div>
+            <div>by ${escape(clan.clan_founder)}</div>
+            <a href='/clan/view?clan_id=${escape(clan.clan_id)}'><i class='fa-solid fa-eye'></i> Clan Page</a>
             <a href='${escape(clan.clan_avatar_url ?? '')}'>Avatar</a>
             <figure>
               <img style='max-height:35rem;max-width:35rem' src='${escape(clan.clan_avatar_url)}' alt='' />
-              <figcaption>Clan Avatar: ${clan.clan_avatar_url ? '' : 'None'}</figcaption>
+              <figcaption>Clan Avatar: ${clan.clan_avatar_url ? '' : 'X'}</figcaption>
             </figure>
-            Founded by ${escape(clan.clan_founder)}
-            <a href='/clan/view?clan_id=${escape(clan.clan_id)}'><i class='fa-solid fa-eye'></i> Clan Page</a>
+            <blockquote>${escape(clan.clan_description)}</blockquote>
             <details>
-              <summary>Summary</summary>
+              <summary>Data Summary</summary>
               ${escape(JSON.stringify(clan))}
             </details>
           </div>
         </li>
 `;
 
+// Adds a delay to a promise
 function sleeper(ms) {
   return function (x) {
     return new Promise((resolve) => {
@@ -44,21 +56,84 @@ function sleeper(ms) {
   };
 }
 
+const addClanCard = (clan) => {
+  $('#clan-list-area').append(clanComponent({ clan }));
+};
+
+const clearClanCards = () => {
+  $('#clan-list-area').empty();
+};
+
+const dotString = (num) => {
+  let dots = '';
+  for (let i = 0; i < num; i += 1) {
+    // utf-8 bullet point
+    dots += '\u2022';
+  }
+  return dots;
+};
+
+// An array of ints cached by localStorage
+const variantSeeds = variantStableSeeds(100);
+
+// Template random clan data, seed is a Math.random equivalent
+const clanData = (seed, dotted = false) => ({
+  clan_name: dotted ? dotString(13) : `Cln ${seededString(seed, 13, 5)}`,
+  clan_id: dotted ? dotString(4) : `${1 + seededInt(seed)}`,
+  clan_created_date: dotted ? `${dotString(5)} years ago` : '2020-01-01',
+  clan_avatar_url: (seededRandom(seed) < 0.5 && !dotted) ? 'https://i.imgur.com/eflshHR.gif' : '',
+  clan_founder: dotted ? dotString(15) : `${seededNinjaName(seed)}`,
+  description: dotted ? dotString(30) : `Description ${seededString(seed, 30, 1)}`,
+});
+
+// Display seeded random clans
+const provideInitialTemplate = (num = 7, seeded = true) => {
+  // go through the seeds and add a clan card based on seeded data
+  [...Array(num).keys()].forEach((n) => {
+    addClanCard(clanData(variantSeeds[n], !seeded));
+  });
+};
+
+/**
+ * Initialize the CLANS list with a template for scenarios like /epics
+ */
 const initializeClans = () => {
   $('#clan-list-progress').hide();
   $('#load-clans').on('click', () => {
     $('#clan-list-progress').show();
-    api.clans().then(sleeper(1000)).then((response) => {
+    api.clans().then(sleeper(100)).then((response) => {
+      clearClanCards();
       response.json().then((data) => {
         // loop over the clan list and add the data of each clan to it
         data.clans.forEach((clan) => {
-          $('#clan-list-area').append(clanComponent({ clan }));
+          addClanCard(clan);
         });
         $('#clan-list-progress').hide();
         $('#load-clans').hide();
       });
     });
   });
+  // For epics page, display usable template immediately
+  if (window?.location.href.indexOf('epics') > -1) {
+    provideInitialTemplate(7);
+    $('#clan-list-progress').show();
+  } else {
+    // Provide dotted skeleton template
+    provideInitialTemplate(7, false);
+  }
+};
+
+const performDeactivation = (charId) => api.deactivateChar(charId);
+
+const doubleCheckDeactivation = ({ lastLogin }) => {
+  if (lastLogin) {
+    // eslint-disable-next-line no-alert
+    const result = window.confirm('Are you sure? This character has a last_login');
+    if (result === false) {
+      return false;
+    }
+  }
+  return true;
 };
 
 const initializeDeactivation = () => {
@@ -70,8 +145,9 @@ const initializeDeactivation = () => {
   // So that we can turn off problematic characters
   $('#deactivate-character').on('click', function () {
     const charId = $(this).data('char-id');
-    api.deactivateChar(charId).then(() => {
-      // eslint-disable-next-line no-unused-expressions
+    const charqactive = $(this).data('char-last-login');
+    doubleCheckDeactivation({ last_login: charqactive });
+    performDeactivation(charId).then(() => {
       window?.location?.reload();
     });
   });
@@ -80,8 +156,9 @@ const initializeDeactivation = () => {
   $('button.deactivate-character').on('click', function () {
     const refer = $(this);
     const charId = $(this).data('char-id');
-    api.deactivateChar(charId).then(() => {
-      // eslint-disable-next-line no-unused-expressions
+    const charqactive = $(this).data('char-last-login');
+    doubleCheckDeactivation({ lastLogin: charqactive });
+    performDeactivation(charId).then(() => {
       refer.parent().hide();
     });
   });
@@ -94,16 +171,16 @@ const initializeDeactivation = () => {
       window?.location?.reload();
     });
   });
-};
+}; // end of deactivation section
 
 $(function initializeNMPage() {
   // Handle the show/hide sections
+  $('.show-hide-next').parent().next().toggle();
   $('.show-hide-next')
-    .click(function showHideNext() {
+    .on('click', function showHideNext() {
       $(this).parent().next().slideToggle();
     })
     .html("<span class='slider'><span class='dot'></span></span>");
-  $('.show-hide-next').parent().next().toggle();
 
   initializeClans();
 

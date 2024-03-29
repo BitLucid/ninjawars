@@ -5,6 +5,7 @@
 const clan = {
   leave: () => {
     const navig = window && window.location && window.location.href ? (url) => { window.location.href = url; } : (url) => { console.info('Unable to navigate to url:', url); };
+    // eslint-disable-next-line no-alert
     if (window && window.confirm('Do you really want to exit the clan?')) {
       navig('/clan/leave');
     }

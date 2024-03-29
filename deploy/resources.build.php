@@ -15,7 +15,7 @@ define('OFFLINE', false);                // *** Controls if remote or local reso
 define('DEBUG', true);                    // *** Shorter debugging constant name, set as false on live.
 define('SERVER_ROOT', realpath(__DIR__) . '/');        // *** The root deployment directory of the game
 // Generally for the install purposes the SERVER_ROOT should correspond to /srv/ninjawars/deploy/
-define('WEB_ROOT', "http://localhost:8765/");            // *** The base URL used to access the game, http://www.ninjawars.net on live
+define('WEB_ROOT', "http://localhost:8765/");            // *** The base URL used to access the game, https://www.ninjawars.net on live
 define('ADMIN_EMAIL', "ninjawarsTchalvak@gmail.com");        // *** For logs/emailed errors.
 define('SUPPORT_EMAIL', "ninjawarsTchalvak@gmail.com");    // *** For public questions.
 define('SUPPORT_EMAIL_NAME', "Ninjawars Tchalvak");
@@ -27,6 +27,7 @@ define('ALERTS_EMAIL', SUPPORT_EMAIL);
 define('RECAPTCHA_SITE_KEY', '6LfCXUApAAAAAE1mAtknayTQDVGcj76sSQbtUF8t');
 define('RECAPTCHA_SECRET_KEY', 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
 define('RECAPTCHA_DIVISOR', 9999); // Default to 1 if not defined
+define('SIGNUP_EMAIL_SENDOUT_DIVISOR', 20); // Temporarily decrease the chance of signup email being sent out
 
 define('FACEBOOK_APP_ID', '30479872633'); // Non-confidential id for the facebook app
 define('FACEBOOK_APP_SECRET', 'mooMooIAmACow'); // Secret! string for facebook login auth stuff.

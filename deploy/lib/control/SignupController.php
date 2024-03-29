@@ -132,10 +132,15 @@ class SignupController extends AbstractController
         $account_id = $this->createAccountAndNinja($player_params);
 
         if ($account_id) {
-            $sent = $this->sendSignupEmail($account_id, $p_request->enteredEmail, $p_request->enteredName, $confirm, $p_request->enteredClass);
+            if (!$preconfirm && (defined('SIGNUP_EMAIL_SENDOUT_DIVISOR') && (rand(1, SIGNUP_EMAIL_SENDOUT_DIVISOR) === 1))) {
+                // Send the email (if it's not preconfirmed, it's sent in the confirmation step
+                $sent = $this->sendSignupEmail($account_id, $p_request->enteredEmail, $p_request->enteredName, $confirm, $p_request->enteredClass);
 
-            if (!$sent && defined('DEBUG') && !DEBUG) {
-                throw new \RuntimeException('There was a problem sending your signup to that email address.', 4);
+                if (!$sent && defined('DEBUG') && !DEBUG) {
+                    throw new \RuntimeException('There was a problem sending your signup to that email address.', 4);
+                }
+            } else {
+                error_log('Signup email not sent, preconfirm: ' . $preconfirm . ' and SIGNUP_EMAIL_SENDOUT_DIVISOR: ' . SIGNUP_EMAIL_SENDOUT_DIVISOR);
             }
         } else {
             throw new \RuntimeException('No account_id came back from creation', 4);

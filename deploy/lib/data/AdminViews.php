@@ -24,10 +24,15 @@ class AdminViews
         );
         $data['recent_count'] = query_item("select count(player_id) from players left join account_players on player_id = _player_id left join accounts on _account_id = account_id where active = 1 and accounts.last_login > (now() - interval '7 days')");
         $data['new'] = query_array(
-            'select player_id, uname, accounts.created_date from players left join account_players on player_id = _player_id left join accounts on _account_id = account_id where active = 1 order by accounts.created_date desc limit :limit',
+            'select player_id, uname, accounts.created_date, accounts.last_login, accounts.operational, accounts.confirmed from players left join account_players on player_id = _player_id left join accounts on _account_id = account_id where active = 1 order by accounts.created_date desc limit :limit',
             [':limit' => $limit]
         );
         $data['new_count'] = query_item("select count(player_id) from players left join account_players on player_id = _player_id left join accounts on _account_id = account_id where active = 1 and accounts.created_date > (now() - interval '7 days')");
+        $data['last_hour_attacks'] = query_array(
+            'select player_id, uname, accounts.created_date, accounts.last_login, accounts.operational, accounts.confirmed from players left join account_players on player_id = _player_id left join accounts on _account_id = account_id where active = 1 and players.last_started_attack > (now() - interval \'1 hour\') order by players.last_started_attack desc limit :limit',
+            [':limit' => $limit]
+        );
+        $data['last_hour_attacks_count'] = query_item("select count(player_id) from players left join account_players on player_id = _player_id left join accounts on _account_id = account_id where active = 1 and players.last_started_attack > (now() - interval '1 hour')");
         return $data;
     }
 
@@ -96,6 +101,16 @@ class AdminViews
 
 
     /**
+     * Partially obsfucate an email address for display
+     */
+    private static function redactEmail($email): string
+    {
+        // Redact the email by removing the center of the first part, and the center of the domain
+        return $email != '' ? substr($email, 0, 5) . '...@.....' . substr($email, -5) : $email;
+    }
+
+
+    /**
      * Reformat the character info sets.
      *
      * @return Array
@@ -120,6 +135,10 @@ class AdminViews
             $res[$id]['first'] = $first;
             unset($res[$id]['messages']); // Exclude the messages for length reasons.
             unset($res[$id]['description']); // Ditto
+            // Redactions
+            unset($res[$id]['verification_number']);
+            unset($res[$id]['hash']);
+            $res[$id]['email'] = self::redactEmail($res[$id]['email']);
             $first = false;
         }
 

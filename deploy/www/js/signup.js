@@ -4,7 +4,8 @@
 // @ts-check
 
 // const { location: tLocation, top: tTop } = window;
-// const { location: tFrameLocation } = tTop || {};
+// const { location: tFrameLocation } = tTop ?? {};
+// const topNW = tTop && tTop.NW;
 // eslint-disable-next-line no-unused-vars
 const { log, debug } = console || { log: () => { /** noop */ }, debug: () => { /** noop */ } };
 
@@ -14,7 +15,7 @@ const { log, debug } = console || { log: () => { /** noop */ }, debug: () => { /
 (() => {
   debug('iife run on signup.js');
   // // eslint-disable-next-line eqeqeq
-  // if (tLocation != tFrameLocation) { // Framebreak on the signup page as well.
+  // if (tLocation != tFrameLocation && tTop !== null) { // Framebreak on the signup page as well.
   //   if (window.top && window.top.location && window.top.location.href) {
   //     window.top.location.href = document.location.href;
   //   }

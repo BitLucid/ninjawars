@@ -120,6 +120,27 @@ class Account extends stdClass
     }
 
     /**
+     * Partially obsfucate an email address for display
+     */
+    private static function redactEmail($email): string
+    {
+        // Redact the email by removing the center of the first part, and the center of the domain
+        return substr($email, 0, 5) . '...@.....' . substr($email, -5);
+    }
+
+    public static function redact($account): Account
+    {
+        $account->active_email = self::redactEmail($account->active_email);
+        $account->account_identity = self::redactEmail($account->account_identity);
+        $info = $account->info;
+        $info['active_email'] = self::redactEmail($account->active_email);
+        $info['account_identity'] = self::redactEmail($account->account_identity);
+        $account->info = $info;
+        $account->verification_number = null;
+        return $account;
+    }
+
+    /**
      * Get an account for a character
      *
      * @param Character $char

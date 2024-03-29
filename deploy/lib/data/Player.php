@@ -399,14 +399,15 @@ class Player implements Character
 
 
     /**
-     * @return boolean
+     * @return boolean Check of whether a player is an admin OR A MOD
      * hardcoded hack at the moment
      * @note To be replaced by an in-database account toggle eventually
+     * Note:
      */
     public function isAdmin(): bool
     {
         $name = strtolower($this->name() ?? '');
-        if ($name == 'tchalvak' || $name == 'beagle') {
+        if ($name == 'tchalvak' || $name == 'beagle' || $name == 'mr_deadpool') {
             return true;
         }
 
@@ -891,6 +892,29 @@ class Player implements Character
     {
         $id = query_item('select player_id from players where lower(uname) = lower(:name) limit 1', [':name' => $name]);
         return self::find($id);
+    }
+
+
+    /**
+     * Partially obsfucate an email address for display
+     */
+    private static function redactEmail($email): string
+    {
+        // Redact the email by removing the center of the first part, and the center of the domain
+        return substr($email, 0, 5) . '...@.....' . substr($email, -5);
+    }
+
+    public static function redact(Player $char, $options = [])
+    {
+        $redacted = clone $char;
+        $redacted->vo = clone $char->vo;
+        $redacted->vo->email = self::redactEmail($char->vo->email);
+        $redacted->vo->ip = null;
+        $redacted->vo->verification_number = null;
+        $redacted->vo->confirmed = null;
+        $redacted->vo->pname = null;
+        $redacted->vo->last_started_attack = null;
+        return $redacted;
     }
 
     /**
