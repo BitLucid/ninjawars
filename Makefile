@@ -351,7 +351,7 @@ post-deploy-restart: # for deploybot after deployment
 
 post-deploy-queue-restart:
 	touch /tmp/queued_restart.pid
-	touch /tmp/queued_restart.last
+	touch /tmp/last_queue_restart_date
 
 post-deploy: post-deploy-queue-restart deployment-final-email
 	echo "Email sent, post deployment complete"

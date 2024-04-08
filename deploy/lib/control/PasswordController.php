@@ -58,12 +58,14 @@ class PasswordController extends AbstractController
         $message    = $request->get('message');
         $email      = $request->get('email');
         $ninja_name = $request->get('ninja_name');
+        $password_reset = $request->get('password_reset');
 
         $parts = [
             'error'      => $error,
             'message'    => $message,
             'email'      => $email,
             'ninja_name' => $ninja_name,
+            'password_reset' => $password_reset,
         ];
 
         return new StreamedViewResponse('Request a password reset', 'reset.password.request.tpl', $parts);
@@ -174,7 +176,7 @@ class PasswordController extends AbstractController
                     return $this->renderError('Password not long enough or does not match password confirmation!', $token);
                 } else {
                     PasswordResetRequest::reset($account, $newPassword);
-                    return new RedirectResponse('/password/?message='.rawurlencode('Password reset!'));
+                    return new RedirectResponse('/password/?password_reset=1&message=' . rawurlencode('Password reset!'));
                 }
             }
         }

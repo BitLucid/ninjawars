@@ -17,6 +17,16 @@ footer.password-reset{
 		<div class='child bg-success glassbox thick fade-in'>{$message|escape}</div>
 	</div>
 {/if}
+{if $password_reset}
+	<div class='parent' role='alert'>
+		<div class='child thick'>
+			Your password was reset. You can now log in with your new password.
+			<div class='thick text-centered'>
+				<a href='/login'><button class='btn btn-primary'>CONTINUE</button></a>
+			</div>
+		</div>
+	</div>
+{/if}
 <div class='glassbox'>
 	<form method='post' action='/password/post_email'>
 		{* Need CSRF here! *}

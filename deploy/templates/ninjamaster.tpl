@@ -319,8 +319,8 @@ link.href = '/images/ninjamaster/shuriken-favicon.png';
 				{foreach from=$signups.new item='nsChar'}
 					<li>
 						<button 
-							type='button' 
-							class='btn btn-danger deactivate-character' 
+							type='button'
+							class='btn {if isset($nsChar.last_login)}btn-danger{else}btn-info{/if} deactivate-character' 
 							data-char-id="{$nsChar.player_id}" 
 							data-char-last-login="{if $nsChar.last_login}1{else}0{/if}"
 						>
@@ -328,7 +328,7 @@ link.href = '/images/ninjamaster/shuriken-favicon.png';
 						</button>
 							<a href='?view={$nsChar.player_id|escape}'>view {$nsChar.uname|escape}</a> 
 							<em>Created {if !isset($nsChar.created_date)}(unknown){/if} <time class='timeago' datetime='{$nsChar.created_date|escape}'>{$nsChar.created_date|escape}</time> </em>
-							<em>Last login: {if isset($nsChar.last_login)}<time class='timeago' datetime='{$nsChar.last_login|escape}'>{$nsChar.last_login|escape}</time>{/if}</em>
+							<em>Last login: {if isset($nsChar.last_login)}<time class='timeago' datetime='{$nsChar.last_login|escape}'>{$nsChar.last_login|escape}</time>{else}NEVER{/if}</em>
 					</li>
 				{/foreach}
 			</ul>
