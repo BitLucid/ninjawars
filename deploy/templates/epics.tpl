@@ -571,6 +571,7 @@
             <h2>Password.reset</h2>
             {assign var="message" value='Some message here'}
             {assign var="token" value='xxxxxxxxxxxxxxxxxx'}
+            {assign var="password_reset" value='1'}
             <div>
             {include file="reset.password.request.tpl"}
             </div>
