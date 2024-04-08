@@ -80,18 +80,26 @@ a.dull-link#join-link, a.dull-link#continue-link{
 .push-way-down{
   margin-top:8rem;
 }
+.intro-text{
+  margin: 7rem 10vw 0;font-size: 1.75rem;
+}
+/* small media queries */
+@media (max-width: 600px) {
+  .intro-text{
+    margin: 3rem 0;
+  }
+}
 </style>
 
 <section>
   <header id='main-page-headings'>
     <h1>The Ninja Game at Ninjawars.net</h1>
-    <h2>Live by the Shuriken!</h2>
   </header>
 
   <!-- Intro paragraphs -->
   <div style="margin: 0 auto;text-align: start;">
     <h3>Arising from the unrest of a lawless period...</h3>
-    <p style="margin: 7rem 10vw 0;font-size: 1.75rem;">
+    <p class='intro-text'>
       ...families of elite peasant warriors banded together to form clans in the more remote mountainous regions. Initially formed as self-defense against roving bands of thieves, now they strike back in revolt against the growing threat of outside control. The new shogunate is growing in power and soon will rule all the nearby lands...
     </p>
   </div>
