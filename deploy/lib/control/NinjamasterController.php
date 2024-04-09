@@ -57,7 +57,7 @@ class NinjamasterController extends AbstractController
         $first_char       = null;
         $first_account     = null;
         $first_description = null;
-        $signup_views_limit = 50;
+        $signup_views_limit = 30;
         $dupes            = AdminViews::dupedIps();
         $stats            = AdminViews::highRollers();
         $usage           = AdminViews::recentUsage();
