@@ -11,7 +11,7 @@
       <nav class='creature'>
         <a href='/npc/attack/{$idx|escape}' class='m-box'>
         {if isset($npc.img) && $npc.img}
-          <img alt='' class='creature-image' src='images/characters/{$npc.img|escape:'url'|escape}'>
+          <img alt='' loading='lazy' class='creature-image' src='images/characters/{$npc.img|escape:'url'|escape}'>
         {else}
           <i class="fa fa-asterisk" aria-hidden="true"></i>
         {/if}
