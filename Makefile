@@ -349,6 +349,8 @@ restart-webserver:
 post-deploy-restart: # for deploybot after deployment
 	sh /srv/ninjawars/deploy/cron/queued_restart.sh
 
+restart-post-deploy: post-deploy-restart
+
 post-deploy-queue-restart:
 	touch /tmp/queued_restart.pid
 	touch /tmp/last_queue_restart_date
