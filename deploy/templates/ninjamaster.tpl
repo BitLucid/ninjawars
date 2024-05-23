@@ -69,7 +69,7 @@ link.href = '/images/ninjamaster/shuriken-favicon.png';
 			<li><a class='' href='/ninjamaster/player_tags'>Character Tag List</a></li>
 			<li><a class='' href='/ninjamaster/#item-list-area'>Item List</a></li>
 			<li><a class='' href='/ninjamaster/#api-epics'>Api Epics</a></li>
-			<li><a class='' href='/ninjamaster/#aws-services'>AWS Services</a></li>
+			<li><a class='' href='/ninjamaster/#services'>Infrastructure Services</a></li>
 			<li><a class='' href='/epics'>UI Epics</a></li>
 		</ul>
 	</div>
@@ -98,7 +98,6 @@ link.href = '/images/ninjamaster/shuriken-favicon.png';
 			Alerts and warnings about the game's health based on live statistics.
 
 			Operational Health:
-
 
 			{if $usage.new_count eq 0}<span class="alert alert-danger"><i class="fa-solid fa-tornado"></i> Danger: Signups appear low, check signup page health, at {$usage.new_count|escape} in the last week.</span>{else}<i class="fa-solid fa-sun"></i> Signup system seems to be functioning normally.{/if}
 
@@ -482,7 +481,7 @@ link.href = '/images/ninjamaster/shuriken-favicon.png';
 	{/if}
 
 <section class='special-info'>
-	<header><h2 id='aws-services'>AWS Services</h2></header>
+	<header><h2 id='services'>Services</h2></header>
 	<div class='text-center'>
 		<button class='btn btn-default show-hide-next' type='button'>Show/Hide</button>
 	</div>
@@ -527,7 +526,7 @@ link.href = '/images/ninjamaster/shuriken-favicon.png';
 		<li><a class='' href='/ninjamaster/#item-list-area'>Item List</a></li>
 		<li><a class='' href='/ninjamaster/#clan-list'>Clans</a></li>
 		<li><a class='' href='/ninjamaster/#api-epics'>Api Epics</a></li>
-		<li><a class='' href='/ninjamaster/#aws-services'>AWS Services</a></li>
+		<li><a class='' href='/ninjamaster/#services'>Infrastructure Services</a></li>
 		<li><a class='' href='/epics'>UI Epics</a></li>
         </ul>
       </div>
