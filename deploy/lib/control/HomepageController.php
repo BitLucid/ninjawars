@@ -18,7 +18,7 @@ class HomepageController extends AbstractController
     public const PRIV      = false;
     public const ALIVE     = false;
     private $loggedIn = false;
-    public const NW_VERSION = 'v1.20.2 2023.12.28';
+    public const NW_VERSION = 'v1.21.0-2024.05.22';
 
     /**
      * Stores logged-in status of user in member variable for use later
