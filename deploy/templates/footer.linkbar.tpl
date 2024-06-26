@@ -11,7 +11,7 @@
 				</li>
 				<li class='author'>
 					<img class='avatar' alt="" src="https://www.gravatar.com/avatar/01b8df4923c0559d3ff56e6922e35011?d=monsterid&amp;80&amp;r=x">
-					<a style='cursor:pointer;text-decoration:none'>Al Vazquez</a>
+					<a style='cursor:pointer;text-decoration:none'>Al</a>
 					<a href='/player?player=beagle'>Ninja: Beagle</a>
 				</li>
 			</ul>
