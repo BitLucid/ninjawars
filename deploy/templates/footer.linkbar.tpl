@@ -5,7 +5,7 @@
 			<ul id='footer-authors'>
 				<li class='author'>
 					<img class='avatar' alt='' src="https://www.gravatar.com/avatar/68dd1255208cbf50f2c42615bbbd8f46?d=monsterid&amp;80&amp;r=x">
-					<a href='https://royronalds.com' class='extLink'>Roy Ronalds</a>
+					<a href='https://royronalds.com' class='extLink'>Coco</a>
 					<a href='/player?player=tchalvak'>Ninja: Tchalvak</a>
 					<a href='https://twitter.com/tchalvak' rel='nofollow' class='extLink'>@tchalvak</a>
 				</li>
