@@ -71,7 +71,8 @@ class AdminViews
             'stamina',
             'strength',
             'speed',
-            'ki'
+            'ki',
+            'karma',
         ];
         $res = [];
         foreach ($stats as $stat) {
