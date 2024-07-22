@@ -326,13 +326,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/eslint@npm:^8.56.1":
-  version: 8.56.1
-  resolution: "@types/eslint@npm:8.56.1"
+"@types/eslint@npm:^9.0.0":
+  version: 9.6.0
+  resolution: "@types/eslint@npm:9.6.0"
   dependencies:
     "@types/estree": "npm:*"
     "@types/json-schema": "npm:*"
-  checksum: 10/985fd0293e454c459e672e73857920d0746f2eaae8b9aa13a4078c6d3d8fd0d2272f07f67b7fd9078a52d8fe7e1e61a498944129c0f4bc4c29c9cfa968168f5e
+  checksum: 10/39fc797c671ec9c9184802b4974748cf45ee1b11d7aaaaede44426abcafd07ec7c18eb090e8f5b3387b51637ce3fdf54499472d8dd58a928f0d005cbacb573b4
   languageName: node
   linkType: hard
 
@@ -4308,7 +4308,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "ninjawars@workspace:."
   dependencies:
-    "@types/eslint": "npm:^8.56.1"
+    "@types/eslint": "npm:^9.0.0"
     "@types/jquery": "npm:^3.5.29"
     cypress: "npm:^13.6.6"
     eslint: "npm:^9.0.0"
