@@ -48,7 +48,7 @@
   },
   "homepage": "https://github.com/BitLucid/ninjawars#readme",
   "devDependencies": {
-    "@types/eslint": "^8.56.1",
+    "@types/eslint": "^9.0.0",
     "@types/jquery": "^3.5.29",
     "cypress": "^13.6.6",
     "eslint": "^9.0.0",
