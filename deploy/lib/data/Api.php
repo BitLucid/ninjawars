@@ -14,8 +14,6 @@ use PDO;
  */
 class Api
 {
-
-
     /**
      * Move these to a helper eventually, perhaps
      */
