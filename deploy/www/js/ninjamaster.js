@@ -186,10 +186,12 @@ const initializeDeactivation = () => {
   $('#deactivate-character').on('click', function () {
     const charId = $(this).data('char-id');
     const charqactive = $(this).data('char-last-login');
-    doubleCheckDeactivation({ last_login: charqactive });
-    performDeactivation(charId).then(() => {
-      window?.location?.reload();
-    });
+    const checked = doubleCheckDeactivation({ last_login: charqactive });
+    if (checked) {
+      performDeactivation(charId).then(() => {
+        window?.location?.reload();
+      });
+    }
   });
 
   // Batch deactivations
