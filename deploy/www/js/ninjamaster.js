@@ -1,6 +1,6 @@
 /* eslint-disable func-names */
 /* eslint-disable prefer-arrow-callback */
-/* Functions for ninjamaster */
+/* Functions for ninjamaster.js */
 /* eslint max-lines: ["error", 200] */
 
 // eslint-disable-next-line import/extensions
@@ -47,6 +47,19 @@ const clanComponent = ({ clan }) => `
         </li>
 `;
 
+const genericComponent = ({ datum }) => `
+        <li class='card'>
+          <div class='glassbox'>
+            <h4>Generic</h4>
+            <div>
+              <pre>
+              ${escape(JSON.stringify(datum))}
+              </pre>
+            </div>
+          </div>
+        </li>
+`;
+
 // Adds a delay to a promise
 function sleeper(ms) {
   return function (x) {
@@ -59,6 +72,11 @@ function sleeper(ms) {
 const addClanCard = (clan) => {
   $('#clan-list-area').append(clanComponent({ clan }));
 };
+
+const addAuthenticationAttempt = (authen) => {
+  $('#login-attempts-list-area').append('<div>added</div>');
+  $('#login-attempts-list-area').append(genericComponent({ datum: authen }));
+}
 
 const clearClanCards = () => {
   $('#clan-list-area').empty();
@@ -123,6 +141,28 @@ const initializeClans = () => {
   }
 };
 
+/**
+ * Initialize the auth attempt stats
+ */
+const initializeAuthAttempts = () => {
+  $('#login-attempts-list-progress').hide();
+  $('#load-login-attempts').on('click', () => {
+    $('#login-attempts-list-progress').show();
+    api.authenticationAttemptStats().then(sleeper(100)).then((response) => {
+      response.json().then((data) => {
+        console.error(data, data.authentication_stats);
+        addAuthenticationAttempt(data);
+        // loop over the clan list and add the data of each clan to it
+        data['authentication_stats'].forEach((attempt) => {
+          addAuthenticationAttempt(attempt);
+        });
+        $('#login-attempts-list-progress').hide();
+        $('#load-login-attempts').hide();
+      });
+    });
+  });
+};
+
 const performDeactivation = (charId) => api.deactivateChar(charId);
 
 const doubleCheckDeactivation = ({ lastLogin }) => {
@@ -183,6 +223,7 @@ $(function initializeNMPage() {
     .html("<span class='slider'><span class='dot'></span></span>");
 
   initializeClans();
+  initializeAuthAttempts();
 
   initializeDeactivation();
 });

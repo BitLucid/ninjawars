@@ -14,6 +14,37 @@ use PDO;
  */
 class Api
 {
+
+
+    /**
+     * Move these to a helper eventually, perhaps
+     */
+
+    /**
+     * Check for admin access
+     */
+    private static function checkAdmin(): bool
+    {
+        $user = Player::find(SessionFactory::getSession()->get('player_id'));
+        if ($user) {
+            if ($user->isAdmin()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Return standard formatting for non-admin attempt access
+     */
+    private static function getAdminError(): array
+    {
+        return ['error' => 'Unable to proceed further.'];
+    }
+
+
+
+
     /**
      * Find the next enemy target for the player.
      */
@@ -23,6 +54,26 @@ class Api
         $char = Player::find(SessionFactory::getSession()->get('player_id'));
         $target = $char ? Enemies::nextTarget($char, (int) $offset) : null;
         return $char && $target ? $target->publicData() : false;
+    }
+
+    /**
+     * Login attempt stats
+     */
+    public function authenticationAttemptStats($data)
+    {
+        if (!self::checkAdmin()) {
+            return self::getAdminError();
+        }
+        // Otherwise, let's return some data about authorization stats
+        $limit = 50;
+        $res = query_array(
+            "select 
+            login_attempts.username, max(ua_string) as max_ua_string, max(ip) as max_ip, max(additional_info) as max_additional_info, max(attempt_date) as max_attempt_date, 
+                count(username) as count_attempts 
+                from login_attempts where successful = '0' group by username order by count_attempts desc",
+            []
+        );
+        return ['authentication_stats' => $res];
     }
 
     /**
@@ -47,6 +98,7 @@ class Api
         return ['messages' => $unread_messages, 'events' => $unread_events];
     }
 
+
     /**
      * Deactivate a player character and account with a matching id
      * @note Admin only
@@ -56,20 +108,19 @@ class Api
         $accounts_deactivated = 0;
         $chars_deactivated = 0;
         $char_id = $data;
-        $user = Player::find(SessionFactory::getSession()->get('player_id'));
-        if (!$user || !$user->isAdmin()) {
-            return ['error' => 'Unable to proceed further.'];
-        } else {
-            $char = Player::find($char_id);
-            if ($char) {
-                if ($char->isAdmin()) {
-                    return ['error' => 'Cannot deactivate an admin character.'];
-                }
-                $chars_deactivated = Account::deactivateSingleCharacter($char);
-                $accounts_deactivated = Account::deactivateByCharacter($char);
-            }
-            return ['chars_deactivated' => $chars_deactivated, 'accounts_deactivated' => $accounts_deactivated];
+        if (!self::checkAdmin()) {
+            return self::getAdminError();
         }
+
+        $char = Player::find($char_id);
+        if ($char) {
+            if ($char->isAdmin()) {
+                return ['error' => 'Cannot deactivate an admin character.'];
+            }
+            $chars_deactivated = Account::deactivateSingleCharacter($char);
+            $accounts_deactivated = Account::deactivateByCharacter($char);
+        }
+        return ['chars_deactivated' => $chars_deactivated, 'accounts_deactivated' => $accounts_deactivated];
     }
 
     /**
