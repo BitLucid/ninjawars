@@ -19,6 +19,12 @@ class ApiController extends AbstractController
     public const ALIVE = false;
     public const PRIV  = false;
 
+    private function filterToAllowableHttpCodes($dirty_code): int|null
+    {
+        $whitelist = [500, 404, 400, 200, 202, 301];
+        return in_array($dirty_code, $whitelist) ? $dirty_code : null;
+    }
+
     /**
      * Determine which function to call to get the json for.
      *
@@ -80,8 +86,9 @@ class ApiController extends AbstractController
                 try {
                     $result = method_exists($api, $type) ? $api->$type($data) : null;
                 } catch (\RuntimeException $e) {
+                    error_log('ApiController Api error, with error code ' . $e->getCode() . ' and message ' . $e->getMessage());
                     // Examples: https://localhost:8765/api?type=sendCommunications&json=1
-                    $code = $e->getCode() ?? 500;
+                    $code = self::filterToAllowableHttpCodes($e->getCode()) ?? 500;
                     $headers['Content-Type'] = 'text/javascript; charset=utf8';
                     return new Response($res, $code, $headers);
                 }

@@ -294,6 +294,7 @@ db-init-all: db-init db-init-roles db-init-grants db
 db-init:
 	# Fail on existing database
 	createdb $(DBNAME);
+	# Or CREATE DATABASE "nw_someTHING" WITH OWNER "postgres" ENCODING 'UTF8' TABLESPACE "pg_default";
 	createuser $(DBUSER);
 
 db-init-roles:
@@ -304,6 +305,7 @@ db-init-grants:
 	psql $(DBNAME) -c "GRANT $(DBROLE) to ${DBUSER}"
 	psql $(DBNAME) -c "GRANT ALL PRIVILEGES ON DATABASE ${DBNAME} TO $(DBROLE);"
 	psql $(DBNAME) -c "REASSIGN OWNED BY ${DBUSER} TO $(DBROLE);"
+	# e.g. reassign owned by coco to developers;
 
 db:
 	psql $(DBNAME) -c "GRANT ALL PRIVILEGES ON DATABASE ${DBNAME} TO $(DBROLE);"

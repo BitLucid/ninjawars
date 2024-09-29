@@ -9,6 +9,7 @@
 
 const apiMethods = {
   nextTarget: (data) => fetch(`/api?type=nextTarget&json=1&data=${encodeURIComponent(JSON.stringify(data))}`),
+  authenticationAttemptStats: (data) => fetch(`/api?type=authenticationAttemptStats&json=1&data=${encodeURIComponent(JSON.stringify(data))}`),
   deactivateChar: (data) => fetch(`/api?type=deactivateChar&json=1&data=${encodeURIComponent(JSON.stringify(data))}`),
   reactivateChar: (data) => fetch(`/api?type=reactivateChar&json=1&data=${encodeURIComponent(JSON.stringify(data))}`),
   self: (data) => fetch(`/api?type=player&json=1&data=${encodeURIComponent(JSON.stringify(data))}`),

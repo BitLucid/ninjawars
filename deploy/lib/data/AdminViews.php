@@ -39,15 +39,19 @@ class AdminViews
     }
 
     /**
+     * Also check out the Api.php class for it's functions like login attempts
+     */
+
+    /**
      * Get a list of leaders in an arbitrary column stat on the player table
      */
     public static function statLeaders($stat, $limit = 10): array
     {
         if (!ctype_alpha($stat)) {
-            throw new RuntimeException('Invalid ninjamaster stat to check:[ '.(string)$stat.' ]');
+            throw new RuntimeException('Invalid ninjamaster stat to check:[ ' . (string)$stat . ' ]');
         }
         // Not ideal, but that's the way it is.
-        return query_array('select player_id, uname, '.$stat.' as stat from players where active = 1 order by '.$stat.' desc limit :limit', [
+        return query_array('select player_id, uname, ' . $stat . ' as stat from players where active = 1 order by ' . $stat . ' desc limit :limit', [
             ':limit' => $limit
         ]) ?? [];
     }

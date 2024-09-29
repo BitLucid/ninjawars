@@ -275,7 +275,9 @@ link.href = '/images/ninjamaster/shuriken-favicon.png';
 			<div class='card-container'>
 				<h5>New Players</h5>
 <div>Recent new players in 7 days: <span class='{if $usage.new_count eq 0}warning notice{/if}'>{$usage.new_count}</span></div>
-				<div>Signup spam-rejection trigger rate: <abbr title='In other words, this is the fraction of signups that will be rejected by recaptcha if it catches shenanigans'><span class='notice warning'>1/{RECAPTCHA_DIVISOR}</span></div>
+				<div>Signup spam-rejection trigger rate: 
+					<abbr title='In other words, this is the fraction of signups that will be rejected by recaptcha if it catches shenanigans'><span class='notice warning'>1/{RECAPTCHA_DIVISOR}</span>
+				</div>
 				<ul>
 					{foreach from=$usage.new item='nChar'}
 						<li><a href='?view={$nChar.player_id|escape}'>{$nChar.uname|escape}</a> <time class='timeago' datetime='{$nChar.created_date|escape}'>{$nChar.created_date|escape}</time></li>
@@ -360,6 +362,28 @@ link.href = '/images/ninjamaster/shuriken-favicon.png';
 <div class='nm-clans-container'>
 
 	{include file="ninjamaster.clans.tpl"}
+</div>
+
+<div class='nm-login-attempts-container'>
+
+<section id='login-attempts-list' class='special-info'>
+<header>
+	<h3>Login Attempts</h3>
+</header>
+<div class='text-center'>
+	<button class='btn btn-default show-hide-next' type='button'>Show/Hide</button>
+</div>
+<div id='clan-list-stats'>
+	<div class='text-center'>
+		<progress id='login-attempts-list-progress' indeterminate=indeterminate></progress>   
+	</div>
+	<div class='text-center thick'>
+		<button class='btn btn-primary' id='load-login-attempts'>LOAD Login Attempts</button>
+	</div>
+	<ul id='login-attempts-list-area' class='carded-area'>
+	</ul>
+</div>
+</section>
 </div>
 
 <section class='special-info npc-list'>

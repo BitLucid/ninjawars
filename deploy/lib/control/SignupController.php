@@ -11,7 +11,7 @@ use NinjaWars\core\environment\RequestWrapper;
 use NinjaWars\core\extensions\NWTemplate;
 use NinjaWars\core\extensions\StreamedViewResponse;
 use Symfony\Component\HttpFoundation\Request;
-// use ReCaptcha\ReCaptcha;
+// use ReCaptcha\ReCaptcha; // Fully referenced down below?
 use Nmail;
 
 /**
