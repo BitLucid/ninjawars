@@ -67,7 +67,7 @@
     "prettier": "3.3.3",
     "puppeteer": "^23.0.0",
     "requirejs": "^2.3.6",
-    "sinon": "^18.0.0"
+    "sinon": "^19.0.0"
   },
   "packageManager": "yarn@4.2.2"
 }
