@@ -250,8 +250,7 @@ class Deity
      * @param bool     $with_extras whether regen increases stamina and other extras
      */
     public function regenCharacters($basic, $with_extras = true) // REGEN!
-    {
-        assert(POISON != 'POISON');
+    {assert(POISON != 'POISON');
         $max_with_stamina = $with_extras ? ''.self::BASE_HEALTH.' +(players.stamina * '.Player::HEALTH_PER_STAMINA.')' : self::BASE_HEALTH;
         $add_with_stamina = $with_extras ? '+(players.stamina/50 * '.Player::HEALTH_PER_STAMINA.')' : '';
         DatabaseConnection::getInstance();
