@@ -12,6 +12,6 @@ py==1.10.0
 testresources==2.0.1
 pytest==8.2.2
 requests==2.32.3
-six==1.16.0
+six==1.17.0
 urllib3==2.2.3
 wcwidth==0.2.8
