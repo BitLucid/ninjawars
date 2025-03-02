@@ -58,9 +58,9 @@ Email Ninjawars Staff
               <a href="https://github.com/tchalvak" target="_blank" > <i class="fab fa-github" ></i></a>
             </div>
             <div class="bio">
-              <h3> Roy Ronalds</h3>
+              <h3>Coco Ronalds</h3>
               <h5> <strong> Game Dev &amp; Software Engineer </strong></h5>
-              <p>Workin' and coding on this game since 2003.  Likes dogs.
+              <p>1. Workin' and coding on this game since 2003.  1. “Wizard” mug owner. 2. Know 6 languages yet can only speak one. 3. Hate Wendigo.
               <ul class='social-networks thick'>
                 <li> <a class='btn btn-default' href='/player?player_id=128274'><i class='fa fa-star'></i> Tchalvak on NinjaWars</a> </li>
                 <li> <a class='btn btn-default' target='_blank' rel='me' href="https://github.com/tchalvak" rel='nofollow'><i class='fab fa-github'></i> Github</a></li>
@@ -110,7 +110,7 @@ Email Ninjawars Staff
     <li> Certain NPCs and other code contributions: DeathDepiction </li>
     <li> Evolym Fragile/Davinel - the Flash Banner </li>
     <li> Magatsu - the Shop Graphics </li>
-    <li> Some pixel art by Roy Ronalds </li>
+    <li> Some pixel art by Coco Ronalds </li>
     <li>Alegion - the original for the Koi photograph Background - <a
 href='http://alegion.deviantart.com/'>alegion.deviantart.com/</a></li>
     <li>This site is protected by reCAPTCHA and the Google

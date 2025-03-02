@@ -14,7 +14,7 @@ function sendDeploymentEmail($subject, $message)
     return $nmail->send();
 }
 
-$subject = 'Ninjawars: Deployment Complete Notification (at ' . date('Y-m-d H:i:s') . ')';
+$subject = 'Ninjawars: ☁️⬆️🌈 Deployment Complete Notification (at ' . date('Y-m-d H:i:s') . ')';
 $message = "
 The deployment has been completed successfully, this message has been triggered as the end step after the deployment system completed.
 <br /><br />

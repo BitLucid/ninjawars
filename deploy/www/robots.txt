@@ -1,6 +1,17 @@
 #
 # robots.txt
 #
+# disallow the search results urls
+User-agent: *
+Disallow: /list?searched=
+
+User-agent: *
+Disallow: /list?hide=
+
+# Disallow the news tags search
+User-agent: *
+Disallow: /news?tag_query=*
+
 User-agent: LinkLint-checkonly/2.3.5
 Disallow:
 #User-agent: *
