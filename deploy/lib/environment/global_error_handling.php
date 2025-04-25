@@ -29,7 +29,7 @@ class NWError
         Ninjawars Error Report Information: 
         ' . $p_errorMsg . '
         
-        One the date: ' . date('Y-m-d H:i:s') . '
+        On the date: ' . date('Y-m-d H:i:s') . '
         ';
 
         $_from = [SYSTEM_EMAIL => SYSTEM_EMAIL_NAME];
