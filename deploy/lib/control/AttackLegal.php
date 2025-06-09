@@ -188,7 +188,7 @@ class AttackLegal
         } elseif ($attacker->active == 0) {
             $this->error = 'You cannot attack when your ninja is retired/inactive.';
         } elseif ($attacker->health < 1) {
-            $this->error = 'You are dead and must revive.';
+            $this->error = '☠️ You are dead and must revive.';
         } elseif ($target->health < 1) {
             $this->error = "They're already dead.";
         } elseif ($target->hasStatus(STEALTH) && !$this->params['ignores_stealth']) {
