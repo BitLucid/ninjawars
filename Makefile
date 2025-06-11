@@ -123,15 +123,15 @@ install-system:
 	apt-get -y install python3 python3-dev python3-venv python3-pip python3-lxml unzip
 	# PHP!
 	echo "Installing php cli"
-	apt-get -y install php8.2-cli
-	apt-get -y install php8.2-fpm php8.2-xml php8.2-pgsql php8.2-curl php8.2-mbstring php8.2-intl
+	apt-get -y install php8.3-cli
+	apt-get -y install php8.3-fpm php8.3-xml php8.3-pgsql php8.3-curl php8.3-mbstring php8.3-intl
 	phpenmod xml pgsql curl mbstring
 	# Note that xml is what installs the ext-dom
 	apt install curl 
 	curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash 
-	echo "Also run: make install-node"
-	echo "Configure your webserver and postgresql yourself, we recommend nginx ^1.14.0 and postresql ^10.0"
-	echo "If you want ssl with the nginx site, use: https://www.digitalocean.com/community/tutorials/how-to-create-a-self-signed-ssl-certificate-for-nginx-in-ubuntu-16-04"
+	@echo "Configure your webserver and postgresql yourself, we recommend nginx ^1.14.0 and postresql ^10.0"
+	@echo "If you want ssl with the nginx site, use: https://www.digitalocean.com/community/tutorials/how-to-create-a-self-signed-ssl-certificate-for-nginx-in-ubuntu-16-04
+	@echo "Also run: make install-node"
 
 install-node:
 	corepack enable
