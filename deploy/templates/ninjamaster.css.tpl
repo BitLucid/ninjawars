@@ -77,15 +77,6 @@
   overflow: hidden;
 }
 
-.alert-info {
-  background-color: #d9edf7;
-  border-color: #bce8f1;
-  color: #31708f;
-  padding: 15px;
-  border-radius: 5px;
-  margin-top: 20px;
-}
-
 
 .char-actions{
 	display:flex;
@@ -341,4 +332,17 @@ details[open] summary::before{
 	margin-top: 1rem;
 
 }
+
+/* mobile media query */
+@media (max-width: 740px) {
+	.hi-pri-warnings .alert, .hi-pri-warnings .alert-info{
+		padding: 0.1rem;
+	}
+
+	#admin-actions pre.spaced{
+		margin-left: 0;
+		margin-right: 0;
+	}
+}
+
 </style>

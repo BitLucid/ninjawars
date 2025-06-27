@@ -39,7 +39,7 @@ class PasswordController extends AbstractController
         $rendered = (new NWTemplate())->assign(['url' => $url])->fetch('email.password_reset_request.tpl');
 
         // Construct the email with Nmail, and then just send it.
-        $subject = 'NinjaWars: Your password reset request';
+        $subject = 'NinjaWars: 🔑 Your password reset request';
         $nmail = new Nmail($email, $subject, $rendered, SYSTEM_EMAIL, ['replyto' => SUPPORT_EMAIL]);
 
         return (bool) $nmail->send();
