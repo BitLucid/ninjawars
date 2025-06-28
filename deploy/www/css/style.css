@@ -902,6 +902,10 @@ article#player-titles {
     display: inline-block;
 }
 
+.spin-enemy .health-bar-container {
+    min-width: 30rem;
+}
+
 #attacking-choices .btn-vital {
     text-transform: none;
 }
