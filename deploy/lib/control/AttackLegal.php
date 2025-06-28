@@ -181,14 +181,14 @@ class AttackLegal
             $this->error = 'Commiting suicide is a tactic reserved for samurai.';
         } elseif ($attacker->turns < $this->params['required_turns']) {
             $this->error = 'You don\'t have enough turns for that, wait for them to replenish and then use amanita mushrooms.';
-        //} elseif (!$this->params['self_use'] && $this->sameDomain($target, $attacker)) {
-        //    $this->error = 'You can not attack a ninja from the same domain.';
+            //} elseif (!$this->params['self_use'] && $this->sameDomain($target, $attacker)) {
+            //    $this->error = 'You can not attack a ninja from the same domain.';
         } elseif ($target->active == 0) {
             $this->error = 'You can not attack an inactive ninja.';
         } elseif ($attacker->active == 0) {
             $this->error = 'You cannot attack when your ninja is retired/inactive.';
         } elseif ($attacker->health < 1) {
-            $this->error = 'You are dead and must revive.';
+            $this->error = '☠️ You are dead and must revive.';
         } elseif ($target->health < 1) {
             $this->error = "They're already dead.";
         } elseif ($target->hasStatus(STEALTH) && !$this->params['ignores_stealth']) {
