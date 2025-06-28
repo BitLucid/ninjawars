@@ -27,6 +27,7 @@ blocks:
           - ./configure
       secrets:
         - name: Tchalvak COMPOSER_AUTH with github pat
+        - name: Tchalvak GITHUB Open Source
         - name: Tchalvak Github Ratelimit Avoidance Token Readonly
     dependencies: []
   - name: JS Tests
