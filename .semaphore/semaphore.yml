@@ -64,8 +64,8 @@ blocks:
       secrets:
         - name: Tchalvak AWS
         - name: Tchalvak COMPOSER_AUTH with github pat
+        - name: Tchalvak GITHUB Open Source
         - name: Tchalvak Github Ratelimit Avoidance Token Readonly
-        - name: Tchalvak Github Token
       env_vars:
         - name: AWS_PROFILE
           value: tchalvak
