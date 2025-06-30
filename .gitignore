@@ -90,15 +90,15 @@ Icon
 .Trashes
 .VolumeIcon.icns
 
-# Yarn 2 files
-.yarn/*
-!.yarn/cache
-!.yarn/patches
-!.yarn/plugins
-!.yarn/releases
-!.yarn/sdks
-!.yarn/versions
+# Yarn 2 Files to exclude
+.yarn-integrity
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+.pnp.*
 # See https://github.com/yarnpkg/berry/issues/454
+# Almost all other yarn files benefit from just being tracked and thrown in the repo
+# so that later installs still work even if left-pad goes away or something.
 
 node_modules/
 

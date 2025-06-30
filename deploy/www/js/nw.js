@@ -231,7 +231,7 @@ $(selector).keyup(function () {
         'message_id',
         'latestMessage',
         'message_id',
-    )
+      )
       || this.updateDataStore(
         data.member_counts,
         'active',
@@ -444,7 +444,8 @@ $(() => {
   if (g_isIndex || g_isRoot) {
     // Catchphrases: Hide the second two sections.
     const catchphrases = $('#nw-catchphrases span');
-    const rand = Math.floor(Math.random() * catchphrases.size());
+    const catchphrasesLength = catchphrases.length || 0;
+    const rand = Math.floor(Math.random() * catchphrasesLength);
     // Choose random index.
     catchphrases.hide().eq(rand).show();
     // Hide all, show one at random.
