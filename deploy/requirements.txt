@@ -9,7 +9,7 @@ lxml==6.0.0
 more-itertools==8.8.0
 pluggy==0.13.1
 py==1.10.0
-testresources==2.0.1
+testresources==2.0.2
 pytest==8.2.2
 requests==2.32.4
 six==1.16.0
