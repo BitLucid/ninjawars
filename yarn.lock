@@ -259,7 +259,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sinonjs/fake-timers@npm:^13.0.1, @sinonjs/fake-timers@npm:^13.0.2":
+"@sinonjs/fake-timers@npm:^13.0.5":
   version: 13.0.5
   resolution: "@sinonjs/fake-timers@npm:13.0.5"
   dependencies:
@@ -276,13 +276,6 @@ __metadata:
     lodash.get: "npm:^4.4.2"
     type-detect: "npm:^4.1.0"
   checksum: 10/58ca9752e8e835a09ed275f8edf8da2720fe95c0c02f6bcb90ad7f86fdceb393f35f744194b705dd94216228646ec0aedbb814e245eb869b940dcf1266b7a533
-  languageName: node
-  linkType: hard
-
-"@sinonjs/text-encoding@npm:^0.7.3":
-  version: 0.7.3
-  resolution: "@sinonjs/text-encoding@npm:0.7.3"
-  checksum: 10/f0cc89bae36e7ce159187dece7800b78831288f1913e9ae8cf8a878da5388232d2049740f6f4a43ec4b43b8ad1beb55f919f45eb9a577adb4a2a6eacb27b25fc
   languageName: node
   linkType: hard
 
@@ -877,38 +870,66 @@ __metadata:
   languageName: node
   linkType: hard
 
-"bare-events@npm:^2.0.0, bare-events@npm:^2.2.0":
+"bare-events@npm:^2.2.0":
   version: 2.2.1
   resolution: "bare-events@npm:2.2.1"
   checksum: 10/a2c96a638e5a049960e42660320bcd9e3c5e83da2072e4c05080661219eae744931751be86c814590dcce5107c30cbb60dc2d15097b1b14e2f42db1cd9b80898
   languageName: node
   linkType: hard
 
-"bare-fs@npm:^2.1.1":
-  version: 2.2.1
-  resolution: "bare-fs@npm:2.2.1"
-  dependencies:
-    bare-events: "npm:^2.0.0"
-    bare-os: "npm:^2.0.0"
-    bare-path: "npm:^2.0.0"
-    streamx: "npm:^2.13.0"
-  checksum: 10/5840d4c03e91e9f060636be7beac176544b7a786ed31e80cd0f5f4a323b4542e2babfe266f5774ca03b8eec2af9ff5184bef4a3fb4dd2769c6d24905d6ac76a8
+"bare-events@npm:^2.5.4":
+  version: 2.5.4
+  resolution: "bare-events@npm:2.5.4"
+  checksum: 10/135ef380b13f554ca2c6905bdbcfac8edae08fce85b7f953fa01f09a9f5b0da6a25e414111659bc9a6118216f0dd1f732016acd11ce91517f2afb26ebeb4b721
   languageName: node
   linkType: hard
 
-"bare-os@npm:^2.0.0, bare-os@npm:^2.1.0":
-  version: 2.2.0
-  resolution: "bare-os@npm:2.2.0"
-  checksum: 10/3b32a72a61bd4e4245f27963e34869ff39732c641953dbe5f0f8bff5e3e8826c24aa51b45766762b9a7cd18473c1d83f0ec2b8ff751d6a2169e8e8cdad0ad4de
+"bare-fs@npm:^4.0.1":
+  version: 4.1.5
+  resolution: "bare-fs@npm:4.1.5"
+  dependencies:
+    bare-events: "npm:^2.5.4"
+    bare-path: "npm:^3.0.0"
+    bare-stream: "npm:^2.6.4"
+  peerDependencies:
+    bare-buffer: "*"
+  peerDependenciesMeta:
+    bare-buffer:
+      optional: true
+  checksum: 10/81334c45db9ac848f0ad73c2fbcf897f53a0f029554def38d2e1f9b617757c0eff9184dd7df8fd2bfc0dc2afe5b7c283439ee252933bcc4d1bbd8c305fac01b9
   languageName: node
   linkType: hard
 
-"bare-path@npm:^2.0.0, bare-path@npm:^2.1.0":
-  version: 2.1.0
-  resolution: "bare-path@npm:2.1.0"
+"bare-os@npm:^3.0.1":
+  version: 3.6.1
+  resolution: "bare-os@npm:3.6.1"
+  checksum: 10/285d95c391250166128e64da2947f4a348ae127de680afffec1f6c82445856be0d1f259672b471afe06517e4cd3831183c373a1d63ef7799ed4aaa1321b86b67
+  languageName: node
+  linkType: hard
+
+"bare-path@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "bare-path@npm:3.0.0"
   dependencies:
-    bare-os: "npm:^2.1.0"
-  checksum: 10/811b9414448e8523a1323bc49d773673be0c72b3e008c99041b1bea516064227a530f27e8a35bd91cabc0d1026c5a0898f09ab5347cb3afd5a13fa519e6e973e
+    bare-os: "npm:^3.0.1"
+  checksum: 10/712d90e9cd8c3263cc11b0e0d386d1531a452706d7840c081ee586b34b00d72544e65df7a40013d47c1b177277495225deeede65cb2984db88a979cb65aaa2ff
+  languageName: node
+  linkType: hard
+
+"bare-stream@npm:^2.6.4":
+  version: 2.6.5
+  resolution: "bare-stream@npm:2.6.5"
+  dependencies:
+    streamx: "npm:^2.21.0"
+  peerDependencies:
+    bare-buffer: "*"
+    bare-events: "*"
+  peerDependenciesMeta:
+    bare-buffer:
+      optional: true
+    bare-events:
+      optional: true
+  checksum: 10/0f5ca2167fbbccc118157bce7c53a933e21726268e03d751461211550d72b2d01c296b767ccf96aae8ab28e106b126407c6fe0d29f915734b844ffe6057f0a08
   languageName: node
   linkType: hard
 
@@ -984,12 +1005,12 @@ __metadata:
   linkType: hard
 
 "brace-expansion@npm:^1.1.7":
-  version: 1.1.11
-  resolution: "brace-expansion@npm:1.1.11"
+  version: 1.1.12
+  resolution: "brace-expansion@npm:1.1.12"
   dependencies:
     balanced-match: "npm:^1.0.0"
     concat-map: "npm:0.0.1"
-  checksum: 10/faf34a7bb0c3fcf4b59c7808bc5d2a96a40988addf2e7e09dfbb67a2251800e0d14cd2bfc1aa79174f2f5095c54ff27f46fb1289fe2d77dac755b5eb3434cc07
+  checksum: 10/12cb6d6310629e3048cadb003e1aca4d8c9bb5c67c3c321bafdd7e7a50155de081f78ea3e0ed92ecc75a9015e784f301efc8132383132f4f7904ad1ac529c562
   languageName: node
   linkType: hard
 
@@ -2478,6 +2499,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"fast-fifo@npm:^1.3.2":
+  version: 1.3.2
+  resolution: "fast-fifo@npm:1.3.2"
+  checksum: 10/6bfcba3e4df5af7be3332703b69a7898a8ed7020837ec4395bb341bd96cc3a6d86c3f6071dd98da289618cf2234c70d84b2a6f09a33dd6f988b1ff60d8e54275
+  languageName: node
+  linkType: hard
+
 "fast-json-stable-stringify@npm:^2.0.0":
   version: 2.1.0
   resolution: "fast-json-stable-stringify@npm:2.1.0"
@@ -3816,13 +3844,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"just-extend@npm:^6.2.0":
-  version: 6.2.0
-  resolution: "just-extend@npm:6.2.0"
-  checksum: 10/1f487b074b9e5773befdd44dc5d1b446f01f24f7d4f1f255d51c0ef7f686e8eb5f95d983b792b9ca5c8b10cd7e60a924d64103725759eddbd7f18bcb22743f92
-  languageName: node
-  linkType: hard
-
 "karma-chrome-launcher@npm:^3.2.0":
   version: 3.2.0
   resolution: "karma-chrome-launcher@npm:3.2.0"
@@ -4341,25 +4362,12 @@ __metadata:
     karma-jasmine: "npm:^5.1.0"
     karma-requirejs: "npm:^1.1.0"
     karma-sinon: "npm:^1.0.5"
-    prettier: "npm:3.5.3"
+    prettier: "npm:3.6.2"
     puppeteer: "npm:^24.0.0"
     requirejs: "npm:^2.3.6"
-    sinon: "npm:^19.0.0"
+    sinon: "npm:^21.0.0"
   languageName: unknown
   linkType: soft
-
-"nise@npm:^6.1.1":
-  version: 6.1.1
-  resolution: "nise@npm:6.1.1"
-  dependencies:
-    "@sinonjs/commons": "npm:^3.0.1"
-    "@sinonjs/fake-timers": "npm:^13.0.1"
-    "@sinonjs/text-encoding": "npm:^0.7.3"
-    just-extend: "npm:^6.2.0"
-    path-to-regexp: "npm:^8.1.0"
-  checksum: 10/2d3175587cf0a351e2c91eb643fdc59d266de39f394a3ac0bace38571749d1e7f25341d763899245139b8f0d2ee048b2d3387d75ecf94c4897e947d5fc881eea
-  languageName: node
-  linkType: hard
 
 "node-gyp@npm:latest":
   version: 9.0.0
@@ -4704,13 +4712,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"path-to-regexp@npm:^8.1.0":
-  version: 8.2.0
-  resolution: "path-to-regexp@npm:8.2.0"
-  checksum: 10/23378276a172b8ba5f5fb824475d1818ca5ccee7bbdb4674701616470f23a14e536c1db11da9c9e6d82b82c556a817bbf4eee6e41b9ed20090ef9427cbb38e13
-  languageName: node
-  linkType: hard
-
 "pend@npm:~1.2.0":
   version: 1.2.0
   resolution: "pend@npm:1.2.0"
@@ -4753,12 +4754,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier@npm:3.5.3":
-  version: 3.5.3
-  resolution: "prettier@npm:3.5.3"
+"prettier@npm:3.6.2":
+  version: 3.6.2
+  resolution: "prettier@npm:3.6.2"
   bin:
     prettier: bin/prettier.cjs
-  checksum: 10/7050c08f674d9e49fbd9a4c008291d0715471f64e94cc5e4b01729affce221dfc6875c8de7e66b728c64abc9352eefb7eaae071b5f79d30081be207b53774b78
+  checksum: 10/1213691706bcef1371d16ef72773c8111106c3533b660b1cc8ec158bd109cdf1462804125f87f981f23c4a3dba053b6efafda30ab0114cc5b4a725606bb9ff26
   languageName: node
   linkType: hard
 
@@ -5354,17 +5355,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sinon@npm:^19.0.0":
-  version: 19.0.2
-  resolution: "sinon@npm:19.0.2"
+"sinon@npm:^21.0.0":
+  version: 21.0.0
+  resolution: "sinon@npm:21.0.0"
   dependencies:
     "@sinonjs/commons": "npm:^3.0.1"
-    "@sinonjs/fake-timers": "npm:^13.0.2"
+    "@sinonjs/fake-timers": "npm:^13.0.5"
     "@sinonjs/samsam": "npm:^8.0.1"
     diff: "npm:^7.0.0"
-    nise: "npm:^6.1.1"
     supports-color: "npm:^7.2.0"
-  checksum: 10/0be47968e9352269d0bdd26cdae7ae4e67d94fa007e8417d1e66ac95ba8537214edc770aff01b0f5a6f07588a1f7d3c947fff9366d799db85d3a4c405b875460
+  checksum: 10/b460e1cde56fa34ecbebc216522667fa3985444020dc70508177f85d127e6b9a27184c4b3146c575b30ec3091bde508b1373fad306b1e808037a37035e62065d
   languageName: node
   linkType: hard
 
@@ -5543,20 +5543,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"streamx@npm:^2.13.0":
-  version: 2.16.1
-  resolution: "streamx@npm:2.16.1"
-  dependencies:
-    bare-events: "npm:^2.2.0"
-    fast-fifo: "npm:^1.1.0"
-    queue-tick: "npm:^1.0.1"
-  dependenciesMeta:
-    bare-events:
-      optional: true
-  checksum: 10/f6d0899adf089385d9c58a630fc705dc6c3931b18181c32860e5013955a339a3b763a4df62168f37c7fc56b1f7bb2a38db989fa9df487995278cb5d46f248da6
-  languageName: node
-  linkType: hard
-
 "streamx@npm:^2.15.0":
   version: 2.15.0
   resolution: "streamx@npm:2.15.0"
@@ -5564,6 +5550,20 @@ __metadata:
     fast-fifo: "npm:^1.1.0"
     queue-tick: "npm:^1.0.1"
   checksum: 10/c4d311a4b77741d2dff809418fdec95e90742ad2b508025f1a2feabac300829bd3abba4b898e5b4feacc51caa5909058ceaa7b7220b73e6e51c9f28ba12ee3a1
+  languageName: node
+  linkType: hard
+
+"streamx@npm:^2.21.0":
+  version: 2.22.0
+  resolution: "streamx@npm:2.22.0"
+  dependencies:
+    bare-events: "npm:^2.2.0"
+    fast-fifo: "npm:^1.3.2"
+    text-decoder: "npm:^1.1.0"
+  dependenciesMeta:
+    bare-events:
+      optional: true
+  checksum: 10/9c329bb316e2085e207e471ecd0da18b4ed5b1cfe5cf10e9e7fad3f8f50c6ca1a6a844bdfd9bc7521560b97f229890de82ca162a0e66115300b91a489b1cbefd
   languageName: node
   linkType: hard
 
@@ -5724,11 +5724,11 @@ __metadata:
   linkType: hard
 
 "tar-fs@npm:^3.0.6":
-  version: 3.0.6
-  resolution: "tar-fs@npm:3.0.6"
+  version: 3.0.9
+  resolution: "tar-fs@npm:3.0.9"
   dependencies:
-    bare-fs: "npm:^2.1.1"
-    bare-path: "npm:^2.1.0"
+    bare-fs: "npm:^4.0.1"
+    bare-path: "npm:^3.0.0"
     pump: "npm:^3.0.0"
     tar-stream: "npm:^3.1.5"
   dependenciesMeta:
@@ -5736,7 +5736,7 @@ __metadata:
       optional: true
     bare-path:
       optional: true
-  checksum: 10/277f9ba707928ed7396f582b7f9648617f7683a84ac7a97d66404b0811c9c9e55136a6b88e3ba72515c2761b50aebfd428598d2770ea6ba95fda3e06e75380c7
+  checksum: 10/00e194ef36ced339000099c3cb5205fcd9636a531158d73e0fc1ca056fbcf8dcf39a398cbc71f030bbf938d4f477f47e2913c6e37e9c007bad31e0768a120590
   languageName: node
   linkType: hard
 
@@ -5762,6 +5762,15 @@ __metadata:
     mkdirp: "npm:^1.0.3"
     yallist: "npm:^4.0.0"
   checksum: 10/bfbfbb2861888077fc1130b84029cdc2721efb93d1d1fb80f22a7ac3a98ec6f8972f29e564103bbebf5e97be67ebc356d37fa48dbc4960600a1eb7230fbd1ea0
+  languageName: node
+  linkType: hard
+
+"text-decoder@npm:^1.1.0":
+  version: 1.2.3
+  resolution: "text-decoder@npm:1.2.3"
+  dependencies:
+    b4a: "npm:^1.6.4"
+  checksum: 10/bcdec33c0f070aeac38e46e4cafdcd567a58473ed308bdf75260bfbd8f7dc76acbc0b13226afaec4a169d0cb44cec2ab89c57b6395ccf02e941eaebbe19e124a
   languageName: node
   linkType: hard
 
