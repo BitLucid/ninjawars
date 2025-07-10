@@ -26,10 +26,8 @@
     ================================================== -->
     <!-- Google jquery CDN version, sync composer component for tests if changed -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-{if $smarty.const.LOCAL_JS}
-    <!-- Local js turned on for when CDN is unavailable -->
+    <!-- Local js turned on when CDN is unavailable -->
     <script>window.jQuery || document.write('<script src="{cachebust file="/js/jquery.min.js"}"><\/script>')</script>
-{/if}
     <script src="/js/bootstrap.min.js"></script>
     <!-- Plugins go here -->
     <script src='{cachebust file="/js/jquery.timeago.js"}'></script>
