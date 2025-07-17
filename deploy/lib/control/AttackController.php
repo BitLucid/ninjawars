@@ -292,7 +292,7 @@ class AttackController extends AbstractController
 
         $loser_msg = "DEATH: You have been KILLED by {$victor->name()} in combat and lost $loot gold!";
         if ($was_aggressor) {
-            $loser_msg = "DEATH: {$victor->name()} defended against you in combat and you were defeated and lost $loot gold!";
+            $loser_msg = "Reckless End: {$victor->name()} defeated you in combat and your demise lost you $loot gold!";
         }
         Event::create($victor->id(), $loser->id(), $loser_msg);
     }
