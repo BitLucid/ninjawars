@@ -285,12 +285,15 @@ class AttackController extends AbstractController
     /**
      * @return void
      */
-    private function lose(Player $loser, Player $victor, int $loot)
+    private function lose(Player $loser, Player $victor, int $loot, bool $was_aggressor = false)
     {
         $loser->setGold($loser->gold - $loot);
         $loser->death();
 
-        $loser_msg = "DEATH: You have been killed by {$victor->name()} in combat and lost $loot gold!";
+        $loser_msg = "DEATH: You have been KILLED by {$victor->name()} in combat and lost $loot gold!";
+        if($was_aggressor){
+            $loser_msg = "DEATH: {$victor->name()} defended against you in combat and you were defeated and lost $loot gold!";
+        }
         Event::create($victor->id(), $loser->id(), $loser_msg);
     }
 
