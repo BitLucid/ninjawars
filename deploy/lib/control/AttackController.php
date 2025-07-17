@@ -190,7 +190,7 @@ class AttackController extends AbstractController
             $loot = 0;
             $this->win($attacker, $target, $loot, $killpoints);
             $this->win($target, $attacker, $loot, 1);
-            $this->lose($attacker, $target, $loot);
+            $this->lose($attacker, $target, $loot, true); // Initial aggressor was defeated = true
             $this->lose($target, $attacker, $loot);
         } elseif ($target->health < 1) { // *** Current char killed target ***
             $victor        = $attacker;
@@ -227,7 +227,7 @@ class AttackController extends AbstractController
             $loser  = $attacker;
             $loot   = (int) floor($gold_mod * $loser->gold);
 
-            $this->lose($loser, $victor, $loot);
+            $this->lose($loser, $victor, $loot, true); // $was_aggressor = true
             $this->win($victor, $loser, $loot, $killpoints);
             if ($victor && $victor->id()) { // Make a new enemy
                 Enemies::add($loser, $victor->id());
