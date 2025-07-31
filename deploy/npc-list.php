@@ -559,7 +559,7 @@ NpcFactory::$data = [
             'stamina'  => 10,
             'speed'    => 30,
             'ki'       => 20,
-            'short'    => 'a horned demon',
+            'short'    => 'is a horned demon',
             'img'      => 'attacking_wandering_oni.jpg',
             'race'     => 'oni',
             'inventory' => [
@@ -570,7 +570,8 @@ NpcFactory::$data = [
                 'stealthy',
                 'slowing',
                 'energy_vampire',
-                'horned'
+                'horned',
+                'stealth_removing'
             ],
         ],
         'toad'           => [
@@ -578,12 +579,31 @@ NpcFactory::$data = [
             'strength' => 1,
             'stamina'  => 3,
             'speed'    => 15,
-            'short'    => 'a slimy toad',
+            'short'    => 'is a slimy large beast',
             'img'      => 'matsuoto-hoji-toad.jpg',
             'race'     => 'animal',
             'inventory' => [],
             'traits'   => [
                 'amphibious',
+            ],
+        ],
+        'samurai22'        => [
+            'name'       => 'Samurai',
+            'short'      => 'is an armored warrior',
+            'race'       => 'human',
+            'strength'   => 70,
+            'stamina'    => 30,
+            'speed'      => 12,
+            'ki'         => 1,
+            'damage'     => 20,
+            'gold'       => 100,
+            'img'        => 'samurai.png',
+            'inventory'  => [
+                'ginsengroot' => '.11',
+            ],
+            'traits'     => [
+                'partial_match_strength',
+                'stealth_removing'
             ],
         ],
     ]
