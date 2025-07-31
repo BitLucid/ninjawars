@@ -319,13 +319,13 @@ class NpcController extends AbstractController
             'guard'    => 'attackGuard',
         ];
 
-        $npco = $victim? (new NpcFactory())->create($victim) : null;
+        $npco = $victim ? (new NpcFactory())->create($victim) : null;
 
         $method = null;
 
         if ($player && $player->turns > 0 && !empty($victim)) {
             // Strip stealth when attacking special NPCs
-            if ($player->hasStatus(STEALTH) && 
+            if ($player->hasStatus(STEALTH) &&
                 (in_array(strtolower($victim), self::$STEALTH_REMOVING_NPCS) || ($npco && $npco->hasTrait('stealth_removing')))) {
                 $player->subtractStatus(STEALTH);
             }
