@@ -25,7 +25,7 @@ jobs:
         containers: [1, 2] # Uses 2 parallel instances
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Chrome
       # Uses the official Cypress GitHub action https://github.com/cypress-io/github-action
         uses: cypress-io/github-action@v6
