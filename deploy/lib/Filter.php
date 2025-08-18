@@ -31,7 +31,7 @@ class Filter
     public static function filter_string_polyfill(string $string): string
     {
         $str = preg_replace('/\x00|<[^>]*>?/', '', $string);
-        return str_replace(["'", '"'], ['', ''], $str);
+        return str_replace(["'", '"'], ['&#39;', '&#34;'], $str);
     }
 
     /**
@@ -39,10 +39,10 @@ class Filter
      */
     public static function toSimple($dirty)
     {
-        return filter_var(
-            str_replace(['"', '\''], '', Filter::filter_string_polyfill($dirty)),
-            FILTER_UNSAFE_RAW,
+        return static::filter_string_polyfill(filter_var(
+            str_replace(['"', '\''], '', $dirty),
+            FILTER_SANITIZE_FULL_SPECIAL_CHARS,
             FILTER_FLAG_STRIP_LOW | FILTER_FLAG_STRIP_HIGH
-        );
+        ));
     }
 }
