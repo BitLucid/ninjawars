@@ -19,7 +19,7 @@ pytest = "==8.2.2"
 requests = "==2.32.4"
 six = "==1.16.0"
 urllib3 = "*"
-wcwidth = "==0.2.8"
+wcwidth = "==0.2.14"
 
 [requires]
 python_version = "3.7"
