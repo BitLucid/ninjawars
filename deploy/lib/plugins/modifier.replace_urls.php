@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Replaces occurances of http://whatever with links (in blank tab).
  */

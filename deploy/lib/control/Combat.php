@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Combat behaviors during standard attacking.
  */

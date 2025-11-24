@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Smarty plugin to add a timestamp to static files for cachebusting
  *

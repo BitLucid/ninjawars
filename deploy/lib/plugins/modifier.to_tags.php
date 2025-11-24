@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Parse some comma separated string tags into links
  * @return string

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * The starting include file for all of NW.
  *

@@ -1,4 +1,5 @@
 <?php
+
 /*
 * resources.php build defaults. Used in CI builds, not live, not local dev
 * It defines constants used throughout the application.  Constants for tracked files
