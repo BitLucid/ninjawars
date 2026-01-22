@@ -25,7 +25,7 @@
 	The {$race|escape} seems stronger than you!
 	{/if}
 
-	<p>
+	<p class='npc-combat-area'>
 		{if $attack_damage > 0}
 			{if $npco->hasTrait('horned')}
 			<p>The {$display_name|escape}'s horns gore you.</p>
@@ -40,7 +40,7 @@
 		{/if}
 	</p>
 
-	<p>
+	<p class='pc-npc-combat-area'>
 		You
 		{if $ninja_damage > 0}
 			<span class='damage {$ninja_damage_class}'>{$ninja_damage_class} the {$display_name|escape}</span> 
@@ -67,7 +67,7 @@
 			<p class='ninja-notice target-escape'>The {$display_name|escape} flees from you and escapes!</p>
 			{else}
 				{if $much_stronger}
-				<p class='you-escape' title='They had {$enemy_strength|escape} strength'>You are unable to end the {$display_name|escape}, so you escape instead!</p>
+				<p class='you-escape' title='They had {$enemy_strength|escape} strength'>You are unable to defeat the {$display_name|escape}, so you escape instead!</p>
 				{else}
 				 <p title='They had {$npc_health} health'>You fight to a standstill and neither wins.</p>
 				{/if}

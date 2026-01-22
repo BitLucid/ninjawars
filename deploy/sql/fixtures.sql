@@ -399,14 +399,6 @@ COPY public.levelling_log (id, killpoints, levelling, killsdate, _player_id) FRO
 
 
 --
--- Data for Name: login_attempts; Type: TABLE DATA; Schema: public; Owner: developers
---
-
-COPY public.login_attempts (attempt_id, username, ua_string, ip, successful, additional_info, attempt_date) FROM stdin;
-\.
-
-
---
 -- Data for Name: messages; Type: TABLE DATA; Schema: public; Owner: developers
 --
 
@@ -559,13 +551,6 @@ SELECT pg_catalog.setval('public.item_item_id_seq', 40, true);
 --
 
 SELECT pg_catalog.setval('public.levelling_log_id_seq', 4471970, true);
-
-
---
--- Name: login_attempts_attempt_id_seq; Type: SEQUENCE SET; Schema: public; Owner: developers
---
-
-SELECT pg_catalog.setval('public.login_attempts_attempt_id_seq', 1, false);
 
 
 --
