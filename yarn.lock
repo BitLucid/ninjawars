@@ -338,12 +338,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/jquery@npm:^3.5.29":
-  version: 3.5.29
-  resolution: "@types/jquery@npm:3.5.29"
-  dependencies:
-    "@types/sizzle": "npm:*"
-  checksum: 10/364facf2cb0bc935cb4b7f4af0b12c8e901b02b08a85af213172485166123b10aad8563f8e51e363f65a778c4105a59a64dedd0b0fd73f96557219d46477af56
+"@types/jquery@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "@types/jquery@npm:4.0.0"
+  checksum: 10/3a0491a1a2b7d0a9d471c318dcf245607c8af0954658a5d2758b9f746cd85a1ce362c37c2a3ab2a41ab24d67574e167d2f4e6a873fdceeef359536d73e03a804
   languageName: node
   linkType: hard
 
@@ -379,13 +377,6 @@ __metadata:
   version: 8.1.1
   resolution: "@types/sinonjs__fake-timers@npm:8.1.1"
   checksum: 10/567e01159b07eb19a56aa9a619bda963a3e2c1261b197b83fc664867228ce679e189450f0ae38483a08857155f94d9ae5d88e72c0f44f269103f63c2946a73ed
-  languageName: node
-  linkType: hard
-
-"@types/sizzle@npm:*":
-  version: 2.3.3
-  resolution: "@types/sizzle@npm:2.3.3"
-  checksum: 10/586a9fb1f6ff3e325e0f2cc1596a460615f0bc8a28f6e276ac9b509401039dd242fa8b34496d3a30c52f5b495873922d09a9e76c50c2ab2bcc70ba3fb9c4e160
   languageName: node
   linkType: hard
 
@@ -4456,7 +4447,7 @@ __metadata:
   resolution: "ninjawars@workspace:."
   dependencies:
     "@types/eslint": "npm:^9.0.0"
-    "@types/jquery": "npm:^3.5.29"
+    "@types/jquery": "npm:^4.0.0"
     cypress: "npm:^14.0.0"
     eslint: "npm:^9.0.0"
     eslint-config-airbnb: "npm:^19.0.4"
